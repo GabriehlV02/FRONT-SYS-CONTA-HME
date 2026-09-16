@@ -1,0 +1,467 @@
+﻿.sistema-contable {
+  --surface: #fff;
+  --border: #b9ddea;
+  --muted: #52758b;
+  --accent: #0879af;
+  color: #12384d;
+  background: #f2f9fc;
+}
+
+.sistema-contable .sistema-sidebar {
+  background: linear-gradient(180deg, #0879af, #075985 58%, #073763);
+  border-color: #064866;
+  box-shadow: 10px 0 30px rgba(7, 55, 99, 0.24);
+}
+.sistema-contable .sistema-marca {
+  border-color: rgba(232, 248, 255, 0.24);
+}
+.sistema-contable .sistema-marca strong {
+  color: #fff;
+}
+.sistema-contable .sistema-marca small,
+.sistema-contable .sistema-nav section p {
+  color: #e4f5fb;
+}
+.sistema-contable .marca-icono {
+  border-color: #71c6e5;
+  color: #fff;
+  background: linear-gradient(145deg, #23a6d5, #0879af);
+  box-shadow: 0 8px 18px rgba(7, 55, 99, 0.34);
+}
+.sistema-contable .sistema-nav section + section {
+  border-color: rgba(232, 248, 255, 0.2);
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  color: #f0fbff;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  color: #fff;
+  border-color: #71c6e5;
+  background: rgba(113, 198, 229, 0.22);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #073763;
+  border-color: #e4f5fb;
+  background: #fff;
+  box-shadow: 0 7px 18px rgba(7, 55, 99, 0.2);
+}
+.sistema-contable .nav-modulo.activo:before {
+  background: #0879af;
+}
+.sistema-contable .nav-icono {
+  border-color: rgba(232, 248, 255, 0.3);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+.sistema-contable .nav-modulo.activo .nav-icono,
+.sistema-contable .boton-salir:hover .nav-icono,
+.sistema-contable .welcome-visual > span {
+  color: #fff;
+  border-color: #0879af;
+  background: linear-gradient(145deg, #23a6d5, #0879af);
+  box-shadow: 0 5px 14px rgba(7, 55, 99, 0.28);
+}
+.sistema-contable .boton-salir {
+  border-color: rgba(232, 248, 255, 0.24);
+  color: #f0fbff;
+}
+.sistema-contable .boton-salir:hover {
+  color: #fff;
+  background: rgba(113, 198, 229, 0.22);
+}
+
+.sistema-contable .area-trabajo {
+  background: #d8f3fa;
+}
+.sistema-contable .sistema-topbar {
+  border-color: #ddd6fe;
+  background: #fff;
+  box-shadow: 0 4px 17px rgba(76, 29, 149, 0.1);
+}
+.sistema-contable .topbar-icono,
+.sistema-contable .busqueda-global,
+.sistema-contable .metric-icon,
+.sistema-contable .quick-icon,
+.sistema-contable .empty-icon {
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #f5f3ff;
+}
+.sistema-contable .busqueda-global:focus-within,
+.sistema-contable input:focus-visible,
+.sistema-contable select:focus-visible,
+.sistema-contable button:focus-visible {
+  outline-color: #8b5cf6;
+}
+.sistema-contable .perfil {
+  border-color: #ddd6fe;
+}
+.sistema-contable .perfil-avatar,
+.sistema-contable .pagina-cabecera p,
+.sistema-contable .section-kicker {
+  color: #6d28d9;
+}
+.sistema-contable .pagina-cabecera h2,
+.sistema-contable .topbar-titulo h1,
+.sistema-contable h2,
+.sistema-contable h3,
+.sistema-contable strong {
+  color: #211634;
+}
+
+.sistema-contable .boton-principal,
+.sistema-contable .primario,
+.sistema-contable .ventas-primary,
+.sistema-contable .inventario-nuevo,
+.sistema-contable .inventario-primario {
+  background: linear-gradient(105deg, #7c3aed, #a855f7);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(124, 58, 237, 0.25);
+}
+.sistema-contable .boton-principal:hover,
+.sistema-contable .primario:hover,
+.sistema-contable .ventas-primary:hover,
+.sistema-contable .inventario-nuevo:hover,
+.sistema-contable .inventario-primario:hover {
+  background: linear-gradient(105deg, #6d28d9, #9333ea);
+}
+.sistema-contable .boton-secundario,
+.sistema-contable .secundario,
+.sistema-contable .ventas-secondary,
+.sistema-contable .inventario-secundario {
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #faf5ff;
+}
+.sistema-contable .welcome-panel,
+.sistema-contable .bienvenida {
+  background: linear-gradient(110deg, #fff, #f3e8ff);
+  border-color: #ddd6fe;
+}
+.sistema-contable .welcome-visual {
+  background: linear-gradient(140deg, #fff, #ede9fe);
+  border-color: #c4b5fd;
+  color: #7c3aed;
+}
+
+.sistema-contable .ventas-tabs,
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #c4b5fd;
+  background: #ede9fe;
+}
+.sistema-contable .ventas-tabs button,
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  color: #5b21b6;
+}
+.sistema-contable .ventas-tabs button:hover,
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover,
+.sistema-contable .usuarios-subvistas button:hover {
+  color: #3b0764;
+  border-color: #c4b5fd;
+  background: #faf5ff;
+}
+.sistema-contable .ventas-tabs button.activo,
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #2e1065;
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(124, 58, 237, 0.16);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  border-color: #c4b5fd;
+  color: #6d28d9;
+  background: #f5f3ff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
+.sistema-contable .ventas-kpi > span {
+  color: #fff;
+  border-color: #7c3aed;
+  background: #7c3aed;
+}
+
+/* Barra superior compacta para priorizar el espacio de trabajo. */
+.sistema-contable .sistema-topbar {
+  height: 68px;
+  padding: 0 24px;
+  gap: 14px;
+}
+.sistema-contable .topbar-icono {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+}
+.sistema-contable .topbar-titulo h1 {
+  font-size: 24px;
+}
+.sistema-contable .topbar-titulo small {
+  margin-top: 5px;
+  font-size: 11px;
+}
+.sistema-contable .search-container {
+  width: min(31vw, 430px);
+}
+.sistema-contable .busqueda-global {
+  height: 44px;
+  padding: 0 14px;
+  gap: 10px;
+  border-radius: 10px;
+}
+.sistema-contable .busqueda-global input {
+  font-size: 13px;
+}
+.sistema-contable .perfil {
+  min-height: 44px;
+  gap: 10px;
+  padding-left: 16px;
+}
+.sistema-contable .perfil-avatar {
+  width: 44px;
+  height: 44px;
+  border-width: 3px;
+}
+.sistema-contable .perfil strong {
+  font-size: 13px;
+}
+.sistema-contable .perfil small {
+  margin-top: 5px;
+  font-size: 11px;
+}
+.sistema-contable .salir-rapido {
+  padding: 7px;
+}
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 68px);
+}
+
+@media (min-width: 761px) {
+  .sistema-contable .sistema-sidebar {
+    width: 280px;
+  }
+  .sistema-contable .sistema-cuerpo {
+    margin-left: 280px;
+  }
+  .sistema-contable .sistema-marca {
+    height: 96px;
+    padding: 21px 22px 17px;
+    gap: 13px;
+  }
+  .sistema-contable .marca-icono {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    padding: 6px;
+    border-radius: 13px;
+  }
+  .sistema-contable .sistema-marca strong {
+    font-size: 24px;
+  }
+  .sistema-contable .sistema-marca small {
+    margin-top: 6px;
+    font-size: 11px;
+  }
+  .sistema-contable .replegar-menu {
+    top: 40px;
+    width: 29px;
+    height: 29px;
+  }
+  .sistema-contable .sistema-nav {
+    padding: 25px 12px 14px;
+  }
+  .sistema-contable .sistema-nav section p {
+    margin: 0 13px 14px;
+    font-size: 11px;
+    letter-spacing: 2.2px;
+  }
+  .sistema-contable .sistema-nav .nav-modulo {
+    height: 54px;
+    margin: 10px 0;
+    padding: 0 12px;
+    gap: 14px;
+    border-radius: 11px;
+  }
+  .sistema-contable .nav-icono {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    border-radius: 11px;
+  }
+  .sistema-contable .nav-texto {
+    font-size: 14px;
+  }
+  .sistema-contable .boton-salir {
+    height: 56px;
+    margin: 4px 12px 13px;
+    padding: 8px 10px 0;
+    gap: 14px;
+  }
+  .sistema-contable .boton-salir .nav-texto {
+    font-size: 14px;
+  }
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: 72px;
+  }
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 72px;
+  }
+  .sidebar-replegado.sistema-contable .sistema-marca {
+    height: 88px;
+    padding: 16px 10px;
+  }
+  .sidebar-replegado.sistema-contable .marca-icono {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+  .sidebar-replegado.sistema-contable .nav-icono {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+    height: 46px;
+  }
+  .sidebar-replegado.sistema-contable .boton-salir {
+    width: 54px;
+    margin: 4px 9px 13px;
+  }
+}
+
+@media (min-width: 761px) {
+  .sistema-contable .sistema-topbar {
+    height: 52px;
+    padding: 0 18px;
+    gap: 11px;
+  }
+  .sistema-contable .topbar-icono {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  .sistema-contable .topbar-titulo h1 {
+    font-size: 20px;
+  }
+  .sistema-contable .topbar-titulo small {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+  .sistema-contable .busqueda-global {
+    height: 38px;
+    padding: 0 12px;
+    gap: 8px;
+    border-radius: 9px;
+  }
+  .sistema-contable .busqueda-global input {
+    font-size: 12px;
+  }
+  .sistema-contable .perfil {
+    min-height: 38px;
+    gap: 8px;
+    padding-left: 13px;
+  }
+  .sistema-contable .perfil-avatar {
+    width: 38px;
+    height: 38px;
+    border-width: 3px;
+  }
+  .sistema-contable .perfil strong {
+    font-size: 12px;
+  }
+  .sistema-contable .perfil small {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+  .sistema-contable .salir-rapido {
+    padding: 5px;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 52px);
+  }
+}
+
+.sistema-contable .ventas-panel,
+.sistema-contable .inventario-contenido,
+.sistema-contable .movimientos-contenido,
+.sistema-contable .usuarios-contenido,
+.sistema-contable .panel,
+.sistema-contable .modulo-vacio,
+.sistema-contable .ventas-contexto,
+.sistema-contable .inventario-modal {
+  border-color: #ddd6fe;
+  box-shadow: 0 10px 28px rgba(76, 29, 149, 0.1);
+}
+.sistema-contable .ventas-input,
+.sistema-contable .ventas-select,
+.sistema-contable .inventario-filtros label,
+.sistema-contable .inventario-filtros select,
+.sistema-contable .movimientos-filtros label,
+.sistema-contable .movimientos-filtros select,
+.sistema-contable .usuarios-filtros label,
+.sistema-contable .usuarios-filtros select,
+.sistema-contable .inventario-modal-cuerpo input,
+.sistema-contable .inventario-modal-cuerpo select {
+  border-color: #d8ccff;
+  color: #4c1d95;
+  background: #faf5ff;
+}
+.sistema-contable .inventario-filtros label:focus-within,
+.sistema-contable .movimientos-filtros label:focus-within,
+.sistema-contable .usuarios-filtros label:focus-within {
+  outline-color: #a78bfa;
+}
+.sistema-contable .inventario-contador,
+.sistema-contable .movimientos-contador,
+.sistema-contable .usuarios-contador,
+.sistema-contable .ventas-badge {
+  border-color: #ddd6fe;
+  color: #5b21b6;
+  background: #f5f3ff;
+}
+.sistema-contable .inventario-tabla,
+.sistema-contable .movimientos-tabla,
+.sistema-contable .usuarios-tabla,
+.sistema-contable .ventas-tabla,
+.sistema-contable .venta-lineas,
+.sistema-contable .venta-totales {
+  border-color: #ddd6fe;
+}
+.sistema-contable .inventario-tabla-head,
+.sistema-contable .movimientos-tabla-head,
+.sistema-contable .usuarios-tabla-head,
+.sistema-contable .ventas-tabla-head,
+.sistema-contable .venta-lineas-head {
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #f3e8ff;
+}
+.sistema-contable .inventario-modal-fondo {
+  background: rgba(46, 16, 101, 0.42);
+}
+.sistema-contable .inventario-modal header {
+  border-color: #ede9fe;
+}
+.sistema-contable .inventario-modal header span,
+.sistema-contable .inventario-modal-cuerpo span {
+  color: #6d28d9;
+}
+.sistema-contable .inventario-modal header button {
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #faf5ff;
+}

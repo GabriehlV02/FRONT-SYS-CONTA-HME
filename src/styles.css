@@ -1,0 +1,3140 @@
+﻿@import './ui/styles.css';
+@import './styles/LoginBalance.css';
+
+.sistema-contable {
+  --surface: #fff;
+  --border: #d8ccff;
+  --muted: #6d5a93;
+  --accent: #7c3aed;
+  color: #211634;
+  background: #f7f3ff;
+}
+
+.sistema-contable .sistema-sidebar {
+  background: linear-gradient(180deg, #7c3aed, #6d28d9 58%, #4c1d95);
+  border-color: #5b21b6;
+  box-shadow: 10px 0 30px rgba(76, 29, 149, 0.24);
+}
+.sistema-contable .sistema-marca {
+  border-color: rgba(237, 233, 254, 0.22);
+}
+.sistema-contable .sistema-marca strong {
+  color: #fff;
+}
+.sistema-contable .sistema-marca small,
+.sistema-contable .sistema-nav section p {
+  color: #ede9fe;
+}
+.sistema-contable .marca-icono {
+  border-color: #a78bfa;
+  color: #fff;
+  background: linear-gradient(145deg, #a855f7, #6d28d9);
+  box-shadow: 0 8px 18px rgba(76, 29, 149, 0.34);
+}
+.sistema-contable .sistema-nav section + section {
+  border-color: rgba(237, 233, 254, 0.18);
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  color: #f5f3ff;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  color: #fff;
+  border-color: #a78bfa;
+  background: rgba(167, 139, 250, 0.24);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #2e1065;
+  border-color: #ede9fe;
+  background: #fff;
+  box-shadow: 0 7px 18px rgba(46, 16, 101, 0.24);
+}
+.sistema-contable .nav-modulo.activo:before {
+  background: #8b5cf6;
+}
+.sistema-contable .nav-icono {
+  border-color: rgba(237, 233, 254, 0.28);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.13);
+}
+.sistema-contable .nav-modulo.activo .nav-icono,
+.sistema-contable .boton-salir:hover .nav-icono,
+.sistema-contable .welcome-visual > span {
+  color: #fff;
+  border-color: #7c3aed;
+  background: linear-gradient(145deg, #a855f7, #6d28d9);
+  box-shadow: 0 5px 14px rgba(76, 29, 149, 0.28);
+}
+.sistema-contable .boton-salir {
+  border-color: rgba(237, 233, 254, 0.22);
+  color: #f5f3ff;
+}
+.sistema-contable .boton-salir:hover {
+  color: #fff;
+  background: rgba(167, 139, 250, 0.22);
+}
+
+.sistema-contable .area-trabajo {
+  background-color: #f7f3ff;
+  background-image: radial-gradient(
+    rgba(124, 58, 237, 0.18) 0.65px,
+    transparent 0.75px
+  );
+}
+
+.sistema-contable .sistema-topbar {
+  border-color: #ddd6fe;
+  background: #fff;
+  box-shadow: 0 4px 17px rgba(76, 29, 149, 0.1);
+}
+.sistema-contable .topbar-icono,
+.sistema-contable .busqueda-global,
+.sistema-contable .metric-icon,
+.sistema-contable .quick-icon,
+.sistema-contable .empty-icon {
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #f5f3ff;
+}
+.sistema-contable .busqueda-global:focus-within,
+.sistema-contable input:focus-visible,
+.sistema-contable select:focus-visible,
+.sistema-contable button:focus-visible {
+  outline-color: #8b5cf6;
+}
+.sistema-contable .perfil {
+  border-color: #ddd6fe;
+}
+.sistema-contable .perfil-avatar,
+.sistema-contable .pagina-cabecera p,
+.sistema-contable .section-kicker {
+  color: #6d28d9;
+}
+.sistema-contable .pagina-cabecera h2,
+.sistema-contable .topbar-titulo h1,
+.sistema-contable h2,
+.sistema-contable h3,
+.sistema-contable strong {
+  color: #211634;
+}
+
+.sistema-contable .boton-principal,
+.sistema-contable .primario,
+.sistema-contable .ventas-primary,
+.sistema-contable .inventario-nuevo,
+.sistema-contable .inventario-primario {
+  background: linear-gradient(105deg, #7c3aed, #a855f7);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(124, 58, 237, 0.25);
+}
+.sistema-contable .boton-principal:hover,
+.sistema-contable .primario:hover,
+.sistema-contable .ventas-primary:hover,
+.sistema-contable .inventario-nuevo:hover,
+.sistema-contable .inventario-primario:hover {
+  background: linear-gradient(105deg, #6d28d9, #9333ea);
+}
+.sistema-contable .boton-secundario,
+.sistema-contable .secundario,
+.sistema-contable .ventas-secondary,
+.sistema-contable .inventario-secundario {
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #faf5ff;
+}
+.sistema-contable .welcome-panel,
+.sistema-contable .bienvenida {
+  background: linear-gradient(110deg, #fff, #f3e8ff);
+  border-color: #ddd6fe;
+}
+.sistema-contable .welcome-visual {
+  background: linear-gradient(140deg, #fff, #ede9fe);
+  border-color: #c4b5fd;
+  color: #7c3aed;
+}
+
+.sistema-contable .ventas-tabs,
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #c4b5fd;
+  background: #ede9fe;
+}
+.sistema-contable .ventas-tabs button,
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  color: #5b21b6;
+}
+.sistema-contable .ventas-tabs button:hover,
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover,
+.sistema-contable .usuarios-subvistas button:hover {
+  color: #3b0764;
+  border-color: #c4b5fd;
+  background: #faf5ff;
+}
+.sistema-contable .ventas-tabs button.activo,
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #2e1065;
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(124, 58, 237, 0.16);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  border-color: #c4b5fd;
+  color: #6d28d9;
+  background: #f5f3ff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
+.sistema-contable .ventas-kpi > span {
+  color: #fff;
+  border-color: #7c3aed;
+  background: #7c3aed;
+}
+
+.sistema-contable .ventas-panel,
+.sistema-contable .inventario-contenido,
+.sistema-contable .movimientos-contenido,
+.sistema-contable .usuarios-contenido,
+.sistema-contable .panel,
+.sistema-contable .modulo-vacio,
+.sistema-contable .ventas-contexto,
+.sistema-contable .inventario-modal {
+  border-color: #ddd6fe;
+  box-shadow: 0 10px 28px rgba(76, 29, 149, 0.1);
+}
+.sistema-contable .ventas-input,
+.sistema-contable .ventas-select,
+.sistema-contable .inventario-filtros label,
+.sistema-contable .inventario-filtros select,
+.sistema-contable .movimientos-filtros label,
+.sistema-contable .movimientos-filtros select,
+.sistema-contable .usuarios-filtros label,
+.sistema-contable .usuarios-filtros select,
+.sistema-contable .inventario-modal-cuerpo input,
+.sistema-contable .inventario-modal-cuerpo select {
+  border-color: #d8ccff;
+  color: #4c1d95;
+  background: #faf5ff;
+}
+.sistema-contable .inventario-filtros label:focus-within,
+.sistema-contable .movimientos-filtros label:focus-within,
+.sistema-contable .usuarios-filtros label:focus-within {
+  outline-color: #a78bfa;
+}
+.sistema-contable .inventario-contador,
+.sistema-contable .movimientos-contador,
+.sistema-contable .usuarios-contador,
+.sistema-contable .ventas-badge {
+  border-color: #ddd6fe;
+  color: #5b21b6;
+  background: #f5f3ff;
+}
+.sistema-contable .inventario-tabla,
+.sistema-contable .movimientos-tabla,
+.sistema-contable .usuarios-tabla,
+.sistema-contable .ventas-tabla,
+.sistema-contable .venta-lineas,
+.sistema-contable .venta-totales {
+  border-color: #ddd6fe;
+}
+.sistema-contable .inventario-tabla-head,
+.sistema-contable .movimientos-tabla-head,
+.sistema-contable .usuarios-tabla-head,
+.sistema-contable .ventas-tabla-head,
+.sistema-contable .venta-lineas-head {
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #f3e8ff;
+}
+.sistema-contable .inventario-modal-fondo {
+  background: rgba(46, 16, 101, 0.42);
+}
+.sistema-contable .inventario-modal header {
+  border-color: #ede9fe;
+}
+.sistema-contable .inventario-modal header span,
+.sistema-contable .inventario-modal-cuerpo span {
+  color: #6d28d9;
+}
+.sistema-contable .inventario-modal header button {
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #faf5ff;
+}
+
+/* Tema contable azul: hibrida el layout actual con la paleta de referencia. */
+.sistema-contable {
+  --surface: #ffffff;
+  --border: #b9e5ef;
+  --muted: #5e7282;
+  --accent: #48c3dd;
+  --navy: #073763;
+  --navy-2: #052c53;
+  --navy-3: #041f3f;
+  color: #112338;
+  background: #f7fbfe;
+}
+.sistema-contable .sistema-sidebar {
+  background:
+    radial-gradient(
+      circle at 18% 0%,
+      rgba(94, 212, 232, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(180deg, var(--navy), var(--navy-2) 58%, var(--navy-3));
+  border-color: #0a4a7d;
+  box-shadow: 10px 0 30px rgba(3, 31, 63, 0.24);
+}
+.sistema-contable .sistema-sidebar:after {
+  display: block;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.08) 0.65px,
+    transparent 0.75px
+  );
+  background-size: 9px 9px;
+}
+.sistema-contable .sistema-marca {
+  border-color: rgba(185, 229, 239, 0.22);
+}
+.sistema-contable .sistema-marca strong {
+  color: #fff;
+}
+.sistema-contable .sistema-marca small,
+.sistema-contable .sistema-nav section p {
+  color: #bfefff;
+}
+.sistema-contable .marca-icono {
+  border-color: rgba(151, 225, 239, 0.38);
+  color: #fff;
+  background: linear-gradient(145deg, #0f4e81, #082f5c);
+  box-shadow:
+    0 8px 20px rgba(2, 24, 50, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.sistema-contable .sistema-nav section + section {
+  border-color: rgba(185, 229, 239, 0.18);
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  color: #e9f9ff;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  color: #fff;
+  border-color: rgba(94, 212, 232, 0.45);
+  background: rgba(94, 212, 232, 0.12);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #fff;
+  border-color: #75d7eb;
+  background: linear-gradient(105deg, #2baed0, #6fdcf0);
+  box-shadow: 0 10px 22px rgba(35, 174, 208, 0.27);
+}
+.sistema-contable .nav-modulo.activo:before {
+  background: #e7fbff;
+}
+.sistema-contable .nav-icono {
+  border-color: rgba(185, 229, 239, 0.25);
+  color: #dff8ff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sistema-contable .nav-modulo.activo .nav-icono,
+.sistema-contable .boton-salir:hover .nav-icono {
+  color: #073763;
+  border-color: rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 5px 14px rgba(3, 31, 63, 0.18);
+}
+.sistema-contable .boton-salir {
+  border-color: rgba(185, 229, 239, 0.2);
+  color: #e5f8ff;
+}
+.sistema-contable .boton-salir:hover {
+  color: #fff;
+  background: rgba(94, 212, 232, 0.12);
+}
+.sistema-contable .sistema-cuerpo {
+  background: #f7fbfe;
+}
+.sistema-contable .area-trabajo {
+  padding-top: 12px;
+  padding-bottom: 16px;
+  background: #d8f3fa;
+}
+.sistema-contable .content-limit {
+  max-width: none;
+}
+.sistema-contable .sistema-topbar {
+  border-color: #d7edf4;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 18px rgba(7, 55, 99, 0.08);
+}
+.sistema-contable .topbar-icono,
+.sistema-contable .busqueda-global,
+.sistema-contable .metric-icon,
+.sistema-contable .quick-icon,
+.sistema-contable .empty-icon {
+  border-color: #b9e5ef;
+  color: #0b4b7b;
+  background: #eefaff;
+}
+.sistema-contable .busqueda-global {
+  background: #fff;
+  border-color: #8fd8e9;
+  box-shadow: 0 0 0 1px rgba(94, 212, 232, 0.08);
+}
+.sistema-contable .busqueda-global:focus-within,
+.sistema-contable input:focus-visible,
+.sistema-contable select:focus-visible,
+.sistema-contable button:focus-visible {
+  outline-color: #47c3dd;
+}
+.sistema-contable .perfil {
+  border-color: #d7edf4;
+}
+.sistema-contable .perfil-avatar,
+.sistema-contable .pagina-cabecera p,
+.sistema-contable .section-kicker {
+  color: #0b4b7b;
+}
+.sistema-contable .pagina-cabecera h2,
+.sistema-contable .topbar-titulo h1,
+.sistema-contable h2,
+.sistema-contable h3,
+.sistema-contable strong {
+  color: #112338;
+}
+.sistema-contable .boton-principal,
+.sistema-contable .primario,
+.sistema-contable .ventas-primary,
+.sistema-contable .inventario-nuevo,
+.sistema-contable .inventario-primario {
+  background: linear-gradient(105deg, #0b4b7b, #36bed9);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(11, 75, 123, 0.22);
+}
+.sistema-contable .boton-principal:hover,
+.sistema-contable .primario:hover,
+.sistema-contable .ventas-primary:hover,
+.sistema-contable .inventario-nuevo:hover,
+.sistema-contable .inventario-primario:hover {
+  background: linear-gradient(105deg, #083c68, #21a9ca);
+}
+.sistema-contable .boton-secundario,
+.sistema-contable .secundario,
+.sistema-contable .ventas-secondary,
+.sistema-contable .inventario-secundario {
+  border-color: #b9e5ef;
+  color: #0b4b7b;
+  background: #f5fcff;
+}
+.sistema-contable .welcome-panel,
+.sistema-contable .bienvenida {
+  background: linear-gradient(110deg, #fff, #eaf9fd);
+  border-color: #b9e5ef;
+}
+.sistema-contable .welcome-visual {
+  background: linear-gradient(140deg, #fff, #dff6fb);
+  border-color: #97e1ef;
+  color: #0b4b7b;
+}
+.sistema-contable .welcome-visual > span {
+  color: #073763;
+  border-color: #fff;
+  background: linear-gradient(145deg, #8ce7f4, #37bdd7);
+}
+.sistema-contable .ventas-tabs,
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #8fd8e9;
+  background: rgba(229, 248, 253, 0.74);
+  box-shadow:
+    0 8px 22px rgba(7, 55, 99, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.sistema-contable .ventas-tabs button,
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  color: #214c68;
+}
+.sistema-contable .ventas-tabs button:hover,
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover,
+.sistema-contable .usuarios-subvistas button:hover {
+  color: #073763;
+  border-color: #91dbe9;
+  background: #fff;
+}
+.sistema-contable .ventas-tabs button.activo,
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #10273c;
+  border-color: #9eddeb;
+  background: linear-gradient(180deg, #f7fdff, #dff6fb);
+  box-shadow: 0 8px 18px rgba(11, 75, 123, 0.13);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  border-color: #aee5f0;
+  color: #0b4b7b;
+  background: #fff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
+.sistema-contable .ventas-kpi > span {
+  color: #fff;
+  border-color: #18a8ca;
+  background: linear-gradient(145deg, #0b4b7b, #37bdd7);
+}
+.sistema-contable .ventas-panel,
+.sistema-contable .inventario-contenido,
+.sistema-contable .movimientos-contenido,
+.sistema-contable .usuarios-contenido,
+.sistema-contable .panel,
+.sistema-contable .modulo-vacio,
+.sistema-contable .ventas-contexto,
+.sistema-contable .inventario-modal,
+.sistema-contable .caja-col,
+.sistema-contable .caja-cobro-bar {
+  border-color: #ccebf3;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(7, 55, 99, 0.08);
+}
+.sistema-contable .ventas-input,
+.sistema-contable .ventas-select,
+.sistema-contable .inventario-filtros label,
+.sistema-contable .inventario-filtros select,
+.sistema-contable .movimientos-filtros label,
+.sistema-contable .movimientos-filtros select,
+.sistema-contable .usuarios-filtros label,
+.sistema-contable .usuarios-filtros select,
+.sistema-contable .inventario-modal-cuerpo input,
+.sistema-contable .inventario-modal-cuerpo select,
+.sistema-contable .caja-cobro-bar label,
+.sistema-contable .caja-cobro-bar .ventas-select,
+.sistema-contable .facturacion-form input,
+.sistema-contable .facturacion-form select,
+.sistema-contable .facturacion-form textarea {
+  border-color: #b9e5ef;
+  color: #14344d;
+  background: #f5fcff;
+}
+.sistema-contable .inventario-filtros label:focus-within,
+.sistema-contable .movimientos-filtros label:focus-within,
+.sistema-contable .usuarios-filtros label:focus-within {
+  outline-color: #5ed4e8;
+}
+.sistema-contable .inventario-contador,
+.sistema-contable .movimientos-contador,
+.sistema-contable .usuarios-contador,
+.sistema-contable .ventas-badge,
+.sistema-contable .cuentas-categorias span,
+.sistema-contable .paciente-chip,
+.sistema-contable .caja-status-mini {
+  border-color: #ccebf3;
+  color: #0b4b7b;
+  background: #eefaff;
+}
+.sistema-contable .inventario-tabla,
+.sistema-contable .movimientos-tabla,
+.sistema-contable .usuarios-tabla,
+.sistema-contable .ventas-tabla,
+.sistema-contable .venta-lineas,
+.sistema-contable .venta-totales,
+.sistema-contable .cuentas-totales {
+  border-color: #ccebf3;
+}
+.sistema-contable .inventario-tabla-head,
+.sistema-contable .movimientos-tabla-head,
+.sistema-contable .usuarios-tabla-head,
+.sistema-contable .ventas-tabla-head,
+.sistema-contable .venta-lineas-head,
+.sistema-contable .venta-totales div:last-child {
+  border-color: #ccebf3;
+  color: #17435d;
+  background: #eaf9fd;
+}
+.sistema-contable .venta-linea,
+.sistema-contable .ventas-row,
+.sistema-contable .venta-totales div,
+.sistema-contable .cuentas-totales article,
+.sistema-contable .caja-apertura {
+  border-color: #e4f4f8;
+}
+.sistema-contable .caja-apertura.compacta {
+  border-color: #9eddeb;
+  background: #f0fbff;
+}
+.sistema-contable .caja-lista button {
+  border-color: #ccebf3;
+  background: #fff;
+}
+.sistema-contable .caja-lista button:hover {
+  box-shadow: 0 8px 18px rgba(7, 55, 99, 0.1);
+}
+.sistema-contable .paciente-chip {
+  border-left-color: #37bdd7;
+}
+.sistema-contable .mini-action,
+.sistema-contable .ventas-row-actions button {
+  border-color: #b9e5ef;
+  color: #0b4b7b;
+  background: #f5fcff;
+}
+.sistema-contable .inventario-modal-fondo {
+  background: rgba(4, 31, 63, 0.45);
+}
+.sistema-contable .inventario-modal header {
+  border-color: #e4f4f8;
+}
+.sistema-contable .inventario-modal header span,
+.sistema-contable .inventario-modal-cuerpo span,
+.sistema-contable .facturacion-form span {
+  color: #0b4b7b;
+}
+.sistema-contable .inventario-modal header button {
+  border-color: #b9e5ef;
+  color: #0b4b7b;
+  background: #f5fcff;
+}
+
+/* Subvistas: se conservan como el manejo anterior de cada modulo. */
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #d2d2d2;
+  background: #e7e7e7;
+  box-shadow: none;
+}
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  color: #555;
+}
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover,
+.sistema-contable .usuarios-subvistas button:hover {
+  color: #222;
+  border-color: #d1d1d1;
+  background: #f5f5f5;
+}
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #202020;
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(35, 35, 35, 0.12);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  border-color: #cfcfcf;
+  color: #5f5f5f;
+  background: #f3f3f3;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono {
+  color: #fff;
+  border-color: #4f4f4f;
+  background: #5f5f5f;
+}
+
+/* Ajustes de semejanza con la referencia principal. */
+.sistema-contable .sistema-sidebar {
+  width: 310px;
+}
+.sistema-contable .sistema-cuerpo {
+  margin-left: 310px;
+}
+.sistema-contable .sistema-marca {
+  height: 112px;
+  padding: 27px 27px 22px;
+  gap: 17px;
+}
+.sistema-contable .marca-icono {
+  width: 61px;
+  height: 61px;
+  flex-basis: 61px;
+  border-radius: 16px;
+}
+.sistema-contable .marca-icono svg {
+  width: 47px;
+  height: 47px;
+}
+.sistema-contable .sistema-marca strong {
+  font-size: 28px;
+  letter-spacing: -0.7px;
+}
+.sistema-contable .sistema-marca small {
+  font-size: 13px;
+  margin-top: 7px;
+}
+.sistema-contable .replegar-menu {
+  right: -16px;
+  top: 55px;
+  width: 32px;
+  height: 32px;
+  border-color: #d9edf5;
+  color: #073763;
+}
+.sistema-contable .sistema-nav {
+  padding: 30px 14px 18px;
+}
+.sistema-contable .sistema-nav section p {
+  margin: 0 14px 16px;
+  font-size: 14px;
+  color: #68d9ef;
+  letter-spacing: 2.6px;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 68px;
+  margin: 10px 0;
+  padding: 0 14px;
+  border-radius: 13px;
+  gap: 18px;
+}
+.sistema-contable .nav-icono {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+  border-radius: 13px;
+}
+.sistema-contable .nav-texto {
+  font-size: 17px;
+  font-weight: 800;
+}
+.sistema-contable .nav-indicador {
+  opacity: 1;
+  color: #e7fbff;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo .nav-icono {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+.sistema-contable .boton-salir {
+  height: 86px;
+  margin: 4px 14px 22px;
+  width: calc(100% - 28px);
+  padding: 22px 14px 0;
+  border-top: 1px solid rgba(185, 229, 239, 0.25);
+}
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 16px;
+}
+.sistema-contable .sistema-topbar {
+  height: 88px;
+  padding: 0 30px;
+  gap: 20px;
+}
+.sistema-contable .topbar-icono {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  color: #0677c8;
+  background: #eaf9fd;
+}
+.sistema-contable .topbar-titulo h1 {
+  font-size: 31px;
+  letter-spacing: -0.8px;
+}
+.sistema-contable .topbar-titulo small {
+  font-size: 14px;
+  color: #5e7282;
+  margin-top: 6px;
+}
+.sistema-contable .search-container {
+  width: min(30vw, 430px);
+}
+.sistema-contable .busqueda-global {
+  height: 56px;
+  border-radius: 14px;
+  padding: 0 19px;
+  gap: 16px;
+}
+.sistema-contable .busqueda-global input {
+  font-size: 15px;
+}
+.sistema-contable .perfil {
+  gap: 14px;
+  padding-left: 20px;
+}
+.sistema-contable .perfil-avatar {
+  width: 56px;
+  height: 56px;
+  border: 4px solid #073763;
+  border-radius: 50%;
+  color: #073763;
+  background: #f5fcff;
+}
+.sistema-contable .perfil strong {
+  font-size: 15px;
+  max-width: 190px;
+}
+.sistema-contable .perfil small {
+  font-size: 13px;
+  color: #5e7282;
+}
+.sistema-contable .salir-rapido {
+  color: #5e7282;
+}
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 88px);
+  padding: 16px 30px 18px;
+}
+.sistema-contable .page-footer {
+  margin: 48px 20px 0;
+  color: #637a8c;
+  font-size: 13px;
+  border-top: 0;
+}
+.sistema-contable .ventas-vista-vacia {
+  min-height: calc(100dvh - 130px);
+}
+.sistema-contable .ventas-tabs {
+  grid-template-columns: 1.05fr 1fr 1fr 1fr;
+  gap: 0;
+  width: 100%;
+  margin: 0 0 45px;
+  padding: 7px;
+  border: 1px solid #68cce4;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(241, 252, 255, 0.95),
+    rgba(224, 248, 254, 0.86)
+  );
+  box-shadow:
+    0 10px 24px rgba(7, 55, 99, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.sistema-contable .ventas-tabs button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 17px;
+  min-height: 84px;
+  padding: 0 30px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #112338;
+  background: transparent;
+}
+.sistema-contable .ventas-tabs button + button:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: #c3e8f1;
+}
+.sistema-contable .ventas-tabs button:hover {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: #b1e5f0;
+}
+.sistema-contable .ventas-tabs button.activo {
+  border-color: #88d7e9;
+  background: linear-gradient(180deg, #edfaff, #d5f3fb);
+  box-shadow: 0 8px 18px rgba(11, 75, 123, 0.13);
+}
+.sistema-contable .ventas-tabs i {
+  grid-row: 1/3;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b9e5ef;
+  border-radius: 14px;
+  color: #0784c9;
+  background: #e9f9fe;
+  font-style: normal;
+}
+.sistema-contable .ventas-tabs span {
+  font-size: 18px;
+  font-weight: 900;
+  color: #112338;
+}
+.sistema-contable .ventas-tabs small {
+  font-size: 14px;
+  color: #40576b;
+  margin-top: 5px;
+}
+
+/* Subvistas compactas: mismo manejo anterior, con influencia azul/celeste moderada. */
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #c7d7df;
+  background: #e9ecef;
+}
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  color: #1f2f3d;
+}
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover,
+.sistema-contable .usuarios-subvistas button:hover {
+  color: #073763;
+  border-color: #b9e5ef;
+  background: #f5fcff;
+}
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #071f35;
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(7, 55, 99, 0.11);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  border-color: #c7d7df;
+  color: #0b4b7b;
+  background: #f8fcff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono {
+  color: #fff;
+  border-color: #525d66;
+  background: #525d66;
+}
+.sidebar-replegado.sistema-contable .sistema-sidebar {
+  width: 80px;
+}
+.sidebar-replegado.sistema-contable .sistema-cuerpo {
+  margin-left: 80px;
+}
+.sidebar-replegado.sistema-contable .sistema-marca {
+  padding: 16px;
+  height: 96px;
+}
+.sidebar-replegado.sistema-contable .marca-icono {
+  width: 46px;
+  height: 46px;
+  flex-basis: 46px;
+}
+.sidebar-replegado.sistema-contable .nav-icono {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+}
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+  height: 50px;
+  padding: 0;
+}
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 58px;
+  margin: 4px 11px 15px;
+  padding: 10px 0 0;
+}
+@media (max-width: 1200px) {
+  .sistema-contable .ventas-tabs button {
+    padding: 0 18px;
+  }
+  .sistema-contable .ventas-tabs span {
+    font-size: 16px;
+  }
+  .sistema-contable .ventas-tabs small {
+    font-size: 12px;
+  }
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw);
+  }
+
+  /* Tema azul claro del sistema contable: el sidebar conserva solo los modulos principales. */
+  .sistema-contable {
+    --surface: #ffffff;
+    --border: #d6e7f5;
+    --muted: #647f9b;
+    --accent: #087bed;
+    color: #12345c;
+    background: #f7fbff;
+  }
+  .sistema-contable .sistema-sidebar {
+    width: 214px;
+    background: #fff;
+    border-right: 1px solid #d9e9f7;
+    box-shadow: 5px 0 18px rgba(24, 91, 153, 0.08);
+  }
+  .sistema-contable .sistema-sidebar:after {
+    background-image: radial-gradient(#5aa4e522 0.65px, transparent 0.75px);
+    background-size: 7px 7px;
+  }
+  .sistema-contable .sistema-cuerpo {
+    margin-left: 214px;
+  }
+  .sistema-contable .sistema-marca {
+    height: 82px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #dcebf7;
+  }
+  .sistema-contable .sistema-marca strong {
+    color: #092b63;
+    font-size: 18px;
+  }
+  .sistema-contable .sistema-marca small {
+    color: #55738f;
+    font-size: 8px;
+  }
+  .sistema-contable .marca-icono {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border: 1px solid #b9d9f2;
+    border-radius: 11px;
+    color: #fff;
+    background: linear-gradient(145deg, #2298f7, #086bd5);
+    box-shadow: 0 5px 12px rgba(8, 107, 213, 0.2);
+  }
+  .sistema-contable .sistema-nav {
+    padding: 17px 10px;
+  }
+  .sistema-contable .sistema-nav section + section {
+    margin-top: 7px;
+    padding-top: 7px;
+    border-top: 1px solid #dcebf7;
+  }
+  .sistema-contable .sistema-nav section p {
+    margin: 10px 12px 8px;
+    color: #5b83a5;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+  .sistema-contable .sistema-nav .nav-modulo {
+    height: 46px;
+    margin: 2px 0;
+    padding: 0 9px;
+    gap: 9px;
+    border-radius: 10px;
+    color: #173b65;
+  }
+  .sistema-contable .sistema-nav .nav-modulo:hover {
+    transform: none;
+    border-color: #c9e2f5;
+    background: #f1f8fe;
+  }
+  .sistema-contable .sistema-nav .nav-modulo.activo {
+    border-color: #198cf0;
+    color: #fff;
+    background: linear-gradient(105deg, #2298f7, #086bd5);
+    box-shadow: 0 7px 16px rgba(8, 107, 213, 0.22);
+  }
+  .sistema-contable .nav-icono {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    border: 1px solid #c8e0f2;
+    border-radius: 9px;
+    color: #087bed;
+    background: #f5fbff;
+  }
+  .sistema-contable .nav-modulo.activo .nav-icono {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: none;
+  }
+  .sistema-contable .nav-texto {
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .sistema-contable .nav-indicador {
+    color: #6b9ac2;
+  }
+  .sistema-contable .nav-modulo.activo .nav-indicador {
+    color: #fff;
+  }
+  .sistema-contable .boton-salir {
+    height: 54px;
+    margin: 4px 10px 12px;
+    width: calc(100% - 20px);
+    padding: 8px 9px 0;
+    border-top: 1px solid #dcebf7;
+    color: #173b65;
+  }
+  .sistema-contable .boton-salir:hover {
+    color: #086bd5;
+    background: #f1f8fe;
+  }
+  .sistema-contable .boton-salir:hover .nav-icono {
+    color: #fff;
+    background: #087bed;
+  }
+  .sistema-contable .sistema-topbar {
+    height: 66px;
+    border-bottom: 1px solid #d9e9f7;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(24, 91, 153, 0.07);
+  }
+  .sistema-contable .topbar-icono,
+  .sistema-contable .busqueda-global {
+    border-color: #cfe2f2;
+    color: #087bed;
+    background: #f7fbff;
+  }
+  .sistema-contable .topbar-titulo h1,
+  .sistema-contable .pagina-cabecera h2,
+  .sistema-contable h2,
+  .sistema-contable h3 {
+    color: #092b63;
+  }
+  .sistema-contable .topbar-titulo small,
+  .sistema-contable .pagina-cabecera small {
+    color: #64809c;
+  }
+  .sistema-contable .perfil {
+    border-color: #d9e9f7;
+  }
+  .sistema-contable .perfil-avatar {
+    color: #087bed;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 66px);
+    background-color: #f7fbff;
+    background-image: radial-gradient(#5aa4e522 0.65px, transparent 0.75px);
+    background-size: 8px 8px;
+  }
+
+  @media (max-width: 760px) {
+    .sistema-contable .sistema-sidebar {
+      width: 214px;
+    }
+    .sistema-contable .sistema-cuerpo {
+      margin-left: 0;
+    }
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0;
+  }
+  .sistema-contable .sistema-topbar {
+    height: 64px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 64px);
+    padding: 14px 16px;
+  }
+  .sistema-contable .topbar-titulo h1 {
+    font-size: 18px;
+  }
+  .sistema-contable .topbar-titulo small {
+    font-size: 10px;
+  }
+  .sistema-contable .busqueda-global {
+    height: 40px;
+    border-radius: 11px;
+  }
+  .sistema-contable .ventas-tabs {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .sistema-contable .ventas-tabs button {
+    min-height: 66px;
+    padding: 0 14px;
+  }
+  .sistema-contable .ventas-tabs button + button:before {
+    display: none;
+  }
+}
+
+/* Selects y opciones con identidad del sistema contable. */
+.sistema-contable select {
+  appearance: none;
+  -webkit-appearance: none;
+  color: #073763;
+  border-color: #b9ddea;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%230879af' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  padding-right: 36px !important;
+}
+
+.sistema-contable select:hover {
+  border-color: #087bd7;
+  background-color: #f8fcff;
+}
+
+.sistema-contable select:focus,
+.sistema-contable select:focus-visible {
+  border-color: #087bd7;
+  outline: 2px solid rgba(8, 123, 215, 0.18);
+  outline-offset: 1px;
+  background-color: #fff;
+}
+
+.sistema-contable select option,
+.sistema-contable select optgroup {
+  color: #073763;
+  background: #f8fcff;
+}
+
+.sistema-contable select option:checked {
+  color: #fff;
+  background: #087bd7;
+}
+
+/* Ajuste final del sidebar contable: logo con mas presencia y repliegue estable. */
+.sistema-contable .sistema-sidebar {
+  width: 330px !important;
+  overflow: hidden !important;
+}
+
+.sistema-contable .sistema-cuerpo {
+  margin-left: 330px !important;
+}
+
+.sistema-contable .sistema-marca {
+  height: 104px !important;
+  padding: 18px 20px 16px !important;
+  gap: 0 !important;
+}
+
+.sistema-contable .marca-icono {
+  width: 100% !important;
+  height: 70px !important;
+  flex-basis: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sistema-contable .marca-icono img {
+  object-fit: contain !important;
+  object-position: left center !important;
+  border-radius: 0 !important;
+}
+
+.sistema-contable .marca-texto-fallback {
+  display: none !important;
+}
+
+.sistema-contable .sistema-marca strong {
+  max-width: 205px !important;
+  font-size: 18px !important;
+  line-height: 1.08 !important;
+  color: #092b63 !important;
+  white-space: normal !important;
+}
+
+.sistema-contable .sistema-marca small {
+  margin-top: 5px !important;
+  color: #174b70 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  white-space: normal !important;
+}
+
+.sistema-contable .replegar-menu {
+  top: 39px !important;
+  right: -15px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border: 1px solid #b8dff2 !important;
+  border-radius: 50% !important;
+  color: #0875bd !important;
+  background: #fff !important;
+  box-shadow: 0 7px 18px rgba(7, 55, 99, 0.16) !important;
+}
+
+.sistema-contable .replegar-menu:hover {
+  color: #fff !important;
+  border-color: #0c8fd7 !important;
+  background: #0c8fd7 !important;
+}
+
+.sistema-contable .sidebar-scroll {
+  padding-bottom: 4px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-sidebar {
+  width: 92px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-cuerpo {
+  margin-left: 92px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca {
+  height: 102px !important;
+  padding: 18px 10px 14px !important;
+  justify-content: center !important;
+}
+
+.sidebar-replegado.sistema-contable .marca-icono {
+  width: 62px !important;
+  height: 62px !important;
+  flex-basis: 62px !important;
+  overflow: hidden !important;
+}
+
+.sidebar-replegado.sistema-contable .marca-icono img {
+  width: 190px !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+}
+
+.sidebar-replegado.sistema-contable .marca-texto,
+.sidebar-replegado.sistema-contable .nav-texto,
+.sidebar-replegado.sistema-contable .nav-indicador,
+.sidebar-replegado.sistema-contable .sistema-nav section p {
+  display: none !important;
+}
+
+.sidebar-replegado.sistema-contable .replegar-menu {
+  right: -14px !important;
+  top: 39px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-nav {
+  padding: 16px 10px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-nav section + section {
+  margin-top: 10px !important;
+  padding-top: 10px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+  width: 58px !important;
+  height: 58px !important;
+  margin: 6px auto !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  border-radius: 14px !important;
+}
+
+.sidebar-replegado.sistema-contable .nav-icono {
+  width: 42px !important;
+  height: 42px !important;
+  flex-basis: 42px !important;
+}
+
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 58px !important;
+  min-height: 58px !important;
+  height: 58px !important;
+  margin: auto auto 18px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+}
+
+.sidebar-replegado.sistema-contable .boton-salir .nav-icono {
+  width: 42px !important;
+  height: 42px !important;
+  flex-basis: 42px !important;
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(304px, 88vw) !important;
+  }
+
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0 !important;
+  }
+
+  .sistema-contable .sistema-marca,
+  .sidebar-replegado.sistema-contable .sistema-marca {
+    height: 104px !important;
+    padding: 22px 22px 16px !important;
+    justify-content: flex-start !important;
+  }
+
+  .sistema-contable .marca-icono,
+  .sidebar-replegado.sistema-contable .marca-icono {
+    width: 62px !important;
+    height: 62px !important;
+    flex-basis: 62px !important;
+  }
+
+  .sidebar-replegado.sistema-contable .marca-texto,
+  .sidebar-replegado.sistema-contable .nav-texto,
+  .sidebar-replegado.sistema-contable .nav-indicador,
+  .sidebar-replegado.sistema-contable .sistema-nav section p {
+    display: block !important;
+  }
+
+  .sidebar-replegado.sistema-contable .sistema-nav {
+    padding: 32px 13px 16px !important;
+  }
+
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+    width: 100% !important;
+    height: 62px !important;
+    margin: 14px 0 !important;
+    padding: 0 13px !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+  }
+
+  .sidebar-replegado.sistema-contable .boton-salir {
+    width: calc(100% - 28px) !important;
+    min-height: 74px !important;
+    height: 74px !important;
+    margin: auto 14px 22px !important;
+    padding: 11px 16px !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* Logo contable: la imagen ya trae su fondo azul, el contenedor queda limpio. */
+.sistema-contable .sistema-marca .marca-icono,
+.sidebar-replegado.sistema-contable .sistema-marca .marca-icono {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.sistema-contable .sistema-marca .marca-icono img,
+.sidebar-replegado.sistema-contable .sistema-marca .marca-icono img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 16px !important;
+  box-shadow: 0 7px 16px rgba(6, 82, 154, 0.18) !important;
+}
+
+/* Acabado final Balance: la barra lateral es plana y las subvistas usan azul/celeste. */
+.sistema-contable .sistema-sidebar {
+  background-color: #073763 !important;
+  background-image: none !important;
+  border-right-color: #1d5b8d !important;
+  box-shadow: none !important;
+}
+.sistema-contable .sistema-sidebar::before,
+.sistema-contable .sistema-sidebar::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+.sistema-contable .inventario-subvistas,
+.sistema-contable .ventas-tabs,
+.sistema-contable .usuarios-subvistas,
+.sistema-contable .movimientos-subvistas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  width: 100%;
+  height: auto;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 5px;
+  border: 1px solid #b9ddea;
+  border-radius: 8px;
+  background: #e7f3fa;
+  box-shadow: none;
+}
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .ventas-tabs button,
+.sistema-contable .usuarios-subvistas button,
+.sistema-contable .movimientos-subvistas button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #174b70;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-align: left;
+  box-shadow: none;
+}
+.sistema-contable .inventario-subvistas button:hover,
+.sistema-contable .ventas-tabs button:hover,
+.sistema-contable .usuarios-subvistas button:hover,
+.sistema-contable .movimientos-subvistas button:hover {
+  color: #073763;
+  border-color: #b9ddea;
+  background: #f4fbff;
+}
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .ventas-tabs button.activo,
+.sistema-contable .usuarios-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo {
+  color: #073763;
+  border-color: #a9d6e8;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(7, 55, 99, 0.05);
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono,
+.sistema-contable .ventas-tabs i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #b9ddea;
+  border-radius: 6px;
+  color: #076499;
+  background: #f5fcff;
+  box-shadow: none;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
+.sistema-contable .ventas-tabs button.activo i {
+  border-color: #0879af;
+  color: #fff;
+  background: #0879af;
+}
+.sistema-contable .ventas-tabs i svg {
+  width: 16px;
+  height: 16px;
+}
+.sistema-contable .ventas-tabs span {
+  color: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+.sistema-contable .ventas-tabs button + button:before {
+  display: none;
+}
+
+/* Sidebar Balance plano, sin textura, con el azul solicitado. */
+.sistema-contable .sistema-sidebar {
+  background: #073763;
+}
+.sistema-contable .sistema-sidebar:after {
+  display: none;
+}
+
+/* Ventas usa el mismo manejo compacto de subvistas que Inventario. */
+.sistema-contable .ventas-tabs {
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 6px;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 5px;
+  border: 1px solid #c7d7df;
+  border-radius: 10px;
+  background: #e5e5e5;
+  box-shadow: none;
+}
+.sistema-contable .ventas-tabs button {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  text-align: left;
+  color: #1f2f3d;
+}
+.sistema-contable .ventas-tabs button + button:before {
+  display: none;
+}
+.sistema-contable .ventas-tabs button:hover {
+  color: #073763;
+  border-color: #b9e5ef;
+  background: #f5fcff;
+}
+.sistema-contable .ventas-tabs button.activo {
+  color: #071b35;
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 5px 14px rgba(7, 55, 99, 0.11);
+}
+.sistema-contable .ventas-tabs i {
+  grid-row: 1/3;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #c7d7df;
+  border-radius: 7px;
+  color: #0b4b7b;
+  background: #f8fcff;
+  font-style: normal;
+}
+.sistema-contable .ventas-tabs button.activo i {
+  color: #fff;
+  border-color: #555;
+  background: #555;
+}
+.sistema-contable .ventas-tabs span {
+  display: block;
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+.sistema-contable .ventas-tabs small {
+  display: block;
+  margin-top: 4px;
+  color: #35536a;
+  font-size: 10px;
+  line-height: 1.2;
+}
+@media (max-width: 760px) {
+  .sistema-contable .ventas-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sistema-contable .sistema-sidebar {
+  overflow: hidden;
+}
+
+.sistema-contable .sidebar-scroll {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-right: 9px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #bdd9f8 #f5fbff;
+}
+
+.sistema-contable .sidebar-scroll::-webkit-scrollbar {
+  width: 11px;
+}
+
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-track {
+  margin: 10px 0;
+  border-radius: 999px;
+  background: #f5fbff;
+}
+
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-thumb {
+  min-height: 68px;
+  border: 3px solid #f5fbff;
+  border-radius: 999px;
+  background: #bdd9f8;
+}
+
+/* Aplicacion final de la paleta azul clara en escritorio y pantallas pequenas. */
+.sistema-contable .sistema-sidebar {
+  background: #fff !important;
+  border-right: 1px solid #d9e9f7 !important;
+  box-shadow: 5px 0 18px rgba(24, 91, 153, 0.08) !important;
+}
+.sistema-contable .sistema-sidebar:after {
+  display: block;
+  background-image: radial-gradient(
+    #5aa4e522 0.65px,
+    transparent 0.75px
+  ) !important;
+  background-size: 7px 7px;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  color: #173b65;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #fff;
+  background: linear-gradient(105deg, #2298f7, #086bd5);
+  box-shadow: 0 7px 16px rgba(8, 107, 213, 0.22);
+}
+.sistema-contable .nav-icono {
+  color: #087bed;
+  background: #f5fbff;
+  border-color: #c8e0f2;
+}
+.sistema-contable .nav-modulo.activo .nav-icono {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.sistema-contable .area-trabajo {
+  background-color: #f7fbff;
+  background-image: radial-gradient(#5aa4e522 0.65px, transparent 0.75px);
+  background-size: 8px 8px;
+}
+.sistema-contable
+  :is(
+    .inventario-subvistas,
+    .ventas-tabs,
+    .usuarios-subvistas,
+    .movimientos-subvistas
+  ) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  height: auto;
+  min-height: 54px;
+  margin: 0 0 22px;
+  padding: 6px;
+  border: 1px solid #c8e0f2;
+  border-radius: 15px;
+  background: #eaf4fb;
+  overflow-x: auto;
+  box-shadow: 0 4px 12px rgba(24, 91, 153, 0.08);
+}
+.sistema-contable
+  :is(
+    .inventario-subvistas,
+    .ventas-tabs,
+    .usuarios-subvistas,
+    .movimientos-subvistas
+  )
+  button {
+  flex: 0 0 auto;
+  min-width: 142px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: #16496f;
+  background: transparent;
+}
+.sistema-contable
+  :is(
+    .inventario-subvistas,
+    .ventas-tabs,
+    .usuarios-subvistas,
+    .movimientos-subvistas
+  )
+  button.activo {
+  color: #075fc0;
+  border-color: #c7e0f5;
+  background: #fff;
+  box-shadow: 0 3px 9px rgba(24, 91, 153, 0.12);
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw);
+  }
+  .sistema-contable .sistema-cuerpo {
+    margin-left: 0;
+  }
+}
+
+/* Sidebar final: contraste y proporciones legibles para la navegacion contable. */
+.sistema-contable .sistema-sidebar {
+  width: 260px !important;
+  background: #fff !important;
+  border-right: 1px solid #d6e7f3 !important;
+  box-shadow: 4px 0 18px rgba(20, 83, 129, 0.08) !important;
+}
+.sistema-contable .sistema-cuerpo {
+  margin-left: 260px !important;
+}
+.sistema-contable .sistema-sidebar::before,
+.sistema-contable .sistema-sidebar::after {
+  display: block !important;
+  content: '' !important;
+  background-image: radial-gradient(
+    #58a6d51f 0.7px,
+    transparent 0.8px
+  ) !important;
+  background-size: 8px 8px !important;
+}
+.sistema-contable .sistema-marca {
+  height: 88px !important;
+  padding: 16px 18px !important;
+  gap: 12px !important;
+  border-bottom: 1px solid #e0edf6 !important;
+}
+.sistema-contable .sistema-marca strong {
+  color: #092e5f !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.2px !important;
+}
+.sistema-contable .sistema-marca small {
+  margin-top: 4px !important;
+  color: #63809b !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+.sistema-contable .marca-icono {
+  width: 44px !important;
+  height: 44px !important;
+  flex-basis: 44px !important;
+  padding: 5px !important;
+  border-radius: 11px !important;
+  background: linear-gradient(145deg, #126cb4, #073f78) !important;
+  box-shadow: 0 6px 14px rgba(7, 63, 120, 0.2) !important;
+}
+.sistema-contable .replegar-menu {
+  top: 29px !important;
+  right: -15px !important;
+  width: 30px !important;
+  height: 30px !important;
+  color: #075da8 !important;
+  background: #fff !important;
+  border: 1px solid #c9e2f1 !important;
+}
+.sistema-contable .sistema-nav {
+  padding: 18px 12px 12px !important;
+}
+.sistema-contable .sistema-nav section + section {
+  margin-top: 10px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid #e1edf5 !important;
+}
+.sistema-contable .sistema-nav section p {
+  margin: 0 10px 8px !important;
+  color: #238fc0 !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  font-weight: 900 !important;
+  letter-spacing: 1.8px !important;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  margin: 3px 0 !important;
+  padding: 0 10px !important;
+  gap: 11px !important;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  color: #173d68 !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  color: #075da8 !important;
+  border-color: #cde4f2 !important;
+  background: #f2f9fd !important;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #fff !important;
+  border-color: #16a9dc !important;
+  background: linear-gradient(105deg, #20b7df, #0798ce) !important;
+  box-shadow: 0 6px 13px rgba(8, 137, 190, 0.2) !important;
+}
+.sistema-contable .nav-icono {
+  display: grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  flex: 0 0 36px !important;
+  border: 1px solid #c9e3f2 !important;
+  border-radius: 9px !important;
+  color: #0875bd !important;
+  background: #f3faff !important;
+  box-shadow: none !important;
+}
+.sistema-contable .nav-modulo.activo .nav-icono {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.38) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+.sistema-contable .nav-texto {
+  overflow: hidden;
+  color: inherit !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sistema-contable .nav-indicador {
+  margin-left: auto !important;
+  color: #6e9bbc !important;
+  opacity: 1 !important;
+}
+.sistema-contable .nav-modulo.activo .nav-indicador {
+  color: #fff !important;
+}
+.sistema-contable .boton-salir {
+  width: calc(100% - 24px) !important;
+  min-height: 58px !important;
+  height: 58px !important;
+  margin: 8px 12px 14px !important;
+  padding: 0 10px !important;
+  gap: 11px !important;
+  border: 1px solid #d5e8f4 !important;
+  border-radius: 10px !important;
+  color: #173d68 !important;
+  background: #f5faff !important;
+}
+.sistema-contable .boton-salir .nav-icono {
+  width: 36px !important;
+  height: 36px !important;
+  flex-basis: 36px !important;
+  color: #0875bd !important;
+  border-color: #c9e3f2 !important;
+  background: #fff !important;
+}
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+.sistema-contable .boton-salir:hover {
+  color: #075da8 !important;
+  border-color: #aad4ea !important;
+  background: #eaf6fd !important;
+}
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-track {
+  margin: 10px 0 !important;
+  border-radius: 999px !important;
+  background: #f5fbff !important;
+}
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-thumb {
+  min-height: 68px !important;
+  border: 3px solid #f5fbff !important;
+  border-radius: 999px !important;
+  background: #bdd9f8 !important;
+}
+.sidebar-replegado.sistema-contable .sistema-sidebar {
+  width: 78px !important;
+}
+.sidebar-replegado.sistema-contable .sistema-cuerpo {
+  margin-left: 78px !important;
+}
+.sidebar-replegado.sistema-contable .sistema-marca {
+  padding: 16px 14px !important;
+}
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+  width: 52px !important;
+  margin: 4px auto !important;
+  padding: 0 !important;
+  justify-content: center !important;
+}
+.sidebar-replegado.sistema-contable .nav-icono {
+  width: 36px !important;
+  height: 36px !important;
+  flex-basis: 36px !important;
+}
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 52px !important;
+  margin: 8px auto 14px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw) !important;
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0 !important;
+  }
+}
+
+/* Filtros compactos compartidos por todas las vistas contables. */
+.sistema-contable
+  :is(
+    .inventario-filtros,
+    .movimientos-filtros,
+    .usuarios-filtros,
+    .ventas-filtros
+  ) {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  margin: 0 0 14px !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  label {
+  width: 220px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 10px !important;
+  gap: 7px !important;
+  border: 1px solid #c9deec !important;
+  border-radius: 8px !important;
+  color: #6a88a0 !important;
+  background: #fbfdff !important;
+  box-shadow: none !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  label:focus-within {
+  outline: 2px solid #b8dff2 !important;
+  outline-offset: 1px !important;
+  border-color: #52b7e2 !important;
+  background: #fff !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  input {
+  min-width: 0 !important;
+  color: #173d68 !important;
+  font-size: 11px !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  select {
+  width: 132px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 9px !important;
+  border: 1px solid #c9deec !important;
+  border-radius: 8px !important;
+  color: #173d68 !important;
+  background: #fbfdff !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  select:hover,
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  label:hover {
+  border-color: #8bc9e6 !important;
+  background: #fff !important;
+}
+.sistema-contable
+  :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+  select:focus-visible {
+  outline: 2px solid #b8dff2 !important;
+  outline-offset: 1px;
+  border-color: #52b7e2 !important;
+}
+.sistema-contable .inventario-filtros-productos label:first-child {
+  width: min(280px, 100%) !important;
+}
+.sistema-contable .inventario-filtros-productos .inventario-orden {
+  width: 150px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 9px !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+  color: #64809a !important;
+  font-size: 10px !important;
+  font-weight: 750 !important;
+}
+.sistema-contable .inventario-filtros-productos .inventario-orden select {
+  width: auto !important;
+  flex: 1 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+.sistema-contable .ventas-filtros {
+  grid-template-columns: none !important;
+}
+.sistema-contable .ventas-filtros .ventas-select,
+.sistema-contable .ventas-filtros .ventas-input {
+  width: 150px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 10px !important;
+  border: 1px solid #c9deec !important;
+  border-radius: 8px !important;
+  background: #fbfdff !important;
+  color: #173d68 !important;
+  box-shadow: none !important;
+}
+.sistema-contable .ventas-filtros .ventas-select {
+  align-items: center !important;
+  flex-direction: row !important;
+  gap: 6px !important;
+}
+.sistema-contable .ventas-filtros .ventas-select span {
+  flex: 0 0 auto;
+  color: #64809a !important;
+  font-size: 9px !important;
+}
+.sistema-contable .ventas-filtros select,
+.sistema-contable .ventas-filtros input {
+  min-width: 0;
+  color: #173d68 !important;
+  background: transparent !important;
+  font-size: 11px !important;
+}
+.sistema-contable .ventas-filtros .ventas-select:focus-within,
+.sistema-contable .ventas-filtros .ventas-input:focus-within {
+  border-color: #52b7e2 !important;
+  outline: 2px solid #b8dff2 !important;
+  outline-offset: 1px;
+}
+@media (max-width: 620px) {
+  .sistema-contable
+    :is(
+      .inventario-filtros,
+      .movimientos-filtros,
+      .usuarios-filtros,
+      .ventas-filtros
+    ) {
+    align-items: stretch !important;
+  }
+  .sistema-contable
+    :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+    label,
+  .sistema-contable
+    :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros)
+    select {
+    width: 100% !important;
+  }
+  .sistema-contable .ventas-filtros .ventas-select,
+  .sistema-contable .ventas-filtros .ventas-input {
+    width: 100% !important;
+  }
+}
+
+.sistema-contable .sidebar-scroll .sistema-nav {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.sistema-contable .boton-salir {
+  min-height: 74px;
+  margin: auto 14px 22px;
+  width: calc(100% - 28px);
+  padding: 11px 16px;
+  gap: 16px;
+  border: 1px solid rgba(130, 206, 232, 0.2);
+  border-radius: 0;
+  color: #fff;
+  background: rgba(18, 76, 121, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sistema-contable .boton-salir .nav-icono {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+  border: 1px solid rgba(204, 236, 248, 0.78);
+  border-radius: 14px;
+  color: #bfefff;
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: none;
+}
+
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.sistema-contable .boton-salir:hover {
+  border-color: rgba(130, 218, 241, 0.44);
+  background: rgba(23, 88, 137, 0.9);
+}
+
+.sistema-contable .boton-salir:hover .nav-icono {
+  color: #fff;
+  border-color: rgba(222, 245, 252, 0.9);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+}
+
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 58px;
+  min-height: 58px;
+  margin: auto 11px 18px;
+  padding: 6px 0;
+  justify-content: center;
+}
+
+.sidebar-replegado.sistema-contable .boton-salir .nav-icono {
+  width: 42px;
+  height: 42px;
+  flex-basis: 42px;
+}
+
+@media (max-width: 760px) {
+  .sidebar-replegado.sistema-contable .boton-salir,
+  .sistema-contable .boton-salir {
+    width: calc(100% - 28px);
+    min-height: 74px;
+    margin: auto 14px 22px;
+    padding: 11px 16px;
+    justify-content: flex-start;
+  }
+
+  .sidebar-replegado.sistema-contable .boton-salir .nav-icono,
+  .sistema-contable .boton-salir .nav-icono {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+}
+
+/* Pulido final Balance: acercamiento literal a la referencia entregada. */
+.sistema-contable {
+  background: #f9fdff;
+  color: #071b35;
+}
+.sistema-contable .sistema-sidebar {
+  width: 310px;
+  background: linear-gradient(
+    180deg,
+    #073f72 0%,
+    #073763 35%,
+    #062f58 68%,
+    #05294d 100%
+  );
+  border-right: 1px solid #1c5d90;
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.07),
+    8px 0 24px rgba(2, 28, 55, 0.18);
+}
+.sistema-contable .sistema-sidebar:after {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%),
+    radial-gradient(rgba(255, 255, 255, 0.055) 0.65px, transparent 0.75px);
+  background-size:
+    auto,
+    9px 9px;
+}
+.sistema-contable .sistema-cuerpo {
+  margin-left: 310px;
+}
+.sistema-contable .sistema-marca {
+  height: 110px;
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid rgba(120, 205, 229, 0.24);
+}
+.sistema-contable .marca-icono {
+  width: 60px;
+  height: 60px;
+  flex-basis: 60px;
+  padding: 8px;
+  border-radius: 15px;
+  border: 1px solid rgba(134, 212, 234, 0.42);
+  background: linear-gradient(145deg, #0d4b80, #08345f);
+  box-shadow:
+    0 14px 28px rgba(0, 20, 45, 0.27),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.sistema-contable .sistema-marca strong {
+  font-size: 27px;
+  line-height: 1;
+  color: #fff;
+}
+.sistema-contable .sistema-marca small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #f2fbff;
+}
+.sistema-contable .sistema-nav {
+  padding: 32px 14px 16px;
+}
+.sistema-contable .sistema-nav section p {
+  margin: 0 14px 18px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 2.8px;
+  color: #67d8ef;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 62px;
+  margin: 14px 0;
+  padding: 0 14px;
+  border-radius: 13px;
+  gap: 18px;
+  color: #f7fcff;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  transform: none;
+  border-color: rgba(101, 204, 231, 0.26);
+  background: rgba(255, 255, 255, 0.065);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  border-color: #22b9df;
+  background: linear-gradient(90deg, #19b7e3, #20b5da);
+  box-shadow: 0 12px 24px rgba(0, 123, 171, 0.28);
+}
+.sistema-contable .nav-modulo.activo:before {
+  display: none;
+}
+.sistema-contable .nav-icono {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+  border-radius: 13px;
+  border-color: rgba(137, 219, 240, 0.23);
+  background: rgba(255, 255, 255, 0.075);
+  color: #ddf8ff;
+}
+.sistema-contable .nav-modulo.activo .nav-icono {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+.sistema-contable .nav-texto {
+  font-size: 16px;
+  font-weight: 800;
+}
+.sistema-contable .nav-indicador {
+  margin-left: auto;
+  color: #fff;
+}
+.sistema-contable .boton-salir {
+  height: 92px;
+  margin: 4px 14px 18px;
+  width: calc(100% - 28px);
+  padding: 24px 14px 0;
+  border-top: 1px solid rgba(125, 210, 233, 0.28);
+  color: #fff;
+}
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 16px;
+}
+.sistema-contable .replegar-menu {
+  top: 48px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  color: #073763;
+  border-color: #d9eaf3;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(7, 55, 99, 0.15);
+}
+.sistema-contable .sistema-topbar {
+  height: 88px;
+  padding: 0 30px;
+  gap: 20px;
+  border-bottom: 1px solid #d9eaf3;
+  background: #fff;
+  box-shadow: 0 3px 16px rgba(7, 55, 99, 0.07);
+}
+.sistema-contable .topbar-icono {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  border-color: #b9e5ef;
+  background: #eaf8fd;
+  color: #0575c6;
+}
+.sistema-contable .topbar-titulo h1 {
+  font-size: 31px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .topbar-titulo small {
+  margin-top: 9px;
+  font-size: 14px;
+  color: #688093;
+}
+.sistema-contable .search-container {
+  width: min(31vw, 430px);
+  margin-left: auto;
+}
+.sistema-contable .busqueda-global {
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid #5fc7e2;
+  background: #fff;
+  color: #28349a;
+  box-shadow: none;
+}
+.sistema-contable .busqueda-global input {
+  font-size: 15px;
+  color: #1d3147;
+}
+.sistema-contable .perfil {
+  min-height: 56px;
+  padding-left: 20px;
+  border-left: 1px solid #dbe8ef;
+}
+.sistema-contable .perfil-avatar {
+  width: 54px;
+  height: 54px;
+  border: 4px solid #073763;
+  border-radius: 50%;
+  color: #073763;
+  background: #f9fdff;
+}
+.sistema-contable .perfil strong {
+  font-size: 15px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .perfil small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #52697b;
+}
+.sistema-contable .salir-rapido {
+  color: #536a7b;
+  padding: 9px;
+}
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 88px);
+  padding: 14px 28px 18px 46px;
+  background-color: #d8f3fa;
+  background-image: radial-gradient(
+    rgba(49, 143, 180, 0.2) 0.72px,
+    transparent 0.82px
+  );
+  background-size: 12px 12px;
+}
+.sistema-contable .ventas-vista-vacia {
+  min-height: 132px;
+}
+.sistema-contable .ventas-tabs {
+  height: 92px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+  margin: 0 0 44px;
+  padding: 6px;
+  border: 1px solid #61c9e2;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #effbfe 0%, #e4f7fc 100%);
+  box-shadow: 0 10px 22px rgba(7, 55, 99, 0.07);
+}
+.sistema-contable .ventas-tabs button {
+  min-height: 78px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  column-gap: 18px;
+  padding: 0 36px;
+  border-radius: 11px;
+  text-align: left;
+}
+.sistema-contable .ventas-tabs button.activo {
+  border-color: #85d7e9;
+  background: linear-gradient(180deg, #e8f9fe 0%, #d9f3fb 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+.sistema-contable .ventas-tabs button + button:before {
+  top: 22px;
+  bottom: 22px;
+  background: #b9dce8;
+}
+.sistema-contable .ventas-tabs i {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border-color: #b5e3ef;
+  color: #007fd0;
+  background: #e6f8fd;
+}
+.sistema-contable .ventas-tabs span {
+  font-size: 19px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .ventas-tabs small {
+  margin-top: 9px;
+  font-size: 14px;
+  line-height: 1;
+  color: #364f63;
+}
+.sistema-contable .page-footer {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #073763;
+  font-size: 13px;
+  letter-spacing: 2.4px;
+  font-weight: 700;
+}
+.sistema-contable .page-footer span:last-child {
+  color: #6c7b94;
+  letter-spacing: 0;
+  font-size: 17px;
+  font-weight: 400;
+}
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  padding: 5px;
+  border-color: #c7d7df;
+  border-radius: 9px;
+  background: #e5e5e5;
+}
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  height: 42px;
+  border-radius: 7px;
+}
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #071b35;
+  background: #fff;
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  color: #0b4b7b;
+  background: #f8fcff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono {
+  color: #fff;
+  border-color: #555;
+  background: #555;
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw);
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0;
+  }
+  .sistema-contable .sistema-marca {
+    height: 96px;
+    padding: 18px 20px;
+  }
+  .sistema-contable .sistema-topbar {
+    height: 64px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 64px);
+    padding: 12px 16px;
+  }
+  .sistema-contable .ventas-tabs {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+  .sistema-contable .ventas-tabs button {
+    min-height: 66px;
+    padding: 0 14px;
+  }
+}
+
+/* Replica visual Balance: igual a la referencia, salvo subvistas compactas. */
+.sistema-contable {
+  --balance-sidebar: #073763;
+  --balance-sidebar-dark: #052f59;
+  --balance-cyan: #18b5df;
+  --balance-cyan-2: #62cee7;
+  --balance-line: #b9ddea;
+  --balance-text: #061b35;
+  color: var(--balance-text);
+  background: #fbfeff;
+}
+.sistema-contable .sistema-sidebar {
+  width: 310px;
+  background: var(--balance-sidebar);
+  border-right: 1px solid #1d5b8d;
+  box-shadow: none;
+}
+.sistema-contable .sistema-sidebar::before,
+.sistema-contable .sistema-sidebar::after {
+  content: none;
+  display: none;
+  background: none;
+}
+.sistema-contable .sistema-cuerpo {
+  margin-left: 310px;
+  background: #fbfeff;
+}
+.sistema-contable .sistema-marca {
+  height: 110px;
+  padding: 28px 26px 20px;
+  gap: 17px;
+  border-bottom: 1px solid rgba(118, 202, 229, 0.24);
+}
+.sistema-contable .marca-icono {
+  width: 58px;
+  height: 58px;
+  flex-basis: 58px;
+  padding: 7px;
+  border-radius: 15px;
+  border: 1px solid rgba(132, 210, 236, 0.42);
+  background: linear-gradient(145deg, #0e4a80, #08345f);
+  box-shadow:
+    0 10px 24px rgba(0, 23, 48, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.sistema-contable .marca-icono img {
+  border-radius: 10px;
+}
+.sistema-contable .sistema-marca strong {
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: -0.7px;
+  color: #fff;
+}
+.sistema-contable .sistema-marca small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #fff;
+}
+.sistema-contable .replegar-menu {
+  top: 48px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #d9eaf3;
+  color: #073763;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(7, 55, 99, 0.13);
+}
+.sistema-contable .sistema-nav {
+  padding: 32px 13px 16px;
+}
+.sistema-contable .sistema-nav section p {
+  margin: 0 14px 18px;
+  color: #6ed8ee;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 2.7px;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 62px;
+  margin: 14px 0;
+  padding: 0 13px;
+  gap: 18px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  color: #fff;
+  background: transparent;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  transform: none;
+  color: #fff;
+  border-color: rgba(98, 206, 231, 0.22);
+  background: rgba(255, 255, 255, 0.055);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #fff;
+  border-color: #22b7df;
+  background: linear-gradient(90deg, #1ab7e1 0%, #1eb7dc 100%);
+  box-shadow: none;
+}
+.sistema-contable .nav-modulo.activo:before {
+  display: none;
+}
+.sistema-contable .nav-icono {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+  border-radius: 13px;
+  border: 1px solid rgba(132, 210, 236, 0.26);
+  color: #e2f8ff;
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: none;
+}
+.sistema-contable .nav-modulo.activo .nav-icono {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+.sistema-contable .nav-texto {
+  font-size: 16px;
+  font-weight: 800;
+}
+.sistema-contable .nav-indicador {
+  opacity: 1;
+  color: #fff;
+}
+.sistema-contable .boton-salir {
+  height: 92px;
+  margin: 4px 13px 18px;
+  width: calc(100% - 26px);
+  padding: 24px 13px 0;
+  border-top: 1px solid rgba(125, 210, 233, 0.28);
+  color: #fff;
+  background: transparent;
+}
+.sistema-contable .boton-salir:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 16px;
+}
+.sistema-contable .sistema-topbar {
+  height: 88px;
+  padding: 0 30px;
+  gap: 20px;
+  border-bottom: 1px solid #d9eaf3;
+  background: #fff;
+  box-shadow: none;
+}
+.sistema-contable .topbar-icono {
+  width: 54px;
+  height: 54px;
+  border: 1px solid #b9e5ef;
+  border-radius: 14px;
+  color: #0477c8;
+  background: #eaf8fd;
+}
+.sistema-contable .topbar-titulo h1 {
+  margin: 0;
+  color: #061b35;
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+}
+.sistema-contable .topbar-titulo small {
+  margin-top: 9px;
+  color: #687f92;
+  font-size: 14px;
+}
+.sistema-contable .search-container {
+  width: min(31vw, 430px);
+  margin-left: auto;
+}
+.sistema-contable .busqueda-global {
+  height: 56px;
+  padding: 0 18px;
+  gap: 16px;
+  border: 1px solid #60c8e2;
+  border-radius: 14px;
+  color: #2b2aa0;
+  background: #fff;
+  box-shadow: none;
+}
+.sistema-contable .busqueda-global input {
+  font-size: 15px;
+  color: #1f3145;
+}
+.sistema-contable .perfil {
+  min-height: 56px;
+  gap: 14px;
+  padding-left: 20px;
+  border-left: 1px solid #dce8ef;
+}
+.sistema-contable .perfil-avatar {
+  width: 54px;
+  height: 54px;
+  border: 4px solid #073763;
+  border-radius: 50%;
+  color: #073763;
+  background: #fbfeff;
+}
+.sistema-contable .perfil strong {
+  font-size: 15px;
+  line-height: 1;
+  color: #061b35;
+}
+.sistema-contable .perfil small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #526a7c;
+}
+.sistema-contable .salir-rapido {
+  padding: 9px;
+  color: #526a7c;
+}
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 88px);
+  padding: 14px 28px 18px 46px;
+  background-color: #d8f3fa;
+  background-image: radial-gradient(
+    rgba(50, 145, 181, 0.2) 0.72px,
+    transparent 0.82px
+  );
+  background-size: 12px 12px;
+}
+.sistema-contable .content-limit {
+  max-width: none;
+  margin: 0;
+}
+.sistema-contable .ventas-vista-vacia {
+  min-height: 132px;
+}
+.sistema-contable .ventas-tabs {
+  height: 92px;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+  margin: 0 0 44px;
+  padding: 6px;
+  border: 1px solid #61c9e2;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #effbfe 0%, #e4f7fc 100%);
+  box-shadow: none;
+}
+.sistema-contable .ventas-tabs button {
+  position: relative;
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 18px;
+  padding: 0 36px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  text-align: left;
+  color: #061b35;
+  background: transparent;
+}
+.sistema-contable .ventas-tabs button + button:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22px;
+  bottom: 22px;
+  width: 1px;
+  background: #b9dce8;
+}
+.sistema-contable .ventas-tabs button:hover {
+  border-color: #a7dfef;
+  background: rgba(255, 255, 255, 0.55);
+}
+.sistema-contable .ventas-tabs button.activo {
+  border-color: #85d7e9;
+  background: linear-gradient(180deg, #e8f9fe 0%, #d9f3fb 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+.sistema-contable .ventas-tabs i {
+  grid-row: 1/3;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b5e3ef;
+  border-radius: 14px;
+  color: #007fd0;
+  background: #e6f8fd;
+  font-style: normal;
+}
+.sistema-contable .ventas-tabs span {
+  display: block;
+  color: #061b35;
+  font-size: 19px;
+  line-height: 1;
+  font-weight: 900;
+}
+.sistema-contable .ventas-tabs small {
+  display: block;
+  margin-top: 9px;
+  color: #364f63;
+  font-size: 14px;
+  line-height: 1;
+}
+.sistema-contable .page-footer {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  justify-content: space-between;
+  color: #073763;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+}
+.sistema-contable .page-footer span:last-child {
+  color: #6c7b94;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.sidebar-replegado.sistema-contable .sistema-sidebar {
+  width: 80px;
+}
+.sidebar-replegado.sistema-contable .sistema-cuerpo {
+  margin-left: 80px;
+}
+.sidebar-replegado.sistema-contable .sistema-marca {
+  height: 96px;
+  padding: 16px;
+}
+.sidebar-replegado.sistema-contable .marca-icono {
+  width: 46px;
+  height: 46px;
+  flex-basis: 46px;
+}
+.sidebar-replegado.sistema-contable .nav-icono {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+}
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo {
+  height: 50px;
+  padding: 0;
+}
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 58px;
+  margin: 4px 11px 15px;
+  padding: 10px 0 0;
+}
+
+/* Logo completo del Hospital Maria Esperanza en el sidebar contable. */
+.sistema-contable .sistema-marca {
+  height: 104px !important;
+  padding: 15px 22px 13px !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+.sistema-contable .sistema-marca .marca-logo-completo {
+  width: 252px !important;
+  height: 76px !important;
+  flex: 0 0 252px !important;
+  display: block !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sistema-contable .sistema-marca .marca-logo-completo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.sistema-contable .sistema-marca .marca-logo-completo:not(.logo-no-disponible) + .marca-texto {
+  display: none !important;
+}
+
+.sistema-contable .sistema-marca .marca-logo-completo.logo-no-disponible {
+  display: none !important;
+}
+
+.sistema-contable .sistema-marca .marca-logo-completo.logo-no-disponible + .marca-texto {
+  display: block !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca {
+  height: 96px !important;
+  padding: 17px 9px 11px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-completo {
+  width: 62px !important;
+  height: 62px !important;
+  flex: 0 0 62px !important;
+  overflow: hidden !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-completo img {
+  width: 170px !important;
+  max-width: none !important;
+  object-position: left center !important;
+}
+
+/* Repliegue refinado: logo compacto y control siempre accesible. */
+.sistema-contable .marca-container {
+  position: relative;
+  min-height: 104px;
+  overflow: visible;
+}
+
+.sistema-contable .sistema-marca .marca-logo-compacto {
+  display: none !important;
+}
+
+.sistema-contable .replegar-menu {
+  position: absolute !important;
+  z-index: 8 !important;
+  top: 52px !important;
+  right: -17px !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid #98d8ec !important;
+  border-radius: 999px !important;
+  color: #007fc8 !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 22px rgba(7, 55, 99, 0.16) !important;
+}
+
+.sistema-contable .replegar-menu:hover {
+  color: #073763 !important;
+  border-color: #47bddc !important;
+  transform: translateX(1px);
+}
+
+.sidebar-replegado.sistema-contable .sistema-sidebar {
+  width: 88px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-cuerpo {
+  margin-left: 88px !important;
+}
+
+.sidebar-replegado.sistema-contable .marca-container {
+  min-height: 104px;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca {
+  height: 104px !important;
+  padding: 18px 12px 12px !important;
+  justify-content: center !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-completo {
+  display: none !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-compacto {
+  width: 56px !important;
+  height: 56px !important;
+  flex: 0 0 56px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 9px !important;
+  border: 1px solid #92d8ea !important;
+  border-radius: 17px !important;
+  background: linear-gradient(135deg, #0f93e8, #21bfd5) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 10px 24px rgba(7, 97, 165, 0.18) !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-compacto img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-replegado.sistema-contable .replegar-menu {
+  top: 48px !important;
+  right: -17px !important;
+}
+
+.sidebar-replegado.sistema-contable .sidebar-scroll {
+  padding-top: 6px;
+}
+
+.sidebar-replegado.sistema-contable .sistema-nav {
+  padding-inline: 10px !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo,
+.sidebar-replegado.sistema-contable .boton-salir {
+  width: 64px !important;
+}
+
+.sidebar-replegado.sistema-contable .boton-salir {
+  margin-inline: 12px !important;
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw);
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0;
+  }
+  .sistema-contable .sistema-marca {
+    height: 96px;
+    padding: 18px 20px;
+  }
+  .sistema-contable .sistema-topbar {
+    height: 64px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 64px);
+    padding: 12px 16px;
+  }
+  .sistema-contable .topbar-titulo h1 {
+    font-size: 18px;
+  }
+  .sistema-contable .topbar-titulo small {
+    font-size: 10px;
+  }
+  .sistema-contable .busqueda-global {
+    height: 40px;
+    border-radius: 11px;
+  }
+  .sistema-contable .ventas-tabs {
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .sistema-contable .ventas-tabs button {
+    min-height: 66px;
+    padding: 0 14px;
+  }
+  .sistema-contable .ventas-tabs button + button:before {
+    display: none;
+  }
+  .sistema-contable .replegar-menu {
+    display: none !important;
+  }
+}

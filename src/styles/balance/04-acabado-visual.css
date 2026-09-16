@@ -1,0 +1,342 @@
+﻿/* Pulido final Balance: acercamiento literal a la referencia entregada. */
+.sistema-contable {
+  background: #f9fdff;
+  color: #071b35;
+}
+.sistema-contable .sistema-sidebar {
+  width: 310px;
+  background: linear-gradient(
+    180deg,
+    #073f72 0%,
+    #073763 35%,
+    #062f58 68%,
+    #05294d 100%
+  );
+  border-right: 1px solid #1c5d90;
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.07),
+    8px 0 24px rgba(2, 28, 55, 0.18);
+}
+.sistema-contable .sistema-sidebar:after {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 42%),
+    radial-gradient(rgba(255, 255, 255, 0.055) 0.65px, transparent 0.75px);
+  background-size:
+    auto,
+    9px 9px;
+}
+.sistema-contable .sistema-cuerpo {
+  margin-left: 310px;
+}
+.sistema-contable .sistema-marca {
+  height: 110px;
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid rgba(120, 205, 229, 0.24);
+}
+.sistema-contable .marca-icono {
+  width: 60px;
+  height: 60px;
+  flex-basis: 60px;
+  padding: 8px;
+  border-radius: 15px;
+  border: 1px solid rgba(134, 212, 234, 0.42);
+  background: linear-gradient(145deg, #0d4b80, #08345f);
+  box-shadow:
+    0 14px 28px rgba(0, 20, 45, 0.27),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.sistema-contable .sistema-marca strong {
+  font-size: 27px;
+  line-height: 1;
+  color: #fff;
+}
+.sistema-contable .sistema-marca small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #f2fbff;
+}
+.sistema-contable .sistema-nav {
+  padding: 32px 14px 16px;
+}
+.sistema-contable .sistema-nav section p {
+  margin: 0 14px 18px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 2.8px;
+  color: #67d8ef;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 62px;
+  margin: 14px 0;
+  padding: 0 14px;
+  border-radius: 13px;
+  gap: 18px;
+  color: #f7fcff;
+}
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  transform: none;
+  border-color: rgba(101, 204, 231, 0.26);
+  background: rgba(255, 255, 255, 0.065);
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  border-color: #22b9df;
+  background: linear-gradient(90deg, #19b7e3, #20b5da);
+  box-shadow: 0 12px 24px rgba(0, 123, 171, 0.28);
+}
+.sistema-contable .nav-modulo.activo:before {
+  display: none;
+}
+.sistema-contable .nav-icono {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+  border-radius: 13px;
+  border-color: rgba(137, 219, 240, 0.23);
+  background: rgba(255, 255, 255, 0.075);
+  color: #ddf8ff;
+}
+.sistema-contable .nav-modulo.activo .nav-icono {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+.sistema-contable .nav-texto {
+  font-size: 16px;
+  font-weight: 800;
+}
+.sistema-contable .nav-indicador {
+  margin-left: auto;
+  color: #fff;
+}
+.sistema-contable .boton-salir {
+  height: 92px;
+  margin: 4px 14px 18px;
+  width: calc(100% - 28px);
+  padding: 24px 14px 0;
+  border-top: 1px solid rgba(125, 210, 233, 0.28);
+  color: #fff;
+}
+.sistema-contable .boton-salir .nav-texto {
+  font-size: 16px;
+}
+.sistema-contable .replegar-menu {
+  top: 48px;
+  right: -16px;
+  width: 32px;
+  height: 32px;
+  color: #073763;
+  border-color: #d9eaf3;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(7, 55, 99, 0.15);
+}
+.sistema-contable .sistema-topbar {
+  height: 88px;
+  padding: 0 30px;
+  gap: 20px;
+  border-bottom: 1px solid #d9eaf3;
+  background: #fff;
+  box-shadow: 0 3px 16px rgba(7, 55, 99, 0.07);
+}
+.sistema-contable .topbar-icono {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  border-color: #b9e5ef;
+  background: #eaf8fd;
+  color: #0575c6;
+}
+.sistema-contable .topbar-titulo h1 {
+  font-size: 31px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .topbar-titulo small {
+  margin-top: 9px;
+  font-size: 14px;
+  color: #688093;
+}
+.sistema-contable .search-container {
+  width: min(31vw, 430px);
+  margin-left: auto;
+}
+.sistema-contable .busqueda-global {
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid #5fc7e2;
+  background: #fff;
+  color: #28349a;
+  box-shadow: none;
+}
+.sistema-contable .busqueda-global input {
+  font-size: 15px;
+  color: #1d3147;
+}
+.sistema-contable .perfil {
+  min-height: 56px;
+  padding-left: 20px;
+  border-left: 1px solid #dbe8ef;
+}
+.sistema-contable .perfil-avatar {
+  width: 54px;
+  height: 54px;
+  border: 4px solid #073763;
+  border-radius: 50%;
+  color: #073763;
+  background: #f9fdff;
+}
+.sistema-contable .perfil strong {
+  font-size: 15px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .perfil small {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #52697b;
+}
+.sistema-contable .salir-rapido {
+  color: #536a7b;
+  padding: 9px;
+}
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 88px);
+  padding: 14px 28px 18px 46px;
+  background: #d8f3fa;
+}
+.sistema-contable .ventas-vista-vacia {
+  min-height: 132px;
+}
+.sistema-contable .ventas-tabs {
+  height: 92px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+  margin: 0 0 44px;
+  padding: 6px;
+  border: 1px solid #61c9e2;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #effbfe 0%, #e4f7fc 100%);
+  box-shadow: 0 10px 22px rgba(7, 55, 99, 0.07);
+}
+.sistema-contable .ventas-tabs button {
+  min-height: 78px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  column-gap: 18px;
+  padding: 0 36px;
+  border-radius: 11px;
+  text-align: left;
+}
+.sistema-contable .ventas-tabs button.activo {
+  border-color: #85d7e9;
+  background: linear-gradient(180deg, #e8f9fe 0%, #d9f3fb 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.62);
+}
+.sistema-contable .ventas-tabs button + button:before {
+  top: 22px;
+  bottom: 22px;
+  background: #b9dce8;
+}
+.sistema-contable .ventas-tabs i {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  border-color: #b5e3ef;
+  color: #007fd0;
+  background: #e6f8fd;
+}
+.sistema-contable .ventas-tabs span {
+  font-size: 19px;
+  line-height: 1;
+  color: #071b35;
+}
+.sistema-contable .ventas-tabs small {
+  margin-top: 9px;
+  font-size: 14px;
+  line-height: 1;
+  color: #364f63;
+}
+.sistema-contable .page-footer {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #073763;
+  font-size: 13px;
+  letter-spacing: 2.4px;
+  font-weight: 700;
+}
+.sistema-contable .page-footer span:last-child {
+  color: #6c7b94;
+  letter-spacing: 0;
+  font-size: 17px;
+  font-weight: 400;
+}
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  padding: 5px;
+  border-color: #c7d7df;
+  border-radius: 9px;
+  background: #e5e5e5;
+}
+.sistema-contable .inventario-subvistas button,
+.sistema-contable .movimientos-subvistas button,
+.sistema-contable .usuarios-subvistas button {
+  height: 42px;
+  border-radius: 7px;
+}
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #071b35;
+  background: #fff;
+}
+.sistema-contable .inventario-subvista-icono,
+.sistema-contable .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvista-icono {
+  color: #0b4b7b;
+  background: #f8fcff;
+}
+.sistema-contable
+  .inventario-subvistas
+  button.activo
+  .inventario-subvista-icono,
+.sistema-contable
+  .movimientos-subvistas
+  button.activo
+  .movimientos-subvista-icono,
+.sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono {
+  color: #fff;
+  border-color: #555;
+  background: #555;
+}
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(290px, 88vw);
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo {
+    margin-left: 0;
+  }
+  .sistema-contable .sistema-marca {
+    height: 96px;
+    padding: 18px 20px;
+  }
+  .sistema-contable .sistema-topbar {
+    height: 64px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .sistema-contable .area-trabajo {
+    min-height: calc(100dvh - 64px);
+    padding: 12px 16px;
+  }
+  .sistema-contable .ventas-tabs {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+  .sistema-contable .ventas-tabs button {
+    min-height: 66px;
+    padding: 0 14px;
+  }
+}

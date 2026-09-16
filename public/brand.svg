@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Logo Balance">
+  <defs>
+    <linearGradient id="balance-blue" x1="122" x2="518" y1="86" y2="586" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2a9cf4" />
+      <stop offset="1" stop-color="#0964cf" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" rx="148" fill="url(#balance-blue)" />
+  <path
+    d="M320 130 478 222a18 18 0 0 1 9 16v164a18 18 0 0 1-9 16l-149 86a18 18 0 0 1-18 0l-149-86a18 18 0 0 1-9-16V238a18 18 0 0 1 9-16l158-92Zm0 44-110 64 110 64 110-64-110-64Zm-128 98v119l109 63V335l-109-63Zm256 0-109 63v119l109-63V272Z"
+    fill="#fff"
+  />
+</svg>

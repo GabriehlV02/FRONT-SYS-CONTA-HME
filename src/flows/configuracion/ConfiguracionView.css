@@ -1,0 +1,82 @@
+﻿.configuracion-vista {
+  max-width: none;
+  margin: auto;
+}
+
+.configuracion-subvistas {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  width: 100%;
+  height: auto;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 5px;
+  border: 1px solid #b9ddea;
+  border-radius: 8px;
+  background: #e7f3fa;
+  box-shadow: none;
+}
+
+.configuracion-subvistas button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #174b70;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-align: left;
+  box-shadow: none;
+}
+
+.configuracion-subvistas button:hover {
+  border-color: #b9ddea;
+  color: #073763;
+  background: #f4fbff;
+}
+
+.configuracion-subvistas button.activo {
+  border-color: #a9d6e8;
+  color: #073763;
+  background: #fff;
+  box-shadow: 0 2px 5px #0737630d;
+}
+
+.configuracion-subvista-icono {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #b9ddea;
+  border-radius: 7px;
+  color: #0b4b7b;
+  background: #f8fcff;
+}
+
+.configuracion-subvistas button.activo .configuracion-subvista-icono {
+  border-color: #62cee7;
+  color: #fff;
+  background: linear-gradient(145deg, #0477c8, #18b5df);
+}
+
+.configuracion-contenido {
+  min-height: calc(100dvh - 144px);
+}
+
+@media (max-width: 760px) {
+  .configuracion-subvistas {
+    grid-template-columns: 1fr;
+  }
+
+  .configuracion-contenido {
+    min-height: 220px;
+  }
+}
