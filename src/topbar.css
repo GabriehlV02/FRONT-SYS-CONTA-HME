@@ -208,8 +208,10 @@
 }
 .sistema-contable .area-trabajo {
   min-height: calc(100dvh - 66px);
-  background: #d8f3fa;
-  background-image: none;
+  background:
+    linear-gradient(180deg, #bfdde8 0%, #cce6ee 48%, #d7edf3 100%),
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.42), transparent 32%);
+  background-color: #cce6ee;
 }
 .sidebar-replegado.sistema-contable .sidebar-scroll,
 .sidebar-replegado.sistema-contable .sistema-nav {

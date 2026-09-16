@@ -1254,6 +1254,128 @@
   box-shadow: 0 10px 22px rgba(10, 114, 185, 0.18);
 }
 
+/* Ajuste visual del panel de busqueda del catalogo. */
+.sistema-contable .inventario-catalogo .inventario-controles-principales {
+  --inventario-control-alto: 42px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  border-color: #c6e0ef;
+  border-radius: 13px;
+  background: linear-gradient(180deg, #ffffff, #f7fbfd);
+  box-shadow: 0 10px 24px rgba(6, 71, 115, 0.06);
+}
+
+.sistema-contable
+  .inventario-catalogo
+  .inventario-controles-principales
+  .inventario-filtros-productos {
+  grid-template-columns: minmax(300px, 1.45fr) 132px 168px 190px;
+  gap: 10px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child {
+  border-color: #bfddec;
+  background: #fbfdff;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child input {
+  font-size: 11px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos > select,
+.sistema-contable .inventario-catalogo .inventario-filtros-productos .inventario-orden {
+  color: #06395c;
+  background: #fff;
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos .inventario-orden {
+  color: #6b8296;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos .inventario-orden select {
+  color: #06395c;
+  font-size: 10px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-toolbar {
+  gap: 10px;
+  align-items: center;
+}
+
+.sistema-contable .inventario-catalogo .inventario-modo {
+  height: 42px;
+  grid-template-columns: repeat(2, 92px);
+  border-color: #b9d7e8;
+  background: #eef7fc;
+}
+
+.sistema-contable .inventario-catalogo .inventario-modo button {
+  height: 32px;
+  gap: 7px;
+  font-size: 10px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-modo button.activo {
+  box-shadow: 0 5px 14px rgba(6, 71, 115, 0.12);
+}
+
+.sistema-contable .inventario-catalogo .inventario-nuevo {
+  height: 42px;
+  min-width: 118px;
+  border-radius: 10px;
+  font-size: 10px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-tabla-productos,
+.sistema-contable .inventario-catalogo .inventario-galeria {
+  margin-top: 4px;
+}
+
+@media (max-width: 1220px) {
+  .sistema-contable
+    .inventario-catalogo
+    .inventario-controles-principales
+    .inventario-filtros-productos {
+    grid-template-columns: minmax(260px, 1fr) 132px 168px;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-filtros-productos .inventario-orden {
+    grid-column: 1 / -1;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .inventario-catalogo .inventario-controles-principales {
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px;
+  }
+
+  .sistema-contable
+    .inventario-catalogo
+    .inventario-controles-principales
+    .inventario-filtros-productos {
+    grid-template-columns: 1fr;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-filtros-productos .inventario-orden {
+    max-width: none;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-modo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .stock-general-contenido {
   display: flex;
   flex-direction: column;
@@ -1262,6 +1384,83 @@
 
 .stock-general-controles {
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+/* Separacion tipo panel: filtros arriba, tabla y paginacion abajo. */
+.sistema-contable .inventario-catalogo .inventario-controles-principales {
+  grid-template-columns: minmax(760px, 1fr) auto;
+  margin-bottom: 30px;
+}
+
+.sistema-contable
+  .inventario-catalogo
+  .inventario-controles-principales
+  .inventario-filtros-productos {
+  grid-template-columns: minmax(420px, 1.75fr) 132px 168px 190px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child {
+  min-width: 420px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-paginacion {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-paginacion-superior {
+  padding-top: 2px;
+}
+
+.sistema-contable .inventario-catalogo .inventario-tabla-productos {
+  margin-top: 12px;
+}
+
+@media (max-width: 1320px) {
+  .sistema-contable .inventario-catalogo .inventario-controles-principales {
+    grid-template-columns: 1fr;
+  }
+
+  .sistema-contable
+    .inventario-catalogo
+    .inventario-controles-principales
+    .inventario-filtros-productos {
+    grid-template-columns: minmax(360px, 1fr) 132px 168px 190px;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child {
+    min-width: 360px;
+  }
+}
+
+@media (max-width: 980px) {
+  .sistema-contable
+    .inventario-catalogo
+    .inventario-controles-principales
+    .inventario-filtros-productos {
+    grid-template-columns: minmax(320px, 1fr) 1fr;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child {
+    min-width: 320px;
+  }
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .inventario-catalogo .inventario-controles-principales {
+    margin-bottom: 22px;
+  }
+
+  .sistema-contable
+    .inventario-catalogo
+    .inventario-controles-principales
+    .inventario-filtros-productos {
+    grid-template-columns: 1fr;
+  }
+
+  .sistema-contable .inventario-catalogo .inventario-filtros-productos label:first-child {
+    min-width: 0;
+  }
 }
 
 .stock-general-resumen {
