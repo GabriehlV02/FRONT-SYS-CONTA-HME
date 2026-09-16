@@ -1,4 +1,4 @@
-﻿import '../styles/LoginFields.css';
+import '../styles/LoginFields.css';
 import { useState, type FormEvent } from 'react';
 import Icon from './Icon';
 import { Brand } from './Brand';
@@ -50,7 +50,7 @@ export function Login({
           usuario?: { nombre?: string; rol?: string; permisos?: string[] };
         };
         if (!response.ok) {
-          setError(data.message || 'No se pudo iniciar sesion.');
+          setError(data.message || 'No se pudo iniciar sesión.');
           return;
         }
         nextSession = {
@@ -103,7 +103,7 @@ export function Login({
         />
       </div>
       <label className="login-label" htmlFor="password">
-        Contrasena
+        Contraseña
       </label>
       <div className="login-input">
         <Icon name="asset" size={18} />
@@ -115,7 +115,7 @@ export function Login({
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          placeholder="Ingresa tu contrasena"
+          placeholder="Ingresa tu contraseña"
         />
         <button
           type="button"
@@ -131,7 +131,7 @@ export function Login({
               input.setSelectionRange(start, end);
             });
           }}
-          aria-label={visible ? 'Ocultar contrasena' : 'Mostrar contrasena'}
+          aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
           aria-pressed={visible}
         >
           <Icon name={visible ? 'eyeOff' : 'eye'} size={18} />
@@ -163,11 +163,11 @@ export function Login({
         </p>
       )}
       <button className="login-submit" type="submit" disabled={loading}>
-        {loading ? 'Conectando...' : 'Iniciar sesion'}{' '}
+        {loading ? 'Conectando...' : 'Iniciar sesión'}{' '}
         {!loading && <Icon name="arrowRight" size={18} />}
       </button>
       <div className="login-seguro">
-        <Icon name="check" size={16} /> Sesion protegida Â· Expira tras 6 horas
+        <Icon name="check" size={16} /> Sesión protegida · Expira tras 6 horas
       </div>
       {config.id !== 'contable' && (
         <div className="demo-access">
@@ -177,11 +177,11 @@ export function Login({
               onLogin({ user: 'demo', role: config.role, permissions: [] })
             }
           >
-            Entrar en modo demostracion <Icon name="arrowRight" size={14} />
+            Entrar en modo demostración <Icon name="arrowRight" size={14} />
           </button>
           <p>
-            Puedes usar cualquier usuario y una contrasena de{' '}
-            {minimumPasswordLength} caracteres o mas.
+            Puedes usar cualquier usuario y una contraseña de{' '}
+            {minimumPasswordLength} caracteres o más.
           </p>
         </div>
       )}

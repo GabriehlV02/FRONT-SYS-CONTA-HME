@@ -1,4 +1,4 @@
-﻿import Icon from './Icon';
+import Icon from './Icon';
 import { Brand } from './Brand';
 import type { SystemConfig } from '../types';
 type Props = {
@@ -41,23 +41,23 @@ export function Sidebar({
             className="replegar-menu"
             onClick={onCollapse}
             aria-label={
-              collapsed ? 'Desplegar menÃº lateral' : 'Replegar menÃº lateral'
+              collapsed ? 'Desplegar menú lateral' : 'Replegar menú lateral'
             }
             aria-expanded={!collapsed}
-            title={collapsed ? 'Desplegar menÃº' : 'Replegar menÃº'}
+            title={collapsed ? 'Desplegar menú' : 'Replegar menú'}
           >
             <Icon name={collapsed ? 'chevronRight' : 'chevronLeft'} size={17} />
           </button>
           <button
             className="cerrar-menu"
             onClick={onClose}
-            aria-label="Cerrar menÃº"
+            aria-label="Cerrar menú"
           >
             <Icon name="close" />
           </button>
         </div>
         <div className="sidebar-scroll">
-          <nav className="sistema-nav" aria-label="MÃ³dulos del sistema">
+          <nav className="sistema-nav" aria-label="Módulos del sistema">
             {groups.map((group) => (
               <section key={group}>
                 <p>{group}</p>
@@ -89,13 +89,13 @@ export function Sidebar({
           <button
             className="boton-salir"
             onClick={onLogout}
-            aria-label="Cerrar sesiÃ³n"
-            title={collapsed ? 'Cerrar sesiÃ³n' : undefined}
+            aria-label="Cerrar sesión"
+            title={collapsed ? 'Cerrar sesión' : undefined}
           >
             <span className="nav-icono">
               <Icon name="logout" size={19} />
             </span>
-            <span className="nav-texto">Cerrar sesiÃ³n</span>
+            <span className="nav-texto">Cerrar sesión</span>
           </button>
         </div>
       </aside>
@@ -103,7 +103,7 @@ export function Sidebar({
         <button
           className="menu-fondo"
           onClick={onClose}
-          aria-label="Cerrar menÃº"
+          aria-label="Cerrar menú"
         />
       )}
     </>

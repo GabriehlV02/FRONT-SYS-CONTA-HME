@@ -1,4 +1,4 @@
-﻿/* Selector compacto compartido por los modulos de Balance. */
+/* Selector compacto compartido por los modulos de Balance. */
 .sistema-contable
   :is(
     .inventario-subvistas,
@@ -135,7 +135,7 @@
   }
 }
 
-/* Las sub-vistas se presentan dentro del flujo como una barra de acciones tipo cÃ¡psula. */
+/* Las sub-vistas se presentan dentro del flujo como una barra de acciones tipo cápsula. */
 .sistema-contable :is(.inventario-subvistas,.ventas-tabs,.usuarios-subvistas,.movimientos-subvistas){
   display:flex;
   align-items:center;

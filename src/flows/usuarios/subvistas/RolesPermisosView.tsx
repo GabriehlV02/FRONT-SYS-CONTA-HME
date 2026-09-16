@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 
 export function RolesPermisosView() {
@@ -14,13 +14,13 @@ export function RolesPermisosView() {
     },
     {
       nombre: 'Operador',
-      descripcion: 'Gestion de ventas e inventario.',
+      descripcion: 'Gestión de ventas e inventario.',
       permisos: 24,
       estado: 'Activo',
     },
     {
       nombre: 'Consulta',
-      descripcion: 'Lectura de informacion operativa.',
+      descripcion: 'Lectura de información operativa.',
       permisos: 11,
       estado: 'Activo',
     },
@@ -58,7 +58,7 @@ export function RolesPermisosView() {
         <label>
           <Icon name="search" size={17} />
           <input
-            placeholder="Buscar por nombre o descripcion"
+            placeholder="Buscar por nombre o descripción"
             aria-label="Buscar roles"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -281,11 +281,11 @@ function EditorRol({ nombre, onBack }: { nombre: string; onBack: () => void }) {
           <input
             value={nombreRol}
             onChange={(event) => setNombreRol(event.target.value)}
-            placeholder="Ej. RecepciÃ³n"
+            placeholder="Ej. Recepción"
           />
         </label>
         <label>
-          <span>DescripciÃ³n</span>
+          <span>Descripción</span>
           <textarea
             value={descripcion}
             onChange={(event) => setDescripcion(event.target.value)}
@@ -297,7 +297,7 @@ function EditorRol({ nombre, onBack }: { nombre: string; onBack: () => void }) {
       <div className="permisos-encabezado">
         <div>
           <h3>Permisos por flujo</h3>
-          <small>Selecciona las acciones que podrÃ¡ realizar este rol.</small>
+          <small>Selecciona las acciones que podrá realizar este rol.</small>
         </div>
         <span>{seleccionados.length} seleccionados</span>
       </div>

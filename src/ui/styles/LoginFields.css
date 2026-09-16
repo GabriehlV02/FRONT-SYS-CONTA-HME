@@ -1,4 +1,4 @@
-﻿/* Un Ãºnico borde al escribir, sin los aros superpuestos del tema global. */
+/* Un único borde al escribir, sin los aros superpuestos del tema global. */
 .login-field { margin-bottom: 17px; }
 .login-field .login-label { margin-bottom: 0; }
 
@@ -16,7 +16,7 @@
   box-shadow: none;
 }
 
-/* Edge agrega su propio botÃ³n: conservamos solo el control de la aplicaciÃ³n. */
+/* Edge agrega su propio botón: conservamos solo el control de la aplicación. */
 .login-page .login-input input::-ms-reveal,
 .login-page .login-input input::-ms-clear {
   display: none;
