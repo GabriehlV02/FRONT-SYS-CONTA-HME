@@ -3138,3 +3138,68 @@
     display: none !important;
   }
 }
+
+/* Identidad contable: el celeste luminoso es el color dominante. */
+.sistema-contable {
+  --balance-sidebar: #075985;
+  --balance-sidebar-dark: #064e70;
+  --balance-cyan: #12b8df;
+  --balance-cyan-2: #6cdbef;
+  --balance-line: #b8e4ef;
+  --balance-text: #07304a;
+  --accent: #12b8df;
+  color: var(--balance-text);
+  background: #effcff;
+}
+
+.sistema-contable .sistema-sidebar {
+  background: linear-gradient(180deg, #075985, #087ea7 58%, #0b9bc1);
+  border-color: #55c9df;
+}
+
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #064e70;
+  border-color: #bdf2fb;
+  background: #fff;
+  box-shadow: 0 7px 18px rgba(6, 78, 112, .2);
+}
+
+.sistema-contable .area-trabajo,
+.sistema-contable .sistema-cuerpo {
+  background-color: #effcff;
+}
+
+.sistema-contable .boton-principal,
+.sistema-contable .primario,
+.sistema-contable .ventas-primary,
+.sistema-contable .inventario-nuevo,
+.sistema-contable .inventario-primario {
+  background: linear-gradient(105deg, #079bc7, #18c4e5);
+  box-shadow: 0 7px 18px rgba(18, 184, 223, .25);
+}
+
+.sistema-contable .boton-secundario,
+.sistema-contable .secundario,
+.sistema-contable .ventas-secondary,
+.sistema-contable .inventario-secundario {
+  border-color: #b8e4ef;
+  color: #087a9e;
+  background: #f5fdff;
+}
+
+.sistema-contable .ventas-tabs,
+.sistema-contable .inventario-subvistas,
+.sistema-contable .movimientos-subvistas,
+.sistema-contable .usuarios-subvistas {
+  border-color: #a9dce9;
+  background: #ddf8fd;
+}
+
+.sistema-contable .ventas-tabs button.activo,
+.sistema-contable .inventario-subvistas button.activo,
+.sistema-contable .movimientos-subvistas button.activo,
+.sistema-contable .usuarios-subvistas button.activo {
+  color: #075985;
+  border-color: #fff;
+  background: #fff;
+}
