@@ -17,7 +17,7 @@ export function VentasNavegacion({ activa, onSeleccionar }: Props) {
     >
       <BotonSubvista
         nombre="Ventas"
-        icono="plus"
+        icono="cart"
         activa={activa === 'ventas'}
         onSeleccionar={() => onSeleccionar('ventas')}
         claseIcono=""
@@ -31,7 +31,7 @@ export function VentasNavegacion({ activa, onSeleccionar }: Props) {
       />
       <BotonSubvista
         nombre="Caja del dia"
-        icono="home"
+        icono="cash"
         activa={activa === 'caja-dia'}
         onSeleccionar={() => onSeleccionar('caja-dia')}
         claseIcono=""

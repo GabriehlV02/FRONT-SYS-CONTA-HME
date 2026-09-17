@@ -10,7 +10,7 @@ type Props = {
 
 export function BotonSubvista({ nombre, icono, activa, onSeleccionar, claseIcono }: Props) {
   return (
-    <button type="button" className={activa ? 'activo' : ''} aria-current={activa ? 'page' : undefined} onClick={onSeleccionar}>
+    <button type="button" className={activa ? 'activo' : ''} aria-current={activa ? 'page' : undefined} aria-label={nombre} onClick={onSeleccionar}>
       {claseIcono
         ? <span className={claseIcono} aria-hidden="true"><Icon name={icono} size={16} /></span>
         : <i aria-hidden="true"><Icon name={icono} size={16} /></i>}

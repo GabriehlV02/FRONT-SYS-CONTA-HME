@@ -18,12 +18,15 @@ export function AlmacenesView() {
         <select aria-label="Filtrar por categoria">
           <option>Categoria</option>
         </select>
-        <select aria-label="Campo para ordenar">
-          <option>Ordenar por: nombre</option>
-          <option>Codigo</option>
-          <option>Categoria</option>
-          <option>Otro</option>
-        </select>
+        <div className="inventario-orden">
+          <span>Ordenar por</span>
+          <select aria-label="Campo para ordenar">
+            <option>Nombre</option>
+            <option>Código</option>
+            <option>Categoría</option>
+            <option>Otro</option>
+          </select>
+        </div>
         <span className="inventario-contador">0 registros</span>
       </div>
 

@@ -5,14 +5,14 @@ Frontend del sistema contable HME.
 ## Requisitos
 
 - Node.js 20+
-- pnpm 9+
+- npm 10+
 
 ## Instalacion
 
 ```powershell
-pnpm install
+npm install
 Copy-Item .env.example .env
-pnpm dev
+npm run dev
 ```
 
 La app abre por defecto en `http://localhost:5050`.
@@ -30,8 +30,8 @@ VITE_API_TARGET=http://127.0.0.1:5055
 ## Scripts
 
 ```powershell
-pnpm dev
-pnpm build
-pnpm typecheck
-pnpm lint
+npm run dev
+npm run build
+npm run typecheck
+npm run lint
 ```

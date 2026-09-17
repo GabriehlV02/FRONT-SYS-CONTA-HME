@@ -169,7 +169,7 @@ export function Login({
       <div className="login-seguro">
         <Icon name="check" size={16} /> Sesión protegida · Expira tras 6 horas
       </div>
-      {config.id !== 'contable' && (
+      {(config.id !== 'contable' || import.meta.env.DEV) && (
         <div className="demo-access">
           <button
             type="button"
@@ -177,11 +177,11 @@ export function Login({
               onLogin({ user: 'demo', role: config.role, permissions: [] })
             }
           >
-            Entrar en modo demostración <Icon name="arrowRight" size={14} />
+            Explorar interfaz de demostración <Icon name="arrowRight" size={14} />
           </button>
-          <p>
-            Puedes usar cualquier usuario y una contraseña de{' '}
-            {minimumPasswordLength} caracteres o más.
+          <p>{esContable
+            ? 'Vista de prueba disponible solo en desarrollo. Las operaciones requieren el servidor contable.'
+            : `Puedes usar cualquier usuario y una contraseña de ${minimumPasswordLength} caracteres o más.`}
           </p>
         </div>
       )}

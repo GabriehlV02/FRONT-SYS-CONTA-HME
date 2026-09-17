@@ -377,8 +377,8 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                 </option>
               ))}
             </select>
-            <label className="inventario-orden">
-              Ordenar por
+            <div className="inventario-orden">
+              <span>Ordenar por</span>
               <select
                 value={campoOrden}
                 onChange={(event) =>
@@ -388,12 +388,12 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                 }
                 aria-label="Campo para ordenar"
               >
-                <option value="codigo">Codigo</option>
+                <option value="codigo">Código</option>
                 <option value="nombre">Nombre del {nombreElemento}</option>
-                <option value="categoria">Categoria</option>
+                <option value="categoria">Categoría</option>
                 <option value="marca">Otro: marca</option>
               </select>
-            </label>
+            </div>
           </div>
           <div className="inventario-toolbar">
             <div

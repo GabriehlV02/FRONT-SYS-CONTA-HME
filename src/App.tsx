@@ -19,9 +19,16 @@ export const modules: {
   description: string;
 }[] = [
   {
+    id: 'resumen',
+    name: 'Resumen',
+    icon: 'home',
+    group: 'GENERAL',
+    description: 'Panorama de la actividad administrativa del hospital.',
+  },
+  {
     id: 'ventas',
     name: 'Ventas',
-    icon: 'fileText',
+    icon: 'cart',
     group: 'VENTAS',
     description: 'Caja, cuentas de pacientes y facturacion SIAT.',
   },
@@ -112,7 +119,7 @@ const config: SystemConfig = {
     },
   ],
   modules,
-  sidebarGroups: ['VENTAS', 'ALMACENES', 'MOVIMIENTOS', 'ADMINISTRACION'],
+  sidebarGroups: ['GENERAL', 'VENTAS', 'ALMACENES', 'MOVIMIENTOS', 'ADMINISTRACION'],
   renderModule: (id, select, activeId) =>
     id === 'ventas' ? (
       <VentasView activeId={activeId} />

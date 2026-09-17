@@ -151,8 +151,8 @@ export function StockView() {
               </option>
             ))}
           </select>
-          <label className="inventario-orden">
-            Ordenar por
+          <div className="inventario-orden">
+            <span>Ordenar por</span>
             <select
               value={orden}
               onChange={(event) =>
@@ -160,12 +160,12 @@ export function StockView() {
               }
               aria-label="Campo para ordenar"
             >
-              <option value="codigo">Codigo</option>
+              <option value="codigo">Código</option>
               <option value="nombre">Nombre</option>
-              <option value="categoria">Categoria</option>
+              <option value="categoria">Categoría</option>
               <option value="stockTotal">Stock</option>
             </select>
-          </label>
+          </div>
         </div>
         <div className="stock-general-resumen">
           <span>{filtrados.length} registros</span>

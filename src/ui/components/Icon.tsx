@@ -1,6 +1,6 @@
 ﻿import type { ReactNode, SVGProps } from 'react';
 
-export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash';
+export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
 type Props = SVGProps<SVGSVGElement> & { name: IconName; size?: number };
 
 const paths: Record<IconName, ReactNode> = {
@@ -10,7 +10,7 @@ const paths: Record<IconName, ReactNode> = {
   audit: <><path d="M9 5H6a2 2 0 0 0-2 2v13h13v-3M9 3h6v4H9z"/><circle cx="16" cy="12" r="4"/><path d="m19 15 3 3m-7-6 1 1 2-2"/></>,
   building: <><path d="M4 21V5l8-3v19M12 8h8v13M8 7v1m0 4v1m0 4v1m8-6v1m0 4v1M2 21h20"/></>,
   fileText: <><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6m-6 4h6"/></>,
-  users: <><circle cx="12" cy="12" r="9.4"/><circle cx="12" cy="8.8" r="3.2" fill="currentColor" stroke="none"/><path d="M6.2 18.65c.45-3.95 2.7-6.05 5.8-6.05s5.35 2.1 5.8 6.05c.08.7-.45 1.35-1.17 1.35H7.37c-.72 0-1.25-.65-1.17-1.35Z" fill="currentColor" stroke="none"/></>,
+  users: <><circle cx="9" cy="8" r="3"/><path d="M3.5 20v-1.5a5.5 5.5 0 0 1 11 0V20H3.5Zm12-14.5a3 3 0 0 1 0 5.5M17 14a5.5 5.5 0 0 1 3.5 5.1V20h-3"/></>,
   patient: <><circle cx="10" cy="7.5" r="3.25"/><path d="M3.5 20v-1.2a6.5 6.5 0 0 1 11.8-3.8"/><circle cx="17.5" cy="16.5" r="4"/><path d="M17.5 14.4v4.2m-2.1-2.1h4.2"/></>,
   userCheck: <><circle cx="9" cy="7.5" r="3.25"/><path d="M2.5 20v-1.2A6.5 6.5 0 0 1 14 14.65"/><path d="m15.2 18 2 2 4.3-5"/></>,
   logout: <><path d="m10 17 5-5-5-5m5 5H3"/><path d="M15 3h5a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-5"/></>,
@@ -26,9 +26,11 @@ const paths: Record<IconName, ReactNode> = {
   eye: <><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></>,
   eyeOff: <><path d="m3 3 18 18"/><path d="M10.6 6.15A9.8 9.8 0 0 1 12 6c6 0 9.5 6 9.5 6a15.7 15.7 0 0 1-2.1 2.7M6.2 6.2C3.8 7.8 2.5 12 2.5 12s3.5 6 9.5 6a9.7 9.7 0 0 0 3.1-.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></>,
   image: <><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 20"/></>,
-  camera: <><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/><circle cx="12" cy="13" r="4"/></>
-  ,edit: <><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></>,
-  trash: <><path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m4 4v6m4-6v6"/></>
+  camera: <><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/><circle cx="12" cy="13" r="4"/></>,
+  edit: <><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></>,
+  trash: <><path d="M4 7h16M9 7V4h6v3m3 0-1 14H7L6 7m4 4v6m4-6v6"/></>,
+  cart: <><circle cx="9" cy="20" r="1"/><circle cx="19" cy="20" r="1"/><path d="M2 3h2l2.4 11.4a2 2 0 0 0 2 1.6h10.9a2 2 0 0 0 2-1.6L22 7H5"/></>,
+  cash: <><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M5 9h2m10 6h2"/></>
 };
 
 export default function Icon({ name, size = 20, ...props }: Props) {

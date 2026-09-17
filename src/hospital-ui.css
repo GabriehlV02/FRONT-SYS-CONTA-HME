@@ -1,0 +1,518 @@
+/* Sistema visual compartido por los módulos administrativos del hospital. */
+:root {
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+  font-synthesis: none;
+}
+
+body, button, input, select, textarea {
+  font-family: 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif;
+}
+
+.sistema-contable {
+  --hospital-ink: #12344f;
+  --hospital-muted: #577187;
+  --hospital-line: #cadde8;
+  --hospital-blue: #0877b7;
+  --hospital-teal: #087f87;
+  --hospital-tint: #edf7fa;
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230b6083' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  color: var(--hospital-ink);
+}
+
+.sistema-contable .area-trabajo {
+  background: linear-gradient(160deg, #f3f9fb 0%, #eaf4f8 100%);
+}
+
+.sistema-contable .sistema-topbar {
+  border-bottom: 1px solid var(--hospital-line);
+  background: #fff;
+  box-shadow: 0 4px 20px #12344f0a;
+}
+
+.sistema-contable .topbar-titulo h1 {
+  color: var(--hospital-ink);
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -.35px;
+}
+
+.sistema-contable .topbar-titulo small,
+.sistema-contable .perfil small { color: var(--hospital-muted); font-size: 11px; }
+
+.sistema-contable .busqueda-global {
+  border: 1px solid var(--hospital-line);
+  border-radius: 11px;
+  background: #f5fafc;
+  color: var(--hospital-blue);
+}
+
+.sistema-contable .busqueda-global input { color: var(--hospital-ink); font-size: 13px; }
+.sistema-contable .busqueda-global input::placeholder { color: #71899b; }
+.sistema-contable .busqueda-global:focus-within { outline: 2px solid #70becf; outline-offset: 1px; }
+.sistema-contable .search-results { border-color: var(--hospital-line); border-radius: 12px; }
+.sistema-contable .search-results button { min-height: 44px; color: var(--hospital-ink); font-size: 13px; }
+.sistema-contable .search-results button:hover { background: var(--hospital-tint); }
+
+.sistema-contable .sistema-sidebar {
+  background: linear-gradient(180deg, #083654 0%, #075072 58%, #096b7b 100%);
+  border-right-color: #064463;
+  box-shadow: 8px 0 28px #12344f1c;
+}
+
+.sistema-contable .sistema-sidebar::after { opacity: .3; }
+.sistema-contable .sistema-nav section + section { border-color: #ffffff24; }
+.sistema-contable .sistema-nav section p {
+  color: #b5dbe6;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.15px;
+}
+
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 49px;
+  border-radius: 11px;
+  color: #e3f3f7;
+}
+
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  border-color: #a6d8e85c;
+  background: #ffffff19;
+  color: #fff;
+  transform: none;
+}
+
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  border-color: #d8eff7;
+  background: #fff;
+  color: #064568;
+  box-shadow: 0 7px 18px #032d4960;
+}
+
+.sistema-contable .nav-modulo.activo::before { background: var(--hospital-teal); }
+.sistema-contable .nav-icono {
+  border-color: #b2dde34d;
+  border-radius: 9px;
+  background: #ffffff17;
+  color: #d9f4f7;
+}
+
+.sistema-contable .nav-modulo.activo .nav-icono {
+  border-color: #b5dfeb !important;
+  background: #e9f7fa !important;
+  color: #08788b !important;
+  box-shadow: none;
+}
+
+.sistema-contable .nav-texto { font-size: 13px; font-weight: 650; }
+.sistema-contable .boton-salir { color: #e1f0f3; border-color: #ffffff3d; }
+.sistema-contable .boton-salir:hover { color: #fff; background: #ffffff1a; }
+
+.sistema-contable .pagina-cabecera h2,
+.sistema-contable .ventas-encabezado h2,
+.sistema-contable .inventario-encabezado h2,
+.sistema-contable .movimientos-encabezado h2,
+.sistema-contable .usuarios-encabezado h2 {
+  color: var(--hospital-ink);
+  letter-spacing: -.5px;
+}
+
+.sistema-contable :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .panel, .modulo-vacio, .configuracion-contenido, .metricas article, .quick-grid > button) {
+  border-color: var(--hospital-line);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px #12344f0b;
+}
+
+/* Un único selector de vistas para ventas, inventario, movimientos, usuarios y configuración. */
+.sistema-contable .subvistas-carrusel {
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid var(--hospital-line);
+  border-radius: 14px;
+  background: #e8f3f7;
+}
+
+.sistema-contable .subvistas-carrusel > nav:is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas) {
+  display: flex !important;
+  align-items: stretch;
+  width: 100%;
+  height: auto !important;
+  min-height: 48px;
+  margin: 0;
+  padding: 0;
+  gap: 5px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sistema-contable .subvistas-carrusel > nav > button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 0 auto;
+  width: auto;
+  min-width: max-content;
+  height: 48px !important;
+  min-height: 48px !important;
+  margin: 0;
+  padding: 0 14px;
+  gap: 9px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  box-shadow: none;
+  color: #31566f;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.sistema-contable .subvistas-carrusel > nav > button::before,
+.sistema-contable .subvistas-carrusel > nav > button::after { display: none; }
+
+.sistema-contable .subvistas-carrusel > nav > button:hover {
+  border-color: #c1dfeb;
+  background: #f8fcfd;
+  color: #075b82;
+}
+
+.sistema-contable .subvistas-carrusel > nav > button.activo {
+  border-color: #b4d9e6;
+  background: #fff;
+  color: #075579;
+  box-shadow: 0 3px 10px #12344f14;
+}
+
+.sistema-contable .subvistas-carrusel > nav > button > :is(i, span:first-child) {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  margin: 0;
+  border: 1px solid #c4e1ea;
+  border-radius: 8px;
+  background: #f4fafc;
+  color: #08778d;
+  box-shadow: none;
+  font-style: normal;
+}
+
+.sistema-contable .subvistas-carrusel > nav > button.activo > :is(i, span:first-child) {
+  border-color: #0a8190;
+  background: #0a8190;
+  color: #fff;
+}
+
+.sistema-contable .subvistas-flecha {
+  top: 11px;
+  border-color: #a9d6e2;
+  color: #086888;
+  box-shadow: 0 3px 10px #12344f1e;
+}
+
+.sistema-contable .subvistas-flecha:hover { background: #e6f6f8; }
+
+/* Los filtros y formularios comparten tamaño, contraste y señal de foco. */
+.sistema-contable :is(select, input:not([type='checkbox']):not([type='radio']), textarea) {
+  accent-color: var(--hospital-teal);
+}
+
+.sistema-contable select {
+  appearance: none;
+  min-height: 40px;
+  min-width: 0;
+  padding: 8px 36px 8px 12px;
+  padding-right: 36px !important;
+  border: 1px solid var(--hospital-line);
+  border-radius: 9px;
+  background: #fff var(--select-arrow) no-repeat right 12px center / 16px;
+  background-image: var(--select-arrow) !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px !important;
+  color: var(--hospital-ink);
+  font-size: 13px;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.sistema-contable select:hover { border-color: #7fbacb; }
+.sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) select {
+  background-image: var(--select-arrow) !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  padding-right: 36px !important;
+}
+.sistema-contable :is(button, input, select, textarea):focus-visible {
+  outline: 2px solid #0794a5;
+  outline-offset: 2px;
+}
+
+.sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) {
+  gap: 10px;
+}
+
+/* El rótulo y el valor del criterio tienen cada uno su propia línea. */
+.sistema-contable .inventario-contenido .inventario-filtros .inventario-orden {
+  display: flex;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: center;
+  flex: 0 1 200px;
+  width: min(200px, 100%) !important;
+  min-width: 170px;
+  height: 54px !important;
+  min-height: 54px !important;
+  padding: 5px 11px !important;
+  gap: 1px !important;
+  border: 1px solid var(--hospital-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--hospital-muted);
+  white-space: normal;
+}
+
+.sistema-contable .inventario-filtros-productos .inventario-orden {
+  width: 100% !important;
+  min-width: 0;
+}
+
+.sistema-contable .inventario-contenido .inventario-filtros .inventario-orden > span {
+  display: block;
+  flex: 0 0 auto;
+  color: var(--hospital-muted);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sistema-contable .inventario-contenido .inventario-filtros .inventario-orden select {
+  display: block;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 0;
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 28px 0 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent var(--select-arrow) no-repeat right 1px center / 16px !important;
+  background-position: right 1px center !important;
+  color: var(--hospital-ink);
+  font-size: 13px !important;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+.sistema-contable :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario) {
+  background: #0877aa;
+  color: #fff;
+  box-shadow: 0 5px 14px #0877aa30;
+}
+
+.sistema-contable :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario):hover {
+  background: #075d89;
+}
+
+.vista-pendiente {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px;
+  border: 1px solid var(--hospital-line);
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+}
+
+.vista-pendiente-icono {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 18px;
+  border: 1px solid #bce2e7;
+  border-radius: 16px;
+  background: #e9f8f8;
+  color: #087f87;
+}
+
+.vista-pendiente p { margin: 0 0 8px; color: #087f87; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; }
+.vista-pendiente h2 { margin: 0 0 8px; color: #12344f; font-size: 24px; }
+.vista-pendiente > span:not(.vista-pendiente-icono) { color: #577187; font-size: 14px; }
+.vista-pendiente small { margin-top: 18px; color: #6e8799; font-size: 12px; }
+
+@media (max-width: 760px) {
+  .sistema-contable .sistema-topbar { min-height: 58px; }
+  .sistema-contable .subvistas-carrusel > nav > button { flex: 0 0 auto; min-width: max-content; }
+  .sistema-contable .subvistas-carrusel > nav { scroll-snap-type: x proximity; }
+  .sistema-contable .subvistas-carrusel > nav > button { scroll-snap-align: start; }
+  .sistema-contable .area-trabajo { padding: 20px 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sistema-contable button { transition-duration: .01ms; }
+}
+
+/* El ancho disponible siempre pertenece al contenido, no a los controles. */
+.sistema-contable .sistema-cuerpo,
+.sistema-contable .area-trabajo,
+.sistema-contable .content-limit,
+.sistema-contable :is(.ventas-vista, .inventario-vista, .movimientos-vista, .usuarios-vista, .configuracion-vista),
+.sistema-contable :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido) {
+  min-width: 0;
+}
+
+.sistema-contable .content-limit { width: 100%; }
+.sistema-contable :is(.inventario-tabla, .movimientos-tabla, .usuarios-tabla, .ventas-tabla, .adquisiciones-lote-tabla) {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sistema-contable :is(.inventario-modal, .stock-detalle-modal) {
+  max-width: min(100%, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+}
+
+@media (max-width: 1100px) {
+  .sistema-contable .search-container { width: min(28vw, 320px); }
+  .sistema-contable .perfil strong { max-width: 100px; }
+  .sistema-contable .metricas { gap: 12px; }
+  .sistema-contable .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sistema-contable :is(.ventas-cabecera, .inventario-vista-cabecera, .movimientos-vista-cabecera, .usuarios-vista-cabecera) {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 860px) {
+  .sistema-contable .stock-general-tabla .stock-general-row {
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+  .sistema-contable .stock-general-tabla .inventario-tabla-head { display: none; }
+  .sistema-contable .stock-general-tabla { overflow: visible; }
+}
+
+@media (max-width: 900px) {
+  .sistema-contable,
+  .sistema-contable .sistema-cuerpo { width: 100%; }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo { margin-left: 0 !important; }
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width: min(310px, 88vw) !important;
+    height: 100dvh;
+    overflow: hidden !important;
+    transform: translateX(-105%);
+    visibility: hidden;
+  }
+  .sistema-contable .sistema-sidebar.sidebar-abierto {
+    transform: none;
+    visibility: visible;
+  }
+  .sistema-contable .menu-fondo { display: block; }
+  .sistema-contable .cerrar-menu {
+    display: grid;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+  }
+  .sistema-contable .sidebar-scroll,
+  .sidebar-replegado.sistema-contable .sidebar-scroll,
+  .sidebar-replegado.sistema-contable .sistema-nav {
+    min-height: 0;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  .sidebar-replegado.sistema-contable .sistema-nav section p,
+  .sidebar-replegado.sistema-contable .nav-texto,
+  .sidebar-replegado.sistema-contable .nav-indicador { display: block; }
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo,
+  .sidebar-replegado.sistema-contable .boton-salir {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    padding: 0 11px !important;
+  }
+  .sidebar-replegado.sistema-contable .boton-salir { width: calc(100% - 24px) !important; }
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo::after,
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo::before,
+  .sidebar-replegado.sistema-contable .boton-salir::after,
+  .sidebar-replegado.sistema-contable .boton-salir::before { display: none; }
+
+  .sistema-contable .sistema-topbar {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    grid-template-rows: 42px 42px;
+    height: auto;
+    min-height: 98px;
+    gap: 5px 8px;
+    padding: 7px 12px;
+  }
+  .sistema-contable .abrir-menu { display: grid; grid-column: 1; grid-row: 1; }
+  .sistema-contable .topbar-icono { display: none; }
+  .sistema-contable .topbar-titulo { grid-column: 2; grid-row: 1; }
+  .sistema-contable .topbar-titulo h1 { overflow: hidden; text-overflow: ellipsis; font-size: 17px; }
+  .sistema-contable .topbar-titulo small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sistema-contable .notificaciones { grid-column: 3; grid-row: 1; }
+  .sistema-contable .notificaciones-boton { width: 38px; height: 38px; }
+  .sistema-contable .perfil { display: none; }
+  .sistema-contable .salir-rapido { display: none; }
+  .sistema-contable .search-container {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+  .sistema-contable .busqueda-global { height: 42px; }
+  .sistema-contable .notificaciones-panel { top: 51px; right: -48px; }
+  .sistema-contable .area-trabajo { min-height: calc(100dvh - 98px); padding: 18px 12px; }
+  .sistema-contable .pagina-cabecera { align-items: flex-start; flex-wrap: wrap; }
+  .sistema-contable .metricas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sistema-contable .metricas article { min-width: 0; }
+  .sistema-contable .welcome-panel { padding: 22px; }
+  .sistema-contable .welcome-visual { margin-right: 0; }
+  .sistema-contable :is(.inventario-contenido, .movimientos-contenido, .usuarios-contenido, .ventas-panel) { padding: 14px; }
+  .sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) { align-items: stretch; }
+  .sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) > :is(label, select, button) {
+    min-width: 0;
+    max-width: 100%;
+    flex: 1 1 180px;
+  }
+  .sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) select { width: 100%; }
+  .sistema-contable .caja-cobro-bar { position: static; left: auto; right: auto; width: 100%; }
+}
+
+@media (max-width: 520px) {
+  .sistema-contable .pagina-cabecera h2 { font-size: 23px; }
+  .sistema-contable .metricas,
+  .sistema-contable .quick-grid { grid-template-columns: minmax(0, 1fr); }
+  .sistema-contable .metricas strong { font-size: 24px; }
+  .sistema-contable .welcome-panel { align-items: flex-start; padding: 20px; }
+  .sistema-contable .welcome-visual { display: none; }
+  .sistema-contable .section-title { align-items: flex-start; flex-wrap: wrap; gap: 4px 12px; }
+  .sistema-contable :is(.inventario-filtros, .movimientos-filtros, .usuarios-filtros) > :is(label, select, button) {
+    flex-basis: 100%;
+    width: 100%;
+  }
+  .sistema-contable .inventario-contenido .inventario-filtros .inventario-orden {
+    min-width: 0;
+    width: 100% !important;
+    flex-basis: 100% !important;
+  }
+  .sistema-contable .stock-general-tabla .stock-general-row { grid-template-columns: minmax(0, 1fr) !important; }
+  .sistema-contable .stock-detalle-resumen { grid-template-columns: minmax(0, 1fr); }
+  .sistema-contable :is(.inventario-modal, .stock-detalle-modal) { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+}

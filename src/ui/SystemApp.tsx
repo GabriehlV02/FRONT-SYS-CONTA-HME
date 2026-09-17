@@ -104,7 +104,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
     }
-    const media = window.matchMedia('(min-width: 761px)');
+    const media = window.matchMedia('(min-width: 901px)');
     const resize = () => { if (media.matches) setOpen(false); };
     media.addEventListener('change', resize);
     window.addEventListener('keydown', handleKey);

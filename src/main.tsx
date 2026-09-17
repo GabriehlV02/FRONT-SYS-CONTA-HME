@@ -4,6 +4,7 @@ import { App } from './App.tsx';
 import './styles.css';
 import './subvistas.css';
 import './topbar.css';
+import './hospital-ui.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
