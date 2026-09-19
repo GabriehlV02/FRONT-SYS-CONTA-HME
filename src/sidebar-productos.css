@@ -1,0 +1,54 @@
+/* Sidebar inspirado en el flujo del sistema de productos: lectura rápida, control flotante y navegación compacta. */
+.sistema-contable .sistema-sidebar {
+  width: 270px !important;
+  background: linear-gradient(180deg, #075985 0%, #087ea7 58%, #0b9bc1 100%);
+  border-right: 1px solid #55c9df;
+  box-shadow: 8px 0 24px rgba(2, 52, 81, .16);
+}
+.sistema-contable .sistema-cuerpo { margin-left: 270px !important; }
+.sistema-contable .marca-container { min-height: 108px; }
+.sistema-contable .sistema-marca { height: 108px !important; padding: 15px 18px !important; }
+.sistema-contable .replegar-menu {
+  top: 30px !important; right: -22px !important; width: 44px !important; height: 44px !important;
+  border: 2px solid #fff !important; color: #075985 !important;
+  background: #fff !important; box-shadow: 0 7px 18px rgba(1, 45, 73, .25) !important;
+}
+.sistema-contable .replegar-menu:hover { transform: scale(1.05); color: #087ea7 !important; }
+.sistema-contable .sidebar-scroll { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+.sistema-contable .sistema-nav { padding: 20px 12px 12px; }
+.sistema-contable .sistema-nav section { padding: 0 0 14px; }
+.sistema-contable .sistema-nav section + section { border: 0; }
+.sistema-contable .sistema-nav section p { margin: 0 12px 9px; font-size: 10px; letter-spacing: 1.5px; color: #c7f5ff; }
+.sistema-contable .sistema-nav .nav-modulo {
+  height: 48px; margin: 3px 0; padding: 0 11px; gap: 12px; border-radius: 12px; border-color: transparent;
+  font-size: 13px; font-weight: 700;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo { border-color: #bdf2fb; background: #fff; color: #075985; box-shadow: 0 5px 14px rgba(3, 75, 105, .16); }
+.sistema-contable .nav-modulo.activo:before { display: block; left: 0; width: 4px; border-radius: 0 5px 5px 0; background: #12b8df; }
+.sistema-contable .nav-icono { width: 30px; height: 30px; flex-basis: 30px; border-radius: 9px; }
+.sistema-contable .nav-modulo.activo .nav-icono { color: #087ea7; border-color: #b7ebf5; background: #e9fbff; }
+.sistema-contable .nav-texto { font-size: 13px; font-weight: 750; }
+.sistema-contable .nav-indicador { margin-left: auto; opacity: .75; }
+.sistema-contable .sidebar-sesion {
+  display: flex; align-items: center; gap: 10px; margin: auto 12px 10px; padding: 11px;
+  border: 1px solid rgba(220, 249, 255, .25); border-radius: 13px; color: #fff; background: rgba(255, 255, 255, .09);
+}
+.sistema-contable .sidebar-sesion-avatar { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.18); }
+.sistema-contable .sidebar-sesion div { min-width: 0; display: grid; gap: 2px; }
+.sistema-contable .sidebar-sesion strong { overflow: hidden; color: #fff; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.sistema-contable .sidebar-sesion small { color: #d9f9ff; font-size: 10px; }
+.sistema-contable .boton-salir { height: 48px; margin: 0 12px 16px; width: calc(100% - 24px); padding: 0 11px; border: 1px solid rgba(220, 249, 255, .34); border-radius: 12px; }
+.sidebar-replegado.sistema-contable .sistema-sidebar { width: 86px !important; }
+.sidebar-replegado.sistema-contable .sistema-cuerpo { margin-left: 86px !important; }
+.sidebar-replegado.sistema-contable .sistema-marca { padding-inline: 12px !important; }
+.sidebar-replegado.sistema-contable .replegar-menu { right: -22px !important; }
+.sidebar-replegado.sistema-contable .sistema-nav { padding-inline: 14px !important; }
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo { width: 58px !important; height: 48px; }
+.sidebar-replegado.sistema-contable .sidebar-sesion { width: 58px; justify-content: center; margin-inline: 14px; padding: 10px; }
+.sidebar-replegado.sistema-contable .sidebar-sesion div { display: none; }
+.sidebar-replegado.sistema-contable .boton-salir { width: 58px !important; margin-inline: 14px; padding: 0; }
+@media (max-width: 760px) {
+  .sistema-contable .sistema-sidebar, .sidebar-replegado.sistema-contable .sistema-sidebar { width: min(270px, 86vw) !important; }
+  .sistema-contable .sistema-cuerpo, .sidebar-replegado.sistema-contable .sistema-cuerpo { margin-left: 0 !important; }
+  .sistema-contable .replegar-menu { display: none !important; }
+}

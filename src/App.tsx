@@ -6,6 +6,7 @@ import { MovimientosView } from './flows/movimientos/MovimientosView';
 import { UsuariosView } from './flows/usuarios/UsuariosView';
 import { VentasView } from './flows/ventas/VentasView';
 import { AlmacenesView } from './flows/almacenes/AlmacenesView';
+import { DashboardContable } from './flows/resumen/DashboardContable';
 import {
   ConfiguracionView,
   FacturacionSiatView,
@@ -34,7 +35,7 @@ export const modules: {
   },
   {
     id: 'inventario',
-    name: 'Inventario',
+    name: 'Items/Productos',
     icon: 'package',
     group: 'ALMACENES',
     description: 'Consulta los insumos y sus existencias.',
@@ -121,7 +122,9 @@ const config: SystemConfig = {
   modules,
   sidebarGroups: ['GENERAL', 'VENTAS', 'ALMACENES', 'MOVIMIENTOS', 'ADMINISTRACION'],
   renderModule: (id, select, activeId) =>
-    id === 'ventas' ? (
+    id === 'resumen' ? (
+      <DashboardContable onSelect={select} />
+    ) : id === 'ventas' ? (
       <VentasView activeId={activeId} />
     ) : id === 'inventario' ? (
       <InventarioView activeId={activeId} />

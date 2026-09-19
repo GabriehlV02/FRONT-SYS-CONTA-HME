@@ -7,14 +7,15 @@
   subtitle: string;
   name: string;
 }) {
-  const logoCompleto = '/logo-hospital-original.png';
+  const logoCompleto = '/logo-hospital-contable-lila.png';
+  const logoLoginContable = '/logo-hospital-contable-login.png?v=lila-turquesa-login-2';
   const logoCompacto = '/brand.svg?v=clinico-azul-vital';
 
   return (
     <div className={sidebar ? 'sistema-marca' : 'login-brand'}>
       <span className="marca-icono marca-logo-completo" aria-hidden="true">
         <img
-          src={sidebar ? logoCompleto : logoCompacto}
+          src={sidebar ? logoCompleto : logoLoginContable}
           alt=""
           onError={(event) => {
             event.currentTarget.parentElement?.classList.add('logo-no-disponible');
