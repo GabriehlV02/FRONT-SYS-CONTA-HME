@@ -1,6 +1,6 @@
 ﻿import type { ReactNode, SVGProps } from 'react';
 
-export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
+export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'user' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
 type Props = SVGProps<SVGSVGElement> & { name: IconName; size?: number };
 
 const paths: Record<IconName, ReactNode> = {
@@ -10,6 +10,7 @@ const paths: Record<IconName, ReactNode> = {
   audit: <><path d="M9 5H6a2 2 0 0 0-2 2v13h13v-3M9 3h6v4H9z"/><circle cx="16" cy="12" r="4"/><path d="m19 15 3 3m-7-6 1 1 2-2"/></>,
   building: <><path d="M4 21V5l8-3v19M12 8h8v13M8 7v1m0 4v1m0 4v1m8-6v1m0 4v1M2 21h20"/></>,
   fileText: <><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6m-6 4h6"/></>,
+  user: <><circle cx="12" cy="8" r="4"/><path d="M4 21v-1.5a8 8 0 0 1 16 0V21H4Z"/></>,
   users: <><circle cx="9" cy="8" r="3"/><path d="M3.5 20v-1.5a5.5 5.5 0 0 1 11 0V20H3.5Zm12-14.5a3 3 0 0 1 0 5.5M17 14a5.5 5.5 0 0 1 3.5 5.1V20h-3"/></>,
   patient: <><circle cx="10" cy="7.5" r="3.25"/><path d="M3.5 20v-1.2a6.5 6.5 0 0 1 11.8-3.8"/><circle cx="17.5" cy="16.5" r="4"/><path d="M17.5 14.4v4.2m-2.1-2.1h4.2"/></>,
   userCheck: <><circle cx="9" cy="7.5" r="3.25"/><path d="M2.5 20v-1.2A6.5 6.5 0 0 1 14 14.65"/><path d="m15.2 18 2 2 4.3-5"/></>,

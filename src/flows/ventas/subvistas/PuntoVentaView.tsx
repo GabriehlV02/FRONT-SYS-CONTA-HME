@@ -164,11 +164,6 @@ export function PuntoVentaView() {
                 placeholder="Buscar producto por nombre, código de barras o categoría…"
               />
             </label>
-            <label>
-              <Icon name="fileText" size={16} />
-              <input placeholder="Lector / código" />
-            </label>
-            <button type="button">Escanear</button>
           </div>
           <div className="punto-catalogo-filtros">
             <div className="punto-categorias">

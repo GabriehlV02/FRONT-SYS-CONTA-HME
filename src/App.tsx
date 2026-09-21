@@ -1,14 +1,20 @@
 ﻿import { SystemApp } from '@ui/SystemApp';
 import type { SystemConfig } from '@ui/types';
 import type { IconName } from '@ui/components/Icon';
-import { InventarioView } from './flows/inventario/InventarioView';
-import { MovimientosView } from './flows/movimientos/MovimientosView';
-import { UsuariosView } from './flows/usuarios/UsuariosView';
-import { VentasView } from './flows/ventas/VentasView';
-import { AlmacenesView } from './flows/almacenes/AlmacenesView';
-import { DashboardContable } from './flows/resumen/DashboardContable';
-import { NotificacionesView } from './flows/notificaciones/NotificacionesView';
-import { ConfiguracionView } from './flows/configuracion/ConfiguracionView';
+import { lazy, Suspense, type ReactNode } from 'react';
+
+const InventarioView = lazy(() => import('./flows/inventario/InventarioView').then((module) => ({ default: module.InventarioView })));
+const MovimientosView = lazy(() => import('./flows/movimientos/MovimientosView').then((module) => ({ default: module.MovimientosView })));
+const UsuariosView = lazy(() => import('./flows/usuarios/UsuariosView').then((module) => ({ default: module.UsuariosView })));
+const VentasView = lazy(() => import('./flows/ventas/VentasView').then((module) => ({ default: module.VentasView })));
+const AlmacenesView = lazy(() => import('./flows/almacenes/AlmacenesView').then((module) => ({ default: module.AlmacenesView })));
+const DashboardContable = lazy(() => import('./flows/resumen/DashboardContable').then((module) => ({ default: module.DashboardContable })));
+const NotificacionesView = lazy(() => import('./flows/notificaciones/NotificacionesView').then((module) => ({ default: module.NotificacionesView })));
+const ConfiguracionView = lazy(() => import('./flows/configuracion/ConfiguracionView').then((module) => ({ default: module.ConfiguracionView })));
+
+function VistaDiferida({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<div className="carga-modulo" role="status" aria-label="Cargando módulo" />}>{children}</Suspense>;
+}
 
 export const modules: {
   id: string;
@@ -122,25 +128,25 @@ const config: SystemConfig = {
   sidebarGroups: ['GENERAL', 'VENTAS', 'ALMACENES', 'MOVIMIENTOS', 'ADMINISTRACION'],
   renderModule: (id, select, activeId) =>
     id === 'resumen' ? (
-      <DashboardContable onSelect={select} />
+      <VistaDiferida><DashboardContable onSelect={select} /></VistaDiferida>
     ) : id === 'notificaciones' ? (
-      <NotificacionesView onSelect={select} />
+      <VistaDiferida><NotificacionesView onSelect={select} /></VistaDiferida>
     ) : id === 'ventas' ? (
-      <VentasView activeId={activeId} />
+      <VistaDiferida><VentasView activeId={activeId} /></VistaDiferida>
     ) : id === 'inventario' ? (
-      <InventarioView activeId={activeId} />
+      <VistaDiferida><InventarioView activeId={activeId} /></VistaDiferida>
     ) : id === 'almacenes' ? (
-      <AlmacenesView activeId={activeId} />
+      <VistaDiferida><AlmacenesView activeId={activeId} /></VistaDiferida>
     ) : id === 'adquisiciones' ? (
-      <MovimientosView activeId={activeId} tipo="adquisiciones" />
+      <VistaDiferida><MovimientosView activeId={activeId} tipo="adquisiciones" /></VistaDiferida>
     ) : id === 'traspasos' ? (
-      <MovimientosView activeId={activeId} tipo="traspasos" />
+      <VistaDiferida><MovimientosView activeId={activeId} tipo="traspasos" /></VistaDiferida>
     ) : id === 'usuarios' ? (
-      <UsuariosView />
+      <VistaDiferida><UsuariosView /></VistaDiferida>
     ) : id === 'sucursales-cajas' ? (
-      <ConfiguracionView inicial="sucursales-almacenes" />
+      <VistaDiferida><ConfiguracionView inicial="sucursales-almacenes" /></VistaDiferida>
     ) : id === 'configuracion' ? (
-      <ConfiguracionView />
+      <VistaDiferida><ConfiguracionView vacia /></VistaDiferida>
     ) : undefined,
 };
 

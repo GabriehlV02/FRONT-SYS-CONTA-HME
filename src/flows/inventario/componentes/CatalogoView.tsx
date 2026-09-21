@@ -527,27 +527,27 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         />
         {nombreElementos}
       </label>
-      <div
-        className="inventario-modo inventario-modo-paginacion"
-        role="group"
-        aria-label="Modo de visualización"
-      >
-        <button
-          className={modo === 'listado' ? 'activo' : ''}
-          aria-pressed={modo === 'listado'}
-          onClick={() => cambiarModo('listado')}
-        >
-          <Icon name="menu" size={16} /> Listado
-        </button>
-        <button
-          className={modo === 'galeria' ? 'activo' : ''}
-          aria-pressed={modo === 'galeria'}
-          onClick={() => cambiarModo('galeria')}
-        >
-          <Icon name="image" size={16} /> Galería
-        </button>
-      </div>
       <div className="inventario-paginas">
+        <div
+          className="inventario-modo inventario-modo-paginacion"
+          role="group"
+          aria-label="Modo de visualización"
+        >
+          <button
+            className={modo === 'listado' ? 'activo' : ''}
+            aria-pressed={modo === 'listado'}
+            onClick={() => cambiarModo('listado')}
+          >
+            <Icon name="menu" size={16} /> Listado
+          </button>
+          <button
+            className={modo === 'galeria' ? 'activo' : ''}
+            aria-pressed={modo === 'galeria'}
+            onClick={() => cambiarModo('galeria')}
+          >
+            <Icon name="image" size={16} /> Galería
+          </button>
+        </div>
         <button
           disabled={paginaActual === 1}
           onClick={() => setPagina(1)}

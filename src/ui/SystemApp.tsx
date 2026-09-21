@@ -1,11 +1,21 @@
 ﻿import { useEffect, useRef, useState } from 'react';
 import Icon from './components/Icon';
+import { useMemo } from 'react';
 import { Login } from './components/Login';
 import { Sidebar } from './components/Sidebar';
 import type { AuthSession, SystemConfig } from './types';
 
 const sessionDurationMs = 6 * 60 * 60_000;
 const memoryExpirations = new Map<SystemConfig['id'], number>();
+const notifications = [
+  { id: 'stock', tone: 'alerta', title: 'Stock por revisar', detail: '3 insumos estan cerca del minimo definido.', time: 'Hace 12 min' },
+  { id: 'caja', tone: 'exito', title: 'Caja actualizada', detail: 'El cierre parcial fue guardado correctamente.', time: 'Hace 28 min' },
+  { id: 'facturacion', tone: 'info', title: 'Facturacion pendiente', detail: 'Hay comprobantes listos para validacion.', time: 'Hoy' },
+];
+
+function normalizarBusqueda(value: string) {
+  return value.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 
 type StoredSession = {
   user: string;
@@ -79,13 +89,12 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   const [query, setQuery] = useState('');
   const menuButton = useRef<HTMLButtonElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
-  const selected = modules.find(item => item.id === active || active.startsWith(`${item.id}-`)) ?? modules[0];
-  const results = modules.filter(item => item.name.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(query.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '')));
-  const notifications = [
-    { id: 'stock', tone: 'alerta', title: 'Stock por revisar', detail: '3 insumos estan cerca del minimo definido.', time: 'Hace 12 min' },
-    { id: 'caja', tone: 'exito', title: 'Caja actualizada', detail: 'El cierre parcial fue guardado correctamente.', time: 'Hace 28 min' },
-    { id: 'facturacion', tone: 'info', title: 'Facturacion pendiente', detail: 'Hay comprobantes listos para validacion.', time: 'Hoy' },
-  ];
+  const selected = useMemo(() => modules.find(item => item.id === active || active.startsWith(`${item.id}-`)) ?? modules[0], [active, modules]);
+  const results = useMemo(() => {
+    const normalizedQuery = normalizarBusqueda(query);
+    return normalizedQuery ? modules.filter(item => normalizarBusqueda(item.name).includes(normalizedQuery)) : [];
+  }, [modules, query]);
+  const quickModules = useMemo(() => modules.filter(item => config.quickIds.includes(item.id)), [config.quickIds, modules]);
 
   function closeMenu() { setOpen(false); requestAnimationFrame(() => menuButton.current?.focus()); }
   useEffect(() => {
@@ -147,7 +156,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   function logout() { clearStoredSession(config.id); setSession(null); setActive(modules[0]?.id ?? 'resumen'); setOpen(false); setQuery(''); }
   if (!session) return <Login config={config} onLogin={login}/>;
 
-  const moduleId = modules.find(item => item.id === active || active.startsWith(`${item.id}-`))?.id ?? active;
+  const moduleId = selected?.id ?? active;
   const moduleContent = config.renderModule?.(moduleId, select, active, session);
   return <div className={`sistema-app sistema-${config.id} ${collapsed ? 'sidebar-replegado' : ''}`}>
     <Sidebar config={config} active={active} open={open} collapsed={collapsed} onSelect={select} onClose={closeMenu} onCollapse={() => setCollapsed(!collapsed)} onLogout={logout} session={session}/>
@@ -174,7 +183,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
             </div>
           </section>}
         </div>
-        <div className="perfil"><span className="perfil-avatar"><Icon name="users" size={34}/></span><div><strong title={session.user}>{session.user === 'demo' ? 'Usuario de prueba' : session.user}</strong><small>{session.role || config.role}</small></div></div>
+        <div className="perfil"><span className="perfil-avatar"><Icon name="user" size={21}/></span><div><strong title={session.user}>{session.user === 'demo' ? 'Usuario de prueba' : session.user}</strong><small>{session.role || config.role}</small></div></div>
         <button className="salir-rapido" onClick={logout} aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="logout" size={19}/></button>
       </header>
       <main className="area-trabajo"><div className="content-limit">
@@ -182,7 +191,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
         {moduleContent ? <div key={active}>{moduleContent}</div> : (active === 'resumen' ? <>
           <section className="metricas" aria-label="Resumen del sistema">{config.metrics.map(item => <article key={item.title}><div className="metrica-heading"><span>{item.title}</span><span className="metric-icon"><Icon name={item.icon}/></span></div><strong>{item.value}</strong><small>{item.note} · Demo</small></article>)}</section>
           <section className="welcome-panel"><div><span className="section-kicker">TU ESPACIO DE TRABAJO</span><h2>{config.welcomeTitle}</h2><p>{config.welcomeDescription}</p><button className="boton-principal" onClick={() => select(config.actionId)}>{config.actionLabel} <Icon name="arrowRight" size={17}/></button></div><div className="welcome-visual" aria-hidden="true"><Icon name="fileText" size={76}/><span><Icon name="check" size={23}/></span></div></section>
-          <section className="quick-section"><div className="section-title"><h2>Accesos rápidos</h2><span>{config.name}</span></div><div className="quick-grid">{modules.filter(item => config.quickIds.includes(item.id)).map(item => <button key={item.id} onClick={() => select(item.id)}><span className="quick-icon"><Icon name={item.icon} size={22}/></span><strong>{item.name}</strong><span>{item.description}</span><Icon className="quick-arrow" name="arrowRight" size={17}/></button>)}</div></section>
+          <section className="quick-section"><div className="section-title"><h2>Accesos rápidos</h2><span>{config.name}</span></div><div className="quick-grid">{quickModules.map(item => <button key={item.id} onClick={() => select(item.id)}><span className="quick-icon"><Icon name={item.icon} size={22}/></span><strong>{item.name}</strong><span>{item.description}</span><Icon className="quick-arrow" name="arrowRight" size={17}/></button>)}</div></section>
         </> : <section className="modulo-vacio"><span className="empty-icon"><Icon name={selected.icon} size={35}/></span><p>{config.name.toUpperCase()}</p><h2>{selected.name}</h2><div>{selected.description}</div><small>El contenido de este módulo se diseñará en la siguiente etapa.</small><button className="boton-secundario" onClick={() => select('resumen')}><Icon name="chevronLeft" size={16}/> Volver al panel principal</button></section>)}
       </div></main>
     </div>
