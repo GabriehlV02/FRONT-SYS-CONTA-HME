@@ -16,6 +16,13 @@ export function InventarioNavegacion({ activa, onSeleccionar }: Props) {
       ariaLabel="Subvistas de Inventario"
     >
       <BotonSubvista
+        nombre="Ítems general"
+        icono="eye"
+        activa={activa === 'todo'}
+        onSeleccionar={() => onSeleccionar('todo')}
+        claseIcono="inventario-subvista-icono"
+      />
+      <BotonSubvista
         nombre="Productos e insumos"
         icono="package"
         activa={activa === 'productos'}
@@ -27,13 +34,6 @@ export function InventarioNavegacion({ activa, onSeleccionar }: Props) {
         icono="asset"
         activa={activa === 'servicios'}
         onSeleccionar={() => onSeleccionar('servicios')}
-        claseIcono="inventario-subvista-icono"
-      />
-      <BotonSubvista
-        nombre="Vista general"
-        icono="eye"
-        activa={activa === 'todo'}
-        onSeleccionar={() => onSeleccionar('todo')}
         claseIcono="inventario-subvista-icono"
       />
       <BotonSubvista

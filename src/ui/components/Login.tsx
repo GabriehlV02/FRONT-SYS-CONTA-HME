@@ -226,10 +226,7 @@ export function Login({
       ))}
       {esContable ? (
         <div className="login-balance-layout">
-          <section className="login-balance-left">
-            <LoginBalancePanel subtitle={config.subtitle} />
-          </section>
-          <section className="login-balance-right">
+          <section className="login-balance-right login-acceso-panel">
             <div className="login-circulos" aria-hidden="true">
               {['uno', 'dos', 'tres', 'cuatro'].map((name) => (
                 <span
@@ -245,6 +242,9 @@ export function Login({
               ))}
             </div>
             {loginForm}
+          </section>
+          <section className="login-balance-left login-ilustracion-panel">
+            <LoginBalancePanel subtitle={config.subtitle} />
           </section>
         </div>
       ) : (

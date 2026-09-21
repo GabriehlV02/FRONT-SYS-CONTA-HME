@@ -7,9 +7,9 @@ import { UsuariosView } from './flows/usuarios/UsuariosView';
 import { VentasView } from './flows/ventas/VentasView';
 import { AlmacenesView } from './flows/almacenes/AlmacenesView';
 import { DashboardContable } from './flows/resumen/DashboardContable';
+import { NotificacionesView } from './flows/notificaciones/NotificacionesView';
 import {
   ConfiguracionView,
-  FacturacionSiatView,
 } from './flows/configuracion/ConfiguracionView';
 
 export const modules: {
@@ -26,6 +26,7 @@ export const modules: {
     group: 'GENERAL',
     description: 'Panorama de la actividad administrativa del hospital.',
   },
+  { id: 'notificaciones', name: 'Notificaciones', icon: 'bell', group: 'GENERAL', description: 'Consulta los avisos y cambios recientes.' },
   {
     id: 'ventas',
     name: 'Ventas',
@@ -69,11 +70,11 @@ export const modules: {
     description: 'Usuarios, roles y permisos del sistema.',
   },
   {
-    id: 'facturacion-siat',
-    name: 'Facturacion SIAT',
-    icon: 'fileText',
+    id: 'sucursales-cajas',
+    name: 'Cajas y almacenes',
+    icon: 'building',
     group: 'ADMINISTRACION',
-    description: 'Parametros fiscales para emitir facturacion electronica.',
+    description: 'Administra las sucursales y cajas operativas.',
   },
   {
     id: 'configuracion',
@@ -124,6 +125,8 @@ const config: SystemConfig = {
   renderModule: (id, select, activeId) =>
     id === 'resumen' ? (
       <DashboardContable onSelect={select} />
+    ) : id === 'notificaciones' ? (
+      <NotificacionesView onSelect={select} />
     ) : id === 'ventas' ? (
       <VentasView activeId={activeId} />
     ) : id === 'inventario' ? (
@@ -136,8 +139,8 @@ const config: SystemConfig = {
       <MovimientosView activeId={activeId} tipo="traspasos" />
     ) : id === 'usuarios' ? (
       <UsuariosView />
-    ) : id === 'facturacion-siat' ? (
-      <FacturacionSiatView />
+    ) : id === 'sucursales-cajas' ? (
+      <ConfiguracionView inicial="sucursales-almacenes" />
     ) : id === 'configuracion' ? (
       <ConfiguracionView />
     ) : undefined,

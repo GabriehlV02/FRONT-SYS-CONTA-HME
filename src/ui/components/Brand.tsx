@@ -8,7 +8,7 @@
   name: string;
 }) {
   const logoCompleto = '/logo-hospital-contable-lila.png';
-  const logoLoginContable = '/logo-hospital-contable-login.png?v=lila-turquesa-login-2';
+  const logoLoginContable = '/logo-hospital-contable-lila.png?v=login-lila-20260921';
   const logoCompacto = '/brand.svg?v=clinico-azul-vital';
 
   return (

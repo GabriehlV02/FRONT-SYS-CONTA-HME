@@ -3203,3 +3203,35 @@
   border-color: #fff;
   background: #fff;
 }
+
+/* Barra de desplazamiento del sidebar: lila y alineada a su borde derecho. */
+.sistema-contable .sidebar-scroll {
+  padding-right: 2px;
+  scrollbar-color: #a78bfa #f5f1ff;
+}
+.sistema-contable .sidebar-scroll::-webkit-scrollbar { width: 7px; }
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-track {
+  margin: 4px 0;
+  border-radius: 999px;
+  background: #f5f1ff;
+}
+.sistema-contable .sidebar-scroll::-webkit-scrollbar-thumb {
+  border: 1px solid #f5f1ff;
+  background: #a78bfa;
+}
+.sistema-contable .sidebar-scroll {
+  direction: ltr;
+  padding-right: 0 !important;
+  scrollbar-gutter: auto;
+}
+
+/* Encabezados de tablas con la jerarquía visual lila del sistema. */
+.sistema-contable .inventario-tabla-head,
+.sistema-contable .movimientos-tabla-head,
+.sistema-contable .usuarios-tabla-head,
+.sistema-contable .ventas-tabla-head {
+  color: #fff !important;
+  background: linear-gradient(105deg, #6d28d9, #8b5cf6) !important;
+  border-color: #6d28d9 !important;
+  font-weight: 900 !important;
+}

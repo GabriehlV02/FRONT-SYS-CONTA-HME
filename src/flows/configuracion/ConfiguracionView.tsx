@@ -5,7 +5,7 @@ import { BotonSubvista } from '@ui/components/BotonSubvista';
 import { HorizontalSubvistaNav } from '@ui/components/HorizontalSubvistaNav';
 import './ConfiguracionView.css';
 
-type SubvistaConfiguracion = 'usuario' | 'sistema' | 'nuevos' | 'administracion';
+type SubvistaConfiguracion = 'sucursales-almacenes' | 'cajas' | 'vendedores' | 'administrar' | 'nuevos';
 
 const subvistas: {
   id: SubvistaConfiguracion;
@@ -13,14 +13,14 @@ const subvistas: {
   icono: IconName;
   descripcion: string;
 }[] = [
-  { id: 'usuario', nombre: 'Usuario', icono: 'users', descripcion: 'Preferencias de la cuenta y datos de acceso.' },
-  { id: 'sistema', nombre: 'Sistema', icono: 'settings', descripcion: 'Parámetros generales del sistema.' },
-  { id: 'nuevos', nombre: 'Nuevos', icono: 'plus', descripcion: 'Opciones para nuevos registros.' },
-  { id: 'administracion', nombre: 'Administración', icono: 'building', descripcion: 'Ajustes administrativos del hospital.' },
+  { id: 'sucursales-almacenes', nombre: 'Sucursales y almacenes', icono: 'building', descripcion: 'Organización de sucursales y almacenes.' },
+  { id: 'cajas', nombre: 'Cajas', icono: 'cash', descripcion: 'Gestión de cajas operativas.' },
+  { id: 'vendedores', nombre: 'Vendedores', icono: 'users', descripcion: 'Administración de vendedores.' },
+  { id: 'administrar', nombre: 'Administrar', icono: 'settings', descripcion: 'Ajustes de administración.' },
 ];
 
-export function ConfiguracionView() {
-  const [subvista, setSubvista] = useState<SubvistaConfiguracion>('usuario');
+export function ConfiguracionView({ inicial = 'sucursales-almacenes' }: { inicial?: SubvistaConfiguracion }) {
+  const [subvista, setSubvista] = useState<SubvistaConfiguracion>(inicial);
   const [sucursales, setSucursales] = useState(['Hospital María Esperanza', 'Centro de Hemodialisis', 'Policonsultorio-Diabetes']);
   const [cajas, setCajas] = useState([{ id: 1, nombre: 'Caja 01 · Recepción', sucursal: 'Hospital María Esperanza', estado: 'Abierta' }, { id: 2, nombre: 'Caja 02 · Farmacia', sucursal: 'Hospital María Esperanza', estado: 'Cerrada' }]);
   const [nuevaSucursal, setNuevaSucursal] = useState('');
@@ -43,7 +43,7 @@ export function ConfiguracionView() {
           />
         ))}
       </HorizontalSubvistaNav>
-      {subvista === 'nuevos' ? <div className="configuracion-nuevos" aria-label="Nuevas sucursales y cajas">
+      {false ? <div className="configuracion-nuevos" aria-label="Nuevas sucursales y cajas">
         <header><div><p>CONFIGURACIÓN OPERATIVA</p><h2>Sucursales y cajas</h2><small>Las cajas se gestionan dentro de una sucursal para mantener el control de ventas y cierres.</small></div></header>
         <div className="configuracion-nuevos-grid">
           <section><div className="configuracion-nuevos-head"><span><Icon name="building" size={19}/></span><div><strong>Sucursales</strong><small>{sucursales.length} registradas</small></div></div><div className="configuracion-form-linea"><input value={nuevaSucursal} onChange={event => setNuevaSucursal(event.target.value)} onKeyDown={event => { if (event.key === 'Enter') crearSucursal(); }} placeholder="Nombre de la nueva sucursal" /><button type="button" className="configuracion-primario" onClick={crearSucursal}><Icon name="plus" size={16}/> Crear</button></div><div className="configuracion-lista">{sucursales.map(sucursal => <article key={sucursal}><Icon name="building" size={17}/><strong>{sucursal}</strong><span>Activa</span></article>)}</div></section>

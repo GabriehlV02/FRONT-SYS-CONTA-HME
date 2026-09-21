@@ -17,7 +17,7 @@ export function InventarioView({ activeId }: { activeId?: string }) {
         ? 'todo'
         : id === 'inventario-reportes'
           ? 'reportes'
-          : 'productos';
+          : 'todo';
   const [subvista, setSubvista] = useState<SubvistaInventario>(() =>
     resolveSubvista(activeId),
   );
