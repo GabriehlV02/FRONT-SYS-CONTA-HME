@@ -2,10 +2,12 @@
   sidebar = false,
   subtitle,
   name,
+  logoSrc,
 }: {
   sidebar?: boolean;
   subtitle: string;
   name: string;
+  logoSrc?: string;
 }) {
   const logoCompleto = '/logo-hospital-contable-lila.png';
   const logoLoginContable = '/logo-hospital-contable-lila.png?v=login-lila-20260921';
@@ -15,7 +17,7 @@
     <div className={sidebar ? 'sistema-marca' : 'login-brand'}>
       <span className="marca-icono marca-logo-completo" aria-hidden="true">
         <img
-          src={sidebar ? logoCompleto : logoLoginContable}
+          src={logoSrc ?? (sidebar ? logoCompleto : logoLoginContable)}
           alt=""
           onError={(event) => {
             event.currentTarget.parentElement?.classList.add('logo-no-disponible');

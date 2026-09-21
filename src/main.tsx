@@ -10,6 +10,7 @@ import './tema-lila.css';
 import './sidebar-ajustes.css';
 import './paleta-unificada.css';
 import './login-lila.css';
+import './login-panel-refresh.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

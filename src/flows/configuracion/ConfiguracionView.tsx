@@ -59,13 +59,3 @@ export function ConfiguracionView({ inicial = 'sucursales-almacenes' }: { inicia
     </section>
   );
 }
-
-export function FacturacionSiatView() {
-  return <section className="vista-pendiente" aria-label="Facturación SIAT">
-    <span className="vista-pendiente-icono"><Icon name="fileText" size={28} /></span>
-    <p>ADMINISTRACIÓN</p>
-    <h2>Facturación SIAT</h2>
-    <span>Parámetros fiscales y emisión electrónica.</span>
-    <small>Esta sección está en preparación.</small>
-  </section>;
-}

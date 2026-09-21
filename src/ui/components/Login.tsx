@@ -83,12 +83,12 @@ export function Login({
     <form className="login-card" onSubmit={enter}>
       <Brand name={config.name} subtitle={config.subtitle} />
       <p className="login-kicker">{config.loginTitle}</p>
-      <h1>Bienvenido de nuevo</h1>
+      <h1>Iniciar sesión</h1>
       <p className="login-subtitulo">
-        Ingresa tus credenciales para acceder a tu espacio de trabajo.
+        Ingresa tus credenciales para acceder al sistema.
       </p>
       <label className="login-label" htmlFor="username">
-        Correo, usuario o CI
+        Usuario
       </label>
       <div className="login-input">
         <Icon name="users" size={19} />

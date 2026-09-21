@@ -8,9 +8,7 @@ import { VentasView } from './flows/ventas/VentasView';
 import { AlmacenesView } from './flows/almacenes/AlmacenesView';
 import { DashboardContable } from './flows/resumen/DashboardContable';
 import { NotificacionesView } from './flows/notificaciones/NotificacionesView';
-import {
-  ConfiguracionView,
-} from './flows/configuracion/ConfiguracionView';
+import { ConfiguracionView } from './flows/configuracion/ConfiguracionView';
 
 export const modules: {
   id: string;
@@ -43,7 +41,7 @@ export const modules: {
   },
   {
     id: 'almacenes',
-    name: 'Almacenes',
+    name: 'Inventarios y Almacenes',
     icon: 'building',
     group: 'ALMACENES',
     description: 'Organiza los almacenes y sus ubicaciones.',
