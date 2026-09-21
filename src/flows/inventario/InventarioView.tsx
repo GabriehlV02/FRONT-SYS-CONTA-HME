@@ -7,6 +7,7 @@ import { ProductosInsumosView } from './subvistas/ProductosInsumosView';
 import { ServiciosView } from './subvistas/ServiciosView';
 import { ReportesInventarioView } from './subvistas/ReportesInventarioView';
 import { CatalogoView } from './componentes/CatalogoView';
+import { MedicosProfesionalesView } from './subvistas/MedicosProfesionalesView';
 import './InventarioView.css';
 
 export function InventarioView({ activeId }: { activeId?: string }) {
@@ -28,6 +29,7 @@ export function InventarioView({ activeId }: { activeId?: string }) {
       <InventarioNavegacion activa={subvista} onSeleccionar={setSubvista} />
       {subvista === 'productos' && <ProductosInsumosView />}
       {subvista === 'servicios' && <ServiciosView />}
+      {subvista === 'medicos' && <MedicosProfesionalesView />}
       {subvista === 'todo' && <CatalogoView tipo="todo" />}
       {subvista === 'reportes' && <ReportesInventarioView />}
     </section>

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import { SelectMenu } from '@ui/components/SelectMenu';
 
 export function RolesPermisosView() {
   const [query, setQuery] = useState('');
@@ -41,20 +42,7 @@ export function RolesPermisosView() {
 
   return (
     <div className="usuarios-contenido">
-      <header className="usuarios-vista-cabecera">
-        <div>
-          <p>CONTROL DE ACCESOS</p>
-          <h2>Roles y permisos</h2>
-          <small>Define el nivel de acceso por flujo para cada rol.</small>
-        </div>
-        <button
-          className="usuarios-accion"
-          onClick={() => setEditando('Nuevo rol')}
-        >
-          <Icon name="plus" size={17} /> Nuevo rol
-        </button>
-      </header>
-      <div className="usuarios-filtros">
+      <div className="usuarios-filtros roles-filtros">
         <label>
           <Icon name="search" size={17} />
           <input
@@ -64,16 +52,20 @@ export function RolesPermisosView() {
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>
-        <select
-          aria-label="Filtrar roles por estado"
+        <SelectMenu
+          className="roles-estado-select"
+          ariaLabel="Filtrar roles por estado"
           value={estado}
-          onChange={(event) => setEstado(event.target.value)}
-        >
-          <option>Todos</option>
-          <option>Activos</option>
-          <option>Inactivos</option>
-        </select>
+          options={['Todos', 'Activos', 'Inactivos']}
+          onChange={setEstado}
+        />
         <span className="usuarios-contador">{visibles.length} roles</span>
+        <button
+          className="usuarios-accion"
+          onClick={() => setEditando('Nuevo rol')}
+        >
+          <Icon name="plus" size={17} /> Nuevo rol
+        </button>
       </div>
 
       <div
@@ -207,36 +199,27 @@ const gruposPermisos = [
     ],
   },
   {
-    flujo: 'Configuracion',
+    flujo: 'Cajas y almacenes',
     permisos: [
-      'Ver modulo configuracion',
-      'Ver configuracion de usuario',
-      'Ver configuracion de sistema',
-      'Ver nuevos parametros',
-      'Ver administracion',
-      'Editar configuracion general',
+      'Ver módulo cajas y almacenes',
+      'Ver sucursales y almacenes',
+      'Crear y editar sucursales',
+      'Crear y editar almacenes',
+      'Ver y administrar cajas',
+      'Abrir y cerrar cajas',
+      'Ver vendedores',
+      'Crear y editar vendedores',
+      'Administrar parámetros operativos',
     ],
   },
   {
-    flujo: 'Facturacion SIAT',
+    flujo: 'Notificaciones',
     permisos: [
-      'Ver modulo facturacion SIAT',
-      'Configurar parametros SIAT',
-      'Gestionar NIT y razon social',
-      'Gestionar ambiente SIAT',
-      'Gestionar codigo de sistema',
-      'Gestionar modalidad de facturacion',
-      'Gestionar tipo de emision',
-      'Gestionar documento sector',
-      'Gestionar sucursal',
-      'Gestionar punto de venta',
-      'Gestionar token SIAT',
-      'Gestionar firma digital',
-      'Gestionar CUIS',
-      'Gestionar CUFD',
-      'Sincronizar catalogos SIAT',
-      'Probar conexion SIAT',
-      'Autorizar sistema SIAT',
+      'Ver centro de notificaciones',
+      'Ver creación de registros',
+      'Ver cambios de registros',
+      'Acceder al módulo relacionado',
+      'Marcar notificaciones como leídas',
     ],
   },
 ];

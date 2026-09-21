@@ -2,7 +2,7 @@
 import { BotonSubvista } from '@ui/components/BotonSubvista';
 
 export type SubvistaInventario =
-  'productos' | 'servicios' | 'todo' | 'reportes';
+  'productos' | 'servicios' | 'medicos' | 'todo' | 'reportes';
 
 type Props = {
   activa: SubvistaInventario;
@@ -34,6 +34,13 @@ export function InventarioNavegacion({ activa, onSeleccionar }: Props) {
         icono="asset"
         activa={activa === 'servicios'}
         onSeleccionar={() => onSeleccionar('servicios')}
+        claseIcono="inventario-subvista-icono"
+      />
+      <BotonSubvista
+        nombre="Médicos y profesionales"
+        icono="users"
+        activa={activa === 'medicos'}
+        onSeleccionar={() => onSeleccionar('medicos')}
         claseIcono="inventario-subvista-icono"
       />
       <BotonSubvista

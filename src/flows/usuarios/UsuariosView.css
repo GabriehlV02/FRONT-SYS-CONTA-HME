@@ -210,6 +210,85 @@
   margin-left: auto;
   white-space: nowrap;
 }
+.roles-filtros {
+  flex-wrap: nowrap;
+  width: 100%;
+}
+.sistema-contable .usuarios-filtros > label {
+  width: 440px;
+  min-width: 340px;
+  flex: 0 1 440px;
+  border: 3px solid #8b5cf6;
+  border-radius: 11px;
+  box-shadow: 0 0 0 1px rgba(109, 40, 217, .08);
+}
+.sistema-contable .usuarios-filtros > label:focus-within {
+  border-color: #6d28d9;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, .16);
+}
+.roles-estado-select {
+  position: relative;
+  width: 150px;
+  flex: 0 0 150px;
+}
+.roles-estado-select .select-menu-trigger {
+  width: 100%;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 13px;
+  border: 2px solid #c4b5fd;
+  border-radius: 10px;
+  color: #5b21b6;
+  background: #faf8ff;
+  box-shadow: none;
+}
+.roles-estado-select .select-menu-trigger[aria-expanded='true'] {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, .14);
+}
+.roles-estado-select .select-menu-trigger svg {
+  transition: transform .18s ease;
+}
+.roles-estado-select .select-menu-trigger[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.roles-estado-select .select-menu-options {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 7px);
+  left: 0;
+  right: 0;
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #c4b5fd;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(76, 29, 149, .18);
+}
+.roles-estado-select .select-menu-options button {
+  width: 100%;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  color: #54249b;
+  background: transparent;
+  text-align: left;
+}
+.roles-estado-select .select-menu-options button:hover {
+  color: #5b21b6;
+  background: #eee7ff;
+}
+.roles-estado-select .select-menu-options button.activo {
+  color: #fff;
+  background: linear-gradient(110deg, #6d28d9, #8b5cf6);
+}
 .sistema-contable .usuarios-filtros label {
   border: 2px solid #a78bfa;
   color: #6d28d9;
@@ -310,6 +389,9 @@
 .usuarios-tabla .roles-fila strong { color: #24114e; font-size: 13px; }
 .usuarios-tabla .roles-fila small { color: #6b5b88; font-size: 11px; line-height: 1.35; }
 .usuarios-tabla .roles-fila .permisos-contador { width: max-content; padding: 6px 10px; border-radius: 999px; color: #6d28d9; background: #f1ebff; }
+.usuarios-tabla .roles-fila .permisos-contador { justify-self: center; text-align: center; }
+.permisos-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1080px) { .permisos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .usuarios-tabla .roles-fila .estado-activo { color: #087a9e; background: #e5f8fb; }
 .usuarios-tabla .roles-fila > button { justify-self: start; width: 36px; height: 34px; border-color: #c4b5fd; color: #6d28d9; background: #faf7ff; }
 .usuarios-tabla-fila > span:first-child,
@@ -385,6 +467,14 @@
   accent-color: #0879af;
 }
 @media (max-width: 760px) {
+  .roles-filtros {
+    flex-wrap: wrap;
+  }
+  .sistema-contable .usuarios-filtros > label {
+    width: 100%;
+    min-width: 0;
+    flex-basis: 100%;
+  }
   .usuarios-vista-cabecera {
     flex-direction: column;
   }
