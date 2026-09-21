@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
+import { SelectMenu } from '@ui/components/SelectMenu';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
 type ModoInventario = 'galeria' | 'listado';
@@ -74,12 +75,12 @@ const crearPrefijoCodigo = (valor: string) =>
 export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   const subvista = tipo;
   const [modo, setModo] = useState<ModoInventario>('listado');
-  const [porPagina, setPorPagina] = useState(10);
+  const [porPagina, setPorPagina] = useState<number | 'Todos'>(10);
   const [pagina, setPagina] = useState(1);
   const [busqueda, setBusqueda] = useState('');
   const [categoria, setCategoria] = useState('todas');
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
-  const [campoOrden, setCampoOrden] = useState<CampoOrden>('codigo');
+  const [campoOrden, setCampoOrden] = useState<CampoOrden | ''>('');
   const [modalRegistroAbierto, setModalRegistroAbierto] = useState(false);
   const [detalleRegistro, setDetalleRegistro] = useState<RegistroInventario | null>(null);
   const [edicionRegistro, setEdicionRegistro] = useState<RegistroInventario | null>(null);
@@ -315,6 +316,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
           ].some((valor) => normalizarBusqueda(valor).includes(termino)),
       )
       .sort((a, b) => {
+        if (!campoOrden) return 0;
         const valorA =
           campoOrden === 'codigo'
             ? obtenerDatosTabla(a).codigo
@@ -331,15 +333,16 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         );
       });
   }, [busqueda, campoOrden, categoria, direccion, elementosDemo]);
+  const cantidadPorPagina = porPagina === 'Todos' ? Math.max(productosFiltrados.length, 1) : porPagina;
   const totalPaginas = Math.max(
     1,
-    Math.ceil(productosFiltrados.length / porPagina),
+    Math.ceil(productosFiltrados.length / cantidadPorPagina),
   );
   const paginaActual = Math.min(pagina, totalPaginas);
-  const desde = (paginaActual - 1) * porPagina;
+  const desde = (paginaActual - 1) * cantidadPorPagina;
   const productosPagina = useMemo(
-    () => productosFiltrados.slice(desde, desde + porPagina),
-    [desde, productosFiltrados, porPagina],
+    () => productosFiltrados.slice(desde, desde + cantidadPorPagina),
+    [cantidadPorPagina, desde, productosFiltrados],
   );
 
   function actualizarFiltro(actualizar: () => void) {
@@ -347,8 +350,8 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     setPagina(1);
   }
 
-  function cambiarPorPagina(valor: number) {
-    setPorPagina(valor);
+  function cambiarPorPagina(valor: string) {
+    setPorPagina(valor === 'Todos' ? 'Todos' : Number(valor));
     setPagina(1);
   }
 
@@ -510,26 +513,40 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
       </span>
       <span>
         {productosFiltrados.length === 0 ? 0 : desde + 1}-
-        {Math.min(desde + porPagina, productosFiltrados.length)} de{' '}
+        {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
       </span>
       <label>
         Mostrar
-        <select
-          value={porPagina}
-          onChange={(event) => cambiarPorPagina(Number(event.target.value))}
-          aria-label="Productos por pagina"
-        >
-          {(modo === 'galeria' ? [5, 8, 10, 15] : [10, 15, 20, 30]).map(
-            (cantidad) => (
-              <option key={cantidad} value={cantidad}>
-                {cantidad}
-              </option>
-            ),
-          )}
-        </select>
+        <SelectMenu
+          className="inventario-cantidad-select"
+          value={String(porPagina)}
+          onChange={cambiarPorPagina}
+          ariaLabel="Productos por página"
+          options={modo === 'galeria' ? ['5', '8', '10', '15', '50', 'Todos'] : ['10', '15', '20', '30', '50', 'Todos']}
+        />
         {nombreElementos}
       </label>
+      <div
+        className="inventario-modo inventario-modo-paginacion"
+        role="group"
+        aria-label="Modo de visualización"
+      >
+        <button
+          className={modo === 'listado' ? 'activo' : ''}
+          aria-pressed={modo === 'listado'}
+          onClick={() => cambiarModo('listado')}
+        >
+          <Icon name="menu" size={16} /> Listado
+        </button>
+        <button
+          className={modo === 'galeria' ? 'activo' : ''}
+          aria-pressed={modo === 'galeria'}
+          onClick={() => cambiarModo('galeria')}
+        >
+          <Icon name="image" size={16} /> Galería
+        </button>
+      </div>
       <div className="inventario-paginas">
         <button
           disabled={paginaActual === 1}
@@ -570,24 +587,18 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     <div className="inventario-paginacion">
       <span>
         {productosFiltrados.length === 0 ? 0 : desde + 1}-
-        {Math.min(desde + porPagina, productosFiltrados.length)} de{' '}
+        {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
       </span>
       <label>
         Mostrar
-        <select
-          value={porPagina}
-          onChange={(event) => cambiarPorPagina(Number(event.target.value))}
-          aria-label="Productos por pagina"
-        >
-          {(modo === 'galeria' ? [5, 8, 10, 15] : [10, 15, 20, 30]).map(
-            (cantidad) => (
-              <option key={cantidad} value={cantidad}>
-                {cantidad}
-              </option>
-            ),
-          )}
-        </select>
+        <SelectMenu
+          className="inventario-cantidad-select"
+          value={String(porPagina)}
+          onChange={cambiarPorPagina}
+          ariaLabel="Productos por página"
+          options={modo === 'galeria' ? ['5', '8', '10', '15', '50', 'Todos'] : ['10', '15', '20', '30', '50', 'Todos']}
+        />
         {nombreElementos}
       </label>
       <div className="inventario-paginas">
@@ -674,50 +685,22 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                 </option>
               ))}
             </select>
-            <div className="inventario-orden">
-              <span>Ordenar por</span>
-              <select
-                value={campoOrden}
-                onChange={(event) =>
-                  actualizarFiltro(() =>
-                    setCampoOrden(event.target.value as CampoOrden),
-                  )
-                }
-                aria-label="Campo para ordenar"
-              >
-                <option value="codigo">Código</option>
-                <option value="nombre">Nombre del {nombreElemento}</option>
-                <option value="categoria">Categoría</option>
-                <option value="marca">Otro: marca</option>
-              </select>
-            </div>
+            <SelectMenu
+              className="inventario-orden inventario-orden-menu"
+              value={campoOrden ? ({ codigo: 'Código', nombre: `Nombre del ${nombreElemento}`, categoria: 'Categoría', marca: 'Marca' } as Record<CampoOrden, string>)[campoOrden] : 'Ordenar por:'}
+              options={['Ordenar por:', 'Código', `Nombre del ${nombreElemento}`, 'Categoría', 'Marca']}
+              ariaLabel="Campo para ordenar"
+              onChange={(opcion) => actualizarFiltro(() => setCampoOrden(({ Código: 'codigo', [`Nombre del ${nombreElemento}`]: 'nombre', Categoría: 'categoria', Marca: 'marca' } as Record<string, CampoOrden>)[opcion] || ''))}
+            />
           </div>
           <div className="inventario-toolbar">
-            <div
-              className="inventario-modo"
-              role="group"
-              aria-label="Modo de visualizacion"
+            <button
+              className="inventario-nuevo"
+              type="button"
+              onClick={() => setModalRegistroAbierto(true)}
             >
-              <button
-                className={modo === 'galeria' ? 'activo' : ''}
-                onClick={() => cambiarModo('galeria')}
-              >
-                <Icon name="package" size={16} /> Galeria
-              </button>
-              <button
-                className={modo === 'listado' ? 'activo' : ''}
-                onClick={() => cambiarModo('listado')}
-              >
-                <Icon name="menu" size={16} /> Listado
-              </button>
-            </div>
-              <button
-                className="inventario-nuevo"
-                type="button"
-                onClick={() => setModalRegistroAbierto(true)}
-              >
-                <Icon name="plus" size={17} /> Registro
-              </button>
+              <Icon name="plus" size={17} /> Registro
+            </button>
           </div>
         </div>
         {controlesSuperiores}

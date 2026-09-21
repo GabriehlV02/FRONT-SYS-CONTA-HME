@@ -13,7 +13,7 @@ const subvistas: {
   icono: IconName;
   descripcion: string;
 }[] = [
-  { id: 'sucursales-almacenes', nombre: 'Sucursales y almacenes', icono: 'building', descripcion: 'Organización de sucursales y almacenes.' },
+  { id: 'sucursales-almacenes', nombre: 'Almacenes y sucursales', icono: 'building', descripcion: 'Organización de almacenes y sucursales.' },
   { id: 'cajas', nombre: 'Cajas', icono: 'cash', descripcion: 'Gestión de cajas operativas.' },
   { id: 'vendedores', nombre: 'Vendedores', icono: 'users', descripcion: 'Administración de vendedores.' },
   { id: 'administrar', nombre: 'Administrar', icono: 'settings', descripcion: 'Ajustes de administración.' },

@@ -446,6 +446,8 @@ export function PuntoVentaView() {
                     <button
                       className="punto-quitar"
                       type="button"
+                      aria-label={`Eliminar ${linea.nombre} de la cuenta`}
+                      title="Eliminar producto"
                       onClick={() => quitar(linea.id)}
                     >
                       ×
