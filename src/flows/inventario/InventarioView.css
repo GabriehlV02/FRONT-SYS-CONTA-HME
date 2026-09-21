@@ -534,16 +534,22 @@
   gap: 7px;
   padding: 7px 11px;
   border-radius: 999px;
-  background: #dff5e9;
-  color: #006b33;
   font-size: 11px;
   font-weight: 900;
+}
+.inventario-disponible.activo {
+  background: #dff5e9;
+  color: #006b33;
+}
+.inventario-disponible.inactivo {
+  background: #fdeaea;
+  color: #b42318;
 }
 .inventario-disponible i {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #009a51;
+  background: currentColor;
 }
 .inventario-acciones {
   display: flex;

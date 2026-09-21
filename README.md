@@ -27,6 +27,9 @@ Backend esperado:
 VITE_API_TARGET=http://127.0.0.1:5055
 ```
 
+Las rutas de inventario y autenticación se ejecutan en el backend. El frontend
+no requiere un servidor API propio.
+
 ## Scripts
 
 ```powershell

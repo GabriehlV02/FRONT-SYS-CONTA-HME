@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
@@ -6,6 +6,36 @@ type ModoInventario = 'galeria' | 'listado';
 type CampoOrden = 'codigo' | 'nombre' | 'categoria' | 'marca';
 type TipoRegistro = 'Producto' | 'Insumo' | 'Servicio';
 type TipoCatalogo = 'productos' | 'servicios' | 'todo';
+type RegistroInventario = {
+  id?: number;
+  codigo: string;
+  nombre: string;
+  categoria: string;
+  grupo: string;
+  tipo: string;
+  unidadMedida: string;
+  descripcion: string;
+  precioVenta: number;
+  estado: 'ACTIVO' | 'INACTIVO' | 'activo' | 'inactivo';
+  numeroSerie?: string;
+  usarNumeroSerie?: boolean;
+};
+type ElementoCatalogo = {
+  codigo?: string;
+  nombre: string;
+  categoria: string;
+  marca: string;
+  presentacion: string;
+  origen: string;
+  proveedores: number;
+  disponible: number;
+  descripcion?: string;
+  precioVenta?: number;
+  stock?: number;
+  estado?: string;
+  numeroSerie?: string;
+  usarNumeroSerie?: boolean;
+};
 
 const subcategoriasPorCategoria: Record<string, string[]> = {
   'Proteccion personal': ['Guantes', 'Mascarillas', 'Respiradores'],
@@ -14,6 +44,16 @@ const subcategoriasPorCategoria: Record<string, string[]> = {
   Medicamentos: ['Analgesicos', 'Antibioticos', 'Inyectables'],
   Diagnostico: ['Laboratorio', 'Imagenologia', 'Consulta'],
   Procedimientos: ['Ambulatorios', 'Quirofano', 'Terapias'],
+};
+
+const normalizarTexto = (valor: string | undefined | null) =>
+  String(valor ?? '').trim().toUpperCase();
+
+const normalizarEstadoFormulario = (
+  valor: string | undefined | null,
+): 'activo' | 'inactivo' => {
+  const estado = normalizarTexto(valor);
+  return estado === 'INACTIVO' ? 'inactivo' : 'activo';
 };
 
 const normalizarBusqueda = (valor: string) =>
@@ -41,12 +81,60 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [campoOrden, setCampoOrden] = useState<CampoOrden>('codigo');
   const [modalRegistroAbierto, setModalRegistroAbierto] = useState(false);
+  const [detalleRegistro, setDetalleRegistro] = useState<RegistroInventario | null>(null);
+  const [edicionRegistro, setEdicionRegistro] = useState<RegistroInventario | null>(null);
   const [tipoRegistro, setTipoRegistro] = useState<TipoRegistro>(
     tipo === 'servicios' ? 'Servicio' : 'Producto',
   );
   const [categoriaRegistro, setCategoriaRegistro] = useState('');
   const [subcategoriaRegistro, setSubcategoriaRegistro] = useState('');
   const [serieHabilitada, setSerieHabilitada] = useState(false);
+  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>([]);
+  const [mensajeGuardado, setMensajeGuardado] = useState('');
+  const [formularioRegistro, setFormularioRegistro] = useState({
+    codigo: '',
+    nombre: '',
+    descripcion: '',
+    unidadMedida: '',
+    tipo: tipo === 'servicios' ? 'Servicio' : 'Producto' as TipoRegistro,
+    categoria: '',
+    grupo: '',
+    precioVenta: '',
+    estado: 'activo' as 'activo' | 'inactivo',
+    numeroSerie: '',
+    usarNumeroSerie: false,
+  });
+
+  async function cargarRegistros() {
+    try {
+      const respuesta = await fetch('/api/inventario');
+      if (!respuesta.ok) return [] as RegistroInventario[];
+      const datos = (await respuesta.json().catch(() => ({ data: [] }))) as {
+        data?: RegistroInventario[];
+      };
+      const siguientes = Array.isArray(datos.data) ? datos.data : [];
+      setRegistrosGuardados(siguientes);
+      return siguientes;
+    } catch {
+      setRegistrosGuardados([]);
+      return [] as RegistroInventario[];
+    }
+  }
+
+  useEffect(() => {
+    let cancelado = false;
+
+    void (async () => {
+      const registros = await cargarRegistros();
+      if (cancelado) return;
+      void registros;
+    })();
+
+    return () => {
+      cancelado = true;
+    };
+  }, []);
+
   const titulo =
     subvista === 'servicios'
       ? 'Servicios'
@@ -55,15 +143,39 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         : 'Productos e insumos';
   const esServicio = subvista === 'servicios';
   const esVistaGeneral = subvista === 'todo';
-  const elementosDemo = useMemo(
-    () =>
-      esVistaGeneral
-        ? [...productosDemo, ...serviciosDemo]
-        : esServicio
-          ? serviciosDemo
-          : productosDemo,
-    [esServicio, esVistaGeneral],
-  );
+  const elementosDemo = useMemo<ElementoCatalogo[]>(() => {
+    if (registrosGuardados.length > 0) {
+      const registrosDeVista = registrosGuardados.filter((registro) => {
+        const tipoRegistroGuardado = normalizarTexto(registro.tipo);
+        return esVistaGeneral
+          || (esServicio
+            ? tipoRegistroGuardado === 'SERVICIO'
+            : tipoRegistroGuardado === 'PRODUCTO' || tipoRegistroGuardado === 'INSUMO');
+      });
+
+      return registrosDeVista.map((registro) => ({
+        codigo: registro.codigo,
+        nombre: normalizarTexto(registro.nombre),
+        categoria: normalizarTexto(registro.categoria),
+        marca: normalizarTexto(registro.grupo),
+        presentacion: normalizarTexto(registro.unidadMedida),
+        origen: normalizarTexto(registro.tipo),
+        proveedores: 1,
+        disponible: normalizarTexto(registro.estado) === 'ACTIVO' ? 1 : 0,
+        precioVenta: Number(registro.precioVenta || 0),
+        stock: Number(registro.precioVenta ? (registro.precioVenta > 0 ? 12 : 0) : 0),
+        estado: normalizarTexto(registro.estado) === 'ACTIVO' ? 'ACTIVO' : 'INACTIVO',
+        numeroSerie: registro.numeroSerie || '',
+        usarNumeroSerie: Boolean(registro.usarNumeroSerie),
+      }));
+    }
+
+    return esVistaGeneral
+      ? [...productosDemo, ...serviciosDemo]
+      : esServicio
+        ? serviciosDemo
+        : productosDemo;
+  }, [esServicio, esVistaGeneral, registrosGuardados]);
   const nombreElemento = esServicio
     ? 'servicio'
     : esVistaGeneral
@@ -99,6 +211,17 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     subcategoriaRegistro,
     subcategoriasDisponibles,
   ]);
+
+  useEffect(() => {
+    setFormularioRegistro((actual) => ({
+      ...actual,
+      codigo: codigoRegistro,
+      categoria: categoriaRegistro,
+      grupo: subcategoriaRegistro,
+      tipo: tipoRegistro,
+      usarNumeroSerie: serieHabilitada,
+    }));
+  }, [categoriaRegistro, codigoRegistro, serieHabilitada, subcategoriaRegistro, tipoRegistro]);
   const obtenerDatosTabla = (producto: (typeof elementosDemo)[number]) => {
     const categoriaProducto = producto.categoria;
     const subcategorias = subcategoriasPorCategoria[categoriaProducto] ?? [
@@ -110,32 +233,61 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
           normalizarBusqueda(item.slice(0, 5)),
         ),
       ) ?? subcategorias[0];
-    const codigo = `${crearPrefijoCodigo(categoriaProducto) || 'CAT'}-${
-      crearPrefijoCodigo(subcategoria) || 'GEN'
-    }-${String(elementosDemo.indexOf(producto) + 1).padStart(4, '0')}`;
+    const codigo =
+      typeof producto.codigo === 'string' && producto.codigo.trim()
+        ? producto.codigo
+        : `${crearPrefijoCodigo(categoriaProducto) || 'CAT'}-${
+            crearPrefijoCodigo(subcategoria) || 'GEN'
+          }-${String(elementosDemo.indexOf(producto) + 1).padStart(4, '0')}`;
     const esServicioTabla = serviciosDemo.some(
       (servicio) => servicio.nombre === producto.nombre,
     );
-    const tipoProducto: TipoRegistro = esServicioTabla
-      ? 'Servicio'
-      : producto.categoria === 'Medicamentos'
-        ? 'Insumo'
-        : 'Producto';
-    const unidad = esServicioTabla
-      ? 'Servicio'
-      : producto.presentacion.split(' x ')[0] || 'Unidad';
-    const precio = esServicioTabla
-      ? 80 + (elementosDemo.indexOf(producto) % 8) * 25
-      : 12 + producto.disponible * 7 + (elementosDemo.indexOf(producto) % 5) * 4;
+    const tipoProducto: TipoRegistro =
+      typeof producto.origen === 'string' && producto.origen
+        ? (normalizarTexto(producto.origen) === 'SERVICIO'
+            ? 'Servicio'
+            : normalizarTexto(producto.origen) === 'INSUMO'
+              ? 'Insumo'
+              : 'Producto')
+        : esServicioTabla
+          ? 'Servicio'
+          : producto.categoria === 'Medicamentos'
+            ? 'Insumo'
+            : 'Producto';
+    const unidad =
+      typeof producto.presentacion === 'string' && producto.presentacion
+        ? producto.presentacion
+        : esServicioTabla
+          ? 'Servicio'
+          : 'Unidad';
+    const precio =
+      typeof producto.precioVenta === 'number' && Number.isFinite(producto.precioVenta)
+        ? producto.precioVenta
+        : esServicioTabla
+          ? 80 + (elementosDemo.indexOf(producto) % 8) * 25
+          : 12 + producto.disponible * 7 + (elementosDemo.indexOf(producto) % 5) * 4;
     const serie =
-      !esServicioTabla && producto.disponible > 1
-        ? codigo.replaceAll('-', '')
-        : 'Sin serie';
-    const stock = esServicioTabla ? producto.disponible : producto.disponible * 12;
+      typeof producto.numeroSerie === 'string' && producto.numeroSerie.trim()
+        ? producto.numeroSerie
+        : !esServicioTabla && producto.disponible > 1
+          ? codigo.replaceAll('-', '')
+          : 'Sin serie';
+    const stock =
+      typeof producto.stock === 'number' && Number.isFinite(producto.stock)
+        ? producto.stock
+        : esServicioTabla
+          ? producto.disponible
+          : producto.disponible * 12;
+    const estado =
+      typeof producto.estado === 'string' && producto.estado
+        ? normalizarTexto(producto.estado) === 'ACTIVO'
+          ? 'Activo'
+          : 'Inactivo'
+        : 'Activo';
 
     return {
       codigo,
-      estado: 'Activo',
+      estado,
       precio: `Bs ${precio.toFixed(2)}`,
       serie,
       stock,
@@ -204,6 +356,151 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     setModo(siguiente);
     setPagina(1);
     setPorPagina(siguiente === 'galeria' ? 5 : 10);
+  }
+
+  function actualizarCampoRegistro<K extends keyof typeof formularioRegistro>(
+    campo: K,
+    valor: (typeof formularioRegistro)[K],
+  ) {
+    setFormularioRegistro((actual) => ({
+      ...actual,
+      [campo]: valor,
+    }));
+  }
+
+  async function guardarRegistroInventario(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMensajeGuardado('');
+
+    const payload: RegistroInventario = {
+      codigo: normalizarTexto(formularioRegistro.codigo || codigoRegistro),
+      nombre: normalizarTexto(formularioRegistro.nombre),
+      descripcion: normalizarTexto(formularioRegistro.descripcion),
+      unidadMedida: normalizarTexto(formularioRegistro.unidadMedida),
+      tipo: normalizarTexto(formularioRegistro.tipo),
+      categoria: normalizarTexto(formularioRegistro.categoria || categoriaRegistro),
+      grupo: normalizarTexto(formularioRegistro.grupo || subcategoriaRegistro),
+      precioVenta: Number(formularioRegistro.precioVenta || 0),
+      estado:
+        normalizarTexto(formularioRegistro.estado) === 'INACTIVO'
+          ? 'INACTIVO'
+          : 'ACTIVO',
+      numeroSerie: formularioRegistro.usarNumeroSerie
+        ? normalizarTexto(formularioRegistro.numeroSerie)
+        : '',
+      usarNumeroSerie: formularioRegistro.usarNumeroSerie,
+    };
+
+    if (
+      !payload.nombre ||
+      !payload.descripcion ||
+      !payload.categoria ||
+      !payload.grupo ||
+      !payload.unidadMedida ||
+      Number.isNaN(payload.precioVenta)
+    ) {
+      return;
+    }
+
+    try {
+      const respuesta = await fetch('/api/inventario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!respuesta.ok) {
+        const errorData = await respuesta.json().catch(() => ({}));
+        throw new Error(errorData.message || 'No se pudo guardar el registro.');
+      }
+
+      const respuestaJson = (await respuesta.json().catch(() => ({}))) as {
+        data?: RegistroInventario;
+      };
+      if (respuestaJson.data) {
+        setRegistrosGuardados((actual) => [...actual, respuestaJson.data!]);
+      }
+    } catch (error) {
+      setMensajeGuardado(error instanceof Error ? error.message : 'No se pudo guardar el registro.');
+      return;
+    }
+
+    setFormularioRegistro({
+      codigo: '',
+      nombre: '',
+      descripcion: '',
+      unidadMedida: '',
+      tipo: tipo === 'servicios' ? 'Servicio' : 'Producto',
+      categoria: '',
+      grupo: '',
+      precioVenta: '',
+      estado: 'activo',
+      numeroSerie: '',
+      usarNumeroSerie: false,
+    });
+    setCategoriaRegistro('');
+    setSubcategoriaRegistro('');
+    setSerieHabilitada(false);
+    setModalRegistroAbierto(false);
+  }
+
+  async function guardarEdicionRegistro(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setMensajeGuardado('');
+    if (!edicionRegistro) return;
+
+    const payload: RegistroInventario = {
+      ...edicionRegistro,
+      codigo: normalizarTexto(edicionRegistro.codigo),
+      nombre: normalizarTexto(edicionRegistro.nombre),
+      descripcion: normalizarTexto(edicionRegistro.descripcion),
+      tipo: normalizarTexto(edicionRegistro.tipo),
+      categoria: normalizarTexto(edicionRegistro.categoria),
+      grupo: normalizarTexto(edicionRegistro.grupo),
+      unidadMedida: normalizarTexto(edicionRegistro.unidadMedida),
+      precioVenta: Number(edicionRegistro.precioVenta || 0),
+      estado:
+        normalizarTexto(edicionRegistro.estado) === 'INACTIVO'
+          ? 'INACTIVO'
+          : 'ACTIVO',
+      numeroSerie: edicionRegistro.usarNumeroSerie
+        ? normalizarTexto(edicionRegistro.numeroSerie || '')
+        : '',
+    };
+
+    try {
+      const id = edicionRegistro.id ?? edicionRegistro.codigo;
+      const respuesta = await fetch(`/api/inventario/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!respuesta.ok) {
+        const errorData = await respuesta.json().catch(() => ({}));
+        throw new Error(errorData.message || 'No se pudo actualizar el registro.');
+      }
+
+      const respuestaJson = (await respuesta.json().catch(() => ({ data: payload }))) as {
+        data?: RegistroInventario;
+      };
+      const actualizado = respuestaJson.data || payload;
+      setRegistrosGuardados((actual) =>
+        actual.map((item) =>
+          (item.id ?? item.codigo) === (actualizado.id ?? actualizado.codigo)
+            ? actualizado
+            : item,
+        ),
+      );
+      await cargarRegistros();
+      setMensajeGuardado('Cambios guardados correctamente');
+      window.setTimeout(() => setMensajeGuardado(''), 2200);
+    } catch (error) {
+      setMensajeGuardado(error instanceof Error ? error.message : 'No se pudo actualizar el registro.');
+      return;
+    }
+
+    setEdicionRegistro(null);
   }
 
   const controlesSuperiores = (
@@ -456,7 +753,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   role="row"
                   key={producto.nombre}
                 >
-                  <span className="inventario-codigo">{datosTabla.codigo}</span>
+                      <span className="inventario-codigo">{datosTabla.codigo}</span>
                   <div className="inventario-producto-cell">
                     <strong>{producto.nombre}</strong>
                   </div>
@@ -466,15 +763,88 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   <span>{datosTabla.unidad}</span>
                   <span className="inventario-stock">{datosTabla.stock}</span>
                   <span className="inventario-precio">{datosTabla.precio}</span>
-                  <span className="inventario-disponible">
-                    <i /> {datosTabla.estado}
+                      <span
+                    className={`inventario-disponible ${
+                      normalizarTexto(datosTabla.estado) === 'ACTIVO'
+                        ? 'activo'
+                        : 'inactivo'
+                    }`}
+                  >
+                    <i />{' '}
+                    {normalizarTexto(datosTabla.estado) === 'ACTIVO'
+                      ? 'ACTIVO'
+                      : 'INACTIVO'}
                   </span>
                   <span className="inventario-serie">{datosTabla.serie}</span>
                   <div className="inventario-acciones">
-                    <button aria-label={`Ver ${producto.nombre}`}>
+                    <button
+                      type="button"
+                      aria-label={`Ver ${producto.nombre}`}
+                      onClick={() => {
+                        const registroBase =
+                          registrosGuardados.find(
+                            (item) =>
+                              item.nombre === producto.nombre &&
+                              item.categoria === producto.categoria,
+                          ) || {
+                            id: Date.now() + Math.random(),
+                            codigo: datosTabla.codigo,
+                            nombre: producto.nombre,
+                            categoria: producto.categoria,
+                            grupo: datosTabla.subcategoria,
+                            tipo: datosTabla.tipoProducto,
+                            unidadMedida: datosTabla.unidad,
+                            descripcion: 'Registro sin descripcion adicional.',
+                            precioVenta: Number(
+                              datosTabla.precio.replace(/[^0-9.]/g, ''),
+                            ),
+                            estado:
+                              normalizarTexto(datosTabla.estado) === 'ACTIVO'
+                                ? 'activo'
+                                : 'inactivo',
+                            numeroSerie: datosTabla.serie === 'Sin serie' ? '' : datosTabla.serie,
+                            usarNumeroSerie: datosTabla.serie !== 'Sin serie',
+                          };
+                        setDetalleRegistro({
+                          ...registroBase,
+                          estado: String(registroBase.estado ?? 'activo').toLowerCase() as 'activo' | 'inactivo',
+                        });
+                      }}
+                    >
                       <Icon name="eye" size={15} />
                     </button>
-                    <button>Editar</button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const registroBase =
+                          registrosGuardados.find(
+                            (item) =>
+                              item.nombre === producto.nombre &&
+                              item.categoria === producto.categoria,
+                          ) || {
+                            id: Date.now() + Math.random(),
+                            codigo: datosTabla.codigo,
+                            nombre: producto.nombre,
+                            categoria: producto.categoria,
+                            grupo: datosTabla.subcategoria,
+                            tipo: datosTabla.tipoProducto,
+                            unidadMedida: datosTabla.unidad,
+                            descripcion: 'Registro sin descripcion adicional.',
+                            precioVenta: Number(
+                              datosTabla.precio.replace(/[^0-9.]/g, ''),
+                            ),
+                            estado: normalizarTexto(datosTabla.estado) === 'ACTIVO' ? 'activo' : 'inactivo',
+                            numeroSerie: datosTabla.serie === 'Sin serie' ? '' : datosTabla.serie,
+                            usarNumeroSerie: datosTabla.serie !== 'Sin serie',
+                          };
+                        setEdicionRegistro({
+                          ...registroBase,
+                          estado: normalizarEstadoFormulario(registroBase.estado),
+                        });
+                      }}
+                    >
+                      Editar
+                    </button>
                   </div>
                 </article>
               );
@@ -514,6 +884,319 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         )}
         {controles}
       </div>
+      {detalleRegistro && (
+        <div
+          className="inventario-modal-fondo"
+          role="presentation"
+          onMouseDown={() => setDetalleRegistro(null)}
+        >
+          <section
+            className="inventario-modal inventario-modal-registro"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="inventario-modal-detalle-titulo"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <header>
+              <div>
+                <span>Detalle del registro</span>
+                <h3 id="inventario-modal-detalle-titulo">{detalleRegistro.nombre}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDetalleRegistro(null)}
+                aria-label="Cerrar detalle"
+              >
+                <Icon name="close" size={18} />
+              </button>
+            </header>
+            <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
+              <label>
+                <span>Codigo</span>
+                <input value={detalleRegistro.codigo} readOnly />
+              </label>
+              <label>
+                <span>Nombre</span>
+                <input value={detalleRegistro.nombre} readOnly />
+              </label>
+              <label className="inventario-campo-completo">
+                <span>Descripcion</span>
+                <textarea value={detalleRegistro.descripcion} readOnly rows={4} />
+              </label>
+              <label>
+                <span>Tipo</span>
+                <input value={detalleRegistro.tipo} readOnly />
+              </label>
+              <label>
+                <span>Categoria</span>
+                <input value={detalleRegistro.categoria} readOnly />
+              </label>
+              <label>
+                <span>Grupo</span>
+                <input value={detalleRegistro.grupo} readOnly />
+              </label>
+              <label>
+                <span>Unidad</span>
+                <input value={detalleRegistro.unidadMedida} readOnly />
+              </label>
+              <label>
+                <span>Precio</span>
+                <input value={`Bs ${Number(detalleRegistro.precioVenta || 0).toFixed(2)}`} readOnly />
+              </label>
+              <label>
+                <span>Estado</span>
+                <input
+                  value={
+                    normalizarTexto(detalleRegistro.estado) === 'ACTIVO'
+                      ? 'Activo'
+                      : 'Inactivo'
+                  }
+                  readOnly
+                />
+              </label>
+              <label>
+                <span>Serie</span>
+                <input value={detalleRegistro.usarNumeroSerie ? detalleRegistro.numeroSerie || 'Sin serie' : 'Sin serie'} readOnly />
+              </label>
+            </div>
+            <footer>
+              <button
+                className="inventario-secundario"
+                type="button"
+                onClick={() => setDetalleRegistro(null)}
+              >
+                Cerrar
+              </button>
+            </footer>
+          </section>
+        </div>
+      )}
+
+      {edicionRegistro && (
+        <div
+          className="inventario-modal-fondo"
+          role="presentation"
+          onMouseDown={() => setEdicionRegistro(null)}
+        >
+          <section
+            className="inventario-modal inventario-modal-registro"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="inventario-modal-editar-titulo"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <header>
+              <div>
+                <span>Editar registro</span>
+                <h3 id="inventario-modal-editar-titulo">{edicionRegistro.nombre}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEdicionRegistro(null)}
+                aria-label="Cerrar edición"
+              >
+                <Icon name="close" size={18} />
+              </button>
+            </header>
+            <form onSubmit={guardarEdicionRegistro}>
+              {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
+              <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
+                <label>
+                  <span>Codigo</span>
+                  <input
+                    value={edicionRegistro.codigo}
+                    readOnly
+                    disabled
+                  />
+                </label>
+                <label>
+                  <span>Nombre o identificacion</span>
+                  <input
+                    required
+                    value={edicionRegistro.nombre}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, nombre: event.target.value } : actual,
+                      )
+                    }
+                  />
+                </label>
+                <label className="inventario-campo-completo">
+                  <span>Descripcion</span>
+                  <textarea
+                    required
+                    rows={3}
+                    value={edicionRegistro.descripcion}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, descripcion: event.target.value } : actual,
+                      )
+                    }
+                  />
+                </label>
+                <label>
+                  <span>Unidad de medida</span>
+                  <select
+                    required
+                    value={edicionRegistro.unidadMedida}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, unidadMedida: event.target.value } : actual,
+                      )
+                    }
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Unidad">Unidad</option>
+                    <option value="Caja">Caja</option>
+                    <option value="Paquete">Paquete</option>
+                    <option value="Frasco">Frasco</option>
+                    <option value="Servicio">Servicio</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Tipo</span>
+                  <select
+                    value={edicionRegistro.tipo}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, tipo: event.target.value } : actual,
+                      )
+                    }
+                  >
+                    <option value="Producto">Producto</option>
+                    <option value="Insumo">Insumo</option>
+                    <option value="Servicio">Servicio</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Categoria</span>
+                  <select
+                    required
+                    value={edicionRegistro.categoria}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual
+                          ? {
+                              ...actual,
+                              categoria: event.target.value,
+                              grupo:
+                                subcategoriasPorCategoria[event.target.value]?.[0] ??
+                                'General',
+                            }
+                          : actual,
+                      )
+                    }
+                  >
+                    <option value="">Seleccionar</option>
+                    {categorias.map((item) => (
+                      <option key={item} value={item}> {item} </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>Grupo</span>
+                  <select
+                    required
+                    value={edicionRegistro.grupo || 'General'}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, grupo: event.target.value } : actual,
+                      )
+                    }
+                  >
+                    {(subcategoriasPorCategoria[edicionRegistro.categoria]?.length
+                      ? subcategoriasPorCategoria[edicionRegistro.categoria]
+                      : ['General']
+                    ).map((item) => (
+                      <option key={item} value={item}> {item} </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  <span>Precio de venta</span>
+                  <input
+                    required
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={String(edicionRegistro.precioVenta)}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, precioVenta: Number(event.target.value) } : actual,
+                      )
+                    }
+                  />
+                </label>
+                <label>
+                  <span>Estado</span>
+                  <select
+                    required
+                    value={normalizarEstadoFormulario(edicionRegistro.estado)}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual
+                          ? {
+                              ...actual,
+                              estado: normalizarEstadoFormulario(event.target.value),
+                            }
+                          : actual,
+                      )
+                    }
+                  >
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                  </select>
+                </label>
+                <label className="inventario-campo-serie">
+                  <span>Numero de serie</span>
+                  <input
+                    disabled={!edicionRegistro.usarNumeroSerie}
+                    value={edicionRegistro.numeroSerie || ''}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual ? { ...actual, numeroSerie: event.target.value } : actual,
+                      )
+                    }
+                  />
+                </label>
+                <label className="inventario-serie-toggle">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(edicionRegistro.usarNumeroSerie)}
+                    onChange={(event) =>
+                      setEdicionRegistro((actual) =>
+                        actual
+                          ? { ...actual, usarNumeroSerie: event.target.checked }
+                          : actual,
+                      )
+                    }
+                  />
+                  <span>Usar numero de serie</span>
+                </label>
+              </div>
+              <footer>
+                <button
+                  className="inventario-secundario"
+                  type="button"
+                  onClick={() => setEdicionRegistro(null)}
+                >
+                  Cancelar
+                </button>
+                <button className="inventario-primario" type="submit">
+                  Guardar cambios
+                </button>
+              </footer>
+            </form>
+          </section>
+        </div>
+      )}
+
+      {mensajeGuardado && (
+        <div className="inventario-toast" role="status" aria-live="polite">
+          {mensajeGuardado}
+        </div>
+      )}
+
       {modalRegistroAbierto && (
         <div
           className="inventario-modal-fondo"
@@ -542,63 +1225,81 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                 <Icon name="close" size={18} />
               </button>
             </header>
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                setModalRegistroAbierto(false);
-              }}
-            >
+            <form onSubmit={guardarRegistroInventario}>
+              {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
               <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label>
                   <span>Codigo</span>
-                  <input value={codigoRegistro} disabled readOnly />
+                  <input value={formularioRegistro.codigo || codigoRegistro} disabled readOnly />
                 </label>
                 <label>
                   <span>Nombre o identificacion</span>
-                  <input required placeholder="Ej. Jeringa descartable 10 ml" />
+                  <input
+                    required
+                    value={formularioRegistro.nombre}
+                    onChange={(event) =>
+                      actualizarCampoRegistro('nombre', event.target.value)
+                    }
+                    placeholder="Ej. Jeringa descartable 10 ml"
+                  />
                 </label>
                 <label className="inventario-campo-completo">
                   <span>Descripcion</span>
                   <textarea
                     required
                     rows={3}
+                    value={formularioRegistro.descripcion}
+                    onChange={(event) =>
+                      actualizarCampoRegistro('descripcion', event.target.value)
+                    }
                     placeholder="Detalle breve del producto, insumo o servicio"
                   />
                 </label>
                 <label>
                   <span>Unidad de medida</span>
-                  <select required defaultValue="">
+                  <select
+                    required
+                    value={formularioRegistro.unidadMedida}
+                    onChange={(event) =>
+                      actualizarCampoRegistro('unidadMedida', event.target.value)
+                    }
+                  >
                     <option value="" disabled>
                       Seleccionar
                     </option>
-                    <option>Unidad</option>
-                    <option>Caja</option>
-                    <option>Paquete</option>
-                    <option>Frasco</option>
-                    <option>Servicio</option>
+                    <option value="Unidad">Unidad</option>
+                    <option value="Caja">Caja</option>
+                    <option value="Paquete">Paquete</option>
+                    <option value="Frasco">Frasco</option>
+                    <option value="Servicio">Servicio</option>
                   </select>
                 </label>
                 <label>
                   <span>Tipo</span>
                   <select
-                    value={tipoRegistro}
-                    onChange={(event) =>
-                      setTipoRegistro(event.target.value as TipoRegistro)
-                    }
+                    value={formularioRegistro.tipo}
+                    onChange={(event) => {
+                      const siguienteTipo = event.target.value as TipoRegistro;
+                      setTipoRegistro(siguienteTipo);
+                      actualizarCampoRegistro('tipo', siguienteTipo);
+                    }}
                     required
                   >
-                    <option>Producto</option>
-                    <option>Insumo</option>
-                    <option>Servicio</option>
+                    <option value="Producto">Producto</option>
+                    <option value="Insumo">Insumo</option>
+                    <option value="Servicio">Servicio</option>
                   </select>
                 </label>
                 <label>
                   <span>Categoria</span>
                   <select
-                    value={categoriaRegistro}
+                    value={formularioRegistro.categoria || categoriaRegistro}
                     onChange={(event) => {
-                      setCategoriaRegistro(event.target.value);
+                      const siguienteCategoria = event.target.value;
+                      setCategoriaRegistro(siguienteCategoria);
                       setSubcategoriaRegistro('');
+                      actualizarCampoRegistro('categoria', siguienteCategoria);
+                      actualizarCampoRegistro('grupo', '');
                     }}
                     required
                   >
@@ -613,10 +1314,14 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   </select>
                 </label>
                 <label>
-                  <span>Sub categoria</span>
+                  <span>Grupo</span>
                   <select
-                    value={subcategoriaRegistro}
-                    onChange={(event) => setSubcategoriaRegistro(event.target.value)}
+                    value={formularioRegistro.grupo || subcategoriaRegistro}
+                    onChange={(event) => {
+                      const siguienteGrupo = event.target.value;
+                      setSubcategoriaRegistro(siguienteGrupo);
+                      actualizarCampoRegistro('grupo', siguienteGrupo);
+                    }}
                     required
                     disabled={!categoriaRegistro}
                   >
@@ -632,11 +1337,30 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                 </label>
                 <label>
                   <span>Precio de venta</span>
-                  <input required min="0" step="0.01" type="number" placeholder="0.00" />
+                  <input
+                    required
+                    min="0"
+                    step="0.01"
+                    type="number"
+                    value={formularioRegistro.precioVenta}
+                    onChange={(event) =>
+                      actualizarCampoRegistro('precioVenta', event.target.value)
+                    }
+                    placeholder="0.00"
+                  />
                 </label>
                 <label>
                   <span>Estado</span>
-                  <select required defaultValue="activo">
+                  <select
+                    required
+                    value={formularioRegistro.estado}
+                    onChange={(event) =>
+                      actualizarCampoRegistro(
+                        'estado',
+                        event.target.value as 'activo' | 'inactivo',
+                      )
+                    }
+                  >
                     <option value="activo">Activo</option>
                     <option value="inactivo">Inactivo</option>
                   </select>
@@ -645,6 +1369,10 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   <span>Numero de serie</span>
                   <input
                     disabled={!serieHabilitada}
+                    value={formularioRegistro.numeroSerie}
+                    onChange={(event) =>
+                      actualizarCampoRegistro('numeroSerie', event.target.value)
+                    }
                     placeholder="Codigo de barras"
                   />
                 </label>
@@ -652,7 +1380,11 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   <input
                     type="checkbox"
                     checked={serieHabilitada}
-                    onChange={(event) => setSerieHabilitada(event.target.checked)}
+                    onChange={(event) => {
+                      const siguiente = event.target.checked;
+                      setSerieHabilitada(siguiente);
+                      actualizarCampoRegistro('usarNumeroSerie', siguiente);
+                    }}
                   />
                   <span>Usar numero de serie</span>
                 </label>
