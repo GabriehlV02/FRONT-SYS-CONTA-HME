@@ -1,6 +1,6 @@
 ﻿import type { ReactNode, SVGProps } from 'react';
 
-export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'user' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
+export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'user' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'calendar' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
 type Props = SVGProps<SVGSVGElement> & { name: IconName; size?: number };
 
 const paths: Record<IconName, ReactNode> = {
@@ -17,6 +17,7 @@ const paths: Record<IconName, ReactNode> = {
   logout: <><path d="m10 17 5-5-5-5m5 5H3"/><path d="M15 3h5a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-5"/></>,
   search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></>,
   bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></>,
+  calendar: <><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4m8-4v4M3 10h18M8 14h2m4 0h2m-8 3h2"/></>,
   warehouse: <><path d="M3 21V9l9-6 9 6v12M7 21v-8h10v8M7 16h10"/></>,
   settings: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.1A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.1A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.1A1.7 1.7 0 0 0 15.4 4a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.16.38.38.72.66 1 .3.27.68.42 1.08.4H21v4h-.1a1.7 1.7 0 0 0-1.5.6Z"/></>,
   menu: <path d="M4 6h16M4 12h16M4 18h16"/>, close: <path d="m6 6 12 12M18 6 6 18"/>,

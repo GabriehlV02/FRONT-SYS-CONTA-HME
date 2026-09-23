@@ -1,0 +1,389 @@
+/* Tema financiero HME: plomo institucional, turquesa, verde y acentos salmón. */
+.sistema-contable {
+  --fin-plomo-950: #1d2b32;
+  --fin-plomo-900: #26363e;
+  --fin-plomo-800: #33464f;
+  --fin-plomo-600: #61727a;
+  --fin-plomo-300: #cbd6da;
+  --fin-plomo-200: #dce5e8;
+  --fin-plomo-100: #edf2f3;
+  --fin-fondo: #f2f6f7;
+  --fin-turquesa-700: #087f87;
+  --fin-turquesa-600: #0b999d;
+  --fin-turquesa-500: #19aeb0;
+  --fin-turquesa-100: #dcf5f3;
+  --fin-verde: #35a76f;
+  --fin-verde-suave: #ddf4e8;
+  --fin-salmon: #ee7478;
+  --fin-salmon-oscuro: #d95d63;
+  --fin-salmon-suave: #fde8e7;
+  --fin-tinta: #18303c;
+  --fin-blanco: #fff;
+  color: var(--fin-tinta) !important;
+  background: var(--fin-fondo) !important;
+}
+
+.sistema-contable .sistema-sidebar {
+  width: 272px !important;
+  height: 100dvh !important;
+  padding: 0 16px 16px !important;
+  border-right: 1px solid #344951 !important;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #dce8eb !important;
+  background: #22343d !important;
+  box-shadow: 4px 0 16px rgba(24, 48, 60, .08) !important;
+}
+.sistema-contable .sistema-sidebar button { font-family: inherit; }
+.sistema-contable .sistema-cuerpo { margin-left: 272px !important; }
+.sistema-contable .marca-container { min-height: 76px !important; }
+.sistema-contable .sistema-marca {
+  height: 76px !important;
+  padding: 8px 12px !important;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,.12) !important;
+  background: transparent !important;
+}
+.sistema-contable .sistema-marca .marca-logo-completo {
+  width: 180px !important;
+  height: 60px !important;
+  flex: 0 1 180px !important;
+  padding: 2px 6px !important;
+  border: 1px solid #e2e9ec !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  filter: none;
+}
+.sistema-contable .replegar-menu {
+  top: 22px !important;
+  right: -32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border: 1px solid #d3dfe2 !important;
+  color: var(--fin-turquesa-700) !important;
+  background: #fff !important;
+  box-shadow: 0 2px 6px rgba(24,48,60,.12) !important;
+}
+.sistema-contable .sidebar-scroll {
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.sistema-contable .sidebar-scroll .sistema-nav {
+  display: block !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  padding: 18px 0 14px !important;
+  scrollbar-width: thin;
+  scrollbar-color: #58727b transparent;
+}
+.sistema-contable .sistema-nav section { padding: 0 !important; }
+.sistema-contable .sistema-nav section + section {
+  margin-top: 18px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid #3b4e57 !important;
+}
+.sistema-contable .sistema-nav section p {
+  min-height: 0;
+  margin: 0 12px 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  color: #a9bec6 !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  letter-spacing: .8px !important;
+}
+.sistema-contable .sistema-nav .nav-modulo {
+  height: auto !important;
+  min-height: 44px !important;
+  margin: 2px 0 !important;
+  padding: 11px 12px !important;
+  gap: 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  color: #d9e4e7 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  transform: none !important;
+  transition: background-color .15s ease, color .15s ease;
+}
+.sistema-contable .sistema-sidebar .nav-texto,
+.sistema-contable .sistema-sidebar .sistema-nav .nav-modulo .nav-texto {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.45;
+  letter-spacing: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo .nav-texto { font-weight: 600 !important; }
+.sistema-contable .sistema-nav .nav-modulo:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.08) !important;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo {
+  color: #fff !important;
+  border-color: #3a686e !important;
+  background: #2a5058 !important;
+  box-shadow: inset 3px 0 #50ccc5 !important;
+}
+.sistema-contable .sistema-nav .nav-modulo.activo::before { display: none !important; }
+.sistema-contable .sistema-nav .nav-icono { color: #9fc7ce !important; }
+.sistema-contable .sistema-nav .nav-modulo.activo .nav-icono { color: #5ee0dc !important; }
+.sistema-contable .boton-salir {
+  width: 100% !important;
+  min-height: 44px;
+  margin: 12px 0 0 !important;
+  padding: 0 12px !important;
+  gap: 12px;
+  border-radius: 6px !important;
+  border-color: rgba(255,255,255,.16) !important;
+  color: #dce8eb !important;
+  background: rgba(255,255,255,.04) !important;
+}
+.sistema-contable .boton-salir:hover { color: #fff !important; background: rgba(238,116,120,.2) !important; }
+.sistema-contable .sistema-sidebar button:focus-visible {
+  outline: 2px solid #75e0d9 !important;
+  outline-offset: -3px;
+}
+.sistema-contable .cerrar-menu { color: #dce8eb; }
+
+.sistema-contable .sistema-topbar {
+  height: 72px !important;
+  min-height: 72px !important;
+  padding: 0 22px !important;
+  gap: 14px !important;
+  border-bottom: 1px solid var(--fin-plomo-200) !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 3px 14px rgba(30,55,66,.07) !important;
+}
+.sistema-contable .topbar-icono {
+  width: 42px !important;
+  height: 42px !important;
+  border-color: #b9dfdf !important;
+  color: var(--fin-turquesa-700) !important;
+  background: #eaf8f7 !important;
+  box-shadow: none !important;
+}
+.sistema-contable .topbar-titulo { min-width: 180px; }
+.sistema-contable .topbar-titulo h1 { color: var(--fin-tinta) !important; font-size: 19px !important; }
+.sistema-contable .topbar-titulo small { color: var(--fin-plomo-600) !important; }
+.sistema-contable .search-container { flex: 1 1 520px !important; max-width: 680px !important; margin-left: 8px !important; }
+.sistema-contable .busqueda-global {
+  height: 44px !important;
+  border: 1px solid var(--fin-plomo-300) !important;
+  border-radius: 7px !important;
+  color: var(--fin-plomo-600) !important;
+  background: #f7f9fa !important;
+  box-shadow: inset 0 1px 2px rgba(24,48,60,.03) !important;
+}
+.sistema-contable .busqueda-global:focus-within { outline: 2px solid rgba(25,174,176,.28) !important; }
+.sistema-contable .topbar-periodo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid var(--fin-plomo-300);
+  border-radius: 7px;
+  color: #425b66;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.sistema-contable .notificaciones-boton,
+.sistema-contable .salir-rapido {
+  border-color: var(--fin-plomo-200) !important;
+  color: var(--fin-turquesa-700) !important;
+  background: #f7fafb !important;
+}
+.sistema-contable .notificaciones-boton span { background: var(--fin-salmon) !important; }
+.sistema-contable .perfil {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.sistema-contable .perfil-avatar {
+  outline-color: #9ed7d5 !important;
+  background: linear-gradient(145deg, var(--fin-turquesa-500), var(--fin-turquesa-700)) !important;
+  box-shadow: 0 4px 10px rgba(8,127,135,.22) !important;
+}
+.sistema-contable .perfil strong { color: var(--fin-tinta) !important; }
+.sistema-contable .perfil small { color: var(--fin-plomo-600) !important; }
+
+.sistema-contable .area-trabajo {
+  min-height: calc(100dvh - 72px) !important;
+  padding: 22px 24px 34px !important;
+  background: linear-gradient(150deg,#f5f8f9 0%,#eaf1f3 100%) !important;
+}
+.sistema-contable .content-limit { max-width: 1680px !important; }
+.sistema-contable .dashboard-contable { gap: 14px !important; padding-top: 0 !important; color: var(--fin-tinta) !important; }
+.sistema-contable .dashboard-hero {
+  min-height: 90px;
+  padding: 8px 6px 14px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: var(--fin-plomo-600) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.sistema-contable .dashboard-hero p { color: var(--fin-turquesa-700) !important; }
+.sistema-contable .dashboard-hero h2 { color: var(--fin-tinta) !important; font-size: 29px !important; }
+.sistema-contable .dashboard-hero button,
+.sistema-contable :is(.boton-principal,.primario,.ventas-primary,.inventario-nuevo,.inventario-primario) {
+  border: 0 !important;
+  color: #fff !important;
+  background: linear-gradient(105deg,var(--fin-turquesa-700),var(--fin-turquesa-500)) !important;
+  box-shadow: 0 7px 16px rgba(8,127,135,.2) !important;
+}
+.sistema-contable .dashboard-metricas { gap: 12px !important; }
+.sistema-contable .dashboard-metricas article,
+.sistema-contable .dashboard-panel,
+.sistema-contable .dashboard-accesos button,
+.sistema-contable :is(.ventas-panel,.inventario-contenido,.movimientos-contenido,.usuarios-contenido,.panel,.modulo-vacio,.ventas-contexto,.inventario-modal,.caja-col,.caja-cobro-bar) {
+  border-color: var(--fin-plomo-200) !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 14px rgba(30,55,66,.055) !important;
+}
+.sistema-contable .dashboard-metricas article { position: relative; overflow: hidden; padding: 18px 19px !important; }
+.sistema-contable .dashboard-metricas article::before { content:''; position:absolute; inset:0 auto 0 0; width:4px; background:var(--fin-turquesa-500); }
+.sistema-contable .dashboard-metricas article:nth-child(2)::before { background:var(--fin-verde); }
+.sistema-contable .dashboard-metricas article:nth-child(4)::before { background:var(--fin-salmon); }
+.sistema-contable .dashboard-metricas article svg,
+.sistema-contable .dashboard-accesos svg { color: var(--fin-turquesa-700) !important; }
+.sistema-contable .dashboard-metricas article:nth-child(2) svg { color: var(--fin-verde) !important; }
+.sistema-contable .dashboard-metricas article:nth-child(4) svg { color: var(--fin-salmon) !important; }
+.sistema-contable .dashboard-accesos button:hover { border-color:#8fd0d0 !important; background:#effafa !important; }
+.sistema-contable .dashboard-barras i b { background: linear-gradient(90deg,var(--fin-turquesa-700),var(--fin-turquesa-500)) !important; }
+.sistema-contable .dashboard-ranking article,
+.sistema-contable .dashboard-ventas-recientes article { border-color: var(--fin-plomo-200) !important; }
+.sistema-contable .dashboard-ranking article > b { color:var(--fin-turquesa-700) !important; background:var(--fin-turquesa-100) !important; }
+
+.sistema-contable :is(.ventas-tabs,.inventario-subvistas,.movimientos-subvistas,.usuarios-subvistas) {
+  border-color: var(--fin-plomo-200) !important;
+  background: #e8eff1 !important;
+}
+.sistema-contable :is(.ventas-tabs,.inventario-subvistas,.movimientos-subvistas,.usuarios-subvistas) button { color:#49616c !important; }
+.sistema-contable :is(.ventas-tabs,.inventario-subvistas,.movimientos-subvistas,.usuarios-subvistas) button.activo {
+  color:var(--fin-turquesa-700) !important;
+  background:#fff !important;
+  box-shadow: inset 0 -3px var(--fin-turquesa-500) !important;
+}
+.sistema-contable input,
+.sistema-contable select,
+.sistema-contable textarea,
+.sistema-contable .ventas-input,
+.sistema-contable .ventas-select {
+  border-color:var(--fin-plomo-300) !important;
+  color:var(--fin-tinta) !important;
+  background:#fff !important;
+}
+.sistema-contable input:focus,
+.sistema-contable select:focus,
+.sistema-contable textarea:focus { outline-color:var(--fin-turquesa-500) !important; box-shadow:0 0 0 3px rgba(25,174,176,.12) !important; }
+.sistema-contable :is(.boton-secundario,.secundario,.ventas-secondary,.inventario-secundario,.mini-action,.ventas-row-actions button) {
+  border-color:#abd9d8 !important;
+  color:var(--fin-turquesa-700) !important;
+  background:#effafa !important;
+}
+
+.sistema-contable :is(.inventario-tabla,.movimientos-tabla,.usuarios-tabla,.ventas-tabla,.profesionales-tabla) {
+  overflow:hidden;
+  border:1px solid var(--fin-plomo-300) !important;
+  border-radius:8px !important;
+  background:#fff !important;
+  box-shadow:0 3px 12px rgba(30,55,66,.05) !important;
+}
+.sistema-contable :is(.inventario-tabla-head,.movimientos-tabla-head,.usuarios-tabla-head,.ventas-tabla-head,.profesionales-head) {
+  min-height:44px !important;
+  border-bottom:1px solid #b8c8ce !important;
+  color:#39525e !important;
+  background:#e8eef0 !important;
+  font-size:10px !important;
+  font-weight:850 !important;
+  text-transform:uppercase;
+}
+.sistema-contable :is(.inventario-row,.movimientos-tabla-fila,.usuarios-tabla-fila,.ventas-tabla-fila,.profesionales-tabla article) {
+  border-bottom:1px solid #dce5e8 !important;
+  color:#314b57 !important;
+  background:#fff !important;
+}
+.sistema-contable :is(.inventario-row,.movimientos-tabla-fila,.usuarios-tabla-fila,.ventas-tabla-fila,.profesionales-tabla article):nth-child(odd) { background:#f6f9f9 !important; }
+.sistema-contable :is(.inventario-row,.movimientos-tabla-fila,.usuarios-tabla-fila,.ventas-tabla-fila,.profesionales-tabla article):hover { background:#eaf8f7 !important; }
+.sistema-contable :is(.inventario-row,.movimientos-tabla-fila,.usuarios-tabla-fila,.ventas-tabla-fila)>:not(:last-child),
+.sistema-contable :is(.inventario-tabla-head,.movimientos-tabla-head,.usuarios-tabla-head,.ventas-tabla-head)>:not(:last-child) { border-right:1px solid #d5e0e3 !important; }
+.sistema-contable :is(.inventario-chip,.ventas-badge,.inventario-contador,.movimientos-contador,.usuarios-contador,.paciente-chip,.caja-status-mini) {
+  border-color:#a7d9d6 !important;
+  color:var(--fin-turquesa-700) !important;
+  background:var(--fin-turquesa-100) !important;
+}
+.sistema-contable :is(.peligro,.danger,.eliminar,.ventas-danger) {
+  border-color:#f4b5b3 !important;
+  color:var(--fin-salmon-oscuro) !important;
+  background:var(--fin-salmon-suave) !important;
+}
+
+.sidebar-replegado.sistema-contable .sistema-sidebar { width:78px !important; padding-inline:10px !important; }
+.sidebar-replegado.sistema-contable .sistema-cuerpo { margin-left:78px !important; }
+.sidebar-replegado.sistema-contable .sistema-marca { height:76px !important; padding:12px 0 !important; }
+.sidebar-replegado.sistema-contable .sistema-marca .marca-logo-compacto {
+  width:46px !important;
+  height:46px !important;
+  flex-basis:46px !important;
+  padding:5px !important;
+  border:1px solid #dce5e8 !important;
+  border-radius:6px !important;
+  background:#fff !important;
+  box-shadow:none !important;
+}
+.sidebar-replegado.sistema-contable .replegar-menu { top:22px !important; right:-26px !important; }
+.sidebar-replegado.sistema-contable .sidebar-scroll .sistema-nav { padding-inline:0 !important; }
+.sidebar-replegado.sistema-contable .sistema-nav .nav-modulo,
+.sidebar-replegado.sistema-contable .boton-salir {
+  width:58px !important;
+  margin-inline:0 !important;
+  padding:11px 0 !important;
+  justify-content:center !important;
+}
+.sidebar-replegado.sistema-contable .sistema-nav .nav-texto { display:none !important; }
+@media(max-width:900px) {
+  .sistema-contable .sistema-sidebar,
+  .sidebar-replegado.sistema-contable .sistema-sidebar {
+    width:min(288px,88vw) !important;
+    padding:0 16px 16px !important;
+  }
+  .sistema-contable .sistema-cuerpo,
+  .sidebar-replegado.sistema-contable .sistema-cuerpo { margin-left:0 !important; }
+  .sistema-contable .replegar-menu { display:none !important; }
+  .sistema-contable .sidebar-scroll,
+  .sidebar-replegado.sistema-contable .sidebar-scroll { overflow:hidden !important; }
+  .sistema-contable .sistema-marca,
+  .sidebar-replegado.sistema-contable .sistema-marca { padding:8px 16px !important; }
+  .sidebar-replegado.sistema-contable .sistema-marca .marca-logo-completo {
+    display:block !important;
+    width:180px !important;
+    height:60px !important;
+    flex:0 1 180px !important;
+  }
+  .sidebar-replegado.sistema-contable .sistema-marca .marca-logo-completo img { width:100% !important; }
+  .sidebar-replegado.sistema-contable .sistema-marca .marca-logo-compacto { display:none !important; }
+  .sidebar-replegado.sistema-contable .sistema-nav section p,
+  .sidebar-replegado.sistema-contable .sistema-sidebar .nav-texto { display:block !important; }
+  .sidebar-replegado.sistema-contable .sistema-nav .nav-modulo,
+  .sidebar-replegado.sistema-contable .boton-salir {
+    width:100% !important;
+    padding:11px 12px !important;
+    justify-content:flex-start !important;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .sistema-contable .sistema-sidebar,
+  .sistema-contable .sistema-sidebar button { transition:none !important; }
+}
+@media(max-width:1100px){.sistema-contable .topbar-periodo{display:none}.sistema-contable .topbar-titulo{min-width:130px}.sistema-contable .search-container{flex-basis:300px!important}}
+@media(max-width:760px){.sistema-contable .sistema-sidebar{width:min(280px,88vw)!important}.sistema-contable .sistema-cuerpo{margin-left:0!important}.sistema-contable .sistema-topbar{height:58px!important;min-height:58px!important}.sistema-contable .area-trabajo{padding:16px!important;min-height:calc(100dvh - 58px)!important}.sistema-contable .topbar-titulo small{display:none}.sistema-contable .dashboard-hero h2{font-size:24px!important}}

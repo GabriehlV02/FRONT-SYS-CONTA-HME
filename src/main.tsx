@@ -10,6 +10,8 @@ import './tema-lila.css';
 import './sidebar-ajustes.css';
 import './paleta-unificada.css';
 import './login-panel-refresh.css';
+import './tema-financiero.css';
+import './styles/ContableCorporativo.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />

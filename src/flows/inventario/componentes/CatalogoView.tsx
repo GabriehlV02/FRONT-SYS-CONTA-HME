@@ -732,7 +732,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
               const datosTabla = obtenerDatosTabla(producto);
               return (
                 <article
-                  className="inventario-row" style={producto.revisionPrecio ? { background: "#fee2e2", color: "#991b1b", border: "1px solid #ef4444" } : undefined}
+                  className={`inventario-row${producto.revisionPrecio ? ' requiere-revision' : ''}`}
                   role="row"
                   key={producto.nombre}
                 >
@@ -835,7 +835,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         ) : (
           <div className="inventario-galeria" aria-label={titulo}>
             {productosPagina.map((producto) => (
-              <article className="inventario-card" style={producto.revisionPrecio ? { background: "#fee2e2", border: "1px solid #ef4444" } : undefined} key={producto.nombre}>
+              <article className={`inventario-card${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
                 <div className="inventario-card-imagen">
                   <span>{producto.categoria}</span>
                   <strong>
