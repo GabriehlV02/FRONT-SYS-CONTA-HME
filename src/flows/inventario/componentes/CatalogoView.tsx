@@ -1,7 +1,6 @@
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
 import { SelectMenu } from '@ui/components/SelectMenu';
-import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
 type ModoInventario = 'galeria' | 'listado';
 type CampoOrden = 'codigo' | 'nombre' | 'categoria' | 'marca';
@@ -17,6 +16,10 @@ type RegistroInventario = {
   unidadMedida: string;
   descripcion: string;
   precioVenta: number;
+  stock?: number;
+  marcas?: string[];
+  revisionPrecio?: boolean;
+  confirmarPrecio?: boolean;
   estado: 'ACTIVO' | 'INACTIVO' | 'activo' | 'inactivo';
   numeroSerie?: string;
   usarNumeroSerie?: boolean;
@@ -32,6 +35,7 @@ type ElementoCatalogo = {
   disponible: number;
   descripcion?: string;
   precioVenta?: number;
+  revisionPrecio?: boolean;
   stock?: number;
   estado?: string;
   numeroSerie?: string;
@@ -109,7 +113,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   async function cargarRegistros() {
     try {
       const respuesta = await fetch('/api/inventario');
-      if (!respuesta.ok) return [] as RegistroInventario[];
+      if (!respuesta.ok) throw new Error('No se pudo cargar el inventario.');
       const datos = (await respuesta.json().catch(() => ({ data: [] }))) as {
         data?: RegistroInventario[];
       };
@@ -117,6 +121,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
       setRegistrosGuardados(siguientes);
       return siguientes;
     } catch {
+      setMensajeGuardado('No se pudo cargar el inventario. Revisa la conexion con el servidor.');
       setRegistrosGuardados([]);
       return [] as RegistroInventario[];
     }
@@ -158,24 +163,21 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         codigo: registro.codigo,
         nombre: normalizarTexto(registro.nombre),
         categoria: normalizarTexto(registro.categoria),
-        marca: normalizarTexto(registro.grupo),
+        marca: registro.marcas?.join(', ') || 'Sin ingresos',
+        revisionPrecio: registro.revisionPrecio,
         presentacion: normalizarTexto(registro.unidadMedida),
         origen: normalizarTexto(registro.tipo),
         proveedores: 1,
         disponible: normalizarTexto(registro.estado) === 'ACTIVO' ? 1 : 0,
         precioVenta: Number(registro.precioVenta || 0),
-        stock: Number(registro.precioVenta ? (registro.precioVenta > 0 ? 12 : 0) : 0),
+        stock: registro.stock ?? 0,
         estado: normalizarTexto(registro.estado) === 'ACTIVO' ? 'ACTIVO' : 'INACTIVO',
         numeroSerie: registro.numeroSerie || '',
         usarNumeroSerie: Boolean(registro.usarNumeroSerie),
       }));
     }
 
-    return esVistaGeneral
-      ? [...productosDemo, ...serviciosDemo]
-      : esServicio
-        ? serviciosDemo
-        : productosDemo;
+    return [];
   }, [esServicio, esVistaGeneral, registrosGuardados]);
   const nombreElemento = esServicio
     ? 'servicio'
@@ -240,9 +242,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         : `${crearPrefijoCodigo(categoriaProducto) || 'CAT'}-${
             crearPrefijoCodigo(subcategoria) || 'GEN'
           }-${String(elementosDemo.indexOf(producto) + 1).padStart(4, '0')}`;
-    const esServicioTabla = serviciosDemo.some(
-      (servicio) => servicio.nombre === producto.nombre,
-    );
+    const esServicioTabla = normalizarTexto(producto.origen) === 'SERVICIO';
     const tipoProducto: TipoRegistro =
       typeof producto.origen === 'string' && producto.origen
         ? (normalizarTexto(producto.origen) === 'SERVICIO'
@@ -638,7 +638,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   );
 
   return (
-    <section className="inventario-catalogo">
+    <section className="inventario-catalogo"><p>ítem global: un nombre para facturación y un precio de venta. Las marcas se asocian al registrar adquisiciones. El rojo indica un precio provisional pendiente de confirmación.</p>
       <div className="inventario-contenido">
         <div className="inventario-controles-principales">
           <div className="inventario-filtros inventario-filtros-productos">
@@ -732,13 +732,13 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
               const datosTabla = obtenerDatosTabla(producto);
               return (
                 <article
-                  className="inventario-row"
+                  className="inventario-row" style={producto.revisionPrecio ? { background: "#fee2e2", color: "#991b1b", border: "1px solid #ef4444" } : undefined}
                   role="row"
                   key={producto.nombre}
                 >
                       <span className="inventario-codigo">{datosTabla.codigo}</span>
                   <div className="inventario-producto-cell">
-                    <strong>{producto.nombre}</strong>
+                    <strong>{producto.nombre}{producto.revisionPrecio && <small> - Precio provisional: revision pendiente</small>}</strong>
                   </div>
                   <span className="inventario-chip">{datosTabla.tipoProducto}</span>
                   <span className="inventario-chip">{producto.categoria}</span>
@@ -767,8 +767,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                         const registroBase =
                           registrosGuardados.find(
                             (item) =>
-                              item.nombre === producto.nombre &&
-                              item.categoria === producto.categoria,
+                              item.codigo === producto.codigo,
                           ) || {
                             id: Date.now() + Math.random(),
                             codigo: datosTabla.codigo,
@@ -802,8 +801,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                         const registroBase =
                           registrosGuardados.find(
                             (item) =>
-                              item.nombre === producto.nombre &&
-                              item.categoria === producto.categoria,
+                              item.codigo === producto.codigo,
                           ) || {
                             id: Date.now() + Math.random(),
                             codigo: datosTabla.codigo,
@@ -822,6 +820,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                           };
                         setEdicionRegistro({
                           ...registroBase,
+                          confirmarPrecio: false,
                           estado: normalizarEstadoFormulario(registroBase.estado),
                         });
                       }}
@@ -836,7 +835,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         ) : (
           <div className="inventario-galeria" aria-label={titulo}>
             {productosPagina.map((producto) => (
-              <article className="inventario-card" key={producto.nombre}>
+              <article className="inventario-card" style={producto.revisionPrecio ? { background: "#fee2e2", border: "1px solid #ef4444" } : undefined} key={producto.nombre}>
                 <div className="inventario-card-imagen">
                   <span>{producto.categoria}</span>
                   <strong>
@@ -844,7 +843,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   </strong>
                 </div>
                 <div className="inventario-card-cuerpo">
-                  <small>{producto.marca}</small>
+                  <small>{producto.marca}</small>{producto.revisionPrecio && <p>Precio provisional: revision pendiente</p>}
                   <h3>{producto.nombre}</h3>
                   <p>{producto.presentacion}</p>
                   <footer>
@@ -1095,6 +1094,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                     ))}
                   </select>
                 </label>
+                <label><input type="checkbox" checked={!!edicionRegistro.confirmarPrecio} onChange={e => setEdicionRegistro(a => a ? { ...a, confirmarPrecio: e.target.checked } : a)} /> Confirmar precio de venta revisado (quita la alerta si cubre los costos)</label>
                 <label>
                   <span>Precio de venta</span>
                   <input

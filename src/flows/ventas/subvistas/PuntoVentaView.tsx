@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import {
-  catalogoVentas,
   type ItemVenta,
   type TipoVenta,
 } from '../datos/catalogoVentas';
@@ -20,6 +19,17 @@ const money = (value: number) => `Bs ${value.toFixed(2)}`;
 const nuevoPago = (id: number): Pago => ({ id, metodo: 'Efectivo', monto: '' });
 
 export function PuntoVentaView() {
+  const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>([]);
+  const [almacenes, setAlmacenes] = useState<string[]>([]);
+  const [almacen, setAlmacen] = useState('');
+  const [cobrando, setCobrando] = useState(false);
+  const [ventaId, setVentaId] = useState(() => crypto.randomUUID());
+  async function cargarCatalogo() {
+    const r = await fetch('/api/inventario'); if (!r.ok) throw new Error('No se pudo cargar el catálogo');
+    const { data } = await r.json();
+    setCatalogo(data.filter((i: any) => i.estado.toUpperCase() === 'ACTIVO').map((i: any) => ({ id: String(i.id), codigo: i.codigo, nombre: i.nombre, tipo: i.tipo === 'SERVICIO' ? 'Servicio' : i.tipo === 'INSUMO' ? 'Insumo' : 'Producto', precio: i.precioVenta, stock: i.stock })));
+  }
+  useEffect(() => { cargarCatalogo().catch(e => setMensaje(e.message)); fetch('/api/stock/lotes').then(r => r.json()).then(({data}) => { const nombres = [...new Set<string>(data.map((l: any) => l.almacen))]; setAlmacenes(nombres); setAlmacen(nombres[0] || ''); }).catch(() => setMensaje('No se pudieron cargar los almacenes')); }, []);
   const [sucursal, setSucursal] = useState('Hospital María Esperanza');
   const [caja, setCaja] = useState('Caja 01 · Recepción');
   const [busqueda, setBusqueda] = useState('');
@@ -50,7 +60,7 @@ export function PuntoVentaView() {
             .toLowerCase()
             .includes(busqueda.toLowerCase()),
       ),
-    [busqueda, tipo],
+    [busqueda, tipo, catalogoVentas],
   );
   const subtotal = lineas.reduce(
     (total, linea) => total + linea.precio * linea.cantidad,
@@ -117,18 +127,24 @@ export function PuntoVentaView() {
     setClienteModo('inicio');
     setClienteExpandido(false);
   };
-  const cobrar = () => {
-    if (!lineas.length || pendiente > 0) return;
-    setMensaje('Venta registrada correctamente. Lista para imprimir factura.');
-    setLineas([]);
-    setPagos([nuevoPago(Date.now())]);
-    setDescuento('');
+  const cobrar = async () => {
+    if (!lineas.length || pendiente > 0 || cobrando) return;
+    setCobrando(true);
+    try {
+      const r = await fetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ventaId, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
+      const resultado = await r.json();
+      if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
+      setMensaje('Venta registrada. Stock descontado por fecha de ingreso (FIFO).');
+      setLineas([]); setPagos([nuevoPago(Date.now())]); setDescuento(''); setVentaId(crypto.randomUUID());
+      await cargarCatalogo();
+    } catch(e) { setMensaje(e instanceof Error ? e.message : 'Error al cobrar'); await cargarCatalogo().catch(() => {}); }
+    finally { setCobrando(false); }
   };
 
   return (
     <section className="punto-venta punto-pos">
       <header className="punto-pos-cabecera punto-pos-contexto">
-        <div className="punto-contexto">
+        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{almacenes.map(a => <option key={a}>{a}</option>)}</select></label>
           <label>
             Sucursal
             <SelectMenu

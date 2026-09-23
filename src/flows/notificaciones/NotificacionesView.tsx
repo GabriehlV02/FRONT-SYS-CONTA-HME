@@ -1,3 +1,4 @@
+import { AvisosPrecio } from '../inventario/componentes/AvisosPrecio';
 import { useMemo, useState } from 'react';
 import Icon, { type IconName } from '@ui/components/Icon';
 import './NotificacionesView.css';
@@ -29,7 +30,7 @@ export function NotificacionesView({ onSelect }: { onSelect: (id: string) => voi
   const abrir = (item: Aviso) => { setAvisos((actual) => actual.map((aviso) => aviso.id === item.id ? { ...aviso, leida: true } : aviso)); onSelect(item.destino); };
   const alternar = (id: number) => setAvisos((actual) => actual.map((item) => item.id === id ? { ...item, leida: !item.leida } : item));
 
-  return <section className="notificaciones-centro">
+  return <section className="notificaciones-centro"><AvisosPrecio />
     <header className="notificaciones-portada"><div><span>CENTRO DE ACTIVIDAD</span><h2>Notificaciones</h2><p>Consulta cambios importantes y abre directamente el módulo relacionado.</p></div><div className="notificaciones-resumen"><article><strong>{pendientes}</strong><small>Sin leer</small></article><article className={criticas ? 'alerta' : ''}><strong>{criticas}</strong><small>Prioritarias</small></article><article><strong>{avisos.length}</strong><small>Total</small></article></div></header>
     <div className="notificaciones-herramientas"><label><Icon name="search" size={17} /><input value={busqueda} onChange={(event) => setBusqueda(event.target.value)} placeholder="Buscar en notificaciones" /></label><div className="notificaciones-estados">{(['Todas', 'No leídas', 'Leídas'] as const).map((item) => <button key={item} type="button" className={estado === item ? 'activo' : ''} onClick={() => setEstado(item)}>{item}</button>)}</div><button className="notificaciones-leer-todas" type="button" disabled={!pendientes} onClick={() => setAvisos((actual) => actual.map((item) => ({ ...item, leida: true }))) }><Icon name="check" size={15} /> Marcar todas como leídas</button></div>
     <div className="notificaciones-categorias">{(['Todas', 'Usuarios', 'Inventario', 'Ventas', 'Sistema'] as const).map((item) => <button key={item} type="button" className={categoria === item ? 'activo' : ''} onClick={() => setCategoria(item)}>{item}</button>)}</div>

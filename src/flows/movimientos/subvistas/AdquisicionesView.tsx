@@ -1,6 +1,5 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
-import { productosDemo } from '../../inventario/datos/catalogoDemo';
 import type { SubvistaAdquisiciones } from '../componentes/MovimientosNavegacion';
 
 type LineaCargaStock = {
@@ -8,6 +7,7 @@ type LineaCargaStock = {
   codigo: string;
   producto: string;
   categoria: string;
+  marca: string;
   lote: string;
   cantidad: number;
   unidad: string;
@@ -31,6 +31,8 @@ type ItemInventario = {
   categoria: string;
   unidadMedida: string;
   tipo: string;
+  marcas?: string[];
+  precioVenta?: number;
 };
 
 const moneda = new Intl.NumberFormat('es-BO', {
@@ -46,26 +48,6 @@ const almacenesDestino = [
   'Sucursal Sur - Caja farmacia',
   'Sucursal Sur - Almacen clinico',
 ];
-
-const registrosIniciales: RegistroIngreso[] = [0, 1].map((grupo) => ({
-  id: `ING-${String(grupo + 1).padStart(4, '0')}`,
-  fecha: `2026-09-${String(10 - grupo).padStart(2, '0')}`,
-  proveedor: grupo === 0 ? 'Distribuidora Medica Andina' : 'Insumos Clinicos Bolivia',
-  comprobante: `FAC-${2400 + grupo}`,
-  almacen: grupo === 0 ? almacenesDestino[0] : almacenesDestino[1],
-  lineas: productosDemo.slice(grupo * 4, grupo * 4 + 4).map((producto, indice) => ({
-    id: `LIN-DEMO-${grupo}-${indice}`,
-    codigo: `DEMO-${grupo}-${indice}`,
-    producto: producto.nombre,
-    categoria: producto.categoria,
-    lote: `L-${producto.marca.slice(0, 3).toUpperCase()}-${86 + indice}`,
-    cantidad: (indice + 2) * 6,
-    unidad: producto.presentacion.includes('Caja') ? 'Caja' : producto.presentacion.includes('Paquete') ? 'Paquete' : 'Unidad',
-    costoUnitario: 18 + indice * 7.5,
-    vence: `2027-${String((indice % 9) + 1).padStart(2, '0')}-28`,
-    observacion: '',
-  })),
-}));
 
 const normalizar = (valor: string) =>
   valor
@@ -88,7 +70,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
   const [almacen, setAlmacen] = useState('todos');
-  const [registros, setRegistros] = useState<RegistroIngreso[]>(registrosIniciales);
+  const [registros, setRegistros] = useState<RegistroIngreso[]>([]);
   const [cargandoStock, setCargandoStock] = useState(false);
   const [detalleId, setDetalleId] = useState<string | null>(null);
   const [edicionId, setEdicionId] = useState<string | null>(null);
@@ -100,11 +82,15 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [almacenDestino, setAlmacenDestino] = useState(almacenesDestino[0]);
   const [proveedorCarga, setProveedorCarga] = useState('');
   const [comprobanteCarga, setComprobanteCarga] = useState('');
-  const [fechaCarga, setFechaCarga] = useState('2026-09-12');
+  const [fechaCarga, setFechaCarga] = useState(new Date().toISOString().slice(0, 10));
   const [lineasCarga, setLineasCarga] = useState<LineaCargaStock[]>([]);
   const [lineaEditandoId, setLineaEditandoId] = useState<string | null>(null);
   const [cantidadLinea, setCantidadLinea] = useState('');
   const [costoLinea, setCostoLinea] = useState('');
+  const [marcaLinea, setMarcaLinea] = useState('');
+  const [ingresoId, setIngresoId] = useState(() => `ING-${crypto.randomUUID()}`);
+  const [guardando, setGuardando] = useState(false);
+  useEffect(() => { fetch('/api/adquisiciones').then(async r => { if (!r.ok) throw new Error('No se pudieron cargar los ingresos'); return r.json(); }).then(r => setRegistros(r.data)).catch(e => setErrorCatalogo(e.message)); }, []);
   const [loteLinea, setLoteLinea] = useState('');
   const [venceLinea, setVenceLinea] = useState('');
   const [observacionLinea, setObservacionLinea] = useState('');
@@ -174,7 +160,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
             registro.proveedor,
             registro.comprobante,
             registro.almacen,
-            ...registro.lineas.flatMap((linea) => [linea.codigo, linea.producto, linea.categoria, linea.lote]),
+            ...registro.lineas.flatMap((linea) => [linea.codigo, linea.producto, linea.categoria, linea.marca, linea.lote]),
           ].some((valor) => normalizar(valor).includes(termino)),
       );
   }, [almacen, busqueda, fechaDesde, fechaHasta, registros]);
@@ -192,6 +178,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
       codigo: productoActual.codigo,
       producto: productoActual.nombre,
       categoria: productoActual.categoria,
+      marca: marcaLinea.trim(),
       lote: loteLinea.trim(),
       cantidad,
       unidad: productoActual.unidadMedida,
@@ -205,7 +192,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     setLineaEditandoId(null);
     setCantidadLinea('');
     setCostoLinea('');
-    setLoteLinea('');
+    setLoteLinea(''); setMarcaLinea('');
     setVenceLinea('');
     setObservacionLinea('');
     setCodigoSeleccionado('');
@@ -215,6 +202,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   }
 
   function nuevoRegistro() {
+    setIngresoId(`ING-${crypto.randomUUID()}`);
     setEdicionId(null);
     setAlmacenDestino(almacenesDestino[0]);
     setProveedorCarga('');
@@ -226,27 +214,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     setBusquedaProducto('');
     setCantidadLinea('');
     setCostoLinea('');
-    setLoteLinea('');
-    setVenceLinea('');
-    setObservacionLinea('');
-    setErrorCatalogo('');
-    setCargandoStock(true);
-  }
-
-  function modificarRegistro(registro: RegistroIngreso) {
-    setDetalleId(null);
-    setEdicionId(registro.id);
-    setAlmacenDestino(registro.almacen);
-    setProveedorCarga(registro.proveedor);
-    setComprobanteCarga(registro.comprobante);
-    setFechaCarga(registro.fecha);
-    setLineasCarga(registro.lineas.map((linea) => ({ ...linea })));
-    setLineaEditandoId(null);
-    setCodigoSeleccionado('');
-    setBusquedaProducto('');
-    setCantidadLinea('');
-    setCostoLinea('');
-    setLoteLinea('');
+    setLoteLinea(''); setMarcaLinea('');
     setVenceLinea('');
     setObservacionLinea('');
     setErrorCatalogo('');
@@ -259,24 +227,30 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     setBusquedaProducto(`${linea.codigo} · ${linea.producto}`);
     setCantidadLinea(String(linea.cantidad));
     setCostoLinea(String(linea.costoUnitario));
-    setLoteLinea(linea.lote);
+    setLoteLinea(linea.lote); setMarcaLinea(linea.marca);
     setVenceLinea(linea.vence);
     setObservacionLinea(linea.observacion);
   }
 
-  function guardarLoteCarga() {
+  async function guardarLoteCarga() {
+    if (guardando) return;
     if (lineasCarga.length === 0 || lineaEditandoId) return;
     const registro: RegistroIngreso = {
-      id: edicionId ?? `ING-${crypto.randomUUID()}`,
+      id: ingresoId,
       fecha: fechaCarga,
-      proveedor: proveedorCarga || 'Proveedor por definir',
-      comprobante: comprobanteCarga || 'Sin comprobante',
+      proveedor: proveedorCarga.trim(),
+      comprobante: comprobanteCarga.trim(),
       almacen: almacenDestino,
       lineas: lineasCarga.map((linea) => ({ ...linea })),
     };
-    setRegistros((actuales) => edicionId
-      ? actuales.map((item) => item.id === edicionId ? registro : item)
-      : [registro, ...actuales]);
+    setGuardando(true);
+    try {
+      const respuesta = await fetch('/api/adquisiciones', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registro) });
+      const resultado = await respuesta.json();
+      if (!respuesta.ok) throw new Error(resultado.message || 'No se pudo registrar el ingreso.');
+      setRegistros(actuales => [resultado.data, ...actuales.filter(x => x.id !== resultado.data.id)]);
+    } catch (error) { setErrorCatalogo(error instanceof Error ? error.message : 'Error de conexión'); return; }
+    finally { setGuardando(false); }
     setLineasCarga([]);
     setEdicionId(null);
     setProveedorCarga('');
@@ -286,7 +260,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
 
   return (
     <>
-      <div className="movimientos-contenido adquisiciones-contenido">
+      <div className="movimientos-contenido adquisiciones-contenido"><p>Ingresos por marca y lote. Cantidad y costo corresponden a la unidad de salida del ítem. Un costo superior al precio de venta activa un precio provisional y revisión obligatoria.</p>{!cargandoStock && errorCatalogo && <p role="alert">{errorCatalogo}</p>}
         {subvista === 'cargado' ? (
           <>
           {cargandoStock && (
@@ -423,7 +397,10 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                 />
               </label>
               <label>
-                <span>Lote del producto</span>
+                <span>Marca / fabricante</span>
+                <input required value={marcaLinea} onChange={e => setMarcaLinea(e.target.value)} list="marcas-item" placeholder="Bagó, Cofar..." />
+                <datalist id="marcas-item">{itemsInventario.find(i => i.codigo === codigoSeleccionado)?.marcas?.map(m => <option key={m} value={m} />)}</datalist>
+              </label><label><span>Lote del producto</span>
                 <input name="lote" required placeholder="Código de lote" value={loteLinea} onChange={(event) => setLoteLinea(event.target.value)} />
               </label>
               <label>
@@ -444,7 +421,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                   setBusquedaProducto('');
                   setCantidadLinea('');
                   setCostoLinea('');
-                  setLoteLinea('');
+                  setLoteLinea(''); setMarcaLinea('');
                   setVenceLinea('');
                   setObservacionLinea('');
                 }}>Cancelar edición</button>
@@ -474,7 +451,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                     <span>
                       {linea.cantidad} {linea.unidad}
                     </span>
-                    <span>{linea.lote}</span>
+                    <span>{linea.marca} ? {linea.lote}</span>
                     <span>{moneda.format(linea.cantidad * linea.costoUnitario)}</span>
                     <span>{linea.vence}</span>
                     <span>{linea.observacion || 'Sin nota'}</span>
@@ -496,8 +473,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
               <button
                 className="adquisiciones-cargar"
                 type="button"
-                disabled={lineasCarga.length === 0 || Boolean(lineaEditandoId)}
-                onClick={guardarLoteCarga}
+                disabled={guardando || lineasCarga.length === 0 || Boolean(lineaEditandoId)} onClick={guardarLoteCarga}
               >
                 {edicionId ? 'Guardar cambios' : 'Guardar registro'}
               </button>
@@ -528,7 +504,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                       <strong>{linea.codigo} · {linea.producto}</strong>
                       <span>{linea.categoria}</span>
                       <span>{linea.cantidad} {linea.unidad}</span>
-                      <span>{linea.lote}</span>
+                      <span>{linea.marca} ? {linea.lote}</span>
                       <span>{moneda.format(linea.cantidad * linea.costoUnitario)}</span>
                       <span>{linea.vence}</span>
                       <span>{linea.observacion || 'Sin nota'}</span>
@@ -539,7 +515,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                 <footer className="adquisiciones-carga-footer">
                   <button className="adquisiciones-volver" type="button" onClick={() => setDetalleId(null)}>Cerrar</button>
                   <button className="adquisiciones-imprimir" type="button" onClick={() => window.print()}>Imprimir</button>
-                  <button className="adquisiciones-cargar" type="button" onClick={() => modificarRegistro(detalleRegistro)}>Modificar registro</button>
+                  <small>Ingreso confirmado: se conserva para trazabilidad.</small>
                 </footer>
               </section>
             </div>
@@ -620,7 +596,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                   <span>{registro.almacen}</span>
                   <div className="adquisiciones-acciones">
                     <button type="button" onClick={() => setDetalleId(registro.id)}><Icon name="eye" size={15} /> Ver detalle</button>
-                    <button type="button" onClick={() => modificarRegistro(registro)}><Icon name="edit" size={15} /> Modificar</button>
+                    <small>Confirmado</small>
                   </div>
                 </article>
               ))}
