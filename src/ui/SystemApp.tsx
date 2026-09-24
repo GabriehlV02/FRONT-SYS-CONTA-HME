@@ -168,7 +168,6 @@ export function SystemApp({ config }: { config: SystemConfig }) {
         <div className="search-container"><label className="busqueda-global"><Icon name="search" size={17}/><input type="search" aria-label="Buscar módulo" placeholder="Buscar un módulo…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}/></label>
           {query.trim() && <div className="search-results" aria-label="Resultados de módulos">{results.length ? results.map(item => <button key={item.id} onClick={() => select(item.id)}><Icon name={item.icon} size={17}/>{item.name}<Icon name="chevronRight" size={14}/></button>) : <p role="status">No se encontraron módulos.</p>}</div>}
         </div>
-        {config.id === 'contable' && <div className="topbar-periodo"><Icon name="calendar" size={17}/><span>Septiembre 2026</span><Icon name="chevronDown" size={14}/></div>}
         <div className="notificaciones" ref={notificationsRef}>
           <button className="notificaciones-boton" type="button" onClick={() => setNotificationsOpen(value => !value)} aria-label="Ver notificaciones" aria-expanded={notificationsOpen}>
             <Icon name="bell" size={19}/>
