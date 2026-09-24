@@ -180,6 +180,12 @@ export function PuntoVentaView() {
                 placeholder="Buscar producto por nombre, código de barras o categoría…"
               />
             </label>
+            <button type="button" className="punto-acceso-laboratorios" onClick={() => setBusqueda('laboratorio')}>
+              Laboratorios
+            </button>
+            <button type="button" className="punto-acceso-internacion" onClick={() => setBusqueda('internacion')}>
+              + Internación
+            </button>
           </div>
           <div className="punto-catalogo-filtros">
             <div className="punto-categorias">
