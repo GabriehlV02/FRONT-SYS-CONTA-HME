@@ -1,4 +1,4 @@
-.sistema-contable {
+﻿.sistema-contable {
   --surface: #fff;
   --border: #b9ddea;
   --muted: #52758b;
@@ -74,7 +74,7 @@
   background: #d8f3fa;
 }
 .sistema-contable .sistema-topbar {
-  border-color: #b8e4ef;
+  border-color: #ddd6fe;
   background: #fff;
   box-shadow: 0 4px 17px rgba(76, 29, 149, 0.1);
 }
@@ -83,23 +83,23 @@
 .sistema-contable .metric-icon,
 .sistema-contable .quick-icon,
 .sistema-contable .empty-icon {
-  border-color: #b8e4ef;
-  color: #087ea7;
-  background: #f2fcfe;
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #f5f3ff;
 }
 .sistema-contable .busqueda-global:focus-within,
 .sistema-contable input:focus-visible,
 .sistema-contable select:focus-visible,
 .sistema-contable button:focus-visible {
-  outline-color: #12b8df;
+  outline-color: #8b5cf6;
 }
 .sistema-contable .perfil {
-  border-color: #b8e4ef;
+  border-color: #ddd6fe;
 }
 .sistema-contable .perfil-avatar,
 .sistema-contable .pagina-cabecera p,
 .sistema-contable .section-kicker {
-  color: #087ea7;
+  color: #6d28d9;
 }
 .sistema-contable .pagina-cabecera h2,
 .sistema-contable .topbar-titulo h1,
@@ -114,7 +114,7 @@
 .sistema-contable .ventas-primary,
 .sistema-contable .inventario-nuevo,
 .sistema-contable .inventario-primario {
-  background: linear-gradient(105deg, #079bc7, #18c4e5);
+  background: linear-gradient(105deg, #7c3aed, #a855f7);
   color: #fff;
   box-shadow: 0 7px 18px rgba(124, 58, 237, 0.25);
 }
@@ -123,53 +123,53 @@
 .sistema-contable .ventas-primary:hover,
 .sistema-contable .inventario-nuevo:hover,
 .sistema-contable .inventario-primario:hover {
-  background: linear-gradient(105deg, #087ea7, #0b9bc1);
+  background: linear-gradient(105deg, #6d28d9, #9333ea);
 }
 .sistema-contable .boton-secundario,
 .sistema-contable .secundario,
 .sistema-contable .ventas-secondary,
 .sistema-contable .inventario-secundario {
-  border-color: #b8e4ef;
-  color: #064e70;
-  background: #f5fdff;
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #faf5ff;
 }
 .sistema-contable .welcome-panel,
 .sistema-contable .bienvenida {
-  background: linear-gradient(110deg, #fff, #e6faff);
-  border-color: #b8e4ef;
+  background: linear-gradient(110deg, #fff, #f3e8ff);
+  border-color: #ddd6fe;
 }
 .sistema-contable .welcome-visual {
-  background: linear-gradient(140deg, #fff, #dff9ff);
-  border-color: #a9dce9;
-  color: #079bc7;
+  background: linear-gradient(140deg, #fff, #ede9fe);
+  border-color: #c4b5fd;
+  color: #7c3aed;
 }
 
 .sistema-contable .ventas-tabs,
 .sistema-contable .inventario-subvistas,
 .sistema-contable .movimientos-subvistas,
 .sistema-contable .usuarios-subvistas {
-  border-color: #a9dce9;
-  background: #dff9ff;
+  border-color: #c4b5fd;
+  background: #ede9fe;
 }
 .sistema-contable .ventas-tabs button,
 .sistema-contable .inventario-subvistas button,
 .sistema-contable .movimientos-subvistas button,
 .sistema-contable .usuarios-subvistas button {
-  color: #075985;
+  color: #5b21b6;
 }
 .sistema-contable .ventas-tabs button:hover,
 .sistema-contable .inventario-subvistas button:hover,
 .sistema-contable .movimientos-subvistas button:hover,
 .sistema-contable .usuarios-subvistas button:hover {
   color: #3b0764;
-  border-color: #a9dce9;
-  background: #f5fdff;
+  border-color: #c4b5fd;
+  background: #faf5ff;
 }
 .sistema-contable .ventas-tabs button.activo,
 .sistema-contable .inventario-subvistas button.activo,
 .sistema-contable .movimientos-subvistas button.activo,
 .sistema-contable .usuarios-subvistas button.activo {
-  color: #07304a;
+  color: #2e1065;
   border-color: #fff;
   background: #fff;
   box-shadow: 0 5px 14px rgba(124, 58, 237, 0.16);
@@ -177,9 +177,9 @@
 .sistema-contable .inventario-subvista-icono,
 .sistema-contable .movimientos-subvista-icono,
 .sistema-contable .usuarios-subvista-icono {
-  border-color: #a9dce9;
-  color: #087ea7;
-  background: #f2fcfe;
+  border-color: #c4b5fd;
+  color: #6d28d9;
+  background: #f5f3ff;
 }
 .sistema-contable
   .inventario-subvistas
@@ -192,8 +192,8 @@
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-kpi > span {
   color: #fff;
-  border-color: #079bc7;
-  background: #079bc7;
+  border-color: #7c3aed;
+  background: #7c3aed;
 }
 
 /* Barra superior compacta para priorizar el espacio de trabajo. */
@@ -403,7 +403,7 @@
 .sistema-contable .modulo-vacio,
 .sistema-contable .ventas-contexto,
 .sistema-contable .inventario-modal {
-  border-color: #b8e4ef;
+  border-color: #ddd6fe;
   box-shadow: 0 10px 28px rgba(76, 29, 149, 0.1);
 }
 .sistema-contable .ventas-input,
@@ -417,21 +417,21 @@
 .sistema-contable .inventario-modal-cuerpo input,
 .sistema-contable .inventario-modal-cuerpo select {
   border-color: #d8ccff;
-  color: #064e70;
-  background: #f5fdff;
+  color: #4c1d95;
+  background: #faf5ff;
 }
 .sistema-contable .inventario-filtros label:focus-within,
 .sistema-contable .movimientos-filtros label:focus-within,
 .sistema-contable .usuarios-filtros label:focus-within {
-  outline-color: #6cdbef;
+  outline-color: #a78bfa;
 }
 .sistema-contable .inventario-contador,
 .sistema-contable .movimientos-contador,
 .sistema-contable .usuarios-contador,
 .sistema-contable .ventas-badge {
-  border-color: #b8e4ef;
-  color: #075985;
-  background: #f2fcfe;
+  border-color: #ddd6fe;
+  color: #5b21b6;
+  background: #f5f3ff;
 }
 .sistema-contable .inventario-tabla,
 .sistema-contable .movimientos-tabla,
@@ -439,29 +439,29 @@
 .sistema-contable .ventas-tabla,
 .sistema-contable .venta-lineas,
 .sistema-contable .venta-totales {
-  border-color: #b8e4ef;
+  border-color: #ddd6fe;
 }
 .sistema-contable .inventario-tabla-head,
 .sistema-contable .movimientos-tabla-head,
 .sistema-contable .usuarios-tabla-head,
 .sistema-contable .ventas-tabla-head,
 .sistema-contable .venta-lineas-head {
-  border-color: #b8e4ef;
-  color: #064e70;
-  background: #e6faff;
+  border-color: #ddd6fe;
+  color: #4c1d95;
+  background: #f3e8ff;
 }
 .sistema-contable .inventario-modal-fondo {
   background: rgba(46, 16, 101, 0.42);
 }
 .sistema-contable .inventario-modal header {
-  border-color: #dff9ff;
+  border-color: #ede9fe;
 }
 .sistema-contable .inventario-modal header span,
 .sistema-contable .inventario-modal-cuerpo span {
-  color: #087ea7;
+  color: #6d28d9;
 }
 .sistema-contable .inventario-modal header button {
-  border-color: #b8e4ef;
-  color: #087ea7;
-  background: #f5fdff;
+  border-color: #ddd6fe;
+  color: #6d28d9;
+  background: #faf5ff;
 }
