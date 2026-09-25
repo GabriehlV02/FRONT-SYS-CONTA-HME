@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import { OperacionCuenta, leerMovimientos, type Movimientos } from './OperacionCuenta';
 
 type EstadoCuenta = 'Pendiente' | 'Parcial' | 'Vencida' | 'Cerrada';
 type FiltroCuenta = 'Todas' | 'Internaciones' | 'Deudas' | 'Cerradas';
@@ -13,18 +14,16 @@ const cuentasIniciales: Cuenta[] = [
   { id: 'CTA-1035', paciente: 'Sofía Aguilar Soto', documento: 'CI 8124763', origen: 'Procedimiento', fecha: '19 Sep 2026', total: 310, saldo: 310, estado: 'Pendiente' },
   { id: 'CTA-1031', paciente: 'Diego Arce Molina', documento: 'CI 5489326', origen: 'Consulta externa', fecha: '18 Sep 2026', total: 180, saldo: 0, estado: 'Cerrada' },
 ];
-const consumosDemo = [
-  { concepto: 'Consulta médica general', fecha: '24 Sep 2026 · 09:30', cantidad: 1, monto: 80 },
-  { concepto: 'Hemograma completo', fecha: '24 Sep 2026 · 10:15', cantidad: 1, monto: 50 },
-  { concepto: 'Material de curación', fecha: '24 Sep 2026 · 10:45', cantidad: 1, monto: 50 },
-];
 const moneda = (monto: number) => `Bs ${monto.toFixed(2)}`;
 
 export function CuentasAbiertasView() {
-  const [cuentas] = useState(cuentasIniciales);
+  const [movimientos, setMovimientos] = useState<Record<string, Movimientos>>(() => Object.fromEntries(cuentasIniciales.map(cuenta => [cuenta.id, leerMovimientos(cuenta.id)])));
+  const cuentas = cuentasIniciales.map(cuenta => { const datos = movimientos[cuenta.id]; const total = cuenta.total + datos.cargos.reduce((suma, cargo) => suma + cargo.monto, 0); const saldo = Math.round((cuenta.saldo + total - cuenta.total - datos.pagos.reduce((suma, pago) => suma + pago.monto, 0)) * 100) / 100; return { ...cuenta, total, saldo, estado: (saldo <= 0 ? 'Cerrada' : saldo < total ? 'Parcial' : cuenta.estado === 'Cerrada' ? 'Pendiente' : cuenta.estado) as EstadoCuenta }; });
   const [busqueda, setBusqueda] = useState('');
   const [estado, setEstado] = useState<FiltroCuenta>('Todas');
-  const [cuentaActiva, setCuentaActiva] = useState<Cuenta | null>(null);
+  const [seleccion, setCuentaActiva] = useState<Cuenta | null>(null);
+  const cuentaActiva = cuentas.find(cuenta => cuenta.id === seleccion?.id) ?? null;
+  const consumosActuales = cuentaActiva ? [{ concepto: 'Consumo anterior registrado', fecha: cuentaActiva.fecha, cantidad: 1, monto: cuentasIniciales.find(cuenta => cuenta.id === cuentaActiva.id)!.total }, ...movimientos[cuentaActiva.id].cargos.map(cargo => ({ ...cargo, fecha: new Date(cargo.fecha).toLocaleString('es-BO') }))] : [];
   const [modo, setModo] = useState<'cargar' | 'cobrar'>('cargar');
   const visibles = useMemo(() => {
     const termino = busqueda.trim().toLocaleLowerCase();
@@ -37,8 +36,8 @@ export function CuentasAbiertasView() {
   if (cuentaActiva) return <section className="cuenta-detalle-vista">
     <header className="cuenta-detalle-cabecera"><button type="button" onClick={() => setCuentaActiva(null)}><Icon name="chevronLeft" size={17} /> Volver a cuentas</button><div><p>{cuentaActiva.id}</p><h2>{cuentaActiva.paciente}</h2><small>{cuentaActiva.documento} · {cuentaActiva.origen} · Saldo pendiente: <b>{moneda(cuentaActiva.saldo)}</b></small></div></header>
     <div className="cuenta-detalle-layout">
-      <section className="cuenta-consumos"><header><div><p>CONSUMOS REGISTRADOS</p><h3>Detalle de la cuenta</h3></div><strong>{consumosDemo.length} ítems</strong></header><div className="cuenta-consumos-cabecera"><span>Concepto</span><span>Fecha</span><span>Cant.</span><span>Importe</span></div>{consumosDemo.map((consumo) => <article key={consumo.concepto}><strong>{consumo.concepto}</strong><span>{consumo.fecha}</span><span>{consumo.cantidad}</span><b>{moneda(consumo.monto)}</b></article>)}<footer><span>Total registrado</span><strong>{moneda(cuentaActiva.total)}</strong></footer></section>
-      <aside className="cuenta-operacion"><div className="cuenta-operacion-tabs" role="tablist" aria-label="Operaciones de cuenta"><button type="button" role="tab" aria-selected={modo === 'cargar'} className={modo === 'cargar' ? 'activo' : ''} onClick={() => setModo('cargar')}><Icon name="plus" size={16} /> Cargar</button><button type="button" role="tab" aria-selected={modo === 'cobrar'} className={modo === 'cobrar' ? 'activo' : ''} onClick={() => setModo('cobrar')}><Icon name="cash" size={16} /> Cobrar</button></div><section className="cuenta-operacion-vacia"><Icon name={modo === 'cargar' ? 'plus' : 'cash'} size={26} /><strong>{modo === 'cargar' ? 'Cargar a la cuenta' : 'Cobrar cuenta'}</strong><small>Esta sección se encuentra vacía por el momento.</small></section></aside>
+      <section className="cuenta-consumos"><header><div><p>CONSUMOS REGISTRADOS</p><h3>Detalle de la cuenta</h3></div><strong>{consumosActuales.length} ítems</strong></header><div className="cuenta-consumos-cabecera"><span>Concepto</span><span>Fecha</span><span>Cant.</span><span>Importe</span></div>{consumosActuales.map((consumo) => <article key={consumo.concepto + consumo.fecha}><strong>{consumo.concepto}</strong><span>{consumo.fecha}</span><span>{consumo.cantidad}</span><b>{moneda(consumo.monto)}</b></article>)}<footer><span>Total registrado</span><strong>{moneda(cuentaActiva.total)}</strong></footer></section>
+      <aside className="cuenta-operacion"><div className="cuenta-operacion-tabs" role="tablist" aria-label="Operaciones de cuenta"><button type="button" role="tab" aria-selected={modo === 'cargar'} className={modo === 'cargar' ? 'activo' : ''} onClick={() => setModo('cargar')}><Icon name="plus" size={16} /> Cargar</button><button type="button" role="tab" aria-selected={modo === 'cobrar'} className={modo === 'cobrar' ? 'activo' : ''} onClick={() => setModo('cobrar')}><Icon name="cash" size={16} /> Cobrar</button></div><OperacionCuenta key={cuentaActiva.id} id={cuentaActiva.id} modo={modo} saldo={cuentaActiva.saldo} movimientos={movimientos[cuentaActiva.id]} onGuardar={datos => setMovimientos(actual => ({ ...actual, [cuentaActiva.id]: datos }))} /></aside>
     </div>
   </section>;
 

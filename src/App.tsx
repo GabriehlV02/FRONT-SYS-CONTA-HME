@@ -2,6 +2,7 @@
 import type { SystemConfig } from '@ui/types';
 import type { IconName } from '@ui/components/Icon';
 import { lazy, Suspense, type ReactNode } from 'react';
+import { TableEnhancer } from '@ui/components/TableEnhancer';
 
 const InventarioView = lazy(() => import('./flows/inventario/InventarioView').then((module) => ({ default: module.InventarioView })));
 const MovimientosView = lazy(() => import('./flows/movimientos/MovimientosView').then((module) => ({ default: module.MovimientosView })));
@@ -13,7 +14,7 @@ const NotificacionesView = lazy(() => import('./flows/notificaciones/Notificacio
 const ConfiguracionView = lazy(() => import('./flows/configuracion/ConfiguracionView').then((module) => ({ default: module.ConfiguracionView })));
 
 function VistaDiferida({ children }: { children: ReactNode }) {
-  return <Suspense fallback={<div className="carga-modulo" role="status" aria-label="Cargando módulo" />}>{children}</Suspense>;
+  return <><TableEnhancer /><Suspense fallback={<div className="carga-modulo" role="status" aria-label="Cargando módulo" />}>{children}</Suspense></>;
 }
 
 export const modules: {

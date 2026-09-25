@@ -30,8 +30,8 @@ export function InventarioView({ activeId }: { activeId?: string }) {
       {subvista === 'productos' && <ProductosInsumosView />}
       {subvista === 'servicios' && <ServiciosView />}
       {subvista === 'medicos' && <MedicosProfesionalesView />}
-      {subvista === 'todo' && <CatalogoView tipo="todo" />}
-      {subvista === 'reportes' && <ReportesInventarioView />}
+      {subvista === 'todo' && <CatalogoView tipo="todo" onReportes={() => setSubvista('reportes')} />}
+      {subvista === 'reportes' && <ReportesInventarioView onVolver={() => setSubvista('todo')} />}
     </section>
   );
 }

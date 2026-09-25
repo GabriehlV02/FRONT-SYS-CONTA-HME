@@ -47,12 +47,16 @@ export function Login({
         });
         const data = (await response.json().catch(() => ({}))) as {
           message?: string;
+          token?: string;
+          asignacion?: { sucursal: string; caja: string; almacen: string };
           usuario?: { nombre?: string; rol?: string; permisos?: string[] };
         };
         if (!response.ok) {
           setError(data.message || 'No se pudo iniciar sesión.');
           return;
         }
+        sessionStorage.setItem('contable_token', data.token || '');
+        sessionStorage.setItem('contable_asignacion', JSON.stringify(data.asignacion || null));
         nextSession = {
           user: data.usuario?.nombre || 'Administrador',
           role: data.usuario?.rol || config.role,

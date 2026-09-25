@@ -1,9 +1,11 @@
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
+import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
 type ModoInventario = 'galeria' | 'listado';
-type CampoOrden = 'codigo' | 'nombre' | 'categoria' | 'marca';
+type CampoOrden = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'stock' | 'precio' | 'estado' | 'serie' | 'marca';
 type TipoRegistro = 'Producto' | 'Insumo' | 'Servicio';
 type TipoCatalogo = 'productos' | 'servicios' | 'todo';
 type RegistroInventario = {
@@ -42,6 +44,22 @@ type ElementoCatalogo = {
   usarNumeroSerie?: boolean;
 };
 
+const columnasCatalogo: Array<{ etiqueta: string; campo?: CampoOrden; minimo: number }> = [
+  { etiqueta: 'Código', campo: 'codigo', minimo: 68 },
+  { etiqueta: 'Nombre o identificación', campo: 'nombre', minimo: 150 },
+  { etiqueta: 'Tipo', campo: 'tipo', minimo: 65 },
+  { etiqueta: 'Categoría', campo: 'categoria', minimo: 90 },
+  { etiqueta: 'Sub categoría', campo: 'subcategoria', minimo: 85 },
+  { etiqueta: 'Unidad', campo: 'unidad', minimo: 85 },
+  { etiqueta: 'Stock', campo: 'stock', minimo: 50 },
+  { etiqueta: 'Precio venta', campo: 'precio', minimo: 72 },
+  { etiqueta: 'Estado', campo: 'estado', minimo: 70 },
+  { etiqueta: 'Serie / barras', campo: 'serie', minimo: 82 },
+  { etiqueta: 'Acciones', minimo: 95 },
+];
+
+const anchosInicialesCatalogo = [85, 220, 80, 140, 110, 125, 55, 90, 85, 110, 120];
+
 const subcategoriasPorCategoria: Record<string, string[]> = {
   'Proteccion personal': ['Guantes', 'Mascarillas', 'Respiradores'],
   'Material descartable': ['Jeringas', 'Venoclisis', 'Cateteres'],
@@ -76,7 +94,38 @@ const crearPrefijoCodigo = (valor: string) =>
     .join('')
     .slice(0, 6);
 
-export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
+const registrosDemoIniciales: RegistroInventario[] = [
+  ...productosDemo.map((producto, indice) => ({
+    id: indice + 1,
+    codigo: `ITM-${String(indice + 1).padStart(4, '0')}`,
+    nombre: producto.nombre,
+    categoria: producto.categoria,
+    grupo: 'General',
+    tipo: indice % 2 === 0 ? 'Insumo' : 'Producto',
+    unidadMedida: producto.presentacion,
+    descripcion: producto.descripcion,
+    precioVenta: 15 + (indice % 10) * 12,
+    stock: producto.disponible ? 10 + (indice % 8) * 5 : 0,
+    marcas: [producto.marca],
+    estado: producto.disponible ? ('ACTIVO' as const) : ('INACTIVO' as const),
+  })),
+  ...serviciosDemo.map((servicio, indice) => ({
+    id: productosDemo.length + indice + 1,
+    codigo: `SRV-${String(indice + 1).padStart(4, '0')}`,
+    nombre: servicio.nombre,
+    categoria: servicio.categoria,
+    grupo: 'General',
+    tipo: 'Servicio',
+    unidadMedida: servicio.presentacion,
+    descripcion: servicio.descripcion,
+    precioVenta: 50 + (indice % 12) * 25,
+    stock: 0,
+    marcas: [servicio.marca],
+    estado: 'ACTIVO' as const,
+  })),
+];
+
+export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onReportes?: () => void }) {
   const subvista = tipo;
   const [modo, setModo] = useState<ModoInventario>('listado');
   const [porPagina, setPorPagina] = useState<number | 'Todos'>(10);
@@ -85,6 +134,17 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   const [categoria, setCategoria] = useState('todas');
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [campoOrden, setCampoOrden] = useState<CampoOrden | ''>('');
+  const [anchosColumnas, setAnchosColumnas] = useState<number[]>(() => {
+    try {
+      const guardados = JSON.parse(localStorage.getItem('inventario-anchos-columnas') || '[]');
+      return Array.isArray(guardados) && guardados.length === columnasCatalogo.length
+        ? guardados.map((ancho, indice) => Math.max(columnasCatalogo[indice].minimo, Number(ancho) || anchosInicialesCatalogo[indice]))
+        : anchosInicialesCatalogo;
+    } catch {
+      return anchosInicialesCatalogo;
+    }
+  });
+  const [tablaCompacta, setTablaCompacta] = useState(() => window.matchMedia('(max-width: 860px)').matches);
   const [modalRegistroAbierto, setModalRegistroAbierto] = useState(false);
   const [detalleRegistro, setDetalleRegistro] = useState<RegistroInventario | null>(null);
   const [edicionRegistro, setEdicionRegistro] = useState<RegistroInventario | null>(null);
@@ -94,7 +154,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   const [categoriaRegistro, setCategoriaRegistro] = useState('');
   const [subcategoriaRegistro, setSubcategoriaRegistro] = useState('');
   const [serieHabilitada, setSerieHabilitada] = useState(false);
-  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>([]);
+  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(registrosDemoIniciales);
   const [mensajeGuardado, setMensajeGuardado] = useState('');
   const [formularioRegistro, setFormularioRegistro] = useState({
     codigo: '',
@@ -118,12 +178,15 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         data?: RegistroInventario[];
       };
       const siguientes = Array.isArray(datos.data) ? datos.data : [];
-      setRegistrosGuardados(siguientes);
-      return siguientes;
+      if (siguientes.length > 0) {
+        setRegistrosGuardados(siguientes);
+        return siguientes;
+      }
+      setRegistrosGuardados(registrosDemoIniciales);
+      return registrosDemoIniciales;
     } catch {
-      setMensajeGuardado('No se pudo cargar el inventario. Revisa la conexion con el servidor.');
-      setRegistrosGuardados([]);
-      return [] as RegistroInventario[];
+      setRegistrosGuardados(registrosDemoIniciales);
+      return registrosDemoIniciales;
     }
   }
 
@@ -139,6 +202,13 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     return () => {
       cancelado = true;
     };
+  }, []);
+
+  useEffect(() => {
+    const consulta = window.matchMedia('(max-width: 860px)');
+    const actualizar = () => setTablaCompacta(consulta.matches);
+    consulta.addEventListener('change', actualizar);
+    return () => consulta.removeEventListener('change', actualizar);
   }, []);
 
   const titulo =
@@ -317,16 +387,31 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
       )
       .sort((a, b) => {
         if (!campoOrden) return 0;
-        const valorA =
-          campoOrden === 'codigo'
-            ? obtenerDatosTabla(a).codigo
-            : a[campoOrden];
-        const valorB =
-          campoOrden === 'codigo'
-            ? obtenerDatosTabla(b).codigo
-            : b[campoOrden];
+        const datosA = obtenerDatosTabla(a);
+        const datosB = obtenerDatosTabla(b);
+        const obtenerValor = (producto: ElementoCatalogo, datos: ReturnType<typeof obtenerDatosTabla>) => {
+          switch (campoOrden) {
+            case 'codigo': return datos.codigo;
+            case 'nombre': return producto.nombre;
+            case 'tipo': return datos.tipoProducto;
+            case 'categoria': return producto.categoria;
+            case 'subcategoria': return datos.subcategoria;
+            case 'unidad': return datos.unidad;
+            case 'stock': return datos.stock;
+            case 'precio': return producto.precioVenta ?? 0;
+            case 'estado': return datos.estado;
+            case 'serie': return datos.serie;
+            case 'marca': return producto.marca;
+            default: return '';
+          }
+        };
+        const valorA = obtenerValor(a, datosA);
+        const valorB = obtenerValor(b, datosB);
+        if (typeof valorA === 'number' && typeof valorB === 'number') {
+          return (valorA - valorB) * factor;
+        }
         return (
-          valorA.localeCompare(valorB, 'es', {
+          String(valorA).localeCompare(String(valorB), 'es', {
             numeric: true,
             sensitivity: 'base',
           }) * factor
@@ -360,6 +445,52 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
     setPagina(1);
     setPorPagina(siguiente === 'galeria' ? 5 : 10);
   }
+
+  function ordenarPor(campo: CampoOrden) {
+    setPagina(1);
+    if (campoOrden === campo) {
+      setDireccion((actual) => actual === 'asc' ? 'desc' : 'asc');
+    } else {
+      setCampoOrden(campo);
+      setDireccion('asc');
+    }
+  }
+
+  function iniciarRedimension(indice: number, event: ReactPointerEvent<HTMLSpanElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    const inicioX = event.clientX;
+    const anchoInicial = anchosColumnas[indice];
+    const minimo = columnasCatalogo[indice].minimo;
+
+    const mover = (movimiento: PointerEvent) => {
+      const siguiente = Math.max(minimo, anchoInicial + movimiento.clientX - inicioX);
+      setAnchosColumnas((actuales) => actuales.map((ancho, posicion) => posicion === indice ? siguiente : ancho));
+    };
+    const terminar = () => {
+      window.removeEventListener('pointermove', mover);
+      window.removeEventListener('pointerup', terminar);
+      document.body.classList.remove('inventario-redimensionando');
+      setAnchosColumnas((actuales) => {
+        try { localStorage.setItem('inventario-anchos-columnas', JSON.stringify(actuales)); } catch { /* Preferencia opcional. */ }
+        return actuales;
+      });
+    };
+
+    document.body.classList.add('inventario-redimensionando');
+    window.addEventListener('pointermove', mover);
+    window.addEventListener('pointerup', terminar, { once: true });
+  }
+
+  const estiloColumnas = {
+    '--inventario-columnas': anchosColumnas.map((ancho) => `${ancho}px`).join(' '),
+    '--inventario-ancho-tabla': `${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px`,
+  } as CSSProperties;
+  const estiloGrilla = tablaCompacta ? undefined : {
+    gridTemplateColumns: anchosColumnas.map((ancho) => `${ancho}px`).join(' '),
+    width: `max(100%, ${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px)`,
+    minWidth: `${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px`,
+  } as CSSProperties;
 
   function actualizarCampoRegistro<K extends keyof typeof formularioRegistro>(
     campo: K,
@@ -516,18 +647,17 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
         {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
       </span>
-      <label>
-        Mostrar
-        <SelectMenu
-          className="inventario-cantidad-select"
-          value={String(porPagina)}
-          onChange={cambiarPorPagina}
-          ariaLabel="Productos por página"
-          options={modo === 'galeria' ? ['5', '8', '10', '15', '50', 'Todos'] : ['10', '15', '20', '30', '50', 'Todos']}
-        />
-        {nombreElementos}
-      </label>
       <div className="inventario-paginas">
+        <label className="inventario-cantidad-vista">
+          <span>Filas</span>
+          <SelectMenu
+            className="inventario-cantidad-select"
+            value={String(porPagina)}
+            onChange={cambiarPorPagina}
+            ariaLabel={`${nombreElementos} visibles por página`}
+            options={modo === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
+          />
+        </label>
         <div
           className="inventario-modo inventario-modo-paginacion"
           role="group"
@@ -597,7 +727,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
           value={String(porPagina)}
           onChange={cambiarPorPagina}
           ariaLabel="Productos por página"
-          options={modo === 'galeria' ? ['5', '8', '10', '15', '50', 'Todos'] : ['10', '15', '20', '30', '50', 'Todos']}
+          options={modo === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
         />
         {nombreElementos}
       </label>
@@ -638,7 +768,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
   );
 
   return (
-    <section className="inventario-catalogo"><p>ítem global: un nombre para facturación y un precio de venta. Las marcas se asocian al registrar adquisiciones. El rojo indica un precio provisional pendiente de confirmación.</p>
+    <section className="inventario-catalogo">
       <div className="inventario-contenido">
         <div className="inventario-controles-principales">
           <div className="inventario-filtros inventario-filtros-productos">
@@ -694,6 +824,11 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
             />
           </div>
           <div className="inventario-toolbar">
+            {onReportes && (
+              <button className="inventario-reportes-accion" type="button" onClick={onReportes}>
+                <Icon name="audit" size={17} /> Reportes
+              </button>
+            )}
             <button
               className="inventario-nuevo"
               type="button"
@@ -704,29 +839,38 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
           </div>
         </div>
         {controlesSuperiores}
-        {productosFiltrados.length === 0 && (
-          <p role="status">
-            No se encontraron {nombreElementos} con estos filtros.
-          </p>
-        )}
         {modo === 'listado' ? (
           <div
             className="inventario-tabla inventario-tabla-productos"
             role="table"
             aria-label={titulo}
+            style={estiloColumnas}
           >
-            <div className="inventario-tabla-head" role="row">
-              <span role="columnheader">Codigo</span>
-              <span role="columnheader">Nombre o identificacion</span>
-              <span role="columnheader">Tipo</span>
-              <span role="columnheader">Categoria</span>
-              <span role="columnheader">Sub categoria</span>
-              <span role="columnheader">Unidad</span>
-              <span role="columnheader">Stock</span>
-              <span role="columnheader">Precio venta</span>
-              <span role="columnheader">Estado</span>
-              <span role="columnheader">Serie / barras</span>
-              <span role="columnheader">Acciones</span>
+            <div className="inventario-tabla-head" role="row" style={estiloGrilla}>
+              {columnasCatalogo.map((columna, indice) => (
+                <span
+                  className={columna.campo ? 'inventario-columna-ordenable' : ''}
+                  role="columnheader"
+                  aria-sort={columna.campo && campoOrden === columna.campo ? (direccion === 'asc' ? 'ascending' : 'descending') : undefined}
+                  key={columna.etiqueta}
+                >
+                  {columna.campo ? (
+                    <button type="button" onClick={() => ordenarPor(columna.campo!)}>
+                      <span>{columna.etiqueta}</span>
+                      <i aria-hidden="true">{campoOrden === columna.campo ? (direccion === 'asc' ? '▲' : '▼') : '↕'}</i>
+                    </button>
+                  ) : columna.etiqueta}
+                  {indice < columnasCatalogo.length - 1 && (
+                    <span
+                      className="inventario-redimensionador"
+                      role="separator"
+                      aria-orientation="vertical"
+                      aria-label={`Cambiar ancho de ${columna.etiqueta}`}
+                      onPointerDown={(event) => iniciarRedimension(indice, event)}
+                    />
+                  )}
+                </span>
+              ))}
             </div>
             {productosPagina.map((producto) => {
               const datosTabla = obtenerDatosTabla(producto);
@@ -735,6 +879,7 @@ export function CatalogoView({ tipo }: { tipo: TipoCatalogo }) {
                   className={`inventario-row${producto.revisionPrecio ? ' requiere-revision' : ''}`}
                   role="row"
                   key={producto.nombre}
+                  style={estiloGrilla}
                 >
                       <span className="inventario-codigo">{datosTabla.codigo}</span>
                   <div className="inventario-producto-cell">

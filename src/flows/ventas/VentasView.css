@@ -2003,6 +2003,243 @@
   margin: 12px 0;
 }
 
+.punto-vista-controles {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.punto-cantidad-visible {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  overflow: visible;
+  border: 1px solid #c4d7dc;
+  border-radius: 9px;
+  color: #405d66;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.punto-cantidad-visible > span {
+  padding: 0 8px 0 10px;
+}
+
+.punto-cantidad-visible .select-menu {
+  width: 62px;
+  height: 34px;
+  border-left: 1px solid #d1dfe2;
+}
+
+.punto-cantidad-visible .select-menu-trigger {
+  height: 34px;
+  min-height: 34px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 0 8px 8px 0;
+  background: #f8fbfb;
+}
+
+/* Selector de cantidad: una sola pieza, alineada con el control de vista. */
+.sistema-contable .area-trabajo .punto-cantidad-visible {
+  box-sizing: border-box !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 1px solid #b9cfd4 !important;
+  border-radius: 9px !important;
+  background: #fff !important;
+}
+
+.sistema-contable .area-trabajo .punto-cantidad-visible > span {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 10px !important;
+  line-height: 1;
+}
+
+.sistema-contable .area-trabajo .punto-cantidad-visible > .select-menu {
+  box-sizing: border-box;
+  width: 58px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  border-left: 1px solid #d3e0e3;
+}
+
+.sistema-contable .area-trabajo .punto-cantidad-visible .select-menu-trigger {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 7px !important;
+  gap: 4px !important;
+  border: 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+  color: #36535d !important;
+  background: #f7fbfb !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+}
+
+.sistema-contable .area-trabajo .punto-cantidad-visible .select-menu-trigger svg {
+  width: 14px;
+  height: 14px;
+  color: #52727b;
+}
+
+.punto-paginacion-catalogo {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  overflow: hidden;
+  border: 1px solid #c4d7dc;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.punto-paginacion-catalogo button {
+  width: 30px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  color: #087f87;
+  background: transparent;
+  font-size: 20px;
+}
+
+.punto-paginacion-catalogo button:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.punto-paginacion-catalogo span {
+  min-width: 38px;
+  color: #405d66;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.punto-vista-controles > .punto-paginacion-catalogo {
+  display: none;
+}
+
+.punto-paginacion-inferior {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 10px 12px;
+  border: 1px solid #d1e0e3;
+  border-radius: 13px;
+  background: #f7fbfb;
+  box-shadow: 0 4px 12px rgba(33, 72, 82, .045);
+}
+
+.punto-paginacion-resumen {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  gap: 4px;
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid #d7e5e7;
+  border-radius: 9px;
+  color: #607780;
+  background: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.punto-paginacion-resumen strong {
+  color: #233f49;
+  font-weight: 750;
+}
+
+.punto-paginacion-resumen small {
+  margin-left: 5px;
+  padding-left: 9px;
+  border-left: 1px solid #dbe7e9;
+  color: #71878e;
+  font-size: 11px;
+}
+
+.punto-paginacion-navegacion {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.punto-paginacion-navegacion > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 122px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #9fcdd0;
+  border-radius: 9px;
+  color: #245a61;
+  background: #dff1f2;
+  font-size: 12px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.punto-paginacion-navegacion > span strong {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  margin: 0 5px;
+  border-radius: 6px;
+  color: #fff;
+  background: #087f87;
+}
+
+.punto-paginacion-navegacion button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 104px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #86c3c7;
+  border-radius: 9px;
+  color: #086c73;
+  background: #e4f5f5;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(8, 127, 135, .08);
+}
+
+.punto-paginacion-navegacion button:hover:not(:disabled) {
+  color: #075f66;
+  background: #ccebec;
+}
+
+.punto-paginacion-navegacion button:disabled {
+  border-color: #d0dfe1;
+  color: #8da0a6;
+  background: #edf3f4;
+  box-shadow: none;
+  opacity: 1;
+  cursor: default;
+}
+
 .punto-modo-vista {
   display: inline-flex;
   overflow: hidden;
@@ -2105,7 +2342,33 @@
   }
 
   .punto-modo-vista {
-    align-self: flex-end;
+    align-self: auto;
+  }
+
+  .punto-vista-controles {
+    align-self: stretch;
+  }
+
+  .punto-paginacion-inferior {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .punto-paginacion-resumen {
+    text-align: center;
+  }
+
+  .punto-paginacion-navegacion {
+    align-self: center;
+    width: min(100%, 360px);
+  }
+
+  .punto-paginacion-navegacion button {
+    flex: 1;
+    min-width: 0;
+    padding: 0 8px;
   }
 
   .punto-listado article {

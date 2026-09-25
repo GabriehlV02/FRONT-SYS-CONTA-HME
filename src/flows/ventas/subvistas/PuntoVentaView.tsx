@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import { useRef } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import {
   type ItemVenta,
   type TipoVenta,
 } from '../datos/catalogoVentas';
+import { productosDemo, serviciosDemo } from '../../inventario/datos/catalogoDemo';
 
 type Linea = ItemVenta & { cantidad: number };
 type Pago = { id: number; metodo: string; monto: string };
@@ -19,6 +21,23 @@ type Cliente = {
 };
 const money = (value: number) => `Bs ${value.toFixed(2)}`;
 const nuevoPago = (id: number): Pago => ({ id, metodo: 'Efectivo', monto: '' });
+const catalogoLocal: ItemVenta[] = [
+  ...productosDemo.map((item, indice) => ({
+    id: `item-${indice + 1}`,
+    codigo: `ITM-${String(indice + 1).padStart(4, '0')}`,
+    nombre: item.nombre,
+    tipo: indice % 2 === 0 ? 'Insumo' as const : 'Producto' as const,
+    precio: 15 + (indice % 10) * 12,
+    stock: item.disponible ? 10 + (indice % 8) * 5 : 0,
+  })),
+  ...serviciosDemo.map((item, indice) => ({
+    id: `servicio-${indice + 1}`,
+    codigo: `SRV-${String(indice + 1).padStart(4, '0')}`,
+    nombre: item.nombre,
+    tipo: 'Servicio' as const,
+    precio: 50 + (indice % 12) * 25,
+  })),
+];
 const serviciosLaboratorio: ServicioLaboratorio[] = [
   { id: 'lab-hemograma', codigo: 'LAB-001', nombre: 'Hemograma completo', tipo: 'Servicio', precio: 50, categoria: 'Hematología' },
   { id: 'lab-grupo', codigo: 'LAB-002', nombre: 'Grupo sanguíneo y factor RH', tipo: 'Servicio', precio: 35, categoria: 'Hematología' },
@@ -43,7 +62,10 @@ const serviciosLaboratorio: ServicioLaboratorio[] = [
 ];
 
 export function PuntoVentaView() {
-  const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>([]);
+  const [asignacion] = useState<{ sucursal: string; caja: string; almacen: string } | null>(() => {
+    try { return JSON.parse(sessionStorage.getItem('contable_asignacion') || 'null'); } catch { return null; }
+  });
+  const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>(catalogoLocal);
   const [almacenes, setAlmacenes] = useState<string[]>([]);
   const [almacen, setAlmacen] = useState('');
   const [cobrando, setCobrando] = useState(false);
@@ -51,14 +73,22 @@ export function PuntoVentaView() {
   async function cargarCatalogo() {
     const r = await fetch('/api/inventario'); if (!r.ok) throw new Error('No se pudo cargar el catálogo');
     const { data } = await r.json();
-    setCatalogo(data.filter((i: any) => i.estado.toUpperCase() === 'ACTIVO').map((i: any) => ({ id: String(i.id), codigo: i.codigo, nombre: i.nombre, tipo: i.tipo === 'SERVICIO' ? 'Servicio' : i.tipo === 'INSUMO' ? 'Insumo' : 'Producto', precio: i.precioVenta, stock: i.stock })));
+    const activos: ItemVenta[] = Array.isArray(data) ? data.filter((i: any) => String(i.estado || '').toUpperCase() === 'ACTIVO').map((i: any) => ({ id: String(i.id), codigo: i.codigo, nombre: i.nombre, tipo: (i.tipo === 'SERVICIO' ? 'Servicio' : i.tipo === 'INSUMO' ? 'Insumo' : 'Producto') as TipoVenta, precio: i.precioVenta, stock: i.stock })) : [];
+    setCatalogo(activos.length ? activos : catalogoLocal);
   }
   useEffect(() => { cargarCatalogo().catch(e => setMensaje(e.message)); fetch('/api/stock/lotes').then(r => r.json()).then(({data}) => { const nombres = [...new Set<string>(data.map((l: any) => l.almacen))]; setAlmacenes(nombres); setAlmacen(nombres[0] || ''); }).catch(() => setMensaje('No se pudieron cargar los almacenes')); }, []);
   const [sucursal, setSucursal] = useState('Hospital María Esperanza');
   const [caja, setCaja] = useState('Caja 01 · Recepción');
+  useEffect(() => {
+    if (asignacion) { setSucursal(asignacion.sucursal); setCaja(asignacion.caja); setAlmacen(asignacion.almacen); }
+  }, [asignacion, almacenes]);
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<'Todos' | TipoVenta>('Todos');
   const [modoVista, setModoVista] = useState<'galeria' | 'listado'>('galeria');
+  const [cantidadVisible, setCantidadVisible] = useState(5);
+  const [paginaCatalogo, setPaginaCatalogo] = useState(1);
+  const [columnasGaleria, setColumnasGaleria] = useState(1);
+  const galeriaRef = useRef<HTMLDivElement>(null);
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [cliente, setCliente] = useState<Cliente>({
     nombre: '',
@@ -93,6 +123,35 @@ export function PuntoVentaView() {
       ),
     [busqueda, tipo, catalogoVentas],
   );
+  useEffect(() => {
+    if (modoVista !== 'galeria' || !galeriaRef.current) return;
+    const galeria = galeriaRef.current;
+    const medir = () => {
+      const columnas = getComputedStyle(galeria).gridTemplateColumns
+        .split(' ')
+        .filter(Boolean).length;
+      setColumnasGaleria(Math.max(1, columnas));
+    };
+    medir();
+    const observador = new ResizeObserver(medir);
+    observador.observe(galeria);
+    return () => observador.disconnect();
+  }, [modoVista]);
+
+  const elementosPorPagina = modoVista === 'galeria'
+    ? cantidadVisible * columnasGaleria
+    : cantidadVisible;
+  const totalPaginasCatalogo = Math.max(1, Math.ceil(resultados.length / elementosPorPagina));
+  const paginaCatalogoActual = Math.min(paginaCatalogo, totalPaginasCatalogo);
+  const resultadosPagina = resultados.slice(
+    (paginaCatalogoActual - 1) * elementosPorPagina,
+    paginaCatalogoActual * elementosPorPagina,
+  );
+  const cambiarVista = (vista: 'galeria' | 'listado') => {
+    setModoVista(vista);
+    setCantidadVisible(vista === 'galeria' ? 5 : 10);
+    setPaginaCatalogo(1);
+  };
   const subtotal = lineas.reduce(
     (total, linea) => total + linea.precio * linea.cantidad,
     0,
@@ -162,7 +221,7 @@ export function PuntoVentaView() {
     if (!lineas.length || pendiente > 0 || cobrando) return;
     setCobrando(true);
     try {
-      const r = await fetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ventaId, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
+      const r = await fetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionStorage.getItem('contable_token') || ''}` }, body: JSON.stringify({ id: ventaId, sucursal, caja, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
       const resultado = await r.json();
       if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
       setMensaje('Venta registrada. Stock descontado por fecha de ingreso (FIFO).');
@@ -175,10 +234,10 @@ export function PuntoVentaView() {
   return (
     <section className="punto-venta punto-pos">
       <header className="punto-pos-cabecera punto-pos-contexto">
-        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{almacenes.map(a => <option key={a}>{a}</option>)}</select></label>
+        <div className="punto-contexto"><label>Almacén de salida<select disabled={Boolean(asignacion)} value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{(asignacion ? [asignacion.almacen] : almacenes).map(a => <option key={a}>{a}</option>)}</select></label>
           <label>
             Sucursal
-            <SelectMenu
+            {asignacion ? <input aria-label="Sucursal asignada" value={asignacion.sucursal} readOnly /> : <SelectMenu
               ariaLabel="Seleccionar sucursal"
               value={sucursal}
               onChange={setSucursal}
@@ -187,16 +246,16 @@ export function PuntoVentaView() {
                 'Centro de Hemodialisis',
                 'Policonsultorio-Diabetes',
               ]}
-            />
+            />}
           </label>
           <label>
             Caja
-            <SelectMenu
+            {asignacion ? <input aria-label="Caja asignada" value={asignacion.caja} readOnly /> : <SelectMenu
               ariaLabel="Seleccionar caja"
               value={caja}
               onChange={setCaja}
               options={['Caja 01 · Recepción', 'Caja 02 · Farmacia']}
-            />
+            />}
           </label>
         </div>
       </header>
@@ -207,7 +266,7 @@ export function PuntoVentaView() {
               <Icon name="search" size={17} />
               <input
                 value={busqueda}
-                onChange={(event) => setBusqueda(event.target.value)}
+                onChange={(event) => { setBusqueda(event.target.value); setPaginaCatalogo(1); }}
                 placeholder="Buscar producto por nombre, código de barras o categoría…"
               />
             </label>
@@ -226,19 +285,29 @@ export function PuntoVentaView() {
                     type="button"
                     className={tipo === opcion ? 'activo' : ''}
                     key={opcion}
-                    onClick={() => setTipo(opcion)}
+                    onClick={() => { setTipo(opcion); setPaginaCatalogo(1); }}
                   >
                     {opcion}
                   </button>
                 ),
               )}
             </div>
-            <div className="punto-modo-vista" role="group" aria-label="Tipo de vista">
+            <div className="punto-vista-controles">
+              <label className="punto-cantidad-visible">
+                <span>{modoVista === 'galeria' ? 'Filas' : 'Mostrar'}</span>
+                <SelectMenu
+                  ariaLabel="Cantidad de productos y servicios visibles"
+                  value={String(cantidadVisible)}
+                  options={modoVista === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
+                  onChange={(valor) => { setCantidadVisible(Number(valor)); setPaginaCatalogo(1); }}
+                />
+              </label>
+              <div className="punto-modo-vista" role="group" aria-label="Tipo de vista">
               <button
                 type="button"
                 className={modoVista === 'listado' ? 'activo' : ''}
                 aria-pressed={modoVista === 'listado'}
-                onClick={() => setModoVista('listado')}
+                onClick={() => cambiarVista('listado')}
               >
                 <Icon name="menu" size={16} /> Listado
               </button>
@@ -246,10 +315,16 @@ export function PuntoVentaView() {
                 type="button"
                 className={modoVista === 'galeria' ? 'activo' : ''}
                 aria-pressed={modoVista === 'galeria'}
-                onClick={() => setModoVista('galeria')}
+                onClick={() => cambiarVista('galeria')}
               >
                 <Icon name="image" size={16} /> Galería
               </button>
+              </div>
+              <div className="punto-paginacion-catalogo" aria-label="Paginación del catálogo">
+                <button type="button" disabled={paginaCatalogoActual === 1} onClick={() => setPaginaCatalogo(paginaCatalogoActual - 1)} aria-label="Página anterior">‹</button>
+                <span>{paginaCatalogoActual}/{totalPaginasCatalogo}</span>
+                <button type="button" disabled={paginaCatalogoActual === totalPaginasCatalogo} onClick={() => setPaginaCatalogo(paginaCatalogoActual + 1)} aria-label="Página siguiente">›</button>
+              </div>
             </div>
           </div>
           {mensaje && (
@@ -260,8 +335,8 @@ export function PuntoVentaView() {
             </p>
           )}
           {modoVista === 'galeria' ? (
-            <div className="punto-tarjetas">
-              {resultados.map((item) => (
+            <div className="punto-tarjetas" ref={galeriaRef}>
+              {resultadosPagina.map((item) => (
               <article key={item.id}>
                 <div className="punto-tarjeta-avatar">
                   <span>
@@ -294,7 +369,7 @@ export function PuntoVentaView() {
             </div>
           ) : (
             <div className="punto-listado" role="list" aria-label="Listado de productos">
-              {resultados.map((item) => (
+              {resultadosPagina.map((item) => (
                 <article key={item.id} role="listitem">
                   <div className="punto-listado-avatar">
                     {item.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}
@@ -311,6 +386,21 @@ export function PuntoVentaView() {
               ))}
             </div>
           )}
+          <footer className="punto-paginacion-inferior" aria-label="Paginación del catálogo">
+            <span className="punto-paginacion-resumen">
+              Mostrando <strong>{resultados.length ? (paginaCatalogoActual - 1) * elementosPorPagina + 1 : 0}–{Math.min(paginaCatalogoActual * elementosPorPagina, resultados.length)}</strong> de <strong>{resultados.length}</strong>
+              {modoVista === 'galeria' && <small> · {cantidadVisible} filas × {columnasGaleria} por fila</small>}
+            </span>
+            <div className="punto-paginacion-navegacion">
+              <button type="button" disabled={paginaCatalogoActual === 1} onClick={() => setPaginaCatalogo(paginaCatalogoActual - 1)}>
+                <Icon name="chevronLeft" size={16} /> Anterior
+              </button>
+              <span>Página <strong>{paginaCatalogoActual}</strong> de {totalPaginasCatalogo}</span>
+              <button type="button" disabled={paginaCatalogoActual === totalPaginasCatalogo} onClick={() => setPaginaCatalogo(paginaCatalogoActual + 1)}>
+                Siguiente <Icon name="chevronRight" size={16} />
+              </button>
+            </div>
+          </footer>
         </section>
         <aside className="punto-carrito">
           <header>
