@@ -12,6 +12,7 @@ import './paleta-unificada.css';
 import './login-panel-refresh.css';
 import './tema-financiero.css';
 import './styles/ContableCorporativo.css';
+import './identidad-local.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
