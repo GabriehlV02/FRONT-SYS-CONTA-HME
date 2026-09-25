@@ -1,4 +1,4 @@
-﻿.ventas-vista {
+.ventas-vista {
   max-width: none;
   margin: auto;
 }
@@ -1313,7 +1313,7 @@
 }
 .punto-cliente > header strong {
   font-size: 14px;
-  color: #24114e;
+  color: #07304a;
 }
 .cliente-acciones {
   display: grid;
@@ -1324,9 +1324,9 @@
 .cliente-busqueda > button,
 .cliente-formulario button {
   min-height: 36px;
-  border: 1px solid #a78bfa;
+  border: 1px solid #6cdbef;
   border-radius: 9px;
-  background: #7c3aed;
+  background: #079bc7;
   color: #fff;
   font:
     700 12px Inter,
@@ -1343,8 +1343,8 @@
 .cliente-acciones button:first-child,
 .cliente-secundario {
   background: #fff !important;
-  color: #5b21b6 !important;
-  border-color: #c4b5fd !important;
+  color: #075985 !important;
+  border-color: #a9dce9 !important;
 }
 .cliente-busqueda,
 .cliente-formulario {
@@ -1355,22 +1355,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #a9dce9;
   border-radius: 9px;
   padding: 0 10px;
   background: #fff;
-  color: #6d28d9;
+  color: #087ea7;
 }
 .cliente-busqueda input,
 .cliente-formulario input {
   width: 100%;
   min-width: 0;
   height: 36px;
-  border: 1px solid #d8ccf5;
+  border: 1px solid #b8e4ef;
   border-radius: 8px;
   background: #fff;
   padding: 0 10px;
-  color: #28144f;
+  color: #07304a;
   font:
     500 12px Inter,
     ui-sans-serif,
@@ -1391,7 +1391,7 @@
 .cliente-cambiar {
   border: 0;
   background: transparent;
-  color: #6d28d9;
+  color: #087ea7;
   font:
     700 11px Inter,
     ui-sans-serif,
@@ -1405,10 +1405,10 @@
   gap: 8px;
   width: 100%;
   padding: 10px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #a9dce9;
   border-radius: 10px;
-  background: #faf8ff;
-  color: #28144f;
+  background: #effcff;
+  color: #07304a;
   text-align: left;
   cursor: pointer;
 }
@@ -1430,7 +1430,7 @@
   font-size: 12px;
 }
 .cliente-resumen svg {
-  color: #6d28d9;
+  color: #087ea7;
   transition: transform 0.2s ease;
 }
 .cliente-resumen[aria-expanded='true'] svg {
@@ -1439,39 +1439,39 @@
 .cliente-detalle {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed #d8ccf5;
+  border-top: 1px dashed #b8e4ef;
 }
 .cliente-detalle small {
   color: #715f91;
   font-size: 10px;
 }
 
-/* Controles del detalle del carrito: contraste visible con la paleta lila. */
+/* Controles del detalle del carrito: contraste visible con la paleta celeste. */
 .punto-carrito-lineas article > div > button {
-  border: 2px solid #8b5cf6 !important;
-  color: #6d28d9 !important;
-  background: #faf5ff !important;
+  border: 2px solid #12b8df !important;
+  color: #087ea7 !important;
+  background: #f5fdff !important;
   font-weight: 800;
 }
 .punto-carrito-lineas article > div > button:hover {
-  background: #ede9fe !important;
+  background: #dff9ff !important;
 }
 .punto-carrito-lineas article > div > .punto-quitar {
-  border-color: #8b5cf6 !important;
-  color: #7c3aed !important;
-  background: #f5f3ff !important;
+  border-color: #12b8df !important;
+  color: #079bc7 !important;
+  background: #f2fcfe !important;
 }
 .punto-carrito-lineas article {
-  border: 2px solid #8b5cf6 !important;
+  border: 2px solid #12b8df !important;
   background: #fff !important;
 }
 
 .punto-cliente {
-  border: 2px solid #a78bfa !important;
-  background: linear-gradient(135deg, #f5f0ff, #eeeaff) !important;
+  border: 2px solid #6cdbef !important;
+  background: linear-gradient(135deg, #f2fcfe, #eeeaff) !important;
 }
 .punto-cliente > header strong {
-  color: #4c1d95 !important;
+  color: #064e70 !important;
 }
 .punto-cliente .cliente-acciones button:first-child {
   background: #fff !important;
@@ -1488,32 +1488,32 @@
   gap: 12px;
 }
 .punto-pos-contexto .punto-contexto label {
-  color: #4c1d95;
+  color: #064e70;
   font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.08em;
 }
 .punto-pos-contexto .punto-contexto select {
   height: 42px;
-  border: 2px solid #c4b5fd;
+  border: 2px solid #a9dce9;
   border-radius: 10px;
-  color: #35156b;
+  color: #07304a;
   background: #fff;
   font-size: 14px;
   font-weight: 650;
   box-shadow: 0 3px 10px rgba(109, 40, 217, 0.06);
 }
 .punto-pos-contexto .punto-contexto select:hover {
-  border-color: #8b5cf6;
+  border-color: #12b8df;
 }
 .punto-pos-contexto .punto-contexto select:focus {
   outline: 0;
-  border-color: #7c3aed;
+  border-color: #079bc7;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.16);
 }
 .punto-pos-contexto .punto-contexto option {
-  color: #35156b;
-  background: #faf7ff;
+  color: #07304a;
+  background: #f5fdff;
   font-weight: 600;
 }
 @media (max-width: 620px) {
@@ -1527,7 +1527,7 @@
 }
 
 .sistema-contable .punto-carrito .punto-cliente {
-  background: linear-gradient(135deg, #f1ebff 0%, #e9e1ff 100%) !important;
+  background: linear-gradient(135deg, #ddf8fd 0%, #e9e1ff 100%) !important;
   border-color: #bca4fa !important;
 }
 
@@ -1544,9 +1544,9 @@
   width: 100% !important;
   height: 42px !important;
   padding: 0 12px !important;
-  border: 2px solid #c4b5fd !important;
+  border: 2px solid #a9dce9 !important;
   border-radius: 10px !important;
-  color: #35156b !important;
+  color: #07304a !important;
   background: #fff !important;
   font:
     650 14px Inter,
@@ -1557,11 +1557,11 @@
 }
 .select-menu-trigger:hover,
 .select-menu-trigger[aria-expanded='true'] {
-  border-color: #7c3aed !important;
-  background: #faf7ff !important;
+  border-color: #079bc7 !important;
+  background: #f5fdff !important;
 }
 .select-menu-trigger svg {
-  color: #6d28d9;
+  color: #087ea7;
   transition: transform 0.18s ease;
 }
 .select-menu-trigger[aria-expanded='true'] svg {
@@ -1578,7 +1578,7 @@
   min-width: 0;
   overflow: hidden;
   padding: 5px;
-  border: 2px solid #a78bfa;
+  border: 2px solid #6cdbef;
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 14px 30px rgba(76, 29, 149, 0.2);
@@ -1602,12 +1602,12 @@
   white-space: normal;
 }
 .select-menu-options button:hover {
-  background: #f1ebff;
-  color: #5b21b6;
+  background: #ddf8fd;
+  color: #075985;
 }
 .select-menu-options button.activo {
   color: #fff;
-  background: linear-gradient(105deg, #6d28d9, #8b5cf6);
+  background: linear-gradient(105deg, #087ea7, #12b8df);
 }
 .select-menu-options button svg {
   flex-shrink: 0;
@@ -1716,9 +1716,9 @@
   background: #fff;
 }
 .punto-pos .punto-categorias button.activo {
-  border-color: #7836ef;
+  border-color: #079bc7;
   color: #fff;
-  background: #7836ef;
+  background: #079bc7;
 }
 .punto-aviso {
   margin: 8px 4px 15px;
@@ -1805,7 +1805,7 @@
   border: 0;
   border-radius: 7px;
   color: #fff;
-  background: #7836ef;
+  background: #079bc7;
   font-weight: 700;
 }
 .punto-carrito {
@@ -1909,7 +1909,7 @@
   border-top: 1px solid #dbe3ec;
 }
 .punto-total b {
-  color: #7836ef;
+  color: #079bc7;
   font-size: 20px;
 }
 .punto-pago-mixto header small {
@@ -1950,7 +1950,7 @@
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: #7836ef;
+  background: #079bc7;
   font-size: 14px;
   font-weight: 750;
 }
@@ -2269,7 +2269,7 @@
 
 .punto-modo-vista button.activo {
   color: #fff;
-  background: #7836ef;
+  background: #079bc7;
 }
 
 .punto-listado {
@@ -2319,7 +2319,7 @@
 }
 
 .punto-listado > article > b {
-  color: #4c1d95;
+  color: #064e70;
   white-space: nowrap;
   font-size: 13px;
 }
@@ -2332,7 +2332,7 @@
   border: 0;
   border-radius: 7px;
   color: #fff;
-  background: #7836ef;
+  background: #079bc7;
   font-weight: 700;
 }
 
@@ -2403,26 +2403,26 @@
   }
 }
 
-/* Pago mixto: mismo recuadro lila y contraste que el bloque de cliente. */
+/* Pago mixto: mismo recuadro celeste y contraste que el bloque de cliente. */
 .sistema-contable .punto-carrito .punto-pago-mixto {
-  border: 2px solid #a78bfa !important;
-  background: linear-gradient(135deg, #f5f0ff 0%, #eeeaff 100%) !important;
+  border: 2px solid #6cdbef !important;
+  background: linear-gradient(135deg, #f2fcfe 0%, #eeeaff 100%) !important;
 }
 
 .sistema-contable .punto-pago-mixto header strong {
-  color: #4c1d95;
+  color: #064e70;
 }
 
 .sistema-contable .punto-pago-mixto header svg {
-  color: #6d28d9;
+  color: #087ea7;
 }
 
 .sistema-contable .punto-pago-mixto .punto-pago-fila select,
 .sistema-contable .punto-pago-mixto .punto-pago-fila input {
-  border: 2px solid #c4b5fd;
-  color: #35156b;
+  border: 2px solid #a9dce9;
+  color: #07304a;
 }
 
 .sistema-contable .punto-pago-mixto .punto-pago-totales {
-  border-top: 2px solid #a78bfa;
+  border-top: 2px solid #6cdbef;
 }

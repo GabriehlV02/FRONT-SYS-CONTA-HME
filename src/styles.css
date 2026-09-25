@@ -1,18 +1,18 @@
-﻿@import './ui/styles.css';
+@import './ui/styles.css';
 @import './styles/LoginBalance.css';
 
 .sistema-contable {
   --surface: #fff;
   --border: #d8ccff;
   --muted: #6d5a93;
-  --accent: #7c3aed;
+  --accent: #079bc7;
   color: #211634;
-  background: #f7f3ff;
+  background: #effcff;
 }
 
 .sistema-contable .sistema-sidebar {
-  background: linear-gradient(180deg, #7c3aed, #6d28d9 58%, #4c1d95);
-  border-color: #5b21b6;
+  background: linear-gradient(180deg, #079bc7, #087ea7 58%, #064e70);
+  border-color: #075985;
   box-shadow: 10px 0 30px rgba(76, 29, 149, 0.24);
 }
 .sistema-contable .sistema-marca {
@@ -23,33 +23,33 @@
 }
 .sistema-contable .sistema-marca small,
 .sistema-contable .sistema-nav section p {
-  color: #ede9fe;
+  color: #dff9ff;
 }
 .sistema-contable .marca-icono {
-  border-color: #a78bfa;
+  border-color: #6cdbef;
   color: #fff;
-  background: linear-gradient(145deg, #a855f7, #6d28d9);
+  background: linear-gradient(145deg, #18c4e5, #087ea7);
   box-shadow: 0 8px 18px rgba(76, 29, 149, 0.34);
 }
 .sistema-contable .sistema-nav section + section {
   border-color: rgba(237, 233, 254, 0.18);
 }
 .sistema-contable .sistema-nav .nav-modulo {
-  color: #f5f3ff;
+  color: #f2fcfe;
 }
 .sistema-contable .sistema-nav .nav-modulo:hover {
   color: #fff;
-  border-color: #a78bfa;
+  border-color: #6cdbef;
   background: rgba(167, 139, 250, 0.24);
 }
 .sistema-contable .sistema-nav .nav-modulo.activo {
-  color: #2e1065;
-  border-color: #ede9fe;
+  color: #07304a;
+  border-color: #dff9ff;
   background: #fff;
   box-shadow: 0 7px 18px rgba(46, 16, 101, 0.24);
 }
 .sistema-contable .nav-modulo.activo:before {
-  background: #8b5cf6;
+  background: #12b8df;
 }
 .sistema-contable .nav-icono {
   border-color: rgba(237, 233, 254, 0.28);
@@ -60,13 +60,13 @@
 .sistema-contable .boton-salir:hover .nav-icono,
 .sistema-contable .welcome-visual > span {
   color: #fff;
-  border-color: #7c3aed;
-  background: linear-gradient(145deg, #a855f7, #6d28d9);
+  border-color: #079bc7;
+  background: linear-gradient(145deg, #18c4e5, #087ea7);
   box-shadow: 0 5px 14px rgba(76, 29, 149, 0.28);
 }
 .sistema-contable .boton-salir {
   border-color: rgba(237, 233, 254, 0.22);
-  color: #f5f3ff;
+  color: #f2fcfe;
 }
 .sistema-contable .boton-salir:hover {
   color: #fff;
@@ -74,7 +74,7 @@
 }
 
 .sistema-contable .area-trabajo {
-  background-color: #f7f3ff;
+  background-color: #effcff;
   background-image: radial-gradient(
     rgba(124, 58, 237, 0.18) 0.65px,
     transparent 0.75px
@@ -82,7 +82,7 @@
 }
 
 .sistema-contable .sistema-topbar {
-  border-color: #ddd6fe;
+  border-color: #b8e4ef;
   background: #fff;
   box-shadow: 0 4px 17px rgba(76, 29, 149, 0.1);
 }
@@ -91,23 +91,23 @@
 .sistema-contable .metric-icon,
 .sistema-contable .quick-icon,
 .sistema-contable .empty-icon {
-  border-color: #ddd6fe;
-  color: #6d28d9;
-  background: #f5f3ff;
+  border-color: #b8e4ef;
+  color: #087ea7;
+  background: #f2fcfe;
 }
 .sistema-contable .busqueda-global:focus-within,
 .sistema-contable input:focus-visible,
 .sistema-contable select:focus-visible,
 .sistema-contable button:focus-visible {
-  outline-color: #8b5cf6;
+  outline-color: #12b8df;
 }
 .sistema-contable .perfil {
-  border-color: #ddd6fe;
+  border-color: #b8e4ef;
 }
 .sistema-contable .perfil-avatar,
 .sistema-contable .pagina-cabecera p,
 .sistema-contable .section-kicker {
-  color: #6d28d9;
+  color: #087ea7;
 }
 .sistema-contable .pagina-cabecera h2,
 .sistema-contable .topbar-titulo h1,
@@ -122,7 +122,7 @@
 .sistema-contable .ventas-primary,
 .sistema-contable .inventario-nuevo,
 .sistema-contable .inventario-primario {
-  background: linear-gradient(105deg, #7c3aed, #a855f7);
+  background: linear-gradient(105deg, #079bc7, #18c4e5);
   color: #fff;
   box-shadow: 0 7px 18px rgba(124, 58, 237, 0.25);
 }
@@ -131,53 +131,53 @@
 .sistema-contable .ventas-primary:hover,
 .sistema-contable .inventario-nuevo:hover,
 .sistema-contable .inventario-primario:hover {
-  background: linear-gradient(105deg, #6d28d9, #9333ea);
+  background: linear-gradient(105deg, #087ea7, #0b9bc1);
 }
 .sistema-contable .boton-secundario,
 .sistema-contable .secundario,
 .sistema-contable .ventas-secondary,
 .sistema-contable .inventario-secundario {
-  border-color: #ddd6fe;
-  color: #4c1d95;
-  background: #faf5ff;
+  border-color: #b8e4ef;
+  color: #064e70;
+  background: #f5fdff;
 }
 .sistema-contable .welcome-panel,
 .sistema-contable .bienvenida {
-  background: linear-gradient(110deg, #fff, #f3e8ff);
-  border-color: #ddd6fe;
+  background: linear-gradient(110deg, #fff, #e6faff);
+  border-color: #b8e4ef;
 }
 .sistema-contable .welcome-visual {
-  background: linear-gradient(140deg, #fff, #ede9fe);
-  border-color: #c4b5fd;
-  color: #7c3aed;
+  background: linear-gradient(140deg, #fff, #dff9ff);
+  border-color: #a9dce9;
+  color: #079bc7;
 }
 
 .sistema-contable .ventas-tabs,
 .sistema-contable .inventario-subvistas,
 .sistema-contable .movimientos-subvistas,
 .sistema-contable .usuarios-subvistas {
-  border-color: #c4b5fd;
-  background: #ede9fe;
+  border-color: #a9dce9;
+  background: #dff9ff;
 }
 .sistema-contable .ventas-tabs button,
 .sistema-contable .inventario-subvistas button,
 .sistema-contable .movimientos-subvistas button,
 .sistema-contable .usuarios-subvistas button {
-  color: #5b21b6;
+  color: #075985;
 }
 .sistema-contable .ventas-tabs button:hover,
 .sistema-contable .inventario-subvistas button:hover,
 .sistema-contable .movimientos-subvistas button:hover,
 .sistema-contable .usuarios-subvistas button:hover {
   color: #3b0764;
-  border-color: #c4b5fd;
-  background: #faf5ff;
+  border-color: #a9dce9;
+  background: #f5fdff;
 }
 .sistema-contable .ventas-tabs button.activo,
 .sistema-contable .inventario-subvistas button.activo,
 .sistema-contable .movimientos-subvistas button.activo,
 .sistema-contable .usuarios-subvistas button.activo {
-  color: #2e1065;
+  color: #07304a;
   border-color: #fff;
   background: #fff;
   box-shadow: 0 5px 14px rgba(124, 58, 237, 0.16);
@@ -185,9 +185,9 @@
 .sistema-contable .inventario-subvista-icono,
 .sistema-contable .movimientos-subvista-icono,
 .sistema-contable .usuarios-subvista-icono {
-  border-color: #c4b5fd;
-  color: #6d28d9;
-  background: #f5f3ff;
+  border-color: #a9dce9;
+  color: #087ea7;
+  background: #f2fcfe;
 }
 .sistema-contable
   .inventario-subvistas
@@ -200,8 +200,8 @@
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-kpi > span {
   color: #fff;
-  border-color: #7c3aed;
-  background: #7c3aed;
+  border-color: #079bc7;
+  background: #079bc7;
 }
 
 .sistema-contable .ventas-panel,
@@ -212,7 +212,7 @@
 .sistema-contable .modulo-vacio,
 .sistema-contable .ventas-contexto,
 .sistema-contable .inventario-modal {
-  border-color: #ddd6fe;
+  border-color: #b8e4ef;
   box-shadow: 0 10px 28px rgba(76, 29, 149, 0.1);
 }
 .sistema-contable .ventas-input,
@@ -226,21 +226,21 @@
 .sistema-contable .inventario-modal-cuerpo input,
 .sistema-contable .inventario-modal-cuerpo select {
   border-color: #d8ccff;
-  color: #4c1d95;
-  background: #faf5ff;
+  color: #064e70;
+  background: #f5fdff;
 }
 .sistema-contable .inventario-filtros label:focus-within,
 .sistema-contable .movimientos-filtros label:focus-within,
 .sistema-contable .usuarios-filtros label:focus-within {
-  outline-color: #a78bfa;
+  outline-color: #6cdbef;
 }
 .sistema-contable .inventario-contador,
 .sistema-contable .movimientos-contador,
 .sistema-contable .usuarios-contador,
 .sistema-contable .ventas-badge {
-  border-color: #ddd6fe;
-  color: #5b21b6;
-  background: #f5f3ff;
+  border-color: #b8e4ef;
+  color: #075985;
+  background: #f2fcfe;
 }
 .sistema-contable .inventario-tabla,
 .sistema-contable .movimientos-tabla,
@@ -248,31 +248,31 @@
 .sistema-contable .ventas-tabla,
 .sistema-contable .venta-lineas,
 .sistema-contable .venta-totales {
-  border-color: #ddd6fe;
+  border-color: #b8e4ef;
 }
 .sistema-contable .inventario-tabla-head,
 .sistema-contable .movimientos-tabla-head,
 .sistema-contable .usuarios-tabla-head,
 .sistema-contable .ventas-tabla-head,
 .sistema-contable .venta-lineas-head {
-  border-color: #ddd6fe;
-  color: #4c1d95;
-  background: #f3e8ff;
+  border-color: #b8e4ef;
+  color: #064e70;
+  background: #e6faff;
 }
 .sistema-contable .inventario-modal-fondo {
   background: rgba(46, 16, 101, 0.42);
 }
 .sistema-contable .inventario-modal header {
-  border-color: #ede9fe;
+  border-color: #dff9ff;
 }
 .sistema-contable .inventario-modal header span,
 .sistema-contable .inventario-modal-cuerpo span {
-  color: #6d28d9;
+  color: #087ea7;
 }
 .sistema-contable .inventario-modal header button {
-  border-color: #ddd6fe;
-  color: #6d28d9;
-  background: #faf5ff;
+  border-color: #b8e4ef;
+  color: #087ea7;
+  background: #f5fdff;
 }
 
 /* Tema contable azul: hibrida el layout actual con la paleta de referencia. */
@@ -3204,20 +3204,20 @@
   background: #fff;
 }
 
-/* Barra de desplazamiento del sidebar: lila y alineada a su borde derecho. */
+/* Barra de desplazamiento del sidebar: celeste y alineada a su borde derecho. */
 .sistema-contable .sidebar-scroll {
   padding-right: 2px;
-  scrollbar-color: #a78bfa #f5f1ff;
+  scrollbar-color: #6cdbef #f2fcfe;
 }
 .sistema-contable .sidebar-scroll::-webkit-scrollbar { width: 7px; }
 .sistema-contable .sidebar-scroll::-webkit-scrollbar-track {
   margin: 4px 0;
   border-radius: 999px;
-  background: #f5f1ff;
+  background: #f2fcfe;
 }
 .sistema-contable .sidebar-scroll::-webkit-scrollbar-thumb {
-  border: 1px solid #f5f1ff;
-  background: #a78bfa;
+  border: 1px solid #f2fcfe;
+  background: #6cdbef;
 }
 .sistema-contable .sidebar-scroll {
   direction: ltr;
@@ -3225,13 +3225,13 @@
   scrollbar-gutter: auto;
 }
 
-/* Encabezados de tablas con la jerarquía visual lila del sistema. */
+/* Encabezados de tablas con la jerarquía visual celeste del sistema. */
 .sistema-contable .inventario-tabla-head,
 .sistema-contable .movimientos-tabla-head,
 .sistema-contable .usuarios-tabla-head,
 .sistema-contable .ventas-tabla-head {
   color: #fff !important;
-  background: linear-gradient(105deg, #6d28d9, #8b5cf6) !important;
-  border-color: #6d28d9 !important;
+  background: linear-gradient(105deg, #087ea7, #12b8df) !important;
+  border-color: #087ea7 !important;
   font-weight: 900 !important;
 }

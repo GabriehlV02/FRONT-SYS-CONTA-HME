@@ -1,4 +1,4 @@
-﻿.inventario-vista {
+.inventario-vista {
   max-width: none;
   margin: auto;
 }
@@ -440,16 +440,16 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 11px;
-  border: 2px solid #a78bfa;
+  border: 2px solid #6cdbef;
   border-radius: 11px;
-  color: #4c1d95;
-  background: #faf8ff;
+  color: #064e70;
+  background: #effcff;
   font-size: 13px;
   font-weight: 900;
   box-shadow: 0 0 0 1px rgba(109, 40, 217, .06);
 }
 .inventario-cantidad-select .select-menu-trigger[aria-expanded='true'] {
-  border-color: #7c3aed;
+  border-color: #079bc7;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, .16);
 }
 .inventario-cantidad-select .select-menu-trigger svg { transition: transform .18s ease; }
@@ -463,7 +463,7 @@
   display: grid;
   gap: 4px;
   padding: 6px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #a9dce9;
   border-radius: 11px;
   background: #fff;
   box-shadow: 0 12px 28px rgba(76, 29, 149, .2);
@@ -483,12 +483,12 @@
   font-weight: 800;
 }
 .inventario-cantidad-select .select-menu-options button:hover {
-  color: #5b21b6;
-  background: #eee7ff;
+  color: #075985;
+  background: #e6faff;
 }
 .inventario-cantidad-select .select-menu-options button.activo {
   color: #fff;
-  background: linear-gradient(110deg, #6d28d9, #8b5cf6);
+  background: linear-gradient(110deg, #087ea7, #12b8df);
 }
 .inventario-paginas {
   margin-left: auto;

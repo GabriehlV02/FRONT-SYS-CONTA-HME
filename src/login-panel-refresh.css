@@ -11,7 +11,7 @@
   min-height: 100svh;
   padding: 28px;
   overflow: visible;
-  background: radial-gradient(circle at 86% 12%, #eee4ff 0, transparent 34%), #faf8ff;
+  background: radial-gradient(circle at 86% 12%, #eee4ff 0, transparent 34%), #effcff;
 }
 
 .login-page-contable .login-balance-layout {
@@ -48,7 +48,7 @@
 }
 
 .login-page-contable .login-balance-left .login-brand img {
-  content: url('/logo-hospital-contable-lila.png') !important;
+  content: url('/logo-hospital-contable-corporativo.png') !important;
   object-fit: contain;
   object-position: left center;
 }
@@ -429,7 +429,7 @@
 .login-page-contable .login-acceso-panel .login-submit {
   height: 50px !important;
   margin-top: 9px;
-  background: linear-gradient(105deg, #5b21b6, #7c3aed) !important;
+  background: linear-gradient(105deg, #075985, #079bc7) !important;
   transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
 }
 

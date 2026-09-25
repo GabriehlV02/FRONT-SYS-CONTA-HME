@@ -10,7 +10,7 @@
   logoSrc?: string;
 }) {
   const logoCompleto = '/logo-hospital-contable-transparente.png';
-  const logoLoginContable = '/logo-hospital-contable-lila.png?v=login-lila-20260921';
+  const logoLoginContable = '/logo-hospital-contable-corporativo.png?v=login-corporativo-20260925';
   const logoCompacto = '/brand.svg?v=clinico-azul-vital';
 
   return (

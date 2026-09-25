@@ -1,21 +1,21 @@
 /* Separadores de áreas más próximos a sus accesos. */
 .sistema-contable .sistema-sidebar { width:310px !important; height:100dvh; padding:22px 16px 0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; transition:width .3s ease; }
 .sistema-contable .sistema-cuerpo { margin-left:310px !important; }
-.sistema-contable .marca-logo-compacto { width:46px !important; height:46px !important; border-radius:15px !important; background:linear-gradient(145deg,#8b5cf6,#59c4d1) !important; }
+.sistema-contable .marca-logo-compacto { width:46px !important; height:46px !important; border-radius:15px !important; background:linear-gradient(145deg,#12b8df,#59c4d1) !important; }
 .sistema-contable .replegar-menu { width:44px !important; height:44px !important; background:linear-gradient(145deg,#0ea5e9,#59c4d1) !important; }
 .sistema-contable .sistema-nav section { padding-bottom:3px; }
 .sistema-contable .sistema-nav section p { margin:9px -3px 6px !important; padding-top:9px !important; font-size:11px !important; letter-spacing:1.5px !important; }
 .sistema-contable .sistema-nav .nav-modulo { min-height:54px; padding:14px 16px !important; margin:4px 0 !important; border-radius:14px !important; color:#475569 !important; font-size:16px !important; font-weight:650 !important; }
-.sistema-contable .sistema-nav .nav-modulo.activo { color:#7c3aed !important; background:#f5f3ff !important; font-weight:800 !important; }
+.sistema-contable .sistema-nav .nav-modulo.activo { color:#079bc7 !important; background:#f2fcfe !important; font-weight:800 !important; }
 .sistema-contable .marca-texto strong { font-size:17px !important; font-weight:800 !important; color:#0f172a !important; }
 .sistema-contable .marca-texto small { font-size:12px !important; font-weight:650 !important; color:#64748b !important; }
 .sistema-contable .sidebar-sesion strong { font-size:14px !important; font-weight:900 !important; }
 .sistema-contable .sidebar-sesion small { font-size:12px !important; font-weight:700 !important; }
 @media(max-width:860px){.sistema-contable .sistema-sidebar{width:100% !important;height:auto;padding:12px 14px}.sistema-contable .sistema-nav .nav-modulo{font-size:11px!important}}
 
-.sistema-contable .topbar-icono{border-color:#8b5cf6!important;color:#fff!important;background:linear-gradient(145deg,#8b5cf6,#6d28d9)!important;box-shadow:0 6px 14px rgba(109,40,217,.2)!important}
+.sistema-contable .topbar-icono{border-color:#12b8df!important;color:#fff!important;background:linear-gradient(145deg,#12b8df,#087ea7)!important;box-shadow:0 6px 14px rgba(8,126,167,.2)!important}
 
-.sistema-contable .sistema-nav .nav-modulo.activo{position:relative;color:#7c3aed!important;background:#f5f3ff!important;box-shadow:none!important}.sistema-contable .sistema-nav .nav-modulo.activo::before{content:''!important;display:block!important;position:absolute!important;left:0!important;top:8px!important;bottom:8px!important;width:4px!important;height:auto!important;border-radius:0 999px 999px 0!important;background:#7c3aed!important}.sistema-contable .sistema-nav .nav-modulo.activo .nav-icono{color:#7c3aed!important}.sistema-contable .sistema-nav .nav-modulo:active{background:#eee8ff!important}
+.sistema-contable .sistema-nav .nav-modulo.activo{position:relative;color:#079bc7!important;background:#f2fcfe!important;box-shadow:none!important}.sistema-contable .sistema-nav .nav-modulo.activo::before{content:''!important;display:block!important;position:absolute!important;left:0!important;top:8px!important;bottom:8px!important;width:4px!important;height:auto!important;border-radius:0 999px 999px 0!important;background:#079bc7!important}.sistema-contable .sistema-nav .nav-modulo.activo .nav-icono{color:#079bc7!important}.sistema-contable .sistema-nav .nav-modulo:active{background:#eee8ff!important}
 
 /* Ritmo compacto y legible entre encabezados de área y accesos. */
 .sistema-contable .sistema-nav{padding:10px 12px 12px!important}.sistema-contable .sistema-nav section{padding-bottom:1px!important}.sistema-contable .sistema-nav section+section{margin-top:4px!important;padding-top:5px!important}.sistema-contable .sistema-nav section p{margin:6px 2px 4px!important;padding-top:5px!important;font-size:11px!important;line-height:1.15!important}.sistema-contable .sistema-nav .nav-modulo{min-height:50px!important;height:50px!important;margin:2px 0!important;padding:10px 14px!important;gap:12px!important;font-size:17px!important;font-weight:750!important}.sistema-contable .sistema-nav .nav-modulo .nav-texto{font-size:17px!important;font-weight:750!important}.sistema-contable .sistema-nav .nav-icono{width:34px!important;height:34px!important;flex-basis:34px!important}.sistema-contable .sistema-nav .nav-icono svg{width:20px!important;height:20px!important}.sistema-contable .sistema-nav .nav-modulo.activo{font-weight:850!important}.sistema-contable .sistema-nav .nav-modulo.activo .nav-texto{font-weight:850!important}
@@ -27,7 +27,7 @@
   width: 310px !important;
   padding: 16px 14px 0 !important;
   border-right-color: #e4daf9 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #ffffff 74%, #faf8ff 100%) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 74%, #effcff 100%) !important;
   box-shadow: 8px 0 28px rgba(66, 38, 125, .09) !important;
 }
 
@@ -86,7 +86,7 @@
   margin: 0 3px 2px !important;
   padding: 8px 0 4px !important;
   border-top: 1px dashed #dfd7f2 !important;
-  color: #6d28d9 !important;
+  color: #087ea7 !important;
   font-size: 10px !important;
   font-weight: 850 !important;
   letter-spacing: 1.28px !important;
@@ -112,14 +112,14 @@
 }
 
 .sistema-contable .sistema-nav .nav-modulo:hover {
-  color: #6d28d9 !important;
-  background: #faf7ff !important;
+  color: #087ea7 !important;
+  background: #f5fdff !important;
 }
 
 .sistema-contable .sistema-nav .nav-modulo.activo {
-  color: #6d28d9 !important;
+  color: #087ea7 !important;
   border-color: #e4d6ff !important;
-  background: linear-gradient(90deg, #f2ecff, #faf8ff) !important;
+  background: linear-gradient(90deg, #f2ecff, #effcff) !important;
   box-shadow: 0 5px 14px rgba(109, 40, 217, .08) !important;
 }
 
@@ -128,7 +128,7 @@
   bottom: 8px !important;
   width: 4px !important;
   border-radius: 0 999px 999px 0 !important;
-  background: linear-gradient(180deg, #8b5cf6, #6d28d9) !important;
+  background: linear-gradient(180deg, #12b8df, #087ea7) !important;
 }
 
 .sistema-contable .sistema-nav .nav-icono {
@@ -166,7 +166,7 @@
   padding: 12px !important;
   border-color: #e5def4 !important;
   border-radius: 14px !important;
-  background: #fbfaff !important;
+  background: #f5fdff !important;
 }
 
 .sistema-contable .boton-salir {
@@ -180,8 +180,8 @@
 }
 
 .sistema-contable .boton-salir:hover {
-  color: #6d28d9 !important;
-  background: #faf7ff !important;
+  color: #087ea7 !important;
+  background: #f5fdff !important;
 }
 
 .sidebar-replegado.sistema-contable .sistema-sidebar {
