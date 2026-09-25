@@ -1,5 +1,6 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import PaginacionTabla from '@ui/components/PaginacionTabla';
 import type { SubvistaAdquisiciones } from '../componentes/MovimientosNavegacion';
 
 type LineaCargaStock = {
@@ -87,6 +88,8 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
   const [almacen, setAlmacen] = useState('todos');
+  const [filasTabla, setFilasTabla] = useState(20);
+  const [paginaTabla, setPaginaTabla] = useState(1);
   const [registros, setRegistros] = useState<RegistroIngreso[]>(registrosEjemplo);
   const [cargandoStock, setCargandoStock] = useState(false);
   const [detalleId, setDetalleId] = useState<string | null>(null);
@@ -158,6 +161,20 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
       unidadMedida: lineaActual.unidad,
       tipo: 'PRODUCTO',
     } : undefined);
+  const referenciasMarca = useMemo(() => {
+    if (!codigoSeleccionado) return [] as LineaCargaStock[];
+    return [...registros.flatMap((registro) => registro.lineas), ...lineasCarga]
+      .filter((linea) => linea.codigo === codigoSeleccionado);
+  }, [codigoSeleccionado, lineasCarga, registros]);
+  const marcasAsociadas = [...new Set([
+    ...(productoActual?.marcas ?? []),
+    ...referenciasMarca.map((linea) => linea.marca).filter(Boolean),
+  ])];
+  const costoMayorReferencia = Math.max(0, ...referenciasMarca.map((linea) => linea.costoUnitario));
+  const costoCapturado = Number(costoLinea) || 0;
+  const costoMayorProyectado = Math.max(costoMayorReferencia, costoCapturado);
+  const precioSugerido = Math.ceil(costoMayorProyectado * 125) / 100;
+  const alertaPrecio = Boolean(productoActual && costoCapturado > costoMayorReferencia && costoCapturado > 0);
   const detalleRegistro = registros.find((registro) => registro.id === detalleId);
   const productosEncontrados = itemsInventario.filter((item) =>
     [item.codigo, item.nombre].some((valor) => normalizar(valor).includes(normalizar(busquedaProducto.trim()))),
@@ -181,6 +198,9 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
           ].some((valor) => normalizar(valor).includes(termino)),
       );
   }, [almacen, busqueda, fechaDesde, fechaHasta, registros]);
+  const totalPaginasTabla = Math.max(1, Math.ceil(registrosFiltrados.length / filasTabla));
+  const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
+  const registrosPagina = registrosFiltrados.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
 
   function agregarLineaCarga(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -416,7 +436,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
               <label>
                 <span>Marca / fabricante</span>
                 <input required value={marcaLinea} onChange={e => setMarcaLinea(e.target.value)} list="marcas-item" placeholder="Bagó, Cofar..." />
-                <datalist id="marcas-item">{itemsInventario.find(i => i.codigo === codigoSeleccionado)?.marcas?.map(m => <option key={m} value={m} />)}</datalist>
+                <datalist id="marcas-item">{marcasAsociadas.map(m => <option key={m} value={m} />)}</datalist>
               </label><label><span>Lote del producto</span>
                 <input name="lote" required placeholder="Código de lote" value={loteLinea} onChange={(event) => setLoteLinea(event.target.value)} />
               </label>
@@ -428,6 +448,12 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                 <span>Observacion</span>
                 <input name="observacion" placeholder="Estado o nota puntual" value={observacionLinea} onChange={(event) => setObservacionLinea(event.target.value)} />
               </label>
+              {productoActual && <aside className={`adquisiciones-diversidad-item${alertaPrecio ? ' alerta' : ''}`}>
+                <div><strong>{marcasAsociadas.length} marcas asociadas a este ítem</strong><span>{marcasAsociadas.length ? marcasAsociadas.join(' · ') : 'La primera marca quedará asociada al ítem global.'}</span></div>
+                <div><small>Costo máximo de referencia</small><b>{moneda.format(costoMayorProyectado)}</b></div>
+                <div><small>Precio de venta sugerido</small><b>{moneda.format(precioSugerido)}</b></div>
+                {alertaPrecio && <p>Nuevo costo máximo: al guardar, el precio global se actualizará con 25% de margen y se generará una alerta.</p>}
+              </aside>}
               <button className="adquisiciones-agregar-linea" type="submit">
                 <Icon name={lineaEditandoId ? 'check' : 'plus'} size={16} /> {lineaEditandoId ? 'Actualizar producto' : 'Agregar'}
               </button>
@@ -574,6 +600,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
               </div>
             </div>
 
+            <PaginacionTabla total={registrosFiltrados.length} filas={filasTabla} pagina={paginaTablaActual} totalPaginas={totalPaginasTabla} onFilas={(cantidad) => { setFilasTabla(cantidad); setPaginaTabla(1); }} onPagina={setPaginaTabla} />
             <div
               className="movimientos-tabla adquisiciones-tabla"
               role="table"
@@ -589,7 +616,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                 <span role="columnheader">Almacen</span>
                 <span role="columnheader">Acciones</span>
               </div>
-              {registrosFiltrados.map((registro) => (
+              {registrosPagina.map((registro) => (
                 <article className="adquisiciones-row" role="row" key={registro.id}>
                   <span className="adquisiciones-codigo">{registro.fecha}</span>
                   <div className="adquisiciones-producto-cell">

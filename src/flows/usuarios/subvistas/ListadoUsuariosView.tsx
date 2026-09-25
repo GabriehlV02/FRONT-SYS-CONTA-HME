@@ -1,5 +1,6 @@
 ﻿import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import PaginacionTabla from '@ui/components/PaginacionTabla';
 
 type Usuario = { nombre: string; usuario: string; rol: string; estado: string; datos: typeof formularioInicial };
 const formularioInicial = { nombres: '', apellidos: '', ci: '', sucursal: '', cajas: '', almacenes: '', rol: '', usuario: '', contrasena: '', confirmarContrasena: '' };
@@ -17,6 +18,8 @@ export function ListadoUsuariosView() {
   const [errorFormulario, setErrorFormulario] = useState('');
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario | null>(null);
   const [modoEdicion, setModoEdicion] = useState(false);
+  const [filasTabla, setFilasTabla] = useState(20);
+  const [paginaTabla, setPaginaTabla] = useState(1);
   const visibles = useMemo(
     () =>
       usuarios.filter((item) => {
@@ -30,6 +33,9 @@ export function ListadoUsuariosView() {
     [query, estado],
   );
   const actualizar = (campo: keyof typeof formulario, valor: string) => { setFormulario((actual) => ({ ...actual, [campo]: valor })); setErrorFormulario(''); };
+  const totalPaginasTabla = Math.max(1, Math.ceil(visibles.length / filasTabla));
+  const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
+  const usuariosPagina = visibles.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
   const registrar = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (Object.values(formulario).some((valor) => !valor.trim())) return setErrorFormulario('Completa todos los campos.');
@@ -67,14 +73,15 @@ export function ListadoUsuariosView() {
         </button>
       </div>
 
+      <PaginacionTabla total={visibles.length} filas={filasTabla} pagina={paginaTablaActual} totalPaginas={totalPaginasTabla} onFilas={(cantidad) => { setFilasTabla(cantidad); setPaginaTabla(1); }} onPagina={setPaginaTabla} />
       <div className="usuarios-tabla" role="table" aria-label="Usuarios">
         <div className="usuarios-tabla-head" role="row">
           <span role="columnheader">N°</span><span role="columnheader">Nombre</span><span role="columnheader">Apellido</span><span role="columnheader">CI</span><span role="columnheader">Sucursal</span><span role="columnheader">Cant. cajas</span><span role="columnheader">Cant. almacenes</span><span role="columnheader">Usuario</span>
           <span role="columnheader">Acciones</span>
         </div>
-        {visibles.map((item, indice) => (
+        {usuariosPagina.map((item, indice) => (
           <div className="usuarios-tabla-fila" key={item.usuario}>
-            <span>{indice + 1}</span>
+            <span>{(paginaTablaActual - 1) * filasTabla + indice + 1}</span>
             <strong>{item.datos.nombres}</strong>
             <span>{item.datos.apellidos || '—'}</span>
             <span>{item.datos.ci || '—'}</span>

@@ -1,5 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
+import PaginacionTabla from '@ui/components/PaginacionTabla';
 
 type Profesional = { id: number; nombres: string; apellidos: string; ci: string; tipo: string; especialidad: string; rol: string; matricula: string; telefono: string };
 
@@ -15,6 +16,8 @@ export function MedicosProfesionalesView() {
   const [busqueda, setBusqueda] = useState('');
   const [tipoFiltro, setTipoFiltro] = useState('Todos');
   const [abierto, setAbierto] = useState(false);
+  const [filasTabla, setFilasTabla] = useState(20);
+  const [paginaTabla, setPaginaTabla] = useState(1);
   const visibles = useMemo(() => profesionales.filter((item) => {
     const texto = `${item.nombres} ${item.apellidos} ${item.ci} ${item.especialidad} ${item.rol}`.toLowerCase();
     return texto.includes(busqueda.toLowerCase()) && (tipoFiltro === 'Todos' || item.tipo === tipoFiltro);
@@ -25,6 +28,9 @@ export function MedicosProfesionalesView() {
     setProfesionales((actual) => [...actual, { ...formulario, id: Date.now() }]);
     setFormulario(vacio); setAbierto(false);
   };
+  const totalPaginasTabla = Math.max(1, Math.ceil(visibles.length / filasTabla));
+  const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
+  const profesionalesPagina = visibles.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
 
   return <section className="profesionales-vista">
     <div className="profesionales-barra">
@@ -33,9 +39,10 @@ export function MedicosProfesionalesView() {
       <span className="profesionales-contador">{visibles.length} registros</span>
       <button className="profesionales-nuevo" type="button" onClick={() => setAbierto(true)}><Icon name="plus" size={17} /> Registrar profesional</button>
     </div>
+    <PaginacionTabla total={visibles.length} filas={filasTabla} pagina={paginaTablaActual} totalPaginas={totalPaginasTabla} onFilas={(cantidad) => { setFilasTabla(cantidad); setPaginaTabla(1); }} onPagina={setPaginaTabla} />
     <div className="profesionales-tabla">
       <div className="profesionales-head"><span>N°</span><span>Nombre completo</span><span>Tipo</span><span>Especialidad</span><span>Rol</span><span>CI</span><span>Matrícula</span><span>Contacto</span></div>
-      {visibles.length ? visibles.map((item, indice) => <article key={item.id}><span>{indice + 1}</span><strong>{item.nombres} {item.apellidos}</strong><span><i>{item.tipo}</i></span><span className="profesionales-especialidades">{item.especialidad.split('\n').filter(Boolean).map((especialidad) => <b key={especialidad}>{especialidad}</b>)}</span><span>{item.rol}</span><span>{item.ci}</span><span>{item.matricula}</span><span>{item.telefono}</span></article>) : <div className="profesionales-vacio">No se encontraron profesionales con esos filtros.</div>}
+      {visibles.length ? profesionalesPagina.map((item, indice) => <article key={item.id}><span>{(paginaTablaActual - 1) * filasTabla + indice + 1}</span><strong>{item.nombres} {item.apellidos}</strong><span><i>{item.tipo}</i></span><span className="profesionales-especialidades">{item.especialidad.split('\n').filter(Boolean).map((especialidad) => <b key={especialidad}>{especialidad}</b>)}</span><span>{item.rol}</span><span>{item.ci}</span><span>{item.matricula}</span><span>{item.telefono}</span></article>) : <div className="profesionales-vacio">No se encontraron profesionales con esos filtros.</div>}
     </div>
     {abierto && <div className="profesionales-fondo" onMouseDown={() => setAbierto(false)}><form className="profesionales-modal" onSubmit={registrar} onMouseDown={(event) => event.stopPropagation()}>
       <header><div><p>REGISTRO PROFESIONAL</p><h3>Nuevo profesional</h3></div><button aria-label="Cerrar" type="button" onClick={() => setAbierto(false)}><Icon name="close" size={18} /></button></header>

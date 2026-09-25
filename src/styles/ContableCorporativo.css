@@ -1970,8 +1970,18 @@ body.inventario-redimensionando * {
   box-shadow: 0 0 0 3px rgba(8, 127, 135, .1);
 }
 
+/* Control único para las tablas del sistema. La galería se gestiona solo en el catálogo. */
+.sistema-contable .paginacion-tabla { display:flex; align-items:center; gap:12px; min-height:46px; margin:10px 0; padding:6px 0; color:#31515b; font-size:12px; }
+.sistema-contable .paginacion-tabla-resumen { display:flex; align-items:center; gap:12px; margin-right:auto; }.sistema-contable .paginacion-tabla-resumen b { padding:10px 13px; border-radius:7px; color:#087f87; background:#e5f5f5; }.sistema-contable .paginacion-tabla-resumen span { font-weight:800; }
+.sistema-contable .paginacion-tabla-filas { display:flex; align-items:center; overflow:hidden; border:1px solid #c7dce2; border-radius:9px; background:#fff; }.sistema-contable .paginacion-tabla-filas span { padding:0 11px; font-weight:800; }.sistema-contable .paginacion-tabla-filas select { min-width:84px; height:34px; border:0; border-left:1px solid #c7dce2; padding:0 9px; color:#21445a; background:#fff; }
+.sistema-contable .paginacion-tabla-navegacion { display:flex; align-items:center; gap:8px; }.sistema-contable .paginacion-tabla-navegacion button { min-width:38px; height:34px; border:1px solid #c7dce2; border-radius:8px; color:#087f87; background:#fff; font-weight:800; }.sistema-contable .paginacion-tabla-navegacion button:disabled { opacity:.42; }.sistema-contable .paginacion-tabla-navegacion strong { min-width:112px; text-align:center; font-size:12px; }
+@media (max-width:760px) { .sistema-contable .paginacion-tabla { flex-wrap:wrap; gap:8px; }.sistema-contable .paginacion-tabla-resumen { width:100%; }.sistema-contable .paginacion-tabla-navegacion { width:100%; justify-content:space-between; }.sistema-contable .paginacion-tabla-navegacion strong { min-width:0; } }
+
 .sistema-contable .stock-lotes-tabla {
-  overflow-x: auto;
+  /* Mantiene disponible la barra horizontal sin recorrer todo el listado. */
+  max-height: calc(100dvh - 310px);
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
   border: 1px solid #c9d8dc;
   border-radius: 10px;
 }
@@ -1989,6 +1999,12 @@ body.inventario-redimensionando * {
   border-right: 1px solid #c9d8dc;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sistema-contable .stock-lotes-tabla thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .sistema-contable .stock-lotes-tabla tr > :last-child { border-right: 0; }
@@ -2046,6 +2062,7 @@ body.inventario-redimensionando * {
 @media (max-width: 700px) {
   .sistema-contable .stock-lotes { padding: 16px !important; }
   .sistema-contable .stock-lotes-filtros { grid-template-columns: 1fr; }
+  .sistema-contable .stock-lotes-tabla { max-height: calc(100dvh - 410px); }
 }
 
 /* Interacción compartida para los encabezados de todas las tablas. */

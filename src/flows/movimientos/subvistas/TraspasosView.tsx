@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Icon from "@ui/components/Icon";
+import PaginacionTabla from "@ui/components/PaginacionTabla";
 import {
   TraspasosNavegacion,
   type SubvistaTraspasos,
@@ -146,6 +147,8 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
   const [cantidad, setCantidad] = useState("");
   const [lineas, setLineas] = useState<LineaMovimiento[]>([]);
   const [error, setError] = useState("");
+  const [filasTabla, setFilasTabla] = useState(20);
+  const [paginaTabla, setPaginaTabla] = useState(1);
   useEffect(() => setSubvista(resolver(activeId)), [activeId]);
   const producto = useMemo(
     () => catalogo.find((item) => item.codigo === codigo),
@@ -178,6 +181,9 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
         : subvista === "documentos"
           ? movimientos
         : pendientes;
+  const totalPaginasTabla = Math.max(1, Math.ceil(lista.length / filasTabla));
+  const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
+  const listaPagina = lista.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
   const esDevolucion = subvista === "devoluciones";
   const mostrarCabecera = Boolean(subvista === "notas-envio" || subvista === "devoluciones");
   const titulo =
@@ -330,6 +336,7 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
             </button>
           )}
         </header>}
+        <PaginacionTabla total={lista.length} filas={filasTabla} pagina={paginaTablaActual} totalPaginas={totalPaginasTabla} onFilas={(cantidad) => { setFilasTabla(cantidad); setPaginaTabla(1); }} onPagina={setPaginaTabla} />
         <div className="traspasos-tabla" role="table" aria-label={titulo}>
           <div className="traspasos-fila traspasos-head" role="row">
             <span>Fecha</span>
@@ -343,7 +350,7 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
           {lista.length === 0 ? (
             <p className="traspasos-vacio">No hay registros para mostrar.</p>
           ) : (
-            lista.map((movimiento) => (
+            listaPagina.map((movimiento) => (
               <article
                 className="traspasos-fila"
                 role="row"

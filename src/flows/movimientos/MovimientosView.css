@@ -632,9 +632,11 @@
   gap: 14px 12px;
 }
 .adquisiciones-modal-fondo .adquisiciones-linea-producto,
-.adquisiciones-modal-fondo .adquisiciones-linea-observacion {
+.adquisiciones-modal-fondo .adquisiciones-linea-observacion,
+.adquisiciones-modal-fondo .adquisiciones-diversidad-item {
   grid-column: span 2;
 }
+.adquisiciones-diversidad-item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 11px 12px; border: 1px solid #bcdcdf; border-radius: 8px; color: #31515b; background: #f5fbfb; }.adquisiciones-diversidad-item > div { display: grid; gap: 3px; }.adquisiciones-diversidad-item strong { font-size: 11px; }.adquisiciones-diversidad-item span { overflow: hidden; color: #657d87; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }.adquisiciones-diversidad-item small { color: #657d87; font-size: 9px; }.adquisiciones-diversidad-item b { color: #087f87; font-size: 12px; }.adquisiciones-diversidad-item p { grid-column: 1 / -1; margin: 0; color: #9b4b16; font-size: 10px; font-weight: 700; }.adquisiciones-diversidad-item.alerta { border-color: #e9b77e; background: #fff8ee; }
 .adquisiciones-buscador-producto {
   position: relative;
   min-width: 0;

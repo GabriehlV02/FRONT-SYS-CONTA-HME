@@ -1090,8 +1090,16 @@
 .sistema-contable .inventario-tabla-productos {
   width: 100%;
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  /* Hasta 20 filas por página; en pantallas bajas se desplaza dentro de la tabla. */
+  height: min(966px, calc(100dvh - 310px));
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+}
+
+.sistema-contable .inventario-tabla-productos .inventario-tabla-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
 }
 
 .sistema-contable .inventario-tabla-productos .inventario-tabla-head,
@@ -1734,6 +1742,57 @@
   background: #d9efef;
 }
 
+/* Barra principal de Ítems: filtros y acciones sin cortes laterales. */
+.sistema-contable .inventario-catalogo .inventario-controles-principales {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) max-content !important;
+  align-items: center !important;
+  gap: 14px !important;
+  min-width: 0;
+  overflow: visible !important;
+}
+
+.sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-filtros-productos {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 140px 185px 160px !important;
+  align-items: center !important;
+  min-width: 0;
+  gap: 9px !important;
+}
+
+.sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-toolbar {
+  display: flex !important;
+  grid-template-columns: none !important;
+  align-items: center !important;
+  width: auto !important;
+  min-width: max-content !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+.sistema-contable .inventario-catalogo .inventario-toolbar :is(.inventario-reportes-accion, .inventario-nuevo) {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 1180px) {
+  .sistema-contable .inventario-catalogo .inventario-controles-principales {
+    grid-template-columns: 1fr !important;
+  }
+  .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-toolbar {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-filtros-productos {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-filtros-productos > label:first-child,
+  .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-filtros-productos .inventario-orden {
+    grid-column: 1 / -1;
+  }
+}
+
 .reporte-inventario { display: grid; gap: 16px; }
 .reporte-inventario-cabecera { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:20px 22px; border:1px solid #c7dadd; border-radius:12px; background:linear-gradient(135deg,#fff,#eef7f7); }
 .reporte-inventario-cabecera > div > button { display:inline-flex; align-items:center; gap:4px; margin:0 0 12px; padding:5px 8px; border:0; border-radius:6px; color:#47646d; background:#e7f0f1; font-size:11px; font-weight:700; }
@@ -1779,19 +1838,19 @@
 
 /* Galería compacta, alineada con las tarjetas del punto de venta. */
 .sistema-contable .inventario-catalogo .inventario-galeria {
-  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-  gap: 10px;
-  margin: 10px 0 14px;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 14px;
+  margin: 12px 0 16px;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta {
   display: grid;
-  grid-template-rows: 88px minmax(84px, auto) auto;
+  grid-template-rows: 104px minmax(112px, auto) auto;
   overflow: hidden;
   border: 1px solid #c6d8dc;
-  border-radius: 11px;
+  border-radius: 12px;
   background: #fff;
-  box-shadow: 0 3px 10px rgba(31, 70, 80, .045);
+  box-shadow: 0 4px 12px rgba(31, 70, 80, .055);
   transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
 }
 
@@ -1805,7 +1864,7 @@
   position: relative;
   display: grid;
   place-items: center;
-  height: 88px;
+  height: 104px;
   overflow: hidden;
   background: #e4f1f2;
 }
@@ -1820,30 +1879,31 @@
   z-index: 1;
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
   max-width: none;
   padding: 0;
   border-radius: 50%;
   color: #4d747b;
   background: #fff;
-  font-size: 13px;
+  color: #267079;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: .04em;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-imagen > small {
   position: absolute;
-  top: 7px;
-  left: 8px;
+  top: 9px;
+  left: 10px;
   max-width: calc(100% - 100px);
   overflow: hidden;
-  padding: 4px 7px;
+  padding: 5px 8px;
   border: 1px solid rgba(86, 139, 145, .18);
   border-radius: 6px;
   color: #41636c;
   background: rgba(255, 255, 255, .78);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 750;
   text-overflow: ellipsis;
   text-transform: uppercase;
@@ -1852,13 +1912,13 @@
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-imagen > strong {
   position: absolute;
-  top: 7px;
-  right: 8px;
+  top: 9px;
+  right: 10px;
   bottom: auto;
-  padding: 4px 7px;
+  padding: 5px 8px;
   color: #247052;
   background: #dff4e9;
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
 }
 
@@ -1870,23 +1930,24 @@
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-cuerpo {
   display: grid;
   align-content: start;
-  gap: 4px;
-  padding: 10px 11px 9px;
+  gap: 6px;
+  padding: 13px 14px 12px;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-cuerpo > small {
   color: #55727b;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: .02em;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-cuerpo h3 {
-  min-height: 32px;
+  min-height: 40px;
   margin: 0;
   overflow: hidden;
   color: #18343e;
-  font-size: 12px;
-  line-height: 1.28;
+  font-size: 14px;
+  line-height: 1.35;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -1895,12 +1956,13 @@
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-cuerpo p {
   margin: 0;
   color: #536f78;
-  font-size: 11px;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-cuerpo em {
   color: #a06416;
-  font-size: 9px;
+  font-size: 10px;
   font-style: normal;
 }
 
@@ -1909,8 +1971,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  min-height: 46px;
-  padding: 7px 9px;
+  min-height: 54px;
+  padding: 9px 12px;
   border-top: 1px solid #d4e1e4;
   background: #fbfdfd;
 }
@@ -1923,7 +1985,7 @@
 
 .sistema-contable .inventario-catalogo .inventario-card-pie b {
   color: #173d47;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
 }
 
@@ -1931,14 +1993,14 @@
   max-width: 80px;
   overflow: hidden;
   color: #6b8188;
-  font-size: 8px;
+  font-size: 9px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-actions {
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta .inventario-card-actions button {
@@ -1947,13 +2009,13 @@
   justify-content: center;
   gap: 4px;
   width: auto;
-  min-height: 27px;
-  padding: 0 6px;
+  min-height: 31px;
+  padding: 0 9px;
   border: 1px solid #bdd2d6;
   border-radius: 7px;
   color: #315761;
   background: #fff;
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
 }
 
