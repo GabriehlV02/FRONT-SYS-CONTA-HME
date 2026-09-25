@@ -33,7 +33,10 @@ export function VentasView({ activeId }: { activeId?: string }) {
 
   return (
     <section className="ventas-vista ventas-vista-vacia">
-      <VentasNavegacion activa={subvista} onSeleccionar={setSubvista} />
+      <div className="ventas-cabecera-subvistas">
+        <VentasNavegacion activa={subvista} onSeleccionar={setSubvista} />
+        {subvista === 'ventas' && <div id="ventas-contexto-slot" className="ventas-contexto-slot" />}
+      </div>
       {subvista === 'ventas' && <PuntoVentaView />}
       {subvista === 'cuentas-abiertas' && <CuentasAbiertasView />}
       {subvista === 'caja-dia' && <CajaDiaView />}

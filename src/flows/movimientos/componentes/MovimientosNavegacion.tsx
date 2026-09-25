@@ -3,7 +3,7 @@ import { BotonSubvista } from '@ui/components/BotonSubvista';
 
 export type SubvistaAdquisiciones = 'cargado' | 'comprobante';
 export type SubvistaTraspasos =
-  'notas-envio' | 'recepcion' | 'devoluciones';
+  'notas-envio' | 'recepcion' | 'devoluciones' | 'documentos';
 export type SubvistaMovimientos = SubvistaAdquisiciones | SubvistaTraspasos;
 
 type Props = {
@@ -66,6 +66,13 @@ export function TraspasosNavegacion({
         icono="logout"
         activa={activa === 'devoluciones'}
         onSeleccionar={() => onSeleccionar('devoluciones')}
+        claseIcono="movimientos-subvista-icono"
+      />
+      <BotonSubvista
+        nombre="Documentos"
+        icono="fileText"
+        activa={activa === 'documentos'}
+        onSeleccionar={() => onSeleccionar('documentos')}
         claseIcono="movimientos-subvista-icono"
       />
     </HorizontalSubvistaNav>

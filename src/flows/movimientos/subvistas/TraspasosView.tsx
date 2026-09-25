@@ -19,9 +19,10 @@ type Movimiento = {
   origen: string;
   destino: string;
   tipo: "Traspaso" | "Devolución";
-  estado: "Pendiente de recepción" | "Recibido";
+  estado: "Pendiente de recepción" | "Recibido" | "Recepción con faltantes";
   lineas: LineaMovimiento[];
 };
+type StockRecepcionado = LineaMovimiento & { movimientoId: string; origen: string; almacen: string; fecha: string; estado: 'recibido' | 'devuelto' };
 
 const almacenes = [
   "Central - Almacén general",
@@ -82,6 +83,40 @@ const movimientosIniciales: Movimiento[] = [
       },
     ],
   },
+  {
+    id: "TR-0002",
+    fecha: "2026-09-22",
+    origen: almacenes[1],
+    destino: almacenes[2],
+    tipo: "Traspaso",
+    estado: "Pendiente de recepción",
+    lineas: [
+      { id: "L-3", codigo: "MED-014", producto: "Amoxicilina 500 mg", lote: "AMX-2408", cantidad: 8, unidad: "Caja" },
+      { id: "L-4", codigo: "INS-031", producto: "Jeringa descartable 10 ml", lote: "JER-2409", cantidad: 120, unidad: "Unidad" },
+    ],
+  },
+  {
+    id: "TR-0003",
+    fecha: "2026-09-23",
+    origen: almacenes[0],
+    destino: almacenes[3],
+    tipo: "Traspaso",
+    estado: "Pendiente de recepción",
+    lineas: [
+      { id: "L-5", codigo: "INS-023", producto: "Guantes de nitrilo M", lote: "GNT-2412", cantidad: 15, unidad: "Caja" },
+    ],
+  },
+  {
+    id: "TR-0004",
+    fecha: "2026-09-20",
+    origen: almacenes[2],
+    destino: almacenes[0],
+    tipo: "Traspaso",
+    estado: "Recibido",
+    lineas: [
+      { id: "L-6", codigo: "MED-001", producto: "Paracetamol 500 mg", lote: "PAR-2411", cantidad: 10, unidad: "Caja" },
+    ],
+  },
 ];
 const fechaHoy = "2026-09-21";
 
@@ -91,6 +126,8 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
       ? "recepcion"
       : id === "traspasos-devoluciones"
         ? "devoluciones"
+        : id === "traspasos-documentos"
+          ? "documentos"
         : "notas-envio";
   const [subvista, setSubvista] = useState<SubvistaTraspasos>(() =>
     resolver(activeId),
@@ -98,6 +135,8 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
   const [movimientos, setMovimientos] =
     useState<Movimiento[]>(movimientosIniciales);
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [recepcionActiva, setRecepcionActiva] = useState<Movimiento | null>(null);
+  const [estadoLineasRecepcion, setEstadoLineasRecepcion] = useState<Record<string, 'recibido' | 'no-recibido'>>({});
   const [origen, setOrigen] = useState(almacenes[0]);
   const [destino, setDestino] = useState(almacenes[1]);
   const [codigo, setCodigo] = useState("");
@@ -136,14 +175,19 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
       ? movimientos.filter((movimiento) => movimiento.tipo === "Traspaso")
       : subvista === "devoluciones"
         ? movimientos.filter((movimiento) => movimiento.tipo === "Devolución")
+        : subvista === "documentos"
+          ? movimientos
         : pendientes;
   const esDevolucion = subvista === "devoluciones";
+  const mostrarCabecera = Boolean(subvista === "notas-envio" || subvista === "devoluciones");
   const titulo =
     subvista === "notas-envio"
       ? "Notas de envío"
       : subvista === "recepcion"
         ? "Recepción de traspasos"
-        : "Devoluciones entre almacenes";
+        : subvista === "documentos"
+          ? "Documentos de traspaso"
+          : "Devoluciones entre almacenes";
 
   function abrirFormulario() {
     setOrigen(esDevolucion ? almacenes[1] : almacenes[0]);
@@ -233,12 +277,38 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
       ),
     );
   }
+  function abrirRecepcion(movimiento: Movimiento) {
+    setRecepcionActiva(movimiento);
+    setEstadoLineasRecepcion({});
+  }
+  function confirmarRecepcion() {
+    if (!recepcionActiva || !Object.keys(estadoLineasRecepcion).length) return;
+    const ingresos: StockRecepcionado[] = recepcionActiva.lineas
+      .filter((linea) => estadoLineasRecepcion[linea.id] === 'recibido')
+      .map((linea) => ({ ...linea, movimientoId: recepcionActiva.id, origen: recepcionActiva.origen, almacen: recepcionActiva.destino, fecha: fechaHoy, estado: 'recibido' as const }));
+    const devoluciones: StockRecepcionado[] = recepcionActiva.lineas
+      .filter((linea) => estadoLineasRecepcion[linea.id] === 'no-recibido')
+      .map((linea) => ({ ...linea, movimientoId: `${recepcionActiva.id}-DEV`, origen: recepcionActiva.destino, almacen: recepcionActiva.origen, fecha: fechaHoy, estado: 'devuelto' as const }));
+    try {
+      const anteriores = JSON.parse(localStorage.getItem('contable-stock-recepciones') || '[]');
+      localStorage.setItem('contable-stock-recepciones', JSON.stringify([...anteriores, ...ingresos, ...devoluciones]));
+      window.dispatchEvent(new Event('contable-stock-actualizado'));
+    } catch { /* La recepción continúa aunque el navegador no permita almacenamiento local. */ }
+    const todoRecibido = ingresos.length === recepcionActiva.lineas.length;
+    setMovimientos((actual) => actual.map((movimiento) => movimiento.id === recepcionActiva.id ? { ...movimiento, estado: todoRecibido ? 'Recibido' : 'Recepción con faltantes' } : movimiento));
+    setRecepcionActiva(null);
+    setEstadoLineasRecepcion({});
+  }
+  const dividirUbicacion = (ubicacion: string) => {
+    const [sucursal, ...almacen] = ubicacion.split(' - ');
+    return { sucursal, almacen: almacen.join(' - ') || ubicacion };
+  };
 
   return (
     <>
       <TraspasosNavegacion activa={subvista} onSeleccionar={setSubvista} />
       <div className="movimientos-contenido traspasos-contenido">
-        <header className="traspasos-cabecera">
+        {mostrarCabecera && <header className="traspasos-cabecera">
           <div>
             <h2>{titulo}</h2>
             <p>
@@ -259,13 +329,7 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
               {esDevolucion ? "Registrar devolución" : "Nuevo traspaso"}
             </button>
           )}
-        </header>
-        {subvista === "recepcion" && (
-          <div className="traspasos-aviso">
-            <Icon name="check" size={17} /> Los movimientos permanecen
-            pendientes hasta que confirmes su llegada.
-          </div>
-        )}
+        </header>}
         <div className="traspasos-tabla" role="table" aria-label={titulo}>
           <div className="traspasos-fila traspasos-head" role="row">
             <span>Fecha</span>
@@ -311,7 +375,7 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
                     <button
                       className="traspasos-confirmar"
                       type="button"
-                      onClick={() => recibir(movimiento.id)}
+                      onClick={() => abrirRecepcion(movimiento)}
                     >
                       <Icon name="check" size={15} /> Confirmar llegada
                     </button>
@@ -326,6 +390,25 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
           )}
         </div>
       </div>
+      {recepcionActiva && <div className="traspasos-modal-fondo" role="presentation" onMouseDown={() => setRecepcionActiva(null)}>
+        <section className="traspasos-modal traspasos-recepcion-modal" role="dialog" aria-modal="true" aria-labelledby="recepcion-titulo" onMouseDown={(event) => event.stopPropagation()}>
+          <header><div><span>RECEPCIÓN DE STOCK</span><h2 id="recepcion-titulo">Verificar envío {recepcionActiva.id}</h2></div><button type="button" aria-label="Cerrar recepción" onClick={() => setRecepcionActiva(null)}><Icon name="close" size={18} /></button></header>
+          <div className="recepcion-ubicaciones">
+            <section><small>ORIGEN</small><strong>{dividirUbicacion(recepcionActiva.origen).sucursal}</strong><span>{dividirUbicacion(recepcionActiva.origen).almacen}</span></section>
+            <Icon name="arrowRight" size={19} />
+            <section><small>DESTINO · RECEPCIÓN</small><strong>{dividirUbicacion(recepcionActiva.destino).sucursal}</strong><span>{dividirUbicacion(recepcionActiva.destino).almacen}</span></section>
+          </div>
+          <div className="recepcion-tabla" role="table" aria-label="Artículos enviados">
+            <div className="recepcion-tabla-fila recepcion-tabla-head" role="row"><span>Código</span><span>Nombre</span><span>Tipo</span><span>Cantidad</span><span>Marca</span><span>Recepción</span></div>
+            {recepcionActiva.lineas.map((linea) => {
+              const productoLinea = catalogo.find((producto) => producto.codigo === linea.codigo);
+              const estadoLinea = estadoLineasRecepcion[linea.id];
+              return <div className="recepcion-tabla-fila" key={linea.id}><span>{linea.codigo}</span><strong>{linea.producto}<small>Lote: {linea.lote}</small></strong><span>{linea.unidad === 'Unidad' ? 'Insumo' : 'Producto'}</span><b>{linea.cantidad} {linea.unidad}</b><span>{productoLinea?.nombre.includes('Guantes') ? 'SafeTouch' : productoLinea?.nombre.includes('Jeringa') ? 'BolMed' : 'MediCare'}</span><div className="recepcion-decision"><label className={estadoLinea === 'no-recibido' ? 'activo no-recibido' : ''}><input type="checkbox" checked={estadoLinea === 'no-recibido'} onChange={(event) => setEstadoLineasRecepcion((actual) => { const siguiente = { ...actual }; if (event.target.checked) siguiente[linea.id] = 'no-recibido'; else delete siguiente[linea.id]; return siguiente; })} /><span>No recibido</span></label><label className={estadoLinea === 'recibido' ? 'activo recibido' : ''}><input type="checkbox" checked={estadoLinea === 'recibido'} onChange={(event) => setEstadoLineasRecepcion((actual) => { const siguiente = { ...actual }; if (event.target.checked) siguiente[linea.id] = 'recibido'; else delete siguiente[linea.id]; return siguiente; })} /><span>Recibido</span></label></div></div>;
+            })}
+          </div>
+          <footer><small>{Object.values(estadoLineasRecepcion).filter((estado) => estado === 'recibido').length} recibidos · {Object.values(estadoLineasRecepcion).filter((estado) => estado === 'no-recibido').length} no recibidos. Los no recibidos se devolverán al stock de origen.</small><span><button className="traspasos-cancelar" type="button" onClick={() => setRecepcionActiva(null)}>Cancelar</button><button className="traspasos-guardar" type="button" disabled={!Object.keys(estadoLineasRecepcion).length} onClick={confirmarRecepcion}><Icon name="check" size={16} /> Finalizar recepción</button></span></footer>
+        </section>
+      </div>}
       {modalAbierto && (
         <div
           className="traspasos-modal-fondo"

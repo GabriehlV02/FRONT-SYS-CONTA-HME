@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import { useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import {
   type ItemVenta,
@@ -85,6 +86,7 @@ export function PuntoVentaView() {
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<'Todos' | TipoVenta>('Todos');
   const [modoVista, setModoVista] = useState<'galeria' | 'listado'>('galeria');
+  const [contextoDestino, setContextoDestino] = useState<HTMLElement | null>(null);
   const [cantidadVisible, setCantidadVisible] = useState(5);
   const [paginaCatalogo, setPaginaCatalogo] = useState(1);
   const [columnasGaleria, setColumnasGaleria] = useState(1);
@@ -110,6 +112,9 @@ export function PuntoVentaView() {
   const [cuentaPaciente, setCuentaPaciente] = useState({ nombre: '', documento: '', celular: '' });
   const [laboratoriosAbiertos, setLaboratoriosAbiertos] = useState(false);
   const [laboratoriosSeleccionados, setLaboratoriosSeleccionados] = useState<string[]>([]);
+  useEffect(() => {
+    setContextoDestino(document.getElementById('ventas-contexto-slot'));
+  }, []);
   const codigoCuentaNueva = tipoCuentaNueva === 'Internación' ? 'INT-1050' : 'DEU-1050';
   const totalLaboratorios = serviciosLaboratorio.filter((servicio) => laboratoriosSeleccionados.includes(servicio.id)).reduce((total, servicio) => total + servicio.precio, 0);
   const resultados = useMemo(
@@ -233,7 +238,7 @@ export function PuntoVentaView() {
 
   return (
     <section className="punto-venta punto-pos">
-      <header className="punto-pos-cabecera punto-pos-contexto">
+      {contextoDestino && createPortal(<header className="punto-pos-cabecera punto-pos-contexto">
         <div className="punto-contexto"><label>Almacén de salida<select disabled={Boolean(asignacion)} value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{(asignacion ? [asignacion.almacen] : almacenes).map(a => <option key={a}>{a}</option>)}</select></label>
           <label>
             Sucursal
@@ -258,7 +263,7 @@ export function PuntoVentaView() {
             />}
           </label>
         </div>
-      </header>
+      </header>, contextoDestino)}
       <div className="punto-pos-layout">
         <section className="punto-catalogo">
           <div className="punto-busquedas">

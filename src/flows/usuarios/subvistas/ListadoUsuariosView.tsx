@@ -42,9 +42,10 @@ export function ListadoUsuariosView() {
   return (
     <div className="usuarios-contenido">
       <div className="usuarios-filtros">
-        <label>
+        <label className="usuarios-buscador-ventas">
           <Icon name="search" size={17} />
           <input
+            type="search"
             placeholder="Buscar por nombre, usuario o rol"
             aria-label="Buscar en usuarios"
             value={query}

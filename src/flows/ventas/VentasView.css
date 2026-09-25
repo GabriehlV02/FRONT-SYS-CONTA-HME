@@ -2130,10 +2130,11 @@
 }
 
 .punto-paginacion-inferior {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: space-between;
+  gap: 14px 24px;
+  flex-wrap: wrap;
   margin-top: 18px;
   padding: 10px 12px;
   border: 1px solid #d1e0e3;
@@ -2145,7 +2146,7 @@
 .punto-paginacion-resumen {
   display: inline-flex;
   align-items: center;
-  justify-self: start;
+  flex: 0 1 auto;
   gap: 4px;
   min-height: 32px;
   padding: 0 11px;
@@ -2171,10 +2172,10 @@
 }
 
 .punto-paginacion-navegacion {
-  grid-column: 2;
   display: flex;
   align-items: center;
-  justify-self: center;
+  justify-content: center;
+  flex: 0 0 auto;
   gap: 8px;
   overflow: visible;
   border: 0;
@@ -2382,6 +2383,23 @@
   .punto-listado > article > button {
     grid-column: 3;
     grid-row: 1 / span 2;
+  }
+}
+
+@media (max-width: 900px) {
+  .punto-paginacion-inferior {
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .punto-paginacion-resumen {
+    align-self: center;
+    max-width: 100%;
+  }
+
+  .punto-paginacion-navegacion {
+    align-self: center;
   }
 }
 

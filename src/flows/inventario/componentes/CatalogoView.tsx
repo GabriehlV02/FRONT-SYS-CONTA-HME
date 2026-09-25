@@ -1,6 +1,7 @@
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
+import { useRef } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
@@ -145,6 +146,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     }
   });
   const [tablaCompacta, setTablaCompacta] = useState(() => window.matchMedia('(max-width: 860px)').matches);
+  const [columnasGaleria, setColumnasGaleria] = useState(1);
+  const galeriaRef = useRef<HTMLDivElement>(null);
   const [modalRegistroAbierto, setModalRegistroAbierto] = useState(false);
   const [detalleRegistro, setDetalleRegistro] = useState<RegistroInventario | null>(null);
   const [edicionRegistro, setEdicionRegistro] = useState<RegistroInventario | null>(null);
@@ -210,6 +213,19 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     consulta.addEventListener('change', actualizar);
     return () => consulta.removeEventListener('change', actualizar);
   }, []);
+
+  useEffect(() => {
+    if (modo !== 'galeria' || !galeriaRef.current) return;
+    const galeria = galeriaRef.current;
+    const medir = () => {
+      const columnas = getComputedStyle(galeria).gridTemplateColumns.split(' ').filter(Boolean).length;
+      setColumnasGaleria(Math.max(1, columnas));
+    };
+    medir();
+    const observador = new ResizeObserver(medir);
+    observador.observe(galeria);
+    return () => observador.disconnect();
+  }, [modo]);
 
   const titulo =
     subvista === 'servicios'
@@ -418,7 +434,11 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
         );
       });
   }, [busqueda, campoOrden, categoria, direccion, elementosDemo]);
-  const cantidadPorPagina = porPagina === 'Todos' ? Math.max(productosFiltrados.length, 1) : porPagina;
+  const cantidadPorPagina = porPagina === 'Todos'
+    ? Math.max(productosFiltrados.length, 1)
+    : modo === 'galeria'
+      ? porPagina * columnasGaleria
+      : porPagina;
   const totalPaginas = Math.max(
     1,
     Math.ceil(productosFiltrados.length / cantidadPorPagina),
@@ -646,6 +666,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
         {productosFiltrados.length === 0 ? 0 : desde + 1}-
         {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
+        {modo === 'galeria' && <> · {porPagina} filas × {columnasGaleria} por fila</>}
       </span>
       <div className="inventario-paginas">
         <label className="inventario-cantidad-vista">
@@ -721,7 +742,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
         {productosFiltrados.length}
       </span>
       <label>
-        Mostrar
+        {modo === 'galeria' ? 'Filas' : 'Mostrar'}
         <SelectMenu
           className="inventario-cantidad-select"
           value={String(porPagina)}
@@ -729,7 +750,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
           ariaLabel="Productos por página"
           options={modo === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
         />
-        {nombreElementos}
+        {modo === 'listado' && nombreElementos}
       </label>
       <div className="inventario-paginas">
         <button
@@ -978,35 +999,30 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
             })}
           </div>
         ) : (
-          <div className="inventario-galeria" aria-label={titulo}>
-            {productosPagina.map((producto) => (
-              <article className={`inventario-card${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
+          <div className="inventario-galeria" aria-label={titulo} ref={galeriaRef}>
+            {productosPagina.map((producto) => {
+              const datos = obtenerDatosTabla(producto);
+              return <article className={`inventario-card inventario-card-compacta${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
                 <div className="inventario-card-imagen">
-                  <span>{producto.categoria}</span>
-                  <strong>
-                    <i /> {esServicio ? 'Activo' : 'Disponible'}
-                  </strong>
+                  <small>{producto.categoria}</small>
+                  <span>{producto.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}</span>
+                  <strong><i /> {datos.estado}</strong>
                 </div>
                 <div className="inventario-card-cuerpo">
-                  <small>{producto.marca}</small>{producto.revisionPrecio && <p>Precio provisional: revision pendiente</p>}
+                  <small>{datos.codigo}</small>
                   <h3>{producto.nombre}</h3>
-                  <p>{producto.presentacion}</p>
-                  <footer>
-                    <span>
-                      <Icon name="building" size={15} /> {producto.proveedores}{' '}
-                      proveedores
-                    </span>
-                    <span>{producto.origen}</span>
-                  </footer>
+                  <p>{datos.tipoProducto}{!esServicio && <> · Stock {datos.stock}</>}</p>
+                  {producto.revisionPrecio && <em>Precio pendiente de revisión</em>}
                 </div>
-                <div className="inventario-card-actions">
-                  <button>
-                    <Icon name="eye" size={15} /> Ver {nombreElemento}
-                  </button>
-                  <button>Editar</button>
-                </div>
-              </article>
-            ))}
+                <footer className="inventario-card-pie">
+                  <div><b>{datos.precio}</b><small>{datos.unidad}</small></div>
+                  <div className="inventario-card-actions">
+                    <button type="button"><Icon name="eye" size={15} /> Ver</button>
+                    <button type="button">Editar</button>
+                  </div>
+                </footer>
+              </article>;
+            })}
           </div>
         )}
         {controles}

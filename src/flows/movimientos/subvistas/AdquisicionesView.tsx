@@ -49,6 +49,23 @@ const almacenesDestino = [
   'Sucursal Sur - Almacen clinico',
 ];
 
+const registrosEjemplo: RegistroIngreso[] = [
+  { id: 'ING-2026-001', fecha: '2026-09-03', proveedor: 'Distribuidora Médica Bolivia', comprobante: 'FAC-10582', almacen: almacenesDestino[0], lineas: [
+    { id: 'LIN-001', codigo: 'ITM-0001', producto: 'Guantes de nitrilo no estéril', categoria: 'Protección personal', marca: 'SafeTouch', lote: 'GNT-260901', cantidad: 40, unidad: 'Caja x 100 unidades', costoUnitario: 12.5, vence: '2028-09-01', observacion: '' },
+    { id: 'LIN-002', codigo: 'ITM-0003', producto: 'Mascarilla quirúrgica triple capa', categoria: 'Protección personal', marca: 'MediCare', lote: 'MSK-260815', cantidad: 60, unidad: 'Caja x 50 unidades', costoUnitario: 18, vence: '2028-08-15', observacion: '' },
+  ] },
+  { id: 'ING-2026-002', fecha: '2026-09-08', proveedor: 'Importadora Farma Salud', comprobante: 'REC-28416', almacen: almacenesDestino[1], lineas: [
+    { id: 'LIN-003', codigo: 'ITM-0005', producto: 'Jeringa descartable 5 ml', categoria: 'Material descartable', marca: 'BolMed', lote: 'JER-260820', cantidad: 120, unidad: 'Caja x 100 unidades', costoUnitario: 21.75, vence: '2029-08-20', observacion: 'Ingreso para farmacia interna' },
+  ] },
+  { id: 'ING-2026-003', fecha: '2026-09-14', proveedor: 'Suministros Clínicos del Sur', comprobante: 'FAC-33491', almacen: almacenesDestino[3], lineas: [
+    { id: 'LIN-004', codigo: 'ITM-0007', producto: 'Equipo de venoclisis macrogotero', categoria: 'Material descartable', marca: 'LifeLine', lote: 'VEN-260830', cantidad: 25, unidad: 'Paquete x 25 unidades', costoUnitario: 35, vence: '2028-08-30', observacion: '' },
+    { id: 'LIN-005', codigo: 'ITM-0009', producto: 'Gasa estéril 10 x 10 cm', categoria: 'Curación y heridas', marca: 'SterilPro', lote: 'GAS-260901', cantidad: 80, unidad: 'Caja x 100 sobres', costoUnitario: 14.2, vence: '2028-09-01', observacion: '' },
+  ] },
+  { id: 'ING-2026-004', fecha: '2026-09-19', proveedor: 'Laboratorios Andinos', comprobante: 'FAC-42017', almacen: almacenesDestino[4], lineas: [
+    { id: 'LIN-006', codigo: 'ITM-0004', producto: 'Respirador N95', categoria: 'Protección personal', marca: 'CarePlus', lote: 'N95-260905', cantidad: 30, unidad: 'Caja x 20 unidades', costoUnitario: 42, vence: '2029-09-05', observacion: 'Stock de contingencia' },
+  ] },
+];
+
 const normalizar = (valor: string) =>
   valor
     .normalize('NFD')
@@ -70,7 +87,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
   const [almacen, setAlmacen] = useState('todos');
-  const [registros, setRegistros] = useState<RegistroIngreso[]>([]);
+  const [registros, setRegistros] = useState<RegistroIngreso[]>(registrosEjemplo);
   const [cargandoStock, setCargandoStock] = useState(false);
   const [detalleId, setDetalleId] = useState<string | null>(null);
   const [edicionId, setEdicionId] = useState<string | null>(null);
@@ -90,7 +107,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [marcaLinea, setMarcaLinea] = useState('');
   const [ingresoId, setIngresoId] = useState(() => `ING-${crypto.randomUUID()}`);
   const [guardando, setGuardando] = useState(false);
-  useEffect(() => { fetch('/api/adquisiciones').then(async r => { if (!r.ok) throw new Error('No se pudieron cargar los ingresos'); return r.json(); }).then(r => setRegistros(r.data)).catch(e => setErrorCatalogo(e.message)); }, []);
+  useEffect(() => { fetch('/api/adquisiciones').then(async r => { if (!r.ok) throw new Error('No se pudieron cargar los ingresos'); return r.json(); }).then(r => { if (Array.isArray(r.data) && r.data.length) setRegistros(r.data); }).catch(() => undefined); }, []);
   const [loteLinea, setLoteLinea] = useState('');
   const [venceLinea, setVenceLinea] = useState('');
   const [observacionLinea, setObservacionLinea] = useState('');
@@ -260,7 +277,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
 
   return (
     <>
-      <div className="movimientos-contenido adquisiciones-contenido"><p>Ingresos por marca y lote. Cantidad y costo corresponden a la unidad de salida del ítem. Un costo superior al precio de venta activa un precio provisional y revisión obligatoria.</p>{!cargandoStock && errorCatalogo && <p role="alert">{errorCatalogo}</p>}
+      <div className="movimientos-contenido adquisiciones-contenido">{!cargandoStock && errorCatalogo && <p role="alert">{errorCatalogo}</p>}
         {subvista === 'cargado' ? (
           <>
           {cargandoStock && (
@@ -521,15 +538,6 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
             </div>
           )}
             <div className="adquisiciones-controles">
-              <div className="adquisiciones-controles-top">
-                <div>
-                  <h3>Ingresos de stock</h3>
-                  <p>{registrosFiltrados.length} {registrosFiltrados.length === 1 ? 'registro encontrado' : 'registros encontrados'}</p>
-                </div>
-                <button className="adquisiciones-cargar" type="button" onClick={nuevoRegistro}>
-                  <Icon name="plus" size={17} /> Cargar stock
-                </button>
-              </div>
               <div className="adquisiciones-filtros">
                 <label className="adquisiciones-filtro-busqueda">
                   <Icon name="search" size={17} />
@@ -555,6 +563,9 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                     {almacenes.map((item) => <option key={item} value={item}>{item}</option>)}
                   </select>
                 </label>
+                <button className="adquisiciones-cargar" type="button" onClick={nuevoRegistro}>
+                  <Icon name="plus" size={17} /> Cargar stock
+                </button>
                 {(busqueda || fechaDesde || fechaHasta || almacen !== 'todos') && (
                   <button className="adquisiciones-limpiar" type="button" onClick={() => {
                     setBusqueda(''); setFechaDesde(''); setFechaHasta(''); setAlmacen('todos');
