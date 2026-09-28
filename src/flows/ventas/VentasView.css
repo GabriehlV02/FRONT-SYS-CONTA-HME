@@ -2481,3 +2481,37 @@
 .sistema-contable .punto-tarjetas footer button { justify-content: center; min-height: 34px; padding: 0 13px; border: 1px solid #087f87; border-radius: 8px; color: #fff; background: #087f87; box-shadow: 0 3px 7px rgb(8 127 135 / 23%); font-size: 12px; font-weight: 800; }
 .sistema-contable .punto-tarjetas footer button:hover { border-color: #066970; background: #066970; box-shadow: 0 5px 11px rgb(6 105 112 / 28%); }
 .sistema-contable .punto-tarjetas footer button:active { transform: translateY(1px); box-shadow: none; }
+
+/* El punto de venta utiliza siempre el ancho real disponible, incluso con el menú replegado. */
+.sistema-contable .punto-pos {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+
+@media (min-width: 1101px) {
+  .sistema-contable .area-trabajo:has(.punto-pos) {
+    padding-inline: clamp(12px, 1.25vw, 24px) !important;
+  }
+
+  .sistema-contable .punto-pos-layout {
+    grid-template-columns: minmax(0, 1fr) clamp(310px, 22vw, 360px) !important;
+    gap: clamp(12px, 1.1vw, 20px);
+  }
+
+  .sistema-contable .punto-catalogo { padding: clamp(12px, 1vw, 18px); }
+  .sistema-contable .punto-tarjetas { grid-template-columns: repeat(auto-fill, minmax(205px, 1fr)); }
+}
+
+@media (min-width: 861px) and (max-width: 1100px) {
+  .sistema-contable .punto-pos-layout {
+    grid-template-columns: minmax(0, 1fr) 300px !important;
+    gap: 14px;
+  }
+
+  .sistema-contable .punto-tarjetas { grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .sistema-contable .punto-pos-layout { grid-template-columns: minmax(0, 1fr) !important; }
+}
