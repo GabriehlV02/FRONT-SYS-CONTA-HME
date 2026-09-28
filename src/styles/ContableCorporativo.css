@@ -1618,6 +1618,10 @@
     border-bottom: 1px solid #c9d8dc !important;
     color: #304b55 !important;
     background: #fff !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-shadow: none !important;
+    transition: background-color .14s ease !important;
     font-size: 11px;
   }
 
@@ -1626,7 +1630,11 @@
   }
 
   .sistema-contable .inventario-catalogo .inventario-row:hover {
-    background: #eef7f7 !important;
+    margin: 0 !important;
+    transform: none !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: #edf5f6 !important;
   }
 
   .sistema-contable .inventario-catalogo .inventario-tabla-head > * {
@@ -2206,9 +2214,12 @@ body.inventario-redimensionando * {
   min-width: 0;
   margin: 0 !important;
   white-space: nowrap;
-  font-size: 10px !important;
-  line-height: 1 !important;
-  letter-spacing: .02em !important;
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  line-height: 1.25 !important;
+  letter-spacing: normal !important;
 }
 
 .sistema-contable .ventas-contexto-slot .punto-contexto :is(select, input, .select-menu, .select-menu-trigger) {
@@ -2216,7 +2227,18 @@ body.inventario-redimensionando * {
   min-height: 30px !important;
   height: 30px !important;
   margin: 0 !important;
-  font-size: 12px !important;
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+.sistema-contable .ventas-contexto-slot .punto-contexto .select-menu-trigger > span {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: normal !important;
 }
 
 .sistema-contable .ventas-contexto-slot .punto-contexto :is(select, input, .select-menu-trigger) {
@@ -2600,7 +2622,7 @@ body.inventario-redimensionando * {
   .sistema-contable .punto-listado-fila { display: grid; grid-template-columns: 120px minmax(240px, 1fr) 100px 120px 110px; align-items: center; gap: 16px; min-width: 770px; padding: 12px 16px; border-bottom: 1px solid #dce7ea; color: #243f4a; }
   .sistema-contable .punto-listado-fila:last-child { border-bottom: 0; }
   .sistema-contable .punto-listado-fila:not(.punto-listado-encabezado):hover { background: #f0f7f7; }
-  .sistema-contable .punto-listado-encabezado { background: #dce7eb; color: #405e69; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .sistema-contable .punto-listado-encabezado { background: #cbdbe1; color: #284852; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
   .sistema-contable .punto-listado-codigo { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .sistema-contable .punto-listado-nombre { display: grid; gap: 4px; }
   .sistema-contable .punto-listado-nombre small { color: #657e88; font-size: 11px; }
@@ -2627,4 +2649,109 @@ body.inventario-redimensionando * {
     border-color: #c5e2e4 !important;
     color: #24525a !important;
   }
+}
+
+/* Base responsive unificada: evita que cada módulo desborde el área de trabajo. */
+@layer contable-corporativo {
+  .sistema-contable,
+  .sistema-contable .sistema-cuerpo,
+  .sistema-contable .area-trabajo,
+  .sistema-contable .content-limit,
+  .sistema-contable .ventas-vista,
+  .sistema-contable .inventario-vista,
+  .sistema-contable .movimientos-vista,
+  .sistema-contable .usuarios-vista {
+    min-width: 0;
+  }
+
+  .sistema-contable :is(input, select, textarea, button) { max-width: 100%; }
+
+  .sistema-contable :is(.inventario-tabla-productos, .movimientos-tabla, .usuarios-tabla, .ventas-tabla, .caja-dia-tabla, .caja-historico-lista, .punto-listado-columnas) {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sistema-contable .area-trabajo { padding: 14px 18px 18px !important; }
+
+  .sistema-contable :is(.punto-pos-layout, .ventas-pos-layout) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    height: auto !important;
+  }
+
+  .sistema-contable :is(.punto-catalogo, .punto-carrito) {
+    min-width: 0;
+    max-height: none !important;
+  }
+
+  .sistema-contable :is(.inventario-barra, .movimientos-barra, .usuarios-barra, .ventas-barra) {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .area-trabajo { padding: 10px 12px 16px !important; }
+  .sistema-contable .content-limit { width: 100%; }
+
+  .sistema-contable :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas) {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  .sistema-contable :is(.ventas-tabs button, .inventario-subvistas button, .movimientos-subvistas button, .usuarios-subvistas button) {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .sistema-contable :is(.ventas-panel-head, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera, .facturas-cabecera) {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .sistema-contable :is(.punto-buscador, .inventario-buscador, .movimientos-buscador, .usuarios-buscador, .facturas-buscador) {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .factura-modal, .caja-exportar-modal) {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    border-radius: 10px;
+  }
+
+  .sistema-contable :is(.inventario-modal footer, .usuarios-modal footer, .factura-modal footer, .caja-exportar-modal footer) {
+    flex-wrap: wrap;
+  }
+
+  .sistema-contable :is(.inventario-modal footer button, .usuarios-modal footer button, .factura-modal footer button, .caja-exportar-modal footer button) {
+    flex: 1 1 130px;
+  }
+
+  .sistema-contable .factura-modal dl { grid-template-columns: 1fr; gap: 10px; }
+  .sistema-contable .punto-tarjetas { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .sistema-contable .topbar-icono,
+  .sistema-contable .perfil > div { display: none; }
+
+  .sistema-contable .sistema-topbar { gap: 6px; }
+  .sistema-contable .topbar-titulo { min-width: 0; }
+  .sistema-contable .topbar-titulo h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sistema-contable .busqueda-global input { min-width: 0; }
+
+  .sistema-contable :is(.punto-catalogo-filtros, .punto-vista-controles, .inventario-filtros, .movimientos-filtros, .usuarios-filtros) {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .sistema-contable :is(.punto-catalogo-filtros button, .punto-vista-controles button, .inventario-filtros button, .movimientos-filtros button, .usuarios-filtros button) {
+    flex: 1 1 auto;
+  }
+
+  .sistema-contable .punto-tarjetas { grid-template-columns: 1fr; }
 }
