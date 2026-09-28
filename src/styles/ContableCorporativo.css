@@ -2379,9 +2379,43 @@ body.inventario-redimensionando * {
 }
 
 .sistema-contable .traspasos-contenido .paginacion-tabla {
-  min-height: 40px;
+  min-height: 26px;
   margin: 0;
-  padding: 2px 0;
+  padding: 0;
+}
+
+/* Paginacion compacta: controles alineados sin relleno vertical extra. */
+.sistema-contable .paginacion-tabla {
+  min-height: 26px;
+  margin: 2px 0;
+  padding: 0;
+  line-height: 1.2;
+}
+.sistema-contable .paginacion-tabla-resumen b {
+  padding: 5px 9px;
+  line-height: 16px;
+}
+.sistema-contable .paginacion-tabla-filas {
+  height: 26px;
+  min-height: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 6px;
+}
+.sistema-contable .paginacion-tabla-filas select {
+  height: 24px !important;
+  min-height: 0 !important;
+  padding: 0 9px !important;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.sistema-contable .paginacion-tabla-navegacion button {
+  height: 26px;
+  min-height: 0;
+  padding: 0 8px;
+  line-height: 1;
+  border-radius: 6px;
 }
 
 /* Consulta individual de existencias desde la tabla de lotes. */

@@ -1,15 +1,21 @@
+import CapturaCodigo from './CapturaCodigo';
+import { categoriasRegistro as categoriasIniciales, unidadesRegistro as unidadesIniciales, clasificacionesRegistro as clasificacionesIniciales, type OpcionesInventario } from '../datos/registroOpciones';
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { useRef } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
+import imagenGuantesEjemplo from '../../../assets/inventario/guantes-nitrilo-ejemplo.jpg';
 
 type ModoInventario = 'galeria' | 'listado';
 type CampoOrden = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'stock' | 'precio' | 'estado' | 'serie' | 'marca';
-type TipoRegistro = 'Producto' | 'Insumo' | 'Servicio';
+type TipoRegistro = string;
 type TipoCatalogo = 'productos' | 'servicios' | 'todo';
 type RegistroInventario = {
+  tipoOpcion?: string;
+  clasificacion?: string;
+  imagen?: string;
   id?: number;
   codigo: string;
   nombre: string;
@@ -66,7 +72,8 @@ const plantillaInicialCatalogo = anchosInicialesCatalogo
   .map((ancho, indice) => indice === 1 ? `minmax(${ancho}px, 1fr)` : `${ancho}px`)
   .join(' ');
 
-const subcategoriasPorCategoria: Record<string, string[]> = {
+const subcategoriasIniciales: Record<string, string[]> = {
+  ...Object.fromEntries(Object.entries(categoriasIniciales).map(([categoria, datos]) => [categoria, datos.subcategorias])),
   'Proteccion personal': ['Guantes', 'Mascarillas', 'Respiradores'],
   'Material descartable': ['Jeringas', 'Venoclisis', 'Cateteres'],
   'Curacion y heridas': ['Gasas', 'Vendas', 'Antisepticos'],
@@ -132,6 +139,20 @@ const registrosDemoIniciales: RegistroInventario[] = [
 ];
 
 export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onReportes?: () => void }) {
+  const [opcionesRegistro, setOpcionesRegistro] = useState<OpcionesInventario>({ unidades: unidadesIniciales, categorias: categoriasIniciales, clasificaciones: clasificacionesIniciales, tipos: { PRODUCTO: 'PRODUCTO', INSUMO: 'INSUMO', SERVICIO: 'SERVICIO' } });
+  const [errorOpciones, setErrorOpciones] = useState('');
+  const [opcionesCargadas, setOpcionesCargadas] = useState(false);
+  useEffect(() => {
+    let vigente = true;
+    fetch('/api/inventario/opciones').then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(({ data }) => { if (vigente) { setOpcionesRegistro(data); setOpcionesCargadas(true); } })
+      .catch(() => { if (vigente) setErrorOpciones('No se pudieron cargar las opciones. Vuelve a abrir esta subvista.'); });
+    return () => { vigente = false; };
+  }, []);
+  const categoriasRegistro = opcionesRegistro.categorias;
+  const unidadesRegistro = opcionesRegistro.unidades;
+  const clasificacionesRegistro = opcionesRegistro.clasificaciones;
+  const subcategoriasPorCategoria = useMemo(() => ({ ...subcategoriasIniciales, ...Object.fromEntries(Object.entries(categoriasRegistro).map(([nombre, datos]) => [nombre, datos.subcategorias])) }), [categoriasRegistro]);
   const subvista = tipo;
   const [modo, setModo] = useState<ModoInventario>('listado');
   const [porPagina, setPorPagina] = useState<number | 'Todos'>(20);
@@ -162,6 +183,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(registrosDemoIniciales);
   const [mensajeGuardado, setMensajeGuardado] = useState('');
   const [formularioRegistro, setFormularioRegistro] = useState({
+    clasificacion: 'SIN CLASIFICAR',
+    imagen: '',
     codigo: '',
     nombre: '',
     descripcion: '',
@@ -286,22 +309,17 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     const existentes = categoriaRegistro
       ? subcategoriasPorCategoria[categoriaRegistro] ?? []
       : [];
-    return existentes.length > 0 ? existentes : ['General'];
-  }, [categoriaRegistro]);
-  const codigoRegistro = useMemo(() => {
-    const categoriaBase = categoriaRegistro || categorias[0] || 'Catalogo';
-    const subcategoriaBase = subcategoriaRegistro || subcategoriasDisponibles[0];
-    const prefijoCategoria = crearPrefijoCodigo(categoriaBase) || 'CAT';
-    const prefijoSubcategoria = crearPrefijoCodigo(subcategoriaBase) || 'GEN';
-    const correlativo = String(elementosDemo.length + 1).padStart(4, '0');
-    return `${prefijoCategoria}-${prefijoSubcategoria}-${correlativo}`;
-  }, [
-    categoriaRegistro,
-    categorias,
-    elementosDemo.length,
-    subcategoriaRegistro,
-    subcategoriasDisponibles,
-  ]);
+    return existentes;
+  }, [categoriaRegistro, subcategoriasPorCategoria]);
+  const [siguienteNumero, setSiguienteNumero] = useState<number | null>(null);
+  useEffect(() => {
+    if (!modalRegistroAbierto) return;
+    setSiguienteNumero(null);
+    fetch('/api/inventario/siguiente-codigo').then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(r => setSiguienteNumero(r.numero)).catch(() => setMensajeGuardado('No se pudo consultar el siguiente codigo. Se asignara al guardar.'));
+  }, [modalRegistroAbierto]);
+  const codigoRegistro = categoriaRegistro && siguienteNumero !== null
+    ? categoriasRegistro[categoriaRegistro]?.prefijo + String(siguienteNumero).padStart(5, '0') : 'Se asigna al guardar';
 
   useEffect(() => {
     setFormularioRegistro((actual) => ({
@@ -318,12 +336,12 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     const subcategorias = subcategoriasPorCategoria[categoriaProducto] ?? [
       'General',
     ];
-    const subcategoria =
-      subcategorias.find((item) =>
+    const subcategoria = registrosGuardados.find(item => item.codigo === producto.codigo)?.grupo ||
+      (subcategorias.find((item) =>
         normalizarBusqueda(producto.nombre).includes(
           normalizarBusqueda(item.slice(0, 5)),
         ),
-      ) ?? subcategorias[0];
+      ) ?? subcategorias[0]);
     const codigo =
       typeof producto.codigo === 'string' && producto.codigo.trim()
         ? producto.codigo
@@ -545,11 +563,14 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     setMensajeGuardado('');
 
     const payload: RegistroInventario = {
+      clasificacion: formularioRegistro.clasificacion,
+      imagen: formularioRegistro.imagen,
       codigo: normalizarTexto(formularioRegistro.codigo || codigoRegistro),
       nombre: normalizarTexto(formularioRegistro.nombre),
-      descripcion: normalizarTexto(formularioRegistro.descripcion),
+      descripcion: formularioRegistro.descripcion.trim(),
       unidadMedida: normalizarTexto(formularioRegistro.unidadMedida),
-      tipo: normalizarTexto(formularioRegistro.tipo),
+      tipoOpcion: normalizarTexto(formularioRegistro.tipo),
+      tipo: opcionesRegistro.tipos[normalizarTexto(formularioRegistro.tipo)],
       categoria: normalizarTexto(formularioRegistro.categoria || categoriaRegistro),
       grupo: normalizarTexto(formularioRegistro.grupo || subcategoriaRegistro),
       precioVenta: Number(formularioRegistro.precioVenta || 0),
@@ -558,7 +579,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
           ? 'INACTIVO'
           : 'ACTIVO',
       numeroSerie: formularioRegistro.usarNumeroSerie
-        ? normalizarTexto(formularioRegistro.numeroSerie)
+        ? formularioRegistro.numeroSerie.trim()
         : '',
       usarNumeroSerie: formularioRegistro.usarNumeroSerie,
     };
@@ -598,7 +619,9 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     }
 
     setFormularioRegistro({
-      codigo: '',
+      clasificacion: 'SIN CLASIFICAR',
+    imagen: '',
+    codigo: '',
       nombre: '',
       descripcion: '',
       unidadMedida: '',
@@ -625,7 +648,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
       ...edicionRegistro,
       codigo: normalizarTexto(edicionRegistro.codigo),
       nombre: normalizarTexto(edicionRegistro.nombre),
-      descripcion: normalizarTexto(edicionRegistro.descripcion),
+      descripcion: edicionRegistro.descripcion.trim(),
       tipo: normalizarTexto(edicionRegistro.tipo),
       categoria: normalizarTexto(edicionRegistro.categoria),
       grupo: normalizarTexto(edicionRegistro.grupo),
@@ -636,7 +659,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
           ? 'INACTIVO'
           : 'ACTIVO',
       numeroSerie: edicionRegistro.usarNumeroSerie
-        ? normalizarTexto(edicionRegistro.numeroSerie || '')
+        ? (edicionRegistro.numeroSerie || '').trim()
         : '',
     };
 
@@ -1023,7 +1046,9 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
               return <article className={`inventario-card inventario-card-compacta${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
                 <div className="inventario-card-imagen">
                   <small>{producto.categoria}</small>
-                  <span>{producto.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}</span>
+                  {producto.nombre.toLocaleLowerCase('es').includes('guantes')
+                    ? <img src={imagenGuantesEjemplo} alt={`Ejemplo visual de ${producto.nombre}`} />
+                    : <span>{producto.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}</span>}
                   <strong><i /> {datos.estado}</strong>
                 </div>
                 <div className="inventario-card-cuerpo">
@@ -1093,7 +1118,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                 <input value={detalleRegistro.categoria} readOnly />
               </label>
               <label>
-                <span>Grupo</span>
+                <span>Sub categoria</span>
                 <input value={detalleRegistro.grupo} readOnly />
               </label>
               <label>
@@ -1187,6 +1212,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                   <textarea
                     required
                     rows={3}
+                    maxLength={1000}
                     value={edicionRegistro.descripcion}
                     onChange={(event) =>
                       setEdicionRegistro((actual) =>
@@ -1207,26 +1233,20 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     }
                   >
                     <option value="">Seleccionar</option>
-                    <option value="Unidad">Unidad</option>
-                    <option value="Caja">Caja</option>
-                    <option value="Paquete">Paquete</option>
-                    <option value="Frasco">Frasco</option>
-                    <option value="Servicio">Servicio</option>
+                    {[...new Set([edicionRegistro.unidadMedida, ...unidadesRegistro])].map(unidad => <option key={unidad} value={unidad}>{unidad}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Tipo</span>
                   <select
-                    value={edicionRegistro.tipo}
+                    value={(edicionRegistro.tipoOpcion || edicionRegistro.tipo).toUpperCase()}
                     onChange={(event) =>
                       setEdicionRegistro((actual) =>
-                        actual ? { ...actual, tipo: event.target.value } : actual,
+                        actual ? { ...actual, tipoOpcion: event.target.value, tipo: opcionesRegistro.tipos[event.target.value] } : actual,
                       )
                     }
                   >
-                    <option value="Producto">Producto</option>
-                    <option value="Insumo">Insumo</option>
-                    <option value="Servicio">Servicio</option>
+                    {Object.keys(opcionesRegistro.tipos).map(valor => <option key={valor}>{valor}</option>)}
                   </select>
                 </label>
                 <label>
@@ -1249,13 +1269,13 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     }
                   >
                     <option value="">Seleccionar</option>
-                    {categorias.map((item) => (
+                    {[...new Set([edicionRegistro.categoria, ...Object.keys(categoriasRegistro)])].map((item) => (
                       <option key={item} value={item}> {item} </option>
                     ))}
                   </select>
                 </label>
                 <label>
-                  <span>Grupo</span>
+                  <span>Sub categoria</span>
                   <select
                     required
                     value={edicionRegistro.grupo || 'General'}
@@ -1308,32 +1328,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="inactivo">Inactivo</option>
                   </select>
                 </label>
-                <label className="inventario-campo-serie">
-                  <span>Numero de serie</span>
-                  <input
-                    disabled={!edicionRegistro.usarNumeroSerie}
-                    value={edicionRegistro.numeroSerie || ''}
-                    onChange={(event) =>
-                      setEdicionRegistro((actual) =>
-                        actual ? { ...actual, numeroSerie: event.target.value } : actual,
-                      )
-                    }
-                  />
-                </label>
-                <label className="inventario-serie-toggle">
-                  <input
-                    type="checkbox"
-                    checked={Boolean(edicionRegistro.usarNumeroSerie)}
-                    onChange={(event) =>
-                      setEdicionRegistro((actual) =>
-                        actual
-                          ? { ...actual, usarNumeroSerie: event.target.checked }
-                          : actual,
-                      )
-                    }
-                  />
-                  <span>Usar numero de serie</span>
-                </label>
+                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={edicionRegistro.clasificacion || 'SIN CLASIFICAR'} onChange={e => setEdicionRegistro(actual => actual ? { ...actual, clasificacion: e.target.value } : actual)}>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
+                <CapturaCodigo codigo={edicionRegistro.numeroSerie || ''} imagen={edicionRegistro.imagen} onCodigo={valor => setEdicionRegistro(actual => actual ? { ...actual, numeroSerie: valor, usarNumeroSerie: Boolean(valor) } : actual)} onImagen={valor => setEdicionRegistro(actual => actual ? { ...actual, imagen: valor } : actual)} />
               </div>
               <footer>
                 <button
@@ -1387,6 +1383,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
               </button>
             </header>
             <form onSubmit={guardarRegistroInventario}>
+              {errorOpciones && <p role="alert">{errorOpciones}</p>}
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
               <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label>
@@ -1405,10 +1402,11 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                   />
                 </label>
                 <label className="inventario-campo-completo">
-                  <span>Descripcion</span>
+                  <span>Descripcion (maximo 1.000 caracteres)</span>
                   <textarea
                     required
                     rows={3}
+                    maxLength={1000}
                     value={formularioRegistro.descripcion}
                     onChange={(event) =>
                       actualizarCampoRegistro('descripcion', event.target.value)
@@ -1428,17 +1426,13 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="" disabled>
                       Seleccionar
                     </option>
-                    <option value="Unidad">Unidad</option>
-                    <option value="Caja">Caja</option>
-                    <option value="Paquete">Paquete</option>
-                    <option value="Frasco">Frasco</option>
-                    <option value="Servicio">Servicio</option>
+                    {unidadesRegistro.map(unidad => <option key={unidad} value={unidad}>{unidad}</option>)}
                   </select>
                 </label>
                 <label>
                   <span>Tipo</span>
                   <select
-                    value={formularioRegistro.tipo}
+                    value={formularioRegistro.tipo.toUpperCase()}
                     onChange={(event) => {
                       const siguienteTipo = event.target.value as TipoRegistro;
                       setTipoRegistro(siguienteTipo);
@@ -1446,9 +1440,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     }}
                     required
                   >
-                    <option value="Producto">Producto</option>
-                    <option value="Insumo">Insumo</option>
-                    <option value="Servicio">Servicio</option>
+                    {Object.keys(opcionesRegistro.tipos).map(valor => <option key={valor}>{valor}</option>)}
                   </select>
                 </label>
                 <label>
@@ -1467,7 +1459,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="" disabled>
                       Seleccionar
                     </option>
-                    {categorias.map((item) => (
+                    {Object.keys(categoriasRegistro).map((item) => (
                       <option key={item} value={item}>
                         {item}
                       </option>
@@ -1475,7 +1467,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                   </select>
                 </label>
                 <label>
-                  <span>Grupo</span>
+                  <span>Sub categoria</span>
                   <select
                     value={formularioRegistro.grupo || subcategoriaRegistro}
                     onChange={(event) => {
@@ -1526,29 +1518,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="inactivo">Inactivo</option>
                   </select>
                 </label>
-                <label className="inventario-campo-serie">
-                  <span>Numero de serie</span>
-                  <input
-                    disabled={!serieHabilitada}
-                    value={formularioRegistro.numeroSerie}
-                    onChange={(event) =>
-                      actualizarCampoRegistro('numeroSerie', event.target.value)
-                    }
-                    placeholder="Codigo de barras"
-                  />
-                </label>
-                <label className="inventario-serie-toggle">
-                  <input
-                    type="checkbox"
-                    checked={serieHabilitada}
-                    onChange={(event) => {
-                      const siguiente = event.target.checked;
-                      setSerieHabilitada(siguiente);
-                      actualizarCampoRegistro('usarNumeroSerie', siguiente);
-                    }}
-                  />
-                  <span>Usar numero de serie</span>
-                </label>
+                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={formularioRegistro.clasificacion} onChange={e => actualizarCampoRegistro('clasificacion', e.target.value)}>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
+                <CapturaCodigo codigo={formularioRegistro.numeroSerie} imagen={formularioRegistro.imagen} onCodigo={valor => { actualizarCampoRegistro('numeroSerie', valor); setSerieHabilitada(Boolean(valor)); }} onImagen={valor => actualizarCampoRegistro('imagen', valor)} />
               </div>
               <footer>
                 <button

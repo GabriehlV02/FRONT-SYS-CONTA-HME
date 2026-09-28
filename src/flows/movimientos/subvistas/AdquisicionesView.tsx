@@ -196,17 +196,25 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const totalPaginasTabla = Math.max(1, Math.ceil(registrosFiltrados.length / filasTabla));
   const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
   const registrosPagina = registrosFiltrados.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
-  const estudioStock = useMemo(() => {
-    const items = new Map<string, { codigo: string; producto: string; unidad: string; cantidad: number; lotes: number; marcas: Set<string>; almacenes: Set<string> }>();
-    registros.forEach((registro) => registro.lineas.forEach((linea) => {
-      const item = items.get(linea.codigo) ?? { codigo: linea.codigo, producto: linea.producto, unidad: linea.unidad, cantidad: 0, lotes: 0, marcas: new Set<string>(), almacenes: new Set<string>() };
-      item.cantidad += linea.cantidad; item.lotes += 1;
-      if (linea.marca) item.marcas.add(linea.marca);
-      item.almacenes.add(registro.almacen); items.set(linea.codigo, item);
-    }));
-    return [...items.values()].sort((a, b) => a.producto.localeCompare(b.producto, 'es'));
-  }, [registros]);
-  const unidadesEstudiadas = estudioStock.reduce((total, item) => total + item.cantidad, 0);
+  const [estudios, setEstudios] = useState<{ codigo: string; nombre: string; stock: number; vendidos: number }[]>([]);
+  const [umbralStock, setUmbralStock] = useState(10);
+  const [cargandoEstudios, setCargandoEstudios] = useState(true);
+  const [errorEstudios, setErrorEstudios] = useState('');
+  useEffect(() => {
+    if (subvista !== 'comprobante') return;
+    let vigente = true;
+    setCargandoEstudios(true);
+    setErrorEstudios('');
+    fetch('/api/stock/estudios').then(async respuesta => {
+      if (!respuesta.ok) throw new Error('No se pudieron cargar los estudios de stock.');
+      return respuesta.json();
+    }).then(({ data }) => { if (vigente) setEstudios(data); })
+      .catch(() => { if (vigente) setErrorEstudios('No se pudieron cargar los estudios de stock. Vuelve a abrir esta subvista para reintentar.'); })
+      .finally(() => { if (vigente) setCargandoEstudios(false); });
+    return () => { vigente = false; };
+  }, [subvista, registros]);
+  const stockBajo = estudios.filter(item => item.stock <= umbralStock).sort((a, b) => a.stock - b.stock || a.codigo.localeCompare(b.codigo));
+  const masVendidos = estudios.filter(item => item.vendidos > 0).sort((a, b) => b.vendidos - a.vendidos || a.codigo.localeCompare(b.codigo));
 
   function agregarLineaCarga(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -641,7 +649,6 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
                   <span>{registro.almacen}</span>
                   <div className="adquisiciones-acciones">
                     <button type="button" onClick={() => setDetalleId(registro.id)}><Icon name="eye" size={15} /> Ver detalle</button>
-                    <small>Confirmado</small>
                   </div>
                 </article>
               ))}
@@ -649,27 +656,28 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
           </>
         ) : (
           <>
-            <header className="estudio-stock-cabecera">
-              <div><span>Control de existencias</span><h2>Estudios de stock</h2><p>Resumen de lotes registrados en las notas de ingreso.</p></div>
-              <div className="estudio-stock-total"><strong>{unidadesEstudiadas.toLocaleString('es-BO')}</strong><span>unidades ingresadas</span></div>
-            </header>
-            <div className="estudio-stock-resumen">
-              <article><Icon name="package" size={18} /><span>Ítems con stock</span><strong>{estudioStock.length}</strong></article>
-              <article><Icon name="warehouse" size={18} /><span>Almacenes con ingresos</span><strong>{almacenes.length}</strong></article>
-              <article><Icon name="fileText" size={18} /><span>Notas registradas</span><strong>{registros.length}</strong></article>
-            </div>
-            <div className="estudio-stock-tabla" role="table" aria-label="Estudio de stock por ítem">
-              <div className="estudio-stock-head" role="row"><span>Ítem</span><span>Stock registrado</span><span>Lotes</span><span>Marcas</span><span>Almacenes</span></div>
-              {estudioStock.map((item) => (
-                <article className="estudio-stock-fila" role="row" key={item.codigo}>
-                  <div><strong>{item.producto}</strong><small>{item.codigo}</small></div>
-                  <div className="estudio-stock-cantidad"><strong>{item.cantidad.toLocaleString('es-BO')}</strong><small>{item.unidad}</small></div>
-                  <span>{item.lotes} {item.lotes === 1 ? 'lote' : 'lotes'}</span>
-                  <span>{[...item.marcas].join(', ') || 'Sin marca'}</span>
-                  <span>{item.almacenes.size} {item.almacenes.size === 1 ? 'almacén' : 'almacenes'}</span>
-                </article>
-              ))}
-            </div>
+            {errorEstudios && <p role="alert">{errorEstudios}</p>}
+            {[
+              { id: 'bajo', titulo: 'Ítems con stock bajo', items: stockBajo },
+              { id: 'vendidos', titulo: 'Ítems más vendidos', items: masVendidos },
+            ].map(tabla => (
+              <section className="estudio-stock-seccion" key={tabla.id} aria-labelledby={tabla.id + '-titulo'}>
+                <div className="estudio-stock-titulo">
+                  <h3 id={tabla.id + '-titulo'}>{tabla.titulo}</h3>
+                  {tabla.id === 'bajo' ? <label>Stock igual o menor a <input type="number" min="0" step="1" value={umbralStock} onChange={event => setUmbralStock(Math.max(0, Math.floor(Number(event.target.value) || 0)))} /></label> : <span>Ventas registradas · todo el historial</span>}
+                </div>
+                <div className="estudio-stock-tabla estudio-stock-analisis" role="table" aria-label={tabla.titulo} aria-busy={cargandoEstudios}>
+                  <div className="estudio-stock-head" role="row"><span role="columnheader">Código</span><span role="columnheader">Ítem</span><span role="columnheader">Stock actual</span>{tabla.id === 'vendidos' && <span role="columnheader">Unidades vendidas</span>}</div>
+                  {!cargandoEstudios && !errorEstudios && tabla.items.map(item => (
+                    <div className="estudio-stock-fila" role="row" key={item.codigo}>
+                      <span role="cell">{item.codigo}</span><span role="cell">{item.nombre}</span><span role="cell">{item.stock.toLocaleString('es-BO')}</span>
+                      {tabla.id === 'vendidos' && <span role="cell">{item.vendidos.toLocaleString('es-BO')}</span>}
+                    </div>
+                  ))}
+                  {(cargandoEstudios || errorEstudios || tabla.items.length === 0) && <p className="estudio-stock-vacio" role="status">{cargandoEstudios ? 'Cargando…' : errorEstudios ? 'Datos no disponibles.' : tabla.id === 'bajo' ? 'No hay Ítems con stock bajo para este límite.' : 'Todavía no hay ventas registradas de Ítems.'}</p>}
+                </div>
+              </section>
+            ))}
           </>
         )}
       </div>

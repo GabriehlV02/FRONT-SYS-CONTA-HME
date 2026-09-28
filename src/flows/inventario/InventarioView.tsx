@@ -9,10 +9,11 @@ import { ReportesInventarioView } from './subvistas/ReportesInventarioView';
 import { CatalogoView } from './componentes/CatalogoView';
 import { MedicosProfesionalesView } from './subvistas/MedicosProfesionalesView';
 import './InventarioView.css';
+import { ConfiguracionAdminView } from './subvistas/ConfiguracionAdminView';
 
 export function InventarioView({ activeId }: { activeId?: string }) {
   const resolveSubvista = (id?: string): SubvistaInventario =>
-    id === 'inventario-servicios'
+    id === 'inventario-admin' ? 'admin' : id === 'inventario-servicios'
       ? 'servicios'
       : id === 'inventario-todo'
         ? 'todo'
@@ -27,6 +28,7 @@ export function InventarioView({ activeId }: { activeId?: string }) {
   return (
     <section className="inventario-vista">
       <InventarioNavegacion activa={subvista} onSeleccionar={setSubvista} />
+      {subvista === 'admin' && <ConfiguracionAdminView />}
       {subvista === 'productos' && <ProductosInsumosView />}
       {subvista === 'servicios' && <ServiciosView />}
       {subvista === 'medicos' && <MedicosProfesionalesView />}
