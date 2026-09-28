@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
-import type { SubvistaAdquisiciones } from '../componentes/MovimientosNavegacion';
+import { MovimientosNavegacion, type SubvistaAdquisiciones } from '../componentes/MovimientosNavegacion';
 
 type LineaCargaStock = {
   id: string;
@@ -72,11 +72,6 @@ const normalizar = (valor: string) =>
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLocaleLowerCase('es');
-
-const titulos: Record<SubvistaAdquisiciones, string> = {
-  cargado: 'cargado',
-  comprobante: 'comprobantes',
-};
 
 export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const resolveSubvista = (id?: string): SubvistaAdquisiciones =>
@@ -201,6 +196,17 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const totalPaginasTabla = Math.max(1, Math.ceil(registrosFiltrados.length / filasTabla));
   const paginaTablaActual = Math.min(paginaTabla, totalPaginasTabla);
   const registrosPagina = registrosFiltrados.slice((paginaTablaActual - 1) * filasTabla, paginaTablaActual * filasTabla);
+  const estudioStock = useMemo(() => {
+    const items = new Map<string, { codigo: string; producto: string; unidad: string; cantidad: number; lotes: number; marcas: Set<string>; almacenes: Set<string> }>();
+    registros.forEach((registro) => registro.lineas.forEach((linea) => {
+      const item = items.get(linea.codigo) ?? { codigo: linea.codigo, producto: linea.producto, unidad: linea.unidad, cantidad: 0, lotes: 0, marcas: new Set<string>(), almacenes: new Set<string>() };
+      item.cantidad += linea.cantidad; item.lotes += 1;
+      if (linea.marca) item.marcas.add(linea.marca);
+      item.almacenes.add(registro.almacen); items.set(linea.codigo, item);
+    }));
+    return [...items.values()].sort((a, b) => a.producto.localeCompare(b.producto, 'es'));
+  }, [registros]);
+  const unidadesEstudiadas = estudioStock.reduce((total, item) => total + item.cantidad, 0);
 
   function agregarLineaCarga(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -297,6 +303,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
 
   return (
     <>
+      <MovimientosNavegacion activa={subvista} onSeleccionar={setSubvista} />
       <div className="movimientos-contenido adquisiciones-contenido">{!cargandoStock && errorCatalogo && <p role="alert">{errorCatalogo}</p>}
         {subvista === 'cargado' ? (
           <>
@@ -642,35 +649,26 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
           </>
         ) : (
           <>
-            <div className="movimientos-filtros">
-              <label>
-                <Icon name="search" size={17} />
-                <input
-                  placeholder={`Buscar en ${titulos[subvista]}`}
-                  aria-label="Buscar en comprobantes"
-                />
-              </label>
-              <select aria-label="Filtrar por tipo">
-                <option>Tipo</option>
-              </select>
-              <select aria-label="Filtrar por fecha">
-                <option>Fecha</option>
-              </select>
-              <span className="movimientos-contador">0 registros</span>
+            <header className="estudio-stock-cabecera">
+              <div><span>Control de existencias</span><h2>Estudios de stock</h2><p>Resumen de lotes registrados en las notas de ingreso.</p></div>
+              <div className="estudio-stock-total"><strong>{unidadesEstudiadas.toLocaleString('es-BO')}</strong><span>unidades ingresadas</span></div>
+            </header>
+            <div className="estudio-stock-resumen">
+              <article><Icon name="package" size={18} /><span>Ítems con stock</span><strong>{estudioStock.length}</strong></article>
+              <article><Icon name="warehouse" size={18} /><span>Almacenes con ingresos</span><strong>{almacenes.length}</strong></article>
+              <article><Icon name="fileText" size={18} /><span>Notas registradas</span><strong>{registros.length}</strong></article>
             </div>
-            <div
-              className="movimientos-tabla"
-              role="table"
-              aria-label="Adquisiciones - comprobantes"
-            >
-              <div className="movimientos-tabla-head" role="row">
-                <span role="columnheader">Fecha</span>
-                <span role="columnheader">Comprobante</span>
-                <span role="columnheader">Origen</span>
-                <span role="columnheader">Destino</span>
-                <span role="columnheader">Estado</span>
-                <span role="columnheader">Acciones</span>
-              </div>
+            <div className="estudio-stock-tabla" role="table" aria-label="Estudio de stock por ítem">
+              <div className="estudio-stock-head" role="row"><span>Ítem</span><span>Stock registrado</span><span>Lotes</span><span>Marcas</span><span>Almacenes</span></div>
+              {estudioStock.map((item) => (
+                <article className="estudio-stock-fila" role="row" key={item.codigo}>
+                  <div><strong>{item.producto}</strong><small>{item.codigo}</small></div>
+                  <div className="estudio-stock-cantidad"><strong>{item.cantidad.toLocaleString('es-BO')}</strong><small>{item.unidad}</small></div>
+                  <span>{item.lotes} {item.lotes === 1 ? 'lote' : 'lotes'}</span>
+                  <span>{[...item.marcas].join(', ') || 'Sin marca'}</span>
+                  <span>{item.almacenes.size} {item.almacenes.size === 1 ? 'almacén' : 'almacenes'}</span>
+                </article>
+              ))}
             </div>
           </>
         )}

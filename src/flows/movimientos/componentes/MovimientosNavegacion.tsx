@@ -18,15 +18,15 @@ export function MovimientosNavegacion({ activa, onSeleccionar }: Props) {
       ariaLabel="Subvistas de Movimientos"
     >
       <BotonSubvista
-        nombre="Cargado"
-        icono="plus"
+        nombre="Nota de ingreso"
+        icono="fileText"
         activa={activa === 'cargado'}
         onSeleccionar={() => onSeleccionar('cargado')}
         claseIcono="movimientos-subvista-icono"
       />
       <BotonSubvista
-        nombre="Comprobante"
-        icono="fileText"
+        nombre="Estudios de stock"
+        icono="chart"
         activa={activa === 'comprobante'}
         onSeleccionar={() => onSeleccionar('comprobante')}
         claseIcono="movimientos-subvista-icono"

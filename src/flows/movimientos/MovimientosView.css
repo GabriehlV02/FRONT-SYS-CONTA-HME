@@ -151,6 +151,25 @@
   flex-direction: column;
   gap: 14px;
 }
+.estudio-stock-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 4px 2px 8px; }
+.estudio-stock-cabecera > div:first-child > span { color: #087f87; font-size: 10px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+.estudio-stock-cabecera h2 { margin: 5px 0 4px; color: #173b44; font-size: 21px; }
+.estudio-stock-cabecera p { margin: 0; color: #60777e; font-size: 12px; }
+.estudio-stock-total { display: grid; justify-items: end; gap: 3px; min-width: 150px; padding: 13px 16px; border: 1px solid #b9dce0; border-radius: 10px; background: #eef8f8; }
+.estudio-stock-total strong { color: #08757d; font-size: 24px; line-height: 1; }
+.estudio-stock-total span { color: #527078; font-size: 10px; font-weight: 750; }
+.estudio-stock-resumen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.estudio-stock-resumen article { display: grid; grid-template-columns: auto 1fr; gap: 3px 9px; align-items: center; padding: 14px; border: 1px solid #d4e4e6; border-radius: 10px; background: #fbfdfd; color: #08757d; }
+.estudio-stock-resumen article span { color: #587078; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.estudio-stock-resumen article strong { grid-column: 2; color: #213f48; font-size: 20px; }
+.estudio-stock-tabla { overflow: auto; border: 1px solid #c8dcdf; border-radius: 10px; }
+.estudio-stock-head,.estudio-stock-fila { display: grid; grid-template-columns: minmax(220px, 1.5fr) minmax(145px, .9fr) 100px minmax(130px, 1fr) 115px; gap: 14px; align-items: center; min-width: 760px; padding: 0 16px; }
+.estudio-stock-head { min-height: 42px; color: #4e6c74; background: #eaf3f4; font-size: 10px; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
+.estudio-stock-fila { min-height: 62px; border-top: 1px solid #e0ebed; color: #294750; font-size: 12px; }
+.estudio-stock-fila > div { display: grid; gap: 4px; min-width: 0; }
+.estudio-stock-fila strong { color: #213f48; font-size: 12px; }
+.estudio-stock-fila small { color: #6d8389; font-size: 10px; }
+.estudio-stock-cantidad strong { color: #08757d; font-size: 16px; }
 .adquisiciones-resumen {
   display: grid;
   grid-template-columns: repeat(3, minmax(160px, 1fr));
