@@ -3235,3 +3235,15 @@
   border-color: #6d28d9 !important;
   font-weight: 900 !important;
 }
+
+/* El foco del acceso se muestra en el contenedor, nunca como un segundo
+   rectángulo sobre el área donde se escribe. */
+.login-page-contable .login-input input:focus,
+.login-page-contable .login-input input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.login-page-contable .login-input:focus-within {
+  outline: none !important;
+}

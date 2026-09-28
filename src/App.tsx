@@ -27,7 +27,7 @@ export const modules: {
   {
     id: 'resumen',
     name: 'Resumen',
-    icon: 'home',
+    icon: 'chart',
     group: 'GENERAL',
     description: 'Panorama de la actividad administrativa del hospital.',
   },

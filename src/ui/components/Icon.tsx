@@ -1,10 +1,11 @@
 ﻿import type { ReactNode, SVGProps } from 'react';
 
-export type IconName = 'home' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'user' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'calendar' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
+export type IconName = 'home' | 'chart' | 'package' | 'asset' | 'audit' | 'building' | 'fileText' | 'user' | 'users' | 'patient' | 'userCheck' | 'logout' | 'search' | 'bell' | 'calendar' | 'warehouse' | 'settings' | 'menu' | 'close' | 'chevronDown' | 'chevronRight' | 'chevronLeft' | 'plus' | 'check' | 'arrowRight' | 'sparkles' | 'eye' | 'eyeOff' | 'image' | 'camera' | 'edit' | 'trash' | 'cart' | 'cash';
 type Props = SVGProps<SVGSVGElement> & { name: IconName; size?: number };
 
 const paths: Record<IconName, ReactNode> = {
   home: <><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></>,
+  chart: <><path d="M4 20V4"/><path d="M4 20h17"/><path d="m7 15 4-4 3 2 5-6"/><path d="M16 7h3v3"/></>,
   package: <><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.5 7.5 4 7.5-4M12 11.5V21"/></>,
   asset: <><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6V4h8v2M3 11h18M8 15h3m3 0h2"/><circle cx="6" cy="9" r=".5" fill="currentColor"/></>,
   audit: <><path d="M9 5H6a2 2 0 0 0-2 2v13h13v-3M9 3h6v4H9z"/><circle cx="16" cy="12" r="4"/><path d="m19 15 3 3m-7-6 1 1 2-2"/></>,

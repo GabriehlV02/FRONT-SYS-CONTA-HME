@@ -163,7 +163,9 @@ export function SystemApp({ config }: { config: SystemConfig }) {
     <div className="sistema-cuerpo" inert={open}>
       <header className="sistema-topbar">
         <button ref={menuButton} className="abrir-menu" onClick={() => setOpen(true)} aria-label="Abrir menú" aria-expanded={open} aria-controls="system-sidebar"><Icon name="menu"/></button>
-        <span className="topbar-icono"><Icon name={selected.icon}/></span>
+        <span className="topbar-icono" aria-label="Panel ejecutivo contable">
+          <Icon name="cash" />
+        </span>
         <div className="topbar-titulo"><h1>{selected.name}</h1><small>{config.name}</small></div>
         <div className="search-container"><label className="busqueda-global"><Icon name="search" size={17}/><input type="search" aria-label="Buscar módulo" placeholder="Buscar un módulo…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}/></label>
           {query.trim() && <div className="search-results" aria-label="Resultados de módulos">{results.length ? results.map(item => <button key={item.id} onClick={() => select(item.id)}><Icon name={item.icon} size={17}/>{item.name}<Icon name="chevronRight" size={14}/></button>) : <p role="status">No se encontraron módulos.</p>}</div>}

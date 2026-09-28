@@ -59,7 +59,12 @@ const columnasCatalogo: Array<{ etiqueta: string; campo?: CampoOrden; minimo: nu
   { etiqueta: 'Acciones', minimo: 95 },
 ];
 
+// Proporciones iniciales legibles y equilibradas. Los cambios manuales son solo temporales.
 const anchosInicialesCatalogo = [85, 220, 80, 140, 110, 125, 55, 90, 85, 110, 120];
+const anchoMinimoCatalogo = anchosInicialesCatalogo.reduce((total, ancho) => total + ancho, 0);
+const plantillaInicialCatalogo = anchosInicialesCatalogo
+  .map((ancho, indice) => indice === 1 ? `minmax(${ancho}px, 1fr)` : `${ancho}px`)
+  .join(' ');
 
 const subcategoriasPorCategoria: Record<string, string[]> = {
   'Proteccion personal': ['Guantes', 'Mascarillas', 'Respiradores'],
@@ -135,19 +140,16 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   const [categoria, setCategoria] = useState('todas');
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [campoOrden, setCampoOrden] = useState<CampoOrden | ''>('');
-  const [anchosColumnas, setAnchosColumnas] = useState<number[]>(() => {
-    try {
-      const guardados = JSON.parse(localStorage.getItem('inventario-anchos-columnas') || '[]');
-      return Array.isArray(guardados) && guardados.length === columnasCatalogo.length
-        ? guardados.map((ancho, indice) => Math.max(columnasCatalogo[indice].minimo, Number(ancho) || anchosInicialesCatalogo[indice]))
-        : anchosInicialesCatalogo;
-    } catch {
-      return anchosInicialesCatalogo;
-    }
-  });
+  const [anchosColumnas, setAnchosColumnas] = useState<number[]>(() => [...anchosInicialesCatalogo]);
+  const [columnasRedimensionadas, setColumnasRedimensionadas] = useState(false);
   const [tablaCompacta, setTablaCompacta] = useState(() => window.matchMedia('(max-width: 860px)').matches);
   const [columnasGaleria, setColumnasGaleria] = useState(1);
   const galeriaRef = useRef<HTMLDivElement>(null);
+
+  // Elimina una preferencia de versiones previas: el ancho no debe persistir entre recargas.
+  useEffect(() => {
+    try { localStorage.removeItem('inventario-anchos-columnas'); } catch { /* Almacenamiento no disponible. */ }
+  }, []);
   const [modalRegistroAbierto, setModalRegistroAbierto] = useState(false);
   const [detalleRegistro, setDetalleRegistro] = useState<RegistroInventario | null>(null);
   const [edicionRegistro, setEdicionRegistro] = useState<RegistroInventario | null>(null);
@@ -480,21 +482,27 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     event.preventDefault();
     event.stopPropagation();
     const inicioX = event.clientX;
-    const anchoInicial = anchosColumnas[indice];
+    const cabecera = event.currentTarget.closest<HTMLElement>('.inventario-tabla-head');
+    const medidasActuales = cabecera
+      ? getComputedStyle(cabecera).gridTemplateColumns.split(' ').map(Number.parseFloat)
+      : anchosColumnas;
+    const columnasBase = medidasActuales.length === columnasCatalogo.length
+      ? medidasActuales
+      : anchosColumnas;
+    const anchoInicial = columnasBase[indice];
     const minimo = columnasCatalogo[indice].minimo;
+
+    setAnchosColumnas(columnasBase);
+    setColumnasRedimensionadas(true);
 
     const mover = (movimiento: PointerEvent) => {
       const siguiente = Math.max(minimo, anchoInicial + movimiento.clientX - inicioX);
-      setAnchosColumnas((actuales) => actuales.map((ancho, posicion) => posicion === indice ? siguiente : ancho));
+      setAnchosColumnas(columnasBase.map((ancho, posicion) => posicion === indice ? siguiente : ancho));
     };
     const terminar = () => {
       window.removeEventListener('pointermove', mover);
       window.removeEventListener('pointerup', terminar);
       document.body.classList.remove('inventario-redimensionando');
-      setAnchosColumnas((actuales) => {
-        try { localStorage.setItem('inventario-anchos-columnas', JSON.stringify(actuales)); } catch { /* Preferencia opcional. */ }
-        return actuales;
-      });
     };
 
     document.body.classList.add('inventario-redimensionando');
@@ -503,13 +511,23 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   }
 
   const estiloColumnas = {
-    '--inventario-columnas': anchosColumnas.map((ancho) => `${ancho}px`).join(' '),
-    '--inventario-ancho-tabla': `${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px`,
+    '--inventario-columnas': columnasRedimensionadas
+      ? anchosColumnas.map((ancho) => `${ancho}px`).join(' ')
+      : plantillaInicialCatalogo,
+    '--inventario-ancho-tabla': `${columnasRedimensionadas
+      ? anchosColumnas.reduce((total, ancho) => total + ancho, 0)
+      : anchoMinimoCatalogo}px`,
   } as CSSProperties;
   const estiloGrilla = tablaCompacta ? undefined : {
-    gridTemplateColumns: anchosColumnas.map((ancho) => `${ancho}px`).join(' '),
-    width: `max(100%, ${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px)`,
-    minWidth: `${anchosColumnas.reduce((total, ancho) => total + ancho, 0)}px`,
+    gridTemplateColumns: columnasRedimensionadas
+      ? anchosColumnas.map((ancho) => `${ancho}px`).join(' ')
+      : plantillaInicialCatalogo,
+    width: `max(100%, ${columnasRedimensionadas
+      ? anchosColumnas.reduce((total, ancho) => total + ancho, 0)
+      : anchoMinimoCatalogo}px)`,
+    minWidth: `${columnasRedimensionadas
+      ? anchosColumnas.reduce((total, ancho) => total + ancho, 0)
+      : anchoMinimoCatalogo}px`,
   } as CSSProperties;
 
   function actualizarCampoRegistro<K extends keyof typeof formularioRegistro>(
@@ -1255,7 +1273,6 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     ))}
                   </select>
                 </label>
-                <label><input type="checkbox" checked={!!edicionRegistro.confirmarPrecio} onChange={e => setEdicionRegistro(a => a ? { ...a, confirmarPrecio: e.target.checked } : a)} /> Confirmar precio de venta revisado (quita la alerta si cubre los costos)</label>
                 <label>
                   <span>Precio de venta</span>
                   <input

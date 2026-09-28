@@ -11,7 +11,7 @@
 }) {
   const logoCompleto = '/logo-hospital-contable-transparente.png';
   const logoLoginContable = '/logo-hospital-contable-corporativo.png?v=login-corporativo-20260925';
-  const logoCompacto = '/brand.svg?v=clinico-azul-vital';
+  const logoCompacto = '/brand.svg?v=hospital-turquesa';
 
   return (
     <div className={sidebar ? 'sistema-marca' : 'login-brand'}>

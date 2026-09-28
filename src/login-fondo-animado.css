@@ -1,0 +1,34 @@
+/* Fondo fijo con figuras que recorren trayectorias independientes. */
+.login-page-contable {
+  position: relative;
+  isolation: isolate;
+}
+
+.login-page-contable .login-fondo-figuras {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.login-page-contable .login-fondo-figuras svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  aspect-ratio: 1;
+  opacity: .48;
+  will-change: transform;
+}
+
+.login-page-contable .login-balance-layout {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page-contable .login-fondo-figuras svg {
+    will-change: auto;
+  }
+}

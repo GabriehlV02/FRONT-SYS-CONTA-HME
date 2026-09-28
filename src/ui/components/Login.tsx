@@ -3,6 +3,7 @@ import { useState, type FormEvent } from 'react';
 import Icon from './Icon';
 import { Brand } from './Brand';
 import { LoginBalancePanel } from './LoginBalancePanel';
+import { LoginFondoFiguras } from './LoginFondoFiguras';
 import type { AuthSession, SystemConfig } from '../types';
 
 export function Login({
@@ -194,6 +195,7 @@ export function Login({
 
   return (
     <main className={`login-page login-page-${config.id}`}>
+      {esContable && <LoginFondoFiguras />}
       {['superior', 'inferior'].map((position) => (
         <svg
           key={position}
