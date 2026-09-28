@@ -1,11 +1,29 @@
-import { VistaPendiente } from '@ui/components/VistaPendiente';
+import { useState } from 'react';
+import Icon from '@ui/components/Icon';
+
+const ventas = [
+  { hora: '08:14', factura: 'F-000124', vendedor: 'Lucia Mendoza', cliente: 'Clinica San Gabriel', pago: 'Efectivo', total: 'Bs 1.250,00' },
+  { hora: '09:32', factura: 'F-000123', vendedor: 'Lucia Mendoza', cliente: 'Maria Fernanda Rojas', pago: 'QR', total: 'Bs 480,00' },
+  { hora: '11:06', factura: 'F-000122', vendedor: 'Diego Salazar', cliente: 'Laboratorio Central', pago: 'Efectivo', total: 'Bs 890,00' },
+  { hora: '14:48', factura: 'F-000121', vendedor: 'Diego Salazar', cliente: 'Carlos Paredes', pago: 'Tarjeta', total: 'Bs 320,00' },
+];
 
 export function CajaDiaView() {
-  return <VistaPendiente
-    className="ventas-subvista"
-    area="VENTAS"
-    titulo="Caja del día"
-    descripcion="Apertura, movimientos y cierre de caja."
-    icono="cash"
-  />;
+  const [exportarAbierto, setExportarAbierto] = useState(false);
+  const [contenidoExportar, setContenidoExportar] = useState('Ventas del dia');
+  const [formatoExportar, setFormatoExportar] = useState('Excel');
+  const exportar = () => {
+    const filas = contenidoExportar === 'Ventas del dia' ? [['Hora', 'Factura', 'Vendedor', 'Cliente', 'Pago', 'Total'], ...ventas.map(venta => [venta.hora, venta.factura, venta.vendedor, venta.cliente, venta.pago, venta.total])] : contenidoExportar === 'Historico de cierres' ? [['Fecha', 'Caja', 'Ventas', 'Total', 'Estado'], ['27 sep. 2026', 'Caja 01 - Recepcion', '4', 'Bs 3.180,00', 'Cuadrado'], ['26 sep. 2026', 'Caja 01 - Recepcion', '7', 'Bs 4.520,00', 'Cuadrado']] : [['Indicador', 'Valor'], ['Ventas del dia', '4'], ['Total facturado', 'Bs 2.940,00'], ['Vendedores', '2'], ['Ticket promedio', 'Bs 735,00']];
+    const csv = filas.map(fila => fila.map(valor => `"${valor.replaceAll('"', '""')}"`).join(',')).join('\n');
+    const html = `<table>${filas.map((fila, indice) => `<tr>${fila.map(valor => `<${indice ? 'td' : 'th'}>${valor}</${indice ? 'td' : 'th'}>`).join('')}</tr>`).join('')}</table>`;
+    const esCsv = formatoExportar === 'CSV'; const blob = new Blob([esCsv ? `\ufeff${csv}` : `\ufeff${html}`], { type: esCsv ? 'text/csv;charset=utf-8' : formatoExportar === 'Excel' ? 'application/vnd.ms-excel' : 'application/msword' }); const enlace = document.createElement('a'); enlace.href = URL.createObjectURL(blob); enlace.download = `caja-01-${contenidoExportar.toLowerCase().replaceAll(' ', '-')}.${esCsv ? 'csv' : formatoExportar === 'Excel' ? 'xls' : 'doc'}`; enlace.click(); URL.revokeObjectURL(enlace.href); setExportarAbierto(false);
+  };
+  return <section className="caja-dia-vista" aria-label="Auditoria de caja diaria">
+    <header className="caja-dia-cabecera"><div><p>VENTAS / AUDITORIA DE CAJA</p><h2>Caja del dia</h2><small>Ventas registradas por caja, fecha y vendedor.</small></div><button type="button" className="secundario" onClick={() => setExportarAbierto(true)}><Icon name="fileText" size={16} /> Exportar reporte</button></header>
+    <section className="caja-dia-filtros" aria-label="Filtros de auditoria"><label>Fecha<input type="date" defaultValue="2026-09-28" /></label><label>Caja<select defaultValue="Caja 01 · Recepcion"><option>Caja 01 · Recepcion</option><option>Caja 02 · Farmacia</option></select></label><label>Vendedor<select defaultValue="Todos"><option>Todos</option><option>Lucia Mendoza</option><option>Diego Salazar</option></select></label><button type="button" className="primario"><Icon name="search" size={16} /> Consultar</button></section>
+    <div className="caja-dia-kpis"><article><span><Icon name="cash" size={18} /></span><div><small>Ventas del dia</small><strong>4</strong></div></article><article><span><Icon name="fileText" size={18} /></span><div><small>Total facturado</small><strong>Bs 2.940,00</strong></div></article><article><span><Icon name="user" size={18} /></span><div><small>Vendedores</small><strong>2</strong></div></article><article><span><Icon name="chart" size={18} /></span><div><small>Ticket promedio</small><strong>Bs 735,00</strong></div></article></div>
+    <div className="caja-dia-columnas"><section className="ventas-panel caja-dia-listado"><div className="ventas-panel-head"><div><h3>Ventas de Caja 01</h3><small>Detalle auditable de las ventas del 28 sep. 2026.</small></div><span className="caja-dia-sello">Caja abierta</span></div><div className="caja-dia-tabla" role="table"><div className="caja-dia-fila encabezado" role="row"><span>Hora</span><span>Factura</span><span>Vendedor</span><span>Cliente</span><span>Pago</span><span>Total</span><span /></div>{ventas.map(venta => <div className="caja-dia-fila" role="row" key={venta.factura}><span>{venta.hora}</span><strong>{venta.factura}</strong><span>{venta.vendedor}</span><span>{venta.cliente}</span><span>{venta.pago}</span><strong>{venta.total}</strong><button type="button" title="Inspeccionar venta" aria-label={`Inspeccionar venta ${venta.factura}`}><Icon name="eye" size={16} /></button></div>)}</div></section><aside className="caja-dia-resumen"><section><h3>Resumen por vendedor</h3><article><span>Lucia Mendoza</span><strong>2 ventas · Bs 1.730,00</strong></article><article><span>Diego Salazar</span><strong>2 ventas · Bs 1.210,00</strong></article></section><section><h3>Distribucion de cobros</h3><article><span>Efectivo</span><strong>Bs 2.140,00</strong></article><article><span>QR</span><strong>Bs 480,00</strong></article><article><span>Tarjeta</span><strong>Bs 320,00</strong></article></section></aside></div>
+    <section className="ventas-panel caja-dia-historico"><div className="ventas-panel-head"><div><h3>Historico de cierres</h3><small>Consulta los arqueos y totales de dias anteriores.</small></div><button type="button" className="secundario">Ver todo el historico <Icon name="arrowRight" size={15} /></button></div><div className="caja-historico-lista"><article><strong>27 sep. 2026</strong><span>Caja 01 · Recepcion</span><span>4 ventas</span><b>Bs 3.180,00</b><i>Cuadrado</i></article><article><strong>26 sep. 2026</strong><span>Caja 01 · Recepcion</span><span>7 ventas</span><b>Bs 4.520,00</b><i>Cuadrado</i></article></div></section>
+    {exportarAbierto && <div className="caja-exportar-fondo" onMouseDown={() => setExportarAbierto(false)}><section className="caja-exportar-modal" role="dialog" aria-modal="true" onMouseDown={event => event.stopPropagation()}><header><div><p>EXPORTAR REPORTE</p><h3>Configurar exportacion</h3></div><button type="button" onClick={() => setExportarAbierto(false)} aria-label="Cerrar"><Icon name="close" size={18} /></button></header><label>Que deseas exportar?<select value={contenidoExportar} onChange={event => setContenidoExportar(event.target.value)}><option>Ventas del dia</option><option>Resumen de caja</option><option>Historico de cierres</option></select></label><label>Formato del archivo<select value={formatoExportar} onChange={event => setFormatoExportar(event.target.value)}><option>Excel</option><option>Word</option><option>CSV</option></select></label><footer><button type="button" onClick={() => setExportarAbierto(false)}>Cancelar</button><button type="button" className="primario" onClick={exportar}><Icon name="fileText" size={16} /> Descargar</button></footer></section></div>}
+  </section>;
 }

@@ -2,7 +2,7 @@
 import { BotonSubvista } from '@ui/components/BotonSubvista';
 
 export type SubvistaVentas =
-  'ventas' | 'cuentas-abiertas' | 'caja-dia' | 'clientes';
+  'ventas' | 'cuentas-abiertas' | 'caja-dia' | 'facturas' | 'clientes';
 
 type Props = {
   activa: SubvistaVentas;
@@ -34,6 +34,13 @@ export function VentasNavegacion({ activa, onSeleccionar }: Props) {
         icono="cash"
         activa={activa === 'caja-dia'}
         onSeleccionar={() => onSeleccionar('caja-dia')}
+        claseIcono=""
+      />
+      <BotonSubvista
+        nombre="Facturas"
+        icono="fileText"
+        activa={activa === 'facturas'}
+        onSeleccionar={() => onSeleccionar('facturas')}
         claseIcono=""
       />
     </HorizontalSubvistaNav>

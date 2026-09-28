@@ -182,7 +182,6 @@ export function PuntoVentaView() {
           )
         : [...actual, { ...item, cantidad: 1 }],
     );
-    setMensaje(`${item.nombre} agregado al carrito.`);
   };
   const cantidad = (id: string, delta: number) =>
     setLineas((actual) =>
@@ -373,21 +372,23 @@ export function PuntoVentaView() {
               ))}
             </div>
           ) : (
-            <div className="punto-listado" role="list" aria-label="Listado de productos">
+            <div className="punto-listado-columnas" role="table" aria-label="Listado de productos">
+              <div className="punto-listado-fila punto-listado-encabezado" role="row">
+                <span role="columnheader">Código</span><span role="columnheader">Nombre del ítem</span><span role="columnheader">Stock</span><span role="columnheader">Precio</span><span role="columnheader">Acción</span>
+              </div>
               {resultadosPagina.map((item) => (
-                <article key={item.id} role="listitem">
-                  <div className="punto-listado-avatar">
-                    {item.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}
-                  </div>
-                  <div className="punto-listado-info">
+                <div className="punto-listado-fila" key={item.id} role="row">
+                  <span role="cell" className="punto-listado-codigo">{item.codigo}</span>
+                  <div role="cell" className="punto-listado-nombre">
                     <strong>{item.nombre}</strong>
-                    <span>{item.codigo} · {item.tipo}{item.stock !== undefined ? ` · Stock ${item.stock}` : ''}</span>
+                    <small>{item.tipo}</small>
                   </div>
-                  <b>{money(item.precio)}</b>
-                  <button type="button" onClick={() => agregar(item)}>
+                  <span role="cell"><span className="punto-listado-stock">{item.tipo === 'Servicio' ? 'No aplica' : item.stock ?? '—'}</span></span>
+                  <strong role="cell" className="punto-listado-precio">{money(item.precio)}</strong>
+                  <span role="cell"><button type="button" aria-label={`Agregar ${item.nombre} al carrito`} onClick={() => agregar(item)}>
                     <Icon name="plus" size={16} /> Agregar
-                  </button>
-                </article>
+                  </button></span>
+                </div>
               ))}
             </div>
           )}

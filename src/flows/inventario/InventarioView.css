@@ -2089,11 +2089,11 @@
   .inventario-modal-registro .inventario-modal-cuerpo textarea { min-height: 64px; height: 64px; }
 }
 .reporte-descargas .reporte-exportaciones { display: grid; gap: 8px; width: 100%; overflow: visible; }
-.sistema-contable .reporte-descargas .reporte-exportaciones button { --export-color: #b42332; --export-bg: #fff3f4; display: flex; gap: 12px; width: 100%; height: 46px; padding: 0 12px; color: var(--export-color) !important; background: var(--export-bg) !important; border: 1px solid var(--export-color) !important; border-radius: 9px; cursor: pointer; transition: box-shadow .15s, transform .15s; }
-.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-word { --export-color: #185abd; --export-bg: #eff5ff; }
-.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-excel { --export-color: #187447; --export-bg: #eef9f2; }
-.sistema-contable .reporte-descargas .reporte-exportaciones button b { min-width: 46px; height: 29px; color: #fff !important; background: var(--export-color) !important; font-size: 11px !important; }
-.sistema-contable .reporte-descargas .reporte-exportaciones button span { color: var(--export-color) !important; font-size: 12px !important; font-weight: 700 !important; }
-.sistema-contable .reporte-descargas .reporte-exportaciones button:hover { box-shadow: 0 3px 9px #183b5220; transform: translateY(-1px); }
+.sistema-contable .reporte-descargas .reporte-exportaciones button { --export-color: #b42332; display: flex; gap: 12px; width: 100%; height: 46px; padding: 0 12px; color: #fff !important; background: var(--export-color) !important; border: 1px solid var(--export-color) !important; border-radius: 9px; cursor: pointer; transition: box-shadow .15s, filter .15s, transform .15s; }
+.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-word { --export-color: #185abd; }
+.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-excel { --export-color: #187447; }
+.sistema-contable .reporte-descargas .reporte-exportaciones button b { min-width: 46px; height: 29px; color: #fff !important; background: rgb(255 255 255 / 18%) !important; border: 1px solid rgb(255 255 255 / 28%); font-size: 11px !important; }
+.sistema-contable .reporte-descargas .reporte-exportaciones button span { color: #fff !important; font-size: 12px !important; font-weight: 700 !important; }
+.sistema-contable .reporte-descargas .reporte-exportaciones button:hover { box-shadow: 0 4px 10px #183b5238; filter: brightness(.92); transform: translateY(-1px); }
 .reporte-descargas .reporte-exportaciones button:focus-visible { outline: 2px solid var(--export-color); outline-offset: 3px; }
 @media (min-width: 761px) and (max-width: 1050px) { .reporte-configuracion .reporte-descargas { grid-column: 1 / -1; } .reporte-descargas .reporte-exportaciones { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

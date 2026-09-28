@@ -770,14 +770,14 @@
     border-radius: 50% !important;
   }
   .sistema-contable .replegar-menu {
-    border-color: #087f87 !important;
-    color: #fff !important;
-    background: #087f87 !important;
-    box-shadow: 0 3px 8px rgb(8 127 135 / 24%) !important;
+    border-color: #b9d9dc !important;
+    color: #066970 !important;
+    background: #fff !important;
+    box-shadow: 0 3px 8px rgb(4 53 58 / 28%) !important;
   }
   .sistema-contable .replegar-menu:hover {
-    color: #fff !important;
-    background: #066970 !important;
+    color: #04565c !important;
+    background: #dff2f3 !important;
   }
   .sistema-contable .sidebar-scroll {
     display: flex !important;
@@ -1243,7 +1243,7 @@
 
   /* Pestañas compactas: delimitan la subvista sin ocupar el ancho del contenido. */
   .sistema-contable .subvistas-carrusel {
-    width: fit-content !important;
+    width: 100% !important;
     max-width: 100% !important;
     margin: 0 0 8px !important;
   }
@@ -1254,7 +1254,7 @@
     .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas,
     .traspasos-subvistas) {
     display: flex !important;
-    width: fit-content !important;
+    width: 100% !important;
     max-width: 100% !important;
     min-height: 42px !important;
     margin: 0 !important;
@@ -2156,14 +2156,19 @@ body.inventario-redimensionando * {
 }
 
 .sistema-contable .ventas-cabecera-subvistas > .subvistas-carrusel {
-  flex: 0 1 390px;
+  flex: 0 1 auto;
+  width: fit-content !important;
   min-width: 0;
   margin: 0 !important;
 }
 
+.sistema-contable .ventas-cabecera-subvistas > .subvistas-carrusel > .ventas-tabs {
+  width: fit-content !important;
+}
+
 .sistema-contable .ventas-contexto-slot {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 440px;
   justify-content: flex-end;
   min-width: 0;
 }
@@ -2565,3 +2570,61 @@ body.inventario-redimensionando * {
 .stock-desglose-modal > footer > div strong { color: #076d74; font-size: 22px; }
 .stock-desglose-modal > footer > button { min-width: 100px; height: 40px; border: 1px solid #087f87 !important; border-radius: 8px; color: #fff !important; background: #087f87 !important; font-size: 12px; font-weight: 750; }
 @media (max-width: 760px) { .stock-desglose-sucursal { overflow-x: auto; } .stock-desglose-head,.stock-desglose-fila { min-width: 650px; } .stock-desglose-contenido { padding: 16px; } .stock-desglose-modal > header,.stock-desglose-modal > footer { padding-inline: 16px; } }
+
+/* Galería de ventas: pie visible y acción principal inequívoca. */
+@layer contable-corporativo {
+.sistema-contable .punto-tarjetas article > footer {
+  border-top-color: #b4c3ca !important;
+  background: #d5dfe4 !important;
+}
+.sistema-contable .punto-tarjetas article > footer > div {
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: transparent !important;
+}
+.sistema-contable .punto-tarjetas article > footer b { color: #213640 !important; }
+.sistema-contable .punto-tarjetas article > footer small { color: #425d69 !important; }
+.sistema-contable .punto-tarjetas article > footer > button {
+  border: 1px solid #087f87 !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  background: #087f87 !important;
+  box-shadow: 0 3px 8px rgb(8 127 135 / 26%) !important;
+}
+.sistema-contable .punto-tarjetas article > footer > button:hover { background: #066970 !important; }
+}
+
+/* Barra superior en azul grisáceo: complementa al sidebar sin repetir su color. */
+@layer contable-corporativo {
+  .sistema-contable .punto-listado-columnas { overflow-x: auto; border: 1px solid #bfd2d8; border-radius: 10px; background: #fff; }
+  .sistema-contable .punto-listado-fila { display: grid; grid-template-columns: 120px minmax(240px, 1fr) 100px 120px 110px; align-items: center; gap: 16px; min-width: 770px; padding: 12px 16px; border-bottom: 1px solid #dce7ea; color: #243f4a; }
+  .sistema-contable .punto-listado-fila:last-child { border-bottom: 0; }
+  .sistema-contable .punto-listado-fila:not(.punto-listado-encabezado):hover { background: #f0f7f7; }
+  .sistema-contable .punto-listado-encabezado { background: #dce7eb; color: #405e69; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .sistema-contable .punto-listado-codigo { font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sistema-contable .punto-listado-nombre { display: grid; gap: 4px; }
+  .sistema-contable .punto-listado-nombre small { color: #657e88; font-size: 11px; }
+  .sistema-contable .punto-listado-stock { display: inline-block; padding: 5px 10px; border-radius: 6px; background: #e7f1f3; color: #365b67; font-variant-numeric: tabular-nums; }
+  .sistema-contable .punto-listado-precio { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .sistema-contable .punto-listado-encabezado > :nth-child(4) { text-align: right; }
+  .sistema-contable .punto-listado-fila button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 8px 12px; border: 1px solid #087f87 !important; border-radius: 7px; background: #087f87 !important; color: #fff !important; font-weight: 600; }
+  .sistema-contable .punto-listado-fila button:hover { background: #066970 !important; }
+}
+@layer contable-corporativo {
+  .sistema-contable .sistema-topbar {
+    background: #087f87 !important;
+    border-bottom-color: #06676e !important;
+    color: #fff !important;
+  }
+  .sistema-contable .sistema-topbar .topbar-titulo h1,
+  .sistema-contable .sistema-topbar .perfil strong { color: #fff !important; }
+  .sistema-contable .sistema-topbar .topbar-titulo small,
+  .sistema-contable .sistema-topbar .perfil small { color: #e0f4f4 !important; }
+  .sistema-contable .sistema-topbar .perfil { background: transparent !important; border-color: #66adb2 !important; }
+  .sistema-contable .sistema-topbar .busqueda-global,
+  .sistema-contable .sistema-topbar :is(.topbar-icono, .salir-sistema) {
+    background: #fff !important;
+    border-color: #c5e2e4 !important;
+    color: #24525a !important;
+  }
+}

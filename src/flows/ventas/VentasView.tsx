@@ -6,6 +6,7 @@ import {
 import { PuntoVentaView } from './subvistas/PuntoVentaView';
 import { CuentasAbiertasView } from './subvistas/CuentasAbiertasView';
 import { CajaDiaView } from './subvistas/CajaDiaView';
+import { FacturasView } from './subvistas/FacturasView';
 import { ClientesView } from '../inventario/subvistas/ClientesView';
 import './VentasView.css';
 
@@ -40,6 +41,7 @@ export function VentasView({ activeId }: { activeId?: string }) {
       {subvista === 'ventas' && <PuntoVentaView />}
       {subvista === 'cuentas-abiertas' && <CuentasAbiertasView />}
       {subvista === 'caja-dia' && <CajaDiaView />}
+      {subvista === 'facturas' && <FacturasView />}
       {subvista === 'clientes' && <ClientesView />}
     </section>
   );

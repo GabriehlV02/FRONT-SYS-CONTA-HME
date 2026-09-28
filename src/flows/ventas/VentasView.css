@@ -141,6 +141,16 @@
 .facturas-kpis {
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
+.facturas-vista { display: grid; gap: 14px; }
+.facturas-vista .ventas-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.facturas-vista .ventas-cabecera p { margin: 0 0 4px; color: #087f87; font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.facturas-vista .ventas-cabecera h2 { margin: 0; }
+.facturas-vista .ventas-cabecera small { color: #71848b; font-size: 12px; }
+.facturas-vista .primario { display: inline-flex; align-items: center; gap: 7px; }
+.facturas-tabla { overflow-x: auto; }
+.facturas-fila { display: grid; grid-template-columns: 105px minmax(170px, 1fr) 105px 135px 115px 115px 105px 95px 42px; align-items: center; gap: 12px; min-width: 1080px; padding: 12px 14px; border-top: 1px solid #e1eaec; color: #31535d; font-size: 12px; }
+.facturas-encabezado { border-top: 0; color: #71848b; background: #f5f9f9; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.facturas-fila strong { color: #193f4b; }.facturas-fila i { display: inline-block; padding: 4px 8px; border-radius: 99px; font-size: 10px; font-style: normal; font-weight: 800; }.facturas-fila i.emitida { color: #17633d; background: #e8f5ec; }.facturas-fila i.pendiente { color: #8a5a11; background: #fff4da; }.facturas-fila button { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #c8dadd; border-radius: 7px; color: #087f87; background: #fff; }
 .ventas-kpi {
   display: flex;
   align-items: center;
@@ -2426,3 +2436,48 @@
 .sistema-contable .punto-pago-mixto .punto-pago-totales {
   border-top: 2px solid #a78bfa;
 }
+
+/* En escritorio cada columna se desplaza de forma independiente. */
+@media (min-width: 1041px) {
+  .sistema-contable .punto-pos-layout {
+    height: calc(100dvh - 156px);
+    min-height: 520px;
+  }
+
+  .sistema-contable .punto-catalogo,
+  .sistema-contable .punto-carrito {
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #8db8be #edf4f5;
+  }
+
+  .sistema-contable .punto-catalogo::-webkit-scrollbar,
+  .sistema-contable .punto-carrito::-webkit-scrollbar { width: 9px; }
+  .sistema-contable .punto-catalogo::-webkit-scrollbar-track,
+  .sistema-contable .punto-carrito::-webkit-scrollbar-track { background: #edf4f5; border-radius: 9px; }
+  .sistema-contable .punto-catalogo::-webkit-scrollbar-thumb,
+  .sistema-contable .punto-carrito::-webkit-scrollbar-thumb { border: 2px solid #edf4f5; border-radius: 9px; background: #8db8be; }
+}
+
+.factura-acciones { display: flex; gap: 6px; }
+
+.caja-dia-vista{display:grid;gap:14px}.caja-dia-cabecera,.caja-dia-filtros,.caja-dia-columnas{display:flex;gap:12px}.caja-dia-cabecera{align-items:center;justify-content:space-between}.caja-dia-cabecera p{margin:0 0 4px;color:#087f87;font-size:10px;font-weight:800;letter-spacing:.08em}.caja-dia-cabecera h2{margin:0}.caja-dia-cabecera small{color:#71848b}.caja-dia-cabecera button,.caja-dia-filtros button,.caja-dia-historico button{display:inline-flex;align-items:center;gap:7px}.caja-dia-filtros{align-items:end;padding:13px 15px;border:1px solid #cddfe2;border-radius:10px;background:#f5fafb}.caja-dia-filtros label{display:grid;flex:1 1 160px;gap:5px;color:#31535d;font-size:10px;font-weight:800;text-transform:uppercase}.caja-dia-filtros :is(input,select){height:36px;padding:0 9px;border:1px solid #bdd2d6;border-radius:7px;color:#193f4b;background:#fff}.caja-dia-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.caja-dia-kpis article{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #d2e1e3;border-radius:10px;background:#fff}.caja-dia-kpis span{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;color:#087f87;background:#e5f4f4}.caja-dia-kpis small,.caja-dia-kpis strong{display:block}.caja-dia-kpis small{color:#71848b;font-size:10px;font-weight:800;text-transform:uppercase}.caja-dia-kpis strong{margin-top:3px;color:#193f4b;font-size:15px}.caja-dia-columnas{align-items:start}.caja-dia-listado{flex:1 1 auto;min-width:0}.caja-dia-resumen{display:grid;flex:0 0 280px;gap:12px}.caja-dia-resumen section{padding:14px;border:1px solid #d2e1e3;border-radius:10px;background:#fff}.caja-dia-resumen h3{margin:0 0 10px;color:#193f4b;font-size:13px}.caja-dia-resumen article{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-top:1px solid #e2ecee;color:#47636b;font-size:11px}.caja-dia-resumen strong{color:#193f4b;font-size:11px}.caja-dia-sello,.caja-historico-lista i{padding:5px 8px;border-radius:99px;color:#17633d;background:#e8f5ec;font-size:10px;font-style:normal;font-weight:800}.caja-dia-tabla{overflow-x:auto}.caja-dia-fila{display:grid;grid-template-columns:60px 100px 130px minmax(150px,1fr) 85px 110px 38px;align-items:center;gap:10px;min-width:720px;padding:12px;border-top:1px solid #dce8ea;color:#47636b;font-size:11px}.caja-dia-fila.encabezado{border-top:0;color:#71848b;background:#f4f9f9;font-size:9px;font-weight:800;text-transform:uppercase}.caja-dia-fila strong{color:#193f4b}.caja-dia-fila button{display:grid;place-items:center;width:30px;height:30px;border:1px solid #c8dadd;border-radius:7px;color:#087f87;background:#fff}.caja-dia-historico .ventas-panel-head{margin-bottom:8px}.caja-historico-lista article{display:grid;grid-template-columns:130px 1fr 90px 115px 90px;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #dce8ea;color:#47636b;font-size:11px}.caja-historico-lista strong,.caja-historico-lista b{color:#193f4b}@media(max-width:900px){.caja-dia-columnas{display:grid}.caja-dia-resumen{grid-template-columns:1fr 1fr;flex-basis:auto}.caja-dia-kpis{grid-template-columns:repeat(2,1fr)}.caja-dia-filtros{flex-wrap:wrap}}@media(max-width:600px){.caja-dia-cabecera{align-items:flex-start;flex-direction:column}.caja-dia-kpis,.caja-dia-resumen{grid-template-columns:1fr}.caja-dia-filtros label,.caja-dia-filtros button{width:100%;flex-basis:100%}.caja-historico-lista{overflow-x:auto}.caja-historico-lista article{min-width:580px}}
+.caja-exportar-fondo{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:18px;background:rgb(19 48 58 / 48%);backdrop-filter:blur(2px)}.caja-exportar-modal{display:grid;gap:15px;width:min(430px,100%);padding:20px;border:1px solid #c7d9dd;border-radius:12px;background:#fff;box-shadow:0 20px 52px rgb(15 45 55 / 26%)}.caja-exportar-modal header,.caja-exportar-modal footer{display:flex;align-items:center;justify-content:space-between;gap:12px}.caja-exportar-modal header p{margin:0;color:#087f87;font-size:10px;font-weight:800;letter-spacing:.08em}.caja-exportar-modal h3{margin:4px 0 0;color:#173944}.caja-exportar-modal header button{display:grid;place-items:center;width:31px;height:31px;border:1px solid #c8dadd;border-radius:7px;color:#31535d;background:#fff}.caja-exportar-modal>label{display:grid;gap:6px;color:#294751;font-size:12px;font-weight:700}.caja-exportar-modal select{height:39px;padding:0 10px;border:1px solid #bfd2d6;border-radius:7px;color:#193f4b;background:#fff}.caja-exportar-modal footer{justify-content:flex-end;padding-top:4px}.caja-exportar-modal footer button{min-height:37px;padding:0 13px;border:1px solid #bfd2d6;border-radius:7px;color:#294751;background:#fff;font-weight:700}.caja-exportar-modal footer .primario{display:inline-flex;align-items:center;gap:6px;color:#fff;border-color:#087f87;background:#087f87}
+.facturas-fila .factura-anular { color: #b42318; border-color: #efc0c4; background: #fff5f5; }
+.facturas-fila i.anulada { color: #9d2530; background: #fdebec; }
+.factura-modal-fondo { position: fixed; inset: 0; z-index: 110; display: grid; place-items: center; padding: 18px; background: rgb(19 48 58 / 48%); backdrop-filter: blur(2px); }
+.factura-modal { width: min(560px, 100%); max-height: calc(100dvh - 36px); overflow: auto; border: 1px solid #c7d9dd; border-radius: 12px; background: #fff; box-shadow: 0 20px 52px rgb(15 45 55 / 26%); }
+.factura-modal header,.factura-modal footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; background: #edf5f6; }.factura-modal header p { margin: 0; color: #087f87; font-size: 10px; font-weight: 800; letter-spacing: .08em; }.factura-modal h3 { margin: 4px 0 0; color: #173944; }.factura-modal header button { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid #c8dadd; border-radius: 7px; color: #31535d; background: #fff; }.factura-modal dl { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 0; padding: 20px 18px; }.factura-modal dt { color: #71848b; font-size: 10px; font-weight: 800; text-transform: uppercase; }.factura-modal dd { margin: 4px 0 0; color: #193f4b; font-size: 13px; font-weight: 700; }.factura-modal footer { justify-content: flex-end; border-top: 1px solid #d8e5e7; }.factura-modal footer button { min-height: 36px; padding: 0 12px; border: 1px solid #bfd2d6; border-radius: 7px; color: #294751; background: #fff; font-weight: 700; }.factura-modal footer .factura-anular { display: inline-flex; align-items: center; gap: 6px; color: #fff; border-color: #b42318; background: #b42318; }
+
+/* Pie destacado para las tarjetas del catálogo en modo galería. */
+.sistema-contable .punto-tarjetas article { transition: transform .16s ease, box-shadow .16s ease; }
+.sistema-contable .punto-tarjetas article:hover { transform: translateY(-2px); box-shadow: 0 9px 20px rgb(22 68 76 / 14%); }
+.sistema-contable .punto-tarjetas footer { padding: 10px 12px; border-top-color: #b9dcde; background: linear-gradient(90deg, #e4f5f4, #f0faf9); }
+.sistema-contable .punto-tarjetas footer div { min-width: 72px; padding: 4px 8px; border-radius: 7px; background: rgb(255 255 255 / 72%); }
+.sistema-contable .punto-tarjetas footer b { color: #066970; font-size: 14px; font-weight: 850; }
+.sistema-contable .punto-tarjetas footer small { color: #397078; font-weight: 700; }
+.sistema-contable .punto-tarjetas footer button { justify-content: center; min-height: 34px; padding: 0 13px; border: 1px solid #087f87; border-radius: 8px; color: #fff; background: #087f87; box-shadow: 0 3px 7px rgb(8 127 135 / 23%); font-size: 12px; font-weight: 800; }
+.sistema-contable .punto-tarjetas footer button:hover { border-color: #066970; background: #066970; box-shadow: 0 5px 11px rgb(6 105 112 / 28%); }
+.sistema-contable .punto-tarjetas footer button:active { transform: translateY(1px); box-shadow: none; }
