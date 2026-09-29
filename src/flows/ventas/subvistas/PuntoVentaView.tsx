@@ -14,6 +14,7 @@ type Pago = { id: number; metodo: string; monto: string };
 type TipoCuentaNueva = 'Deuda' | 'Internación';
 type ServicioLaboratorio = ItemVenta & { categoria: string };
 type Cliente = {
+  id?: string;
   nombre: string;
   documento: string;
   correo: string;
@@ -104,9 +105,13 @@ export function PuntoVentaView() {
   >('inicio');
   const [clienteSeleccionado, setClienteSeleccionado] = useState(false);
   const [clienteExpandido, setClienteExpandido] = useState(false);
+  const [clientesRegistrados, setClientesRegistrados] = useState<Cliente[]>([]);
+  const [avisoClienteDuplicado, setAvisoClienteDuplicado] = useState('');
   const [descuento, setDescuento] = useState('');
   const [pagos, setPagos] = useState<Pago[]>([nuevoPago(1)]);
   const [mensaje, setMensaje] = useState('');
+  const [nitFactura, setNitFactura] = useState('');
+  const [ventaCobrada, setVentaCobrada] = useState(false);
   const [cuentaModalAbierta, setCuentaModalAbierta] = useState(false);
   const [tipoCuentaNueva, setTipoCuentaNueva] = useState<TipoCuentaNueva>('Deuda');
   const [cuentaPaciente, setCuentaPaciente] = useState({ nombre: '', documento: '', celular: '' });
@@ -114,6 +119,12 @@ export function PuntoVentaView() {
   const [laboratoriosSeleccionados, setLaboratoriosSeleccionados] = useState<string[]>([]);
   useEffect(() => {
     setContextoDestino(document.getElementById('ventas-contexto-slot'));
+  }, []);
+  useEffect(() => {
+    fetch('/api/clientes')
+      .then((respuesta) => respuesta.ok ? respuesta.json() : Promise.reject())
+      .then((resultado) => setClientesRegistrados(Array.isArray(resultado.data) ? resultado.data : []))
+      .catch(() => setClientesRegistrados([]));
   }, []);
   const codigoCuentaNueva = tipoCuentaNueva === 'Internación' ? 'INT-1050' : 'DEU-1050';
   const totalLaboratorios = serviciosLaboratorio.filter((servicio) => laboratoriosSeleccionados.includes(servicio.id)).reduce((total, servicio) => total + servicio.precio, 0);
@@ -215,11 +226,37 @@ export function PuntoVentaView() {
     setClienteModo('inicio');
     setClienteExpandido(false);
   };
-  const guardarCliente = () => {
-    if (!cliente.nombre.trim() || !cliente.documento.trim()) return;
+  const usarCliente = (registro: Cliente) => {
+    setCliente({ ...registro });
     setClienteSeleccionado(true);
     setClienteModo('inicio');
     setClienteExpandido(false);
+  };
+  const guardarCliente = async () => {
+    if (!cliente.nombre.trim() || !cliente.documento.trim()) return;
+    const existente = clientesRegistrados.find((registro) => registro.documento.trim().toLowerCase() === cliente.documento.trim().toLowerCase());
+    if (existente) {
+      usarCliente(existente);
+      setAvisoClienteDuplicado('Este Carnet de Identidad ya está registrado con un paciente.');
+      return;
+    }
+    try {
+      const respuesta = await fetch('/api/clientes', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cliente),
+      });
+      const resultado = await respuesta.json();
+      if (respuesta.status === 409 && resultado.data) {
+        usarCliente(resultado.data as Cliente);
+        setAvisoClienteDuplicado('Este Carnet de Identidad ya está registrado con un paciente.');
+        return;
+      }
+      if (!respuesta.ok) throw new Error(resultado.message || 'No se pudo registrar el paciente.');
+      const registrado = resultado.data as Cliente;
+      setClientesRegistrados((actuales) => [registrado, ...actuales]);
+      usarCliente(registrado);
+    } catch (error) {
+      setMensaje(error instanceof Error ? error.message : 'No se pudo registrar el paciente.');
+    }
   };
   const cobrar = async () => {
     if (!lineas.length || pendiente > 0 || cobrando) return;
@@ -229,14 +266,31 @@ export function PuntoVentaView() {
       const resultado = await r.json();
       if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
       setMensaje('Venta registrada. Stock descontado por fecha de ingreso (FIFO).');
+      setVentaCobrada(true);
       setLineas([]); setPagos([nuevoPago(Date.now())]); setDescuento(''); setVentaId(crypto.randomUUID());
       await cargarCatalogo();
     } catch(e) { setMensaje(e instanceof Error ? e.message : 'Error al cobrar'); await cargarCatalogo().catch(() => {}); }
     finally { setCobrando(false); }
   };
+  const emitirFactura = () => {
+    if (!ventaCobrada) { setMensaje('Primero registra el cobro para poder emitir la factura.'); return; }
+    if (!nitFactura.trim()) { setMensaje('Ingresa el NIT para emitir la factura.'); return; }
+    setMensaje(`Factura emitida correctamente para el NIT ${nitFactura.trim()}.`);
+    setVentaCobrada(false); setNitFactura('');
+  };
 
   return (
     <section className="punto-venta punto-pos">
+      {avisoClienteDuplicado && createPortal(
+        <div className="cliente-duplicado-capa" role="alertdialog" aria-modal="true" aria-labelledby="cliente-duplicado-titulo">
+          <div className="cliente-duplicado-dialogo">
+            <span className="cliente-duplicado-icono"><Icon name="user" size={24} /></span>
+            <h2 id="cliente-duplicado-titulo">Paciente ya registrado</h2>
+            <p>{avisoClienteDuplicado}</p>
+            <button type="button" onClick={() => setAvisoClienteDuplicado('')}>Entendido</button>
+          </div>
+        </div>, document.body,
+      )}
       {contextoDestino && createPortal(<header className="punto-pos-cabecera punto-pos-contexto">
         <div className="punto-contexto"><label>Almacén de salida<select disabled={Boolean(asignacion)} value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{(asignacion ? [asignacion.almacen] : almacenes).map(a => <option key={a}>{a}</option>)}</select></label>
           <label>
@@ -623,6 +677,9 @@ export function PuntoVentaView() {
               <b>{money(total)}</b>
             </div>
           </section>
+          <section className="punto-facturacion">
+            <label>NIT para factura <small>Opcional: déjalo vacío si no requiere factura.</small><input value={nitFactura} onChange={event => setNitFactura(event.target.value)} inputMode="numeric" maxLength={20} placeholder="NIT" /></label>
+          </section>
           <section className="punto-pago-mixto">
             <header>
               <div>
@@ -690,14 +747,7 @@ export function PuntoVentaView() {
               )}
             </div>
           </section>
-          <button
-            className="punto-cobrar"
-            type="button"
-            disabled={!lineas.length || pendiente > 0}
-            onClick={cobrar}
-          >
-            <Icon name="cash" size={17} /> Cobrar e imprimir factura
-          </button>
+          <div className="punto-acciones-venta"><button className="punto-cobrar" type="button" disabled={!lineas.length || pendiente > 0 || cobrando} onClick={cobrar}><Icon name="cash" size={17} /> {cobrando ? 'Cobrando…' : 'Cobrar'}</button><button className="punto-facturar" type="button" disabled={!ventaCobrada || !nitFactura.trim()} onClick={emitirFactura}><Icon name="fileText" size={17} /> Emitir factura</button></div>
         </aside>
       </div>
       {laboratoriosAbiertos && <div className="laboratorios-modal-fondo" role="presentation" onMouseDown={() => setLaboratoriosAbiertos(false)}>

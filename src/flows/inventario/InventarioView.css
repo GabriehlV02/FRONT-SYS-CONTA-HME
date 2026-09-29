@@ -2053,6 +2053,7 @@
 .inventario-admin label { display: grid; gap: 5px; font-size: 12px; min-width: 180px; flex: 1; }
 .inventario-admin input, .inventario-admin select { width: 100%; box-sizing: border-box; height: 36px; border: 1px solid #bed7dc; border-radius: 6px; padding: 6px 9px; background: #fff; }
 .inventario-admin-tabla { overflow: auto; }
+.inventario-admin-paneles { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; align-items: start; }.inventario-admin-paneles .inventario-admin-tabla { border: 1px solid #c8dcdf; border-radius: 8px; background: #fff; }.inventario-admin-paneles h3 { margin: 0; padding: 9px 10px; color: #075b67; font-size: 13px; background: #edf8f9; border-bottom: 1px solid #c8dcdf; }.inventario-admin-paneles table { min-width: 100%; }.inventario-admin-paneles th,.inventario-admin-paneles td { white-space: nowrap; }.inventario-admin-paneles p { margin: 0; padding: 12px; color: #698087; font-size: 12px; }
 .inventario-admin table { width: 100%; border-collapse: collapse; }
 .sistema-contable .inventario-admin table :is(th, td) { border: 1px solid #c8dcdf; padding: 7px 10px; font-size: 12px; text-align: left; }
 .inventario-admin th { background: #eaf3f4; }
