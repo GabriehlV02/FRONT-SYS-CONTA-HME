@@ -1901,8 +1901,16 @@
   border-color: #f2c3c3;
   background: #fff0f0;
 }
-.punto-carrito-lineas b {
+.punto-cantidad-input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  color: #12384d;
   text-align: center;
+  font: inherit;
+  font-weight: 700;
+  background: transparent;
 }
 .punto-resumen > div {
   display: flex;
@@ -1939,6 +1947,17 @@
   color: #dc3737;
   background: #fff0f0;
   font-size: 18px;
+}
+.punto-generar-qr {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid #c7a7e8;
+  border-radius: 999px;
+  color: #70439a;
+  background: #f0e3fc;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: not-allowed;
 }
 .punto-pago-totales {
   display: grid;

@@ -1,7 +1,7 @@
 ﻿import { HorizontalSubvistaNav } from '@ui/components/HorizontalSubvistaNav';
 import { BotonSubvista } from '@ui/components/BotonSubvista';
 
-export type SubvistaAlmacenes = 'stock' | 'almacenes' | 'reportes';
+export type SubvistaAlmacenes = 'stock' | 'almacenes' | 'controles' | 'reportes';
 
 type Props = {
   activa: SubvistaAlmacenes;
@@ -26,6 +26,13 @@ export function AlmacenesNavegacion({ activa, onSeleccionar }: Props) {
         icono="building"
         activa={activa === 'almacenes'}
         onSeleccionar={() => onSeleccionar('almacenes')}
+        claseIcono="inventario-subvista-icono"
+      />
+      <BotonSubvista
+        nombre="Controles"
+        icono="calendar"
+        activa={activa === 'controles'}
+        onSeleccionar={() => onSeleccionar('controles')}
         claseIcono="inventario-subvista-icono"
       />
       <BotonSubvista

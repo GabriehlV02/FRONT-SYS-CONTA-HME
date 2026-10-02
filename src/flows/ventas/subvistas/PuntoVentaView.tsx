@@ -204,6 +204,13 @@ export function PuntoVentaView() {
         )
         .filter((linea) => linea.cantidad),
     );
+  const escribirCantidad = (id: string, valor: string) => {
+    // Solo se permiten cantidades enteras positivas, incluso al pegar texto.
+    if (!/^\d+$/.test(valor)) return;
+    const nuevaCantidad = Number(valor);
+    if (!Number.isSafeInteger(nuevaCantidad) || nuevaCantidad < 1 || nuevaCantidad > 100000) return;
+    setLineas((actual) => actual.map((linea) => linea.id === id ? { ...linea, cantidad: nuevaCantidad } : linea));
+  };
   const quitar = (id: string) =>
     setLineas((actual) => actual.filter((linea) => linea.id !== id));
   const cambiarPago = (id: number, campo: 'metodo' | 'monto', valor: string) =>
@@ -636,7 +643,16 @@ export function PuntoVentaView() {
                     >
                       −
                     </button>
-                    <b>{linea.cantidad}</b>
+                    <input
+                      className="punto-cantidad-input"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      aria-label={`Cantidad de ${linea.nombre}`}
+                      value={String(linea.cantidad)}
+                      onFocus={(e) => e.currentTarget.select()}
+                      onChange={(e) => escribirCantidad(linea.id, e.target.value)}
+                    />
                     <button type="button" onClick={() => cantidad(linea.id, 1)}>
                       +
                     </button>
@@ -733,6 +749,16 @@ export function PuntoVentaView() {
             >
               <Icon name="plus" size={15} /> Agregar método de pago
             </button>
+            {pagos.some((pago) => pago.metodo === 'QR' && Number(pago.monto) > 0) && (
+              <button
+                className="punto-generar-qr"
+                type="button"
+                disabled
+                title="Disponible cuando se integre la API bancaria"
+              >
+                Generar QR
+              </button>
+            )}
             <div className="punto-pago-totales">
               <span>
                 Total pagado <b>{money(pagado)}</b>

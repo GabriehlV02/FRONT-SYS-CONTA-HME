@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import '../InventarioView.css';
 
 
 type Registro = Record<string, string | number>;
