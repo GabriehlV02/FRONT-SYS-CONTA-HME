@@ -1,7 +1,7 @@
 ﻿import { HorizontalSubvistaNav } from '@ui/components/HorizontalSubvistaNav';
 import { BotonSubvista } from '@ui/components/BotonSubvista';
 
-export type SubvistaUsuarios = 'usuarios' | 'roles-permisos';
+export type SubvistaUsuarios = 'usuarios' | 'pacientes-usuarios' | 'roles-permisos';
 
 type Props = {
   activa: SubvistaUsuarios;
@@ -21,6 +21,7 @@ export function UsuariosNavegacion({ activa, onSeleccionar }: Props) {
         onSeleccionar={() => onSeleccionar('usuarios')}
         claseIcono="usuarios-subvista-icono"
       />
+      <BotonSubvista nombre="Pacientes usuarios" icono="users" activa={activa === 'pacientes-usuarios'} onSeleccionar={() => onSeleccionar('pacientes-usuarios')} claseIcono="usuarios-subvista-icono" />
       <BotonSubvista
         nombre="Roles y permisos"
         icono="userCheck"
