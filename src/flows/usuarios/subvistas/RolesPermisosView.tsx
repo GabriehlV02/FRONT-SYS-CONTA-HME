@@ -1,306 +1,33 @@
 import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
-import { SelectMenu } from '@ui/components/SelectMenu';
+
+type Sistema = { id: string; nombre: string; permisos: string[] };
+const sistemas: Sistema[] = [
+  { id: 'clinico', nombre: 'Sistema clínico', permisos: ['Ver pacientes', 'Registrar pacientes', 'Atender consultas', 'Gestionar internación', 'Gestionar quirófano', 'Gestionar farmacia', 'Gestionar cocina'] },
+  { id: 'contable', nombre: 'Sistema contable', permisos: ['Ver ventas', 'Registrar ventas', 'Ver inventario', 'Gestionar inventario', 'Gestionar movimientos', 'Ver usuarios', 'Registrar usuarios', 'Gestionar roles y permisos'] },
+  { id: 'estudios', nombre: 'Sistema de estudios', permisos: ['Ver imagenología', 'Informar imagenología', 'Ver laboratorio', 'Informar laboratorio', 'Publicar estudios', 'Consultar estudios propios'] },
+  { id: 'hemodialisis', nombre: 'Sistema de hemodiálisis', permisos: ['Ver hemodiálisis', 'Registrar sesión', 'Ver seguimiento', 'Registrar informe'] },
+];
+const todos = sistemas.flatMap((s) => s.permisos);
 
 export function RolesPermisosView() {
-  const [query, setQuery] = useState('');
-  const [estado, setEstado] = useState('Todos');
   const [editando, setEditando] = useState<string | null>(null);
-  const roles = [
-    {
-      nombre: 'Administrador',
-      descripcion: 'Acceso completo al sistema.',
-      permisos: totalPermisos,
-      estado: 'Activo',
-    },
-    {
-      nombre: 'Operador',
-      descripcion: 'Gestión de ventas e inventario.',
-      permisos: 24,
-      estado: 'Activo',
-    },
-    {
-      nombre: 'Consulta',
-      descripcion: 'Lectura de información operativa.',
-      permisos: 11,
-      estado: 'Activo',
-    },
-  ];
-  const visibles = useMemo(
-    () =>
-      roles.filter(
-        (item) =>
-          `${item.nombre} ${item.descripcion}`
-            .toLocaleLowerCase()
-            .includes(query.toLocaleLowerCase()) &&
-          (estado === 'Todos' || item.estado === estado),
-      ),
-    [query, estado],
-  );
-  if (editando)
-    return <EditorRol nombre={editando} onBack={() => setEditando(null)} />;
-
-  return (
-    <div className="usuarios-contenido">
-      <div className="usuarios-filtros roles-filtros">
-        <label>
-          <Icon name="search" size={17} />
-          <input
-            placeholder="Buscar por nombre o descripción"
-            aria-label="Buscar roles"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-        </label>
-        <SelectMenu
-          className="roles-estado-select"
-          ariaLabel="Filtrar roles por estado"
-          value={estado}
-          options={['Todos', 'Activos', 'Inactivos']}
-          onChange={setEstado}
-        />
-        <span className="usuarios-contador">{visibles.length} roles</span>
-        <button
-          className="usuarios-accion"
-          onClick={() => setEditando('Nuevo rol')}
-        >
-          <Icon name="plus" size={17} /> Nuevo rol
-        </button>
-      </div>
-
-      <div
-        className="usuarios-tabla"
-        role="table"
-        aria-label="Roles y permisos"
-      >
-        <div className="usuarios-tabla-head" role="row">
-          <span role="columnheader">Nombre</span>
-          <span role="columnheader">Permisos</span>
-          <span role="columnheader">Estado</span>
-          <span role="columnheader">Acciones</span>
-        </div>
-        {visibles.map((item) => (
-          <div className="usuarios-tabla-fila roles-fila" key={item.nombre}>
-            <div>
-              <strong>{item.nombre}</strong>
-              <small>{item.descripcion}</small>
-            </div>
-            <span className="permisos-contador">{item.permisos} permisos</span>
-            <span className="estado-activo">{item.estado}</span>
-            <button
-              onClick={() => setEditando(item.nombre)}
-              aria-label={`Editar ${item.nombre}`}
-            >
-              <Icon name="edit" size={16} />
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const roles = [{ nombre: 'Administrador', descripcion: 'Acceso completo a todos los sistemas.', permisos: todos.length, estado: 'Activo' }, { nombre: 'Operador', descripcion: 'Acceso operativo configurable.', permisos: 0, estado: 'Activo' }];
+  if (editando) return <EditorRol nombre={editando} onBack={() => setEditando(null)} />;
+  return <div className="usuarios-contenido"><div className="usuarios-filtros roles-filtros"><span className="usuarios-contador">{roles.length} roles</span><button className="usuarios-accion" onClick={() => setEditando('Nuevo rol')}><Icon name="plus" size={17} /> Nuevo rol</button></div><div className="usuarios-tabla"><div className="usuarios-tabla-head"><span>Nombre</span><span>Permisos</span><span>Estado</span><span>Acciones</span></div>{roles.map((rol) => <div className="usuarios-tabla-fila roles-fila" key={rol.nombre}><div><strong>{rol.nombre}</strong><small>{rol.descripcion}</small></div><span className="permisos-contador">{rol.permisos} permisos</span><span className="estado-activo">{rol.estado}</span><button onClick={() => setEditando(rol.nombre)}><Icon name="edit" size={16} /></button></div>)}</div></div>;
 }
 
-const gruposPermisos = [
-  {
-    flujo: 'Ventas',
-    permisos: [
-      'Ver modulo ventas',
-      'Ver punto de venta',
-      'Ver cuentas abiertas',
-      'Ver caja del dia',
-      'Buscar ventas',
-      'Filtrar ventas',
-      'Registrar venta',
-      'Editar venta',
-      'Ver detalle de venta',
-      'Anular venta',
-      'Cobrar cuenta',
-      'Marcar cuenta como pagada',
-      'Imprimir comprobante de venta',
-      'Exportar reporte de ventas',
-    ],
-  },
-  {
-    flujo: 'Inventario',
-    permisos: [
-      'Ver modulo inventario',
-      'Ver productos e insumos',
-      'Ver servicios',
-      'Ver catalogo general',
-      'Ver reportes de inventario',
-      'Buscar inventario',
-      'Filtrar inventario',
-      'Ordenar inventario',
-      'Cambiar vista galeria/listado',
-      'Registrar producto',
-      'Registrar servicio',
-      'Editar producto o servicio',
-      'Ver detalle de producto o servicio',
-      'Cerrar formulario de registro',
-      'Guardar producto o servicio',
-      'Ver stock general',
-      'Ver detalle de stock por almacen',
-      'Cerrar detalle de stock',
-      'Exportar inventario',
-    ],
-  },
-  {
-    flujo: 'Almacenes',
-    permisos: [
-      'Ver modulo almacenes',
-      'Buscar almacenes',
-      'Filtrar almacenes',
-      'Ordenar almacenes',
-      'Ver detalle de almacen',
-      'Registrar almacen',
-      'Editar almacen',
-      'Gestionar ubicaciones',
-    ],
-  },
-  {
-    flujo: 'Movimientos',
-    permisos: [
-      'Ver modulo movimientos',
-      'Ver adquisiciones',
-      'Ver traspasos',
-      'Ver reportes de movimientos',
-      'Buscar movimientos',
-      'Filtrar movimientos',
-      'Registrar adquisicion',
-      'Cargar stock',
-      'Agregar linea de stock',
-      'Quitar linea de stock',
-      'Guardar carga de stock',
-      'Ver comprobante',
-      'Ver detalle de comprobante',
-      'Registrar traspaso',
-      'Recepcionar traspaso',
-      'Anular movimiento',
-      'Exportar movimientos',
-    ],
-  },
-  {
-    flujo: 'Usuarios',
-    permisos: [
-      'Ver modulo usuarios',
-      'Ver listado de usuarios',
-      'Buscar usuarios',
-      'Filtrar usuarios',
-      'Crear usuario',
-      'Editar usuario',
-      'Activar o desactivar usuario',
-      'Ver roles y permisos',
-      'Buscar roles',
-      'Filtrar roles',
-      'Crear rol',
-      'Editar rol',
-      'Guardar rol',
-      'Asignar permisos',
-    ],
-  },
-  {
-    flujo: 'Cajas y almacenes',
-    permisos: [
-      'Ver módulo cajas y almacenes',
-      'Ver sucursales y almacenes',
-      'Crear y editar sucursales',
-      'Crear y editar almacenes',
-      'Ver y administrar cajas',
-      'Abrir y cerrar cajas',
-      'Ver vendedores',
-      'Crear y editar vendedores',
-      'Administrar parámetros operativos',
-    ],
-  },
-  {
-    flujo: 'Notificaciones',
-    permisos: [
-      'Ver centro de notificaciones',
-      'Ver creación de registros',
-      'Ver cambios de registros',
-      'Acceder al módulo relacionado',
-      'Marcar notificaciones como leídas',
-    ],
-  },
-];
-
-const totalPermisos = gruposPermisos.reduce(
-  (total, grupo) => total + grupo.permisos.length,
-  0,
-);
-
 function EditorRol({ nombre, onBack }: { nombre: string; onBack: () => void }) {
-  const [nombreRol, setNombreRol] = useState(
-    nombre === 'Nuevo rol' ? '' : nombre,
-  );
+  const admin = nombre === 'Administrador';
+  const [nombreRol, setNombreRol] = useState(admin ? 'Administrador' : '');
   const [descripcion, setDescripcion] = useState('');
-  const [seleccionados, setSeleccionados] = useState<string[]>(
-    nombre === 'Administrador'
-      ? gruposPermisos.flatMap((item) => item.permisos)
-      : [],
-  );
-  const alternar = (permiso: string) =>
-    setSeleccionados((actual) =>
-      actual.includes(permiso)
-        ? actual.filter((item) => item !== permiso)
-        : [...actual, permiso],
-    );
-  return (
-    <div className="rol-editor">
-      <button className="usuarios-volver" onClick={onBack}>
-        <Icon name="chevronLeft" size={16} /> Volver a roles
-      </button>
-      <header className="usuarios-vista-cabecera">
-        <div>
-          <p>CONFIGURACION DEL ROL</p>
-          <h2>{nombreRol || 'Nuevo rol'}</h2>
-          <small>Define la identidad del rol y selecciona sus permisos.</small>
-        </div>
-        <button className="usuarios-accion">Guardar rol</button>
-      </header>
-      <section className="rol-datos">
-        <label>
-          <span>Nombre del rol</span>
-          <input
-            value={nombreRol}
-            onChange={(event) => setNombreRol(event.target.value)}
-            placeholder="Ej. Recepción"
-          />
-        </label>
-        <label>
-          <span>Descripción</span>
-          <textarea
-            value={descripcion}
-            onChange={(event) => setDescripcion(event.target.value)}
-            placeholder="Describe el alcance de este rol"
-            rows={3}
-          />
-        </label>
-      </section>
-      <div className="permisos-encabezado">
-        <div>
-          <h3>Permisos por flujo</h3>
-          <small>Selecciona las acciones que podrá realizar este rol.</small>
-        </div>
-        <span>{seleccionados.length} seleccionados</span>
-      </div>
-      <div className="permisos-grid">
-        {gruposPermisos.map((grupo) => (
-          <section className="permiso-grupo" key={grupo.flujo}>
-            <h3>{grupo.flujo}</h3>
-            {grupo.permisos.map((permiso) => (
-              <label key={permiso}>
-                <input
-                  type="checkbox"
-                  checked={seleccionados.includes(permiso)}
-                  onChange={() => alternar(permiso)}
-                />
-                {permiso}
-              </label>
-            ))}
-          </section>
-        ))}
-      </div>
-    </div>
-  );
+  const [guardando, setGuardando] = useState(false);
+  const [habilitados, setHabilitados] = useState<string[]>(admin ? sistemas.map((s) => s.id) : []);
+  const [permisos, setPermisos] = useState<string[]>(admin ? todos : []);
+  const alternarSistema = (sistema: Sistema) => { const activo = habilitados.includes(sistema.id); setHabilitados((v) => activo ? v.filter((id) => id !== sistema.id) : [...v, sistema.id]); if (activo) setPermisos((v) => v.filter((p) => !sistema.permisos.includes(p))); };
+  const alternarTodo = (sistema: Sistema) => { const completos = sistema.permisos.every((p) => permisos.includes(p)); setPermisos((v) => completos ? v.filter((p) => !sistema.permisos.includes(p)) : [...new Set([...v, ...sistema.permisos])]); };
+  const alternarPermiso = (permiso: string) => setPermisos((v) => v.includes(permiso) ? v.filter((p) => p !== permiso) : [...v, permiso]);
+  const cantidad = useMemo(() => permisos.length, [permisos]);
+  const guardar = async () => { if (admin || !nombreRol || !habilitados.length) return; setGuardando(true); try { const r = await fetch('/api/v1/roles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre:nombreRol,descripcion,sistemas:habilitados.map((id)=>id.toUpperCase()),permisos})}); if (!r.ok) throw new Error(); onBack(); } finally { setGuardando(false); } };
+  return <div className="rol-editor"><button className="usuarios-volver" onClick={onBack}><Icon name="chevronLeft" size={16} /> Volver a roles</button><header className="usuarios-vista-cabecera"><div><p>CONFIGURACIÓN DEL ROL</p><h2>{nombreRol || 'Nuevo rol'}</h2><small>Selecciona sistemas y permisos para este rol.</small></div><button className="usuarios-accion" type="button" disabled={guardando} onClick={() => void guardar()}>{guardando ? 'Guardando...' : 'Guardar rol'}</button></header><section className="rol-datos"><label>Nombre del rol<input value={nombreRol} disabled={admin} onChange={(e) => setNombreRol(e.target.value)} placeholder="Ej. Recepción" /></label><label>Descripción<textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Describe el alcance de este rol" rows={3} /></label></section><div className="permisos-encabezado"><div><h3>Sistemas y permisos</h3><small>Activa un sistema y configura sus permisos.</small></div><span>{cantidad} permisos</span></div><div className="sistemas-permisos">{sistemas.map((sistema) => { const activo = habilitados.includes(sistema.id); const completo = sistema.permisos.every((p) => permisos.includes(p)); return <section className="sistema-permisos" key={sistema.id}><label className="sistema-permisos-titulo"><input type="checkbox" checked={activo} onChange={() => alternarSistema(sistema)} /><strong>{sistema.nombre}</strong></label>{activo && <><label className="seleccionar-todo"><input type="checkbox" checked={completo} onChange={() => alternarTodo(sistema)} /> Seleccionar todo el módulo</label><div className="sistema-permisos-lista">{sistema.permisos.map((permiso) => <label key={permiso}><input type="checkbox" checked={permisos.includes(permiso)} onChange={() => alternarPermiso(permiso)} />{permiso}</label>)}</div></>}</section>; })}</div></div>;
 }
