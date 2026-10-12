@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const colores = ['#087f87', '#71949e', '#d2ac58', '#68a994', '#98b8bc'];
+const colores = ['#0284c7', '#71949e', '#d2ac58', '#68a994', '#98b8bc'];
 const figuras = [
   'M25 6 45 42H5Z',
   'M9 9H41V41H9Z',

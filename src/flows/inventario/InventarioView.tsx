@@ -8,8 +8,8 @@ import { ServiciosView } from './subvistas/ServiciosView';
 import { ReportesInventarioView } from './subvistas/ReportesInventarioView';
 import { CatalogoView } from './componentes/CatalogoView';
 import { MedicosProfesionalesView } from './subvistas/MedicosProfesionalesView';
-import './InventarioView.css';
 import { ConfiguracionAdminView } from './subvistas/ConfiguracionAdminView';
+import './InventarioView.css';
 
 export function InventarioView({ activeId }: { activeId?: string }) {
   const resolveSubvista = (id?: string): SubvistaInventario =>
@@ -28,12 +28,12 @@ export function InventarioView({ activeId }: { activeId?: string }) {
   return (
     <section className="inventario-vista">
       <InventarioNavegacion activa={subvista} onSeleccionar={setSubvista} />
-      {subvista === 'admin' && <ConfiguracionAdminView />}
       {subvista === 'productos' && <ProductosInsumosView />}
       {subvista === 'servicios' && <ServiciosView />}
       {subvista === 'medicos' && <MedicosProfesionalesView />}
       {subvista === 'todo' && <CatalogoView tipo="todo" onReportes={() => setSubvista('reportes')} />}
       {subvista === 'reportes' && <ReportesInventarioView onVolver={() => setSubvista('todo')} />}
+      {subvista === 'admin' && <ConfiguracionAdminView />}
     </section>
   );
 }

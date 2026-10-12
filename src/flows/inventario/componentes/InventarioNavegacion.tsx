@@ -50,7 +50,13 @@ export function InventarioNavegacion({ activa, onSeleccionar }: Props) {
         onSeleccionar={() => onSeleccionar('reportes')}
         claseIcono="inventario-subvista-icono"
       />
-      <BotonSubvista nombre="Configuración admin" icono="audit" activa={activa === 'admin'} onSeleccionar={() => onSeleccionar('admin')} claseIcono="inventario-subvista-icono" />
+      <BotonSubvista
+        nombre="Configuración admin"
+        icono="audit"
+        activa={activa === 'admin'}
+        onSeleccionar={() => onSeleccionar('admin')}
+        claseIcono="inventario-subvista-icono"
+      />
     </HorizontalSubvistaNav>
   );
 }

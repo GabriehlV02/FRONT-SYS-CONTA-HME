@@ -183,8 +183,8 @@
     --ui-surface: #ffffff;
     --ui-canvas: #e3ebed;
     --ui-soft: #e5edef;
-    --ui-accent: #087f87;
-    --ui-accent-hover: #066970;
+    --ui-accent: #0284c7;
+    --ui-accent-hover: #0369a1;
     --ui-accent-soft: #e5f4f3;
     --ui-success: #226644;
     --ui-success-soft: #e7f4ec;
@@ -771,7 +771,7 @@
   }
   .sistema-contable .replegar-menu {
     border-color: #b9d9dc !important;
-    color: #066970 !important;
+    color: #0369a1 !important;
     background: #fff !important;
     box-shadow: 0 3px 8px rgb(4 53 58 / 28%) !important;
   }
@@ -907,7 +907,7 @@
   .sistema-contable .notificaciones-boton[aria-expanded='true'] {
     border-color: transparent !important;
     color: #fff !important;
-    background: #087f87 !important;
+    background: #0284c7 !important;
     box-shadow: 0 4px 10px rgb(8 127 135 / 24%) !important;
   }
   .sistema-contable .notificaciones-boton span {
@@ -1064,12 +1064,12 @@
   .sistema-contable .cuentas-abiertas-herramientas > label { display: flex; align-items: center; width: 100%; height: 46px; gap: 9px; padding: 0 14px; border: 2px solid #91aab2; border-radius: 9px; color: var(--ui-muted); background: #fff; box-sizing: border-box; }
   .sistema-contable .cuentas-abiertas-herramientas > label:focus-within { border-color: var(--ui-accent); box-shadow: 0 0 0 2px rgb(8 127 135 / 10%); }
   .sistema-contable .cuentas-abiertas-herramientas input { width: 100%; border: 0 !important; outline: 0 !important; background: transparent !important; }
-  .sistema-contable .cuentas-nueva { min-height: 46px !important; padding: 0 16px !important; color: #fff !important; border-color: #087f87 !important; background: #087f87 !important; box-shadow: none !important; white-space: nowrap; }
-  .sistema-contable .cuentas-nueva:hover:not(:disabled) { color: #fff !important; border-color: #066970 !important; background: #066970 !important; box-shadow: none !important; }
+  .sistema-contable .cuentas-nueva { min-height: 46px !important; padding: 0 16px !important; color: #fff !important; border-color: #0284c7 !important; background: #0284c7 !important; box-shadow: none !important; white-space: nowrap; }
+  .sistema-contable .cuentas-nueva:hover:not(:disabled) { color: #fff !important; border-color: #0369a1 !important; background: #0369a1 !important; box-shadow: none !important; }
   .sistema-contable .cuentas-filtros { display: flex; gap: 3px; padding: 4px; border: 1px solid #bdd1d5; border-radius: 9px; background: #e8f0f1; box-shadow: inset 0 1px 1px rgb(29 43 50 / 4%); }
   .sistema-contable .cuentas-filtros button { min-height: 32px !important; padding: 5px 11px !important; border: 1px solid transparent !important; border-radius: 6px !important; color: #4b656e !important; background: transparent !important; box-shadow: none !important; font-size: 11px !important; font-weight: 600 !important; }
   .sistema-contable .cuentas-filtros button:hover:not(.activo) { color: #126e75 !important; background: #f7fbfb !important; }
-  .sistema-contable .cuentas-filtros button.activo { color: #fff !important; border-color: #087f87 !important; background: #087f87 !important; box-shadow: 0 1px 2px rgb(8 127 135 / 24%) !important; }
+  .sistema-contable .cuentas-filtros button.activo { color: #fff !important; border-color: #0284c7 !important; background: #0284c7 !important; box-shadow: 0 1px 2px rgb(8 127 135 / 24%) !important; }
   .sistema-contable .cuentas-mensaje { margin: -4px 0 10px !important; padding: 8px 10px; border-radius: 6px; color: var(--ui-accent-hover) !important; background: var(--ui-accent-soft); font-size: 12px !important; }
   .sistema-contable .cuentas-listado { overflow-x: auto; border: 1px solid var(--ui-line); border-radius: 7px; }
   .sistema-contable .cuentas-listado-control { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border-bottom: 1px solid var(--ui-line); background: #f4f8f8; }
@@ -1089,8 +1089,8 @@
   .sistema-contable .cuenta-estado.vencida { color: var(--ui-danger); background: var(--ui-danger-soft); }
   .sistema-contable .cuenta-estado.cerrada { color: #47606a; background: #e8eef0; }
   .sistema-contable .cuenta-acciones { display: flex; gap: 5px; }
-  .sistema-contable .cuenta-acciones button { min-height: 30px !important; padding: 4px 9px !important; border-color: #9bc9ca !important; border-radius: 6px !important; color: #08757d !important; background: #edf8f7 !important; box-shadow: none !important; font-size: 10px !important; }
-  .sistema-contable .cuenta-acciones button:hover:not(:disabled) { color: #fff !important; border-color: #087f87 !important; background: #087f87 !important; }
+  .sistema-contable .cuenta-acciones button { min-height: 30px !important; padding: 4px 9px !important; border-color: #9bc9ca !important; border-radius: 6px !important; color: #0284c7 !important; background: #edf8f7 !important; box-shadow: none !important; font-size: 10px !important; }
+  .sistema-contable .cuenta-acciones button:hover:not(:disabled) { color: #fff !important; border-color: #0284c7 !important; background: #0284c7 !important; }
   .sistema-contable .cuenta-acciones .cuenta-cobrar { color: #fff !important; border-color: var(--ui-accent) !important; background: var(--ui-accent) !important; }
   .sistema-contable .cuentas-vacio { margin: 0 !important; padding: 22px; text-align: center; }
 
@@ -1107,13 +1107,13 @@
   .sistema-contable .cuenta-consumos > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--ui-line); background: #f3f8f8; }
   .sistema-contable .cuenta-consumos > header p { margin: 0 0 2px !important; color: var(--ui-accent) !important; font-size: 10px !important; font-weight: 700 !important; letter-spacing: .7px !important; }
   .sistema-contable .cuenta-consumos h3 { margin: 0 !important; font-size: 16px !important; }
-  .sistema-contable .cuenta-consumos > header strong { padding: 4px 7px; border-radius: 999px; color: #08757d !important; background: var(--ui-accent-soft); font-size: 11px !important; }
+  .sistema-contable .cuenta-consumos > header strong { padding: 4px 7px; border-radius: 999px; color: #0284c7 !important; background: var(--ui-accent-soft); font-size: 11px !important; }
   .sistema-contable :is(.cuenta-consumos-cabecera, .cuenta-consumos article) { display: grid; grid-template-columns: minmax(180px, 1.4fr) minmax(150px, 1fr) 55px 100px; align-items: center; gap: 10px; padding: 10px 14px; }
   .sistema-contable .cuenta-consumos-cabecera { color: #3a535d; background: #e4edef; font-size: 10px; font-weight: 700; text-transform: uppercase; }
   .sistema-contable .cuenta-consumos article { border-top: 1px solid var(--ui-line); color: var(--ui-ink); font-size: 12px; }
-  .sistema-contable .cuenta-consumos article b { color: #08757d !important; }
+  .sistema-contable .cuenta-consumos article b { color: #0284c7 !important; }
   .sistema-contable .cuenta-consumos footer { display: flex; justify-content: space-between; padding: 12px 14px; border-top: 1px solid var(--ui-line); background: #f3f8f8; }
-  .sistema-contable .cuenta-consumos footer strong { color: #08757d !important; font-size: 16px !important; }
+  .sistema-contable .cuenta-consumos footer strong { color: #0284c7 !important; font-size: 16px !important; }
   .sistema-contable .cuenta-operacion { padding: 10px; }
   .sistema-contable .cuenta-operacion-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border: 1px solid #bdd1d5; border-radius: 8px; background: #e8f0f1; }
   .sistema-contable .cuenta-operacion-tabs button { min-height: 34px !important; padding: 5px 8px !important; color: #49636d !important; border-color: transparent !important; background: transparent !important; box-shadow: none !important; }
@@ -1207,7 +1207,7 @@
   .sistema-contable .cuenta-tipo-opciones button.activo { color: #086e76 !important; border-color: #79bdbb !important; background: #e5f4f3 !important; box-shadow: inset 0 -2px var(--ui-accent) !important; }
   .sistema-contable .cuenta-codigo { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px dashed #7fb8b9; border-radius: 8px; background: #edf8f7; }
   .sistema-contable .cuenta-codigo span { color: #4f6971; font-size: 11px; }
-  .sistema-contable .cuenta-codigo strong { color: #08757d !important; font-size: 16px !important; letter-spacing: .4px !important; }
+  .sistema-contable .cuenta-codigo strong { color: #0284c7 !important; font-size: 16px !important; letter-spacing: .4px !important; }
   .sistema-contable .cuenta-modal-campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .sistema-contable .cuenta-modal-campos label { display: grid; gap: 5px; color: #36555e !important; font-size: 11px !important; }
   .sistema-contable .cuenta-modal-campos label:first-child { grid-column: 1 / -1; }
@@ -1231,11 +1231,11 @@
   .sistema-contable .laboratorios-modal-cuerpo label { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: center; gap: 7px; padding: 8px 10px; border-top: 1px solid #e2ebed; color: #29434d !important; font-size: 11px !important; cursor: pointer; }
   .sistema-contable .laboratorios-modal-cuerpo label:hover { background: #eef8f7; }
   .sistema-contable .laboratorios-modal-cuerpo input { width: 15px; height: 15px; margin: 0; accent-color: var(--ui-accent); }
-  .sistema-contable .laboratorios-modal-cuerpo b { color: #08757d !important; font-size: 11px !important; white-space: nowrap; }
+  .sistema-contable .laboratorios-modal-cuerpo b { color: #0284c7 !important; font-size: 11px !important; white-space: nowrap; }
   .sistema-contable .laboratorios-modal > footer { border-top: 1px solid var(--ui-line); }
   .sistema-contable .laboratorios-modal > footer > div { display: grid; gap: 1px; }
   .sistema-contable .laboratorios-modal > footer small { font-size: 11px !important; }
-  .sistema-contable .laboratorios-modal > footer strong { color: #08757d !important; font-size: 17px !important; }
+  .sistema-contable .laboratorios-modal > footer strong { color: #0284c7 !important; font-size: 17px !important; }
   .sistema-contable .laboratorios-modal > footer > span { display: flex; gap: 8px; }
   .sistema-contable .laboratorios-modal > footer button { min-height: 36px !important; padding: 0 12px !important; }
   .sistema-contable .laboratorios-modal .laboratorios-agregar { color: #fff !important; border-color: var(--ui-accent) !important; background: var(--ui-accent) !important; }
@@ -1289,7 +1289,7 @@
     color: #086e76 !important;
     border-color: #9bc5c8 !important;
     background: #fff !important;
-    box-shadow: 0 1px 3px rgb(29 43 50 / 9%), inset 0 -2px #087f87 !important;
+    box-shadow: 0 1px 3px rgb(29 43 50 / 9%), inset 0 -2px #0284c7 !important;
   }
   @media (min-width: 761px) {
     .sistema-contable:not(.sidebar-replegado) .sistema-sidebar { width: 240px !important; }
@@ -1460,13 +1460,13 @@
   }
   .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-nuevo {
     color: #fff !important;
-    border-color: #087f87 !important;
-    background: #087f87 !important;
+    border-color: #0284c7 !important;
+    background: #0284c7 !important;
     font-weight: 650 !important;
   }
   .sistema-contable .inventario-catalogo .inventario-controles-principales .inventario-nuevo:hover:not(:disabled) {
-    border-color: #066970 !important;
-    background: #066970 !important;
+    border-color: #0369a1 !important;
+    background: #0369a1 !important;
   }
 
   /* Carrito de cuentas: detalle limpio y controles de cantidad visibles. */
@@ -1494,7 +1494,7 @@
   }
   .sistema-contable .cuenta-carrito-linea small { font-size: 10px !important; }
   .sistema-contable .cuenta-cantidad { display: grid; grid-template-columns: 30px 32px 30px; align-items: center; overflow: hidden; border: 1px solid #c6dce4; border-radius: 7px; }
-  .sistema-contable .cuenta-cantidad button { width: 30px; min-height: 30px !important; height: 30px !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; color: #087f87 !important; background: #eff8f8 !important; font-size: 15px !important; }
+  .sistema-contable .cuenta-cantidad button { width: 30px; min-height: 30px !important; height: 30px !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; color: #0284c7 !important; background: #eff8f8 !important; font-size: 15px !important; }
   .sistema-contable .cuenta-cantidad span { color: #193740 !important; font-size: 11px !important; font-weight: 700; text-align: center; }
   .sistema-contable .cuenta-carrito-linea b { font-size: 11px !important; white-space: nowrap; }
   @media (max-width: 420px) {
@@ -1522,7 +1522,7 @@
   .sistema-contable .cuenta-detalle-cabecera > button svg {
     width: 16px !important;
     height: 16px !important;
-    color: #087f87 !important;
+    color: #0284c7 !important;
   }
   .sistema-contable .cuenta-detalle-cabecera > button:hover:not(:disabled) {
     border-color: #c5dadd !important;
@@ -1559,23 +1559,23 @@
   }
   .sistema-contable .inventario-catalogo .inventario-modo-paginacion button.activo {
     color: #fff !important;
-    border-color: #087f87 !important;
-    background: #087f87 !important;
+    border-color: #0284c7 !important;
+    background: #0284c7 !important;
   }
   .sistema-contable .inventario-catalogo .inventario-modo-paginacion button:not(.activo):hover:not(:disabled) {
     color: #076e76 !important;
     background: #f7fcfc !important;
   }
   .sistema-contable .inventario-catalogo .inventario-paginas > button {
-    color: #087f87 !important;
+    color: #0284c7 !important;
     border-color: #a8ccd1 !important;
     background: #f8fcfc !important;
     font-weight: 700 !important;
   }
   .sistema-contable .inventario-catalogo .inventario-paginas > button:hover:not(:disabled) {
     color: #fff !important;
-    border-color: #087f87 !important;
-    background: #087f87 !important;
+    border-color: #0284c7 !important;
+    background: #0284c7 !important;
   }
 
   /* Catálogo: filas compactas y columnas visualmente equilibradas. */
@@ -1684,7 +1684,7 @@
   }
 
   .sistema-contable .inventario-catalogo .inventario-columna-ordenable:hover > button > i {
-    color: #087f87;
+    color: #0284c7;
     opacity: .75;
   }
 
@@ -1694,7 +1694,7 @@
   }
 
   .sistema-contable .inventario-catalogo .inventario-columna-ordenable[aria-sort] > button > i {
-    color: #087f87;
+    color: #0284c7;
     opacity: 1;
   }
 
@@ -1721,7 +1721,7 @@
   }
 
   .sistema-contable .inventario-catalogo .inventario-redimensionador:hover::after {
-    background: #087f87;
+    background: #0284c7;
   }
 
   .sistema-contable .inventario-catalogo .inventario-row > :is(
@@ -1893,7 +1893,7 @@ body.inventario-redimensionando * {
 .sistema-contable .stock-lotes-cabecera span {
   display: block;
   margin-bottom: 5px;
-  color: #087f87;
+  color: #0284c7;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -1984,9 +1984,9 @@ body.inventario-redimensionando * {
 
 /* Control único para las tablas del sistema. La galería se gestiona solo en el catálogo. */
 .sistema-contable .paginacion-tabla { display:flex; align-items:center; gap:12px; min-height:46px; margin:10px 0; padding:6px 0; color:#31515b; font-size:12px; }
-.sistema-contable .paginacion-tabla-resumen { display:flex; align-items:center; gap:12px; margin-right:auto; }.sistema-contable .paginacion-tabla-resumen b { padding:10px 13px; border-radius:7px; color:#087f87; background:#e5f5f5; }.sistema-contable .paginacion-tabla-resumen span { font-weight:800; }
+.sistema-contable .paginacion-tabla-resumen { display:flex; align-items:center; gap:12px; margin-right:auto; }.sistema-contable .paginacion-tabla-resumen b { padding:10px 13px; border-radius:7px; color:#0284c7; background:#e5f5f5; }.sistema-contable .paginacion-tabla-resumen span { font-weight:800; }
 .sistema-contable .paginacion-tabla-filas { display:flex; align-items:center; overflow:hidden; border:1px solid #c7dce2; border-radius:9px; background:#fff; }.sistema-contable .paginacion-tabla-filas span { padding:0 11px; font-weight:800; }.sistema-contable .paginacion-tabla-filas select { min-width:84px; height:34px; border:0; border-left:1px solid #c7dce2; padding:0 9px; color:#21445a; background:#fff; }
-.sistema-contable .paginacion-tabla-navegacion { display:flex; align-items:center; gap:8px; }.sistema-contable .paginacion-tabla-navegacion button { min-width:38px; height:34px; border:1px solid #c7dce2; border-radius:8px; color:#087f87; background:#fff; font-weight:800; }.sistema-contable .paginacion-tabla-navegacion button:disabled { opacity:.42; }.sistema-contable .paginacion-tabla-navegacion strong { min-width:112px; text-align:center; font-size:12px; }
+.sistema-contable .paginacion-tabla-navegacion { display:flex; align-items:center; gap:8px; }.sistema-contable .paginacion-tabla-navegacion button { min-width:38px; height:34px; border:1px solid #c7dce2; border-radius:8px; color:#0284c7; background:#fff; font-weight:800; }.sistema-contable .paginacion-tabla-navegacion button:disabled { opacity:.42; }.sistema-contable .paginacion-tabla-navegacion strong { min-width:112px; text-align:center; font-size:12px; }
 @media (max-width:760px) { .sistema-contable .paginacion-tabla { flex-wrap:wrap; gap:8px; }.sistema-contable .paginacion-tabla-resumen { width:100%; }.sistema-contable .paginacion-tabla-navegacion { width:100%; justify-content:space-between; }.sistema-contable .paginacion-tabla-navegacion strong { min-width:0; } }
 
 .sistema-contable .stock-lotes-tabla {
@@ -2060,7 +2060,7 @@ body.inventario-redimensionando * {
   box-sizing: content-box;
   padding: 10px;
   border-radius: 10px;
-  color: #087f87;
+  color: #0284c7;
   background: #e4f4f4;
 }
 
@@ -2101,19 +2101,19 @@ body.inventario-redimensionando * {
 }
 
 .sistema-contable .tabla-interactiva .tabla-columna-ordenable:hover::after {
-  color: #087f87;
+  color: #0284c7;
   opacity: .75;
 }
 
 .sistema-contable .tabla-interactiva .tabla-columna-ordenable[aria-sort='ascending']::after {
   content: '▲';
-  color: #087f87;
+  color: #0284c7;
   opacity: 1;
 }
 
 .sistema-contable .tabla-interactiva .tabla-columna-ordenable[aria-sort='descending']::after {
   content: '▼';
-  color: #087f87;
+  color: #0284c7;
   opacity: 1;
 }
 
@@ -2144,7 +2144,7 @@ body.inventario-redimensionando * {
 }
 
 .sistema-contable .tabla-redimensionador:hover::after {
-  background: #087f87;
+  background: #0284c7;
 }
 
 @media (max-width: 860px) {
@@ -2319,7 +2319,7 @@ body.inventario-redimensionando * {
 }
 
 .sistema-contable .usuarios-filtros > .usuarios-buscador-ventas:focus-within {
-  border-color: #087f87 !important;
+  border-color: #0284c7 !important;
   outline: 0 !important;
   box-shadow: 0 0 0 2px rgb(8 127 135 / 10%) !important;
 }
@@ -2505,9 +2505,9 @@ body.inventario-redimensionando * {
 .stock-lote-detalle-modal header > div > p { margin: 7px 0 0; color: #667b82; font-size: 12px; line-height: 1.4; }
 .stock-lote-detalle-modal .stock-lote-identificacion { display: flex; align-items: center; gap: 9px; margin: 0; padding-right: 22px; border-right: 1px solid #b8cdd1; }
 .stock-lote-detalle-modal .stock-lote-identificacion span { color: #385a64; font-size: 11px; font-weight: 800; letter-spacing: .045em; text-transform: uppercase; }
-.stock-lote-detalle-modal .stock-lote-identificacion strong { padding: 8px 12px; border: 1px solid #6fadb3; border-radius: 7px; color: #075f66; background: #eaf6f6; font-size: 14px; font-weight: 900; box-shadow: 0 2px 7px rgba(8, 127, 135, .1); }
-.stock-lote-detalle-modal header button { display: grid; place-items: center; flex: 0 0 auto; width: 38px; height: 38px; border: 1px solid #087f87 !important; border-radius: 50%; color: #fff !important; background: #087f87 !important; box-shadow: 0 4px 10px rgba(8, 127, 135, .2); transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
-.stock-lote-detalle-modal header button:hover { color: #fff !important; background: #066970 !important; box-shadow: 0 6px 14px rgba(8, 105, 112, .28); transform: scale(1.05); }
+.stock-lote-detalle-modal .stock-lote-identificacion strong { padding: 8px 12px; border: 1px solid #6fadb3; border-radius: 7px; color: #075f66; background: #eaf6f6; font-size: 14px; font-weight: 900; box-shadow: 0 2px 7px rgba(2, 132, 199, .1); }
+.stock-lote-detalle-modal header button { display: grid; place-items: center; flex: 0 0 auto; width: 38px; height: 38px; border: 1px solid #0284c7 !important; border-radius: 50%; color: #fff !important; background: #0284c7 !important; box-shadow: 0 4px 10px rgba(2, 132, 199, .2); transition: transform .15s ease, background .15s ease, box-shadow .15s ease; }
+.stock-lote-detalle-modal header button:hover { color: #fff !important; background: #0369a1 !important; box-shadow: 0 6px 14px rgba(8, 105, 112, .28); transform: scale(1.05); }
 .stock-lote-detalle-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; max-height: calc(100dvh - 230px); overflow-y: auto; padding: 24px 26px; background: #fff; }
 .stock-lote-detalle-datos p { display: grid; grid-template-columns: minmax(112px, .72fr) minmax(0, 1.28fr); align-items: center; gap: 11px; min-width: 0; min-height: 48px; margin: 0; padding: 0; border: 0 !important; border-radius: 0; background: transparent !important; box-shadow: none; }
 .stock-lote-detalle-datos .stock-lote-separador { grid-column: 1 / -1; height: 1px; margin: 4px 0 2px; background: #cbdadd; }
@@ -2515,41 +2515,41 @@ body.inventario-redimensionando * {
 .stock-lote-detalle-datos strong { display: flex; align-items: center; min-width: 0; height: 48px; padding: 0 13px; overflow: hidden; border: 1px solid #b9d0d5; border-radius: 8px; color: #223e47; background: #fff; font-size: 13px; font-weight: 700; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; box-shadow: 0 2px 8px rgba(35, 66, 75, .035); }
 .stock-lote-detalle-datos .stock-lote-almacen-select { position: relative; width: 100%; min-width: 0; height: 48px; }
 .stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; height: 48px; padding: 0 11px 0 13px !important; border: 1px solid #72aeb4 !important; border-radius: 8px !important; color: #203e47 !important; background: #f7fbfb !important; font-size: 13px !important; font-weight: 750 !important; box-shadow: 0 2px 8px rgba(35, 66, 75, .05) !important; cursor: pointer; }
-.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger svg { flex: 0 0 auto; color: #087f87 !important; transition: transform .18s ease; }
-.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger[aria-expanded='true'] { border-color: #087f87 !important; outline: 3px solid rgba(8, 127, 135, .12); background: #fff !important; }
+.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger svg { flex: 0 0 auto; color: #0284c7 !important; transition: transform .18s ease; }
+.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger[aria-expanded='true'] { border-color: #0284c7 !important; outline: 3px solid rgba(2, 132, 199, .12); background: #fff !important; }
 .stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-trigger[aria-expanded='true'] svg { transform: rotate(180deg); }
 .stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options { position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; left: 0; display: grid; gap: 3px; padding: 6px; overflow: hidden; border: 1px solid #9dc3c7; border-radius: 9px; background: #fff; box-shadow: 0 12px 28px rgba(29, 66, 73, .18); }
 .stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 36px; padding: 0 10px !important; border: 0 !important; border-radius: 6px !important; color: #294b54 !important; background: #fff !important; font-size: 12px !important; font-weight: 650 !important; text-align: left; }
-.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button:hover { color: #076d74 !important; background: #eaf6f6 !important; }
-.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button.activo { color: #fff !important; background: #087f87 !important; }
+.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button:hover { color: #0369a1 !important; background: #eaf6f6 !important; }
+.stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button.activo { color: #fff !important; background: #0284c7 !important; }
 .stock-lote-detalle-datos .stock-lote-almacen-select .select-menu-options button.activo svg { color: #fff !important; }
-.stock-lote-detalle-datos .stock-lote-dato-destacado strong { border-color: #79b8bd; color: #076d74; background: #f4fafa; font-size: 15px; }
+.stock-lote-detalle-datos .stock-lote-dato-destacado strong { border-color: #79b8bd; color: #0369a1; background: #f4fafa; font-size: 15px; }
 .stock-lote-detalle-datos .stock-lote-existencia-control { display: grid; grid-template-columns: minmax(58px, 1fr) auto; align-items: center; gap: 7px; min-width: 0; padding: 0; text-align: left; }
 .stock-lote-detalle-datos .stock-lote-existencia-control strong { width: 100%; }
-.stock-lote-detalle-datos .stock-lote-existencia-control button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 10px !important; border: 1px solid #78acb1 !important; border-radius: 7px !important; color: #076d74 !important; background: #fff !important; font-size: 11px !important; font-weight: 800 !important; white-space: nowrap; }
-.stock-lote-detalle-datos .stock-lote-existencia-control button:hover { color: #fff !important; background: #087f87 !important; }
+.stock-lote-detalle-datos .stock-lote-existencia-control button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; padding: 0 10px !important; border: 1px solid #78acb1 !important; border-radius: 7px !important; color: #0369a1 !important; background: #fff !important; font-size: 11px !important; font-weight: 800 !important; white-space: nowrap; }
+.stock-lote-detalle-datos .stock-lote-existencia-control button:hover { color: #fff !important; background: #0284c7 !important; }
 .stock-lote-detalle-datos .stock-lote-costo span { color: #203a43; font-size: 11px; font-weight: 900; }
 .stock-lote-detalle-datos .stock-lote-costo strong { color: #1d353d; font-size: 16px; font-weight: 900; }
 .stock-lote-detalle-datos .stock-lote-estado strong { border-color: #91baa6; background: #f5faf7; }
 .stock-lote-detalle-datos .stock-lote-estado strong { color: #236246; }
 .stock-lote-detalle-datos .stock-lote-estado.sin-stock strong { border-color: #dfb68f; color: #8a4f22; background: #fff9f2; }
 .stock-lote-detalle-modal footer { display: flex; justify-content: flex-end; padding: 16px 26px 20px; border-top: 1px solid #dbe5e7; background: #fbfcfc; }
-.stock-lote-detalle-modal footer button { min-width: 108px; height: 40px; padding: 0 18px; border: 1px solid #087f87 !important; border-radius: 8px; color: #fff !important; background: #087f87 !important; font-size: 12px; font-weight: 700; }
-.stock-lote-detalle-modal footer button:hover { background: #066c73 !important; }
+.stock-lote-detalle-modal footer button { min-width: 108px; height: 40px; padding: 0 18px; border: 1px solid #0284c7 !important; border-radius: 8px; color: #fff !important; background: #0284c7 !important; font-size: 12px; font-weight: 700; }
+.stock-lote-detalle-modal footer button:hover { background: #0369a1 !important; }
 @media (max-width: 720px) { .stock-lote-detalle-datos { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .stock-lote-detalle-datos { padding: 16px; } .stock-lote-detalle-datos p { grid-template-columns: minmax(100px, .75fr) minmax(0, 1.25fr); gap: 9px; } .stock-lote-detalle-modal header { padding: 17px 16px; } .stock-lote-detalle-modal footer { padding: 14px 16px 16px; } }
 
 .stock-desglose-fondo { position: fixed; z-index: 140; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(20, 36, 42, .56); backdrop-filter: blur(3px); }
 .stock-desglose-modal { width: min(880px, 100%); max-height: calc(100dvh - 40px); overflow: hidden; border: 1px solid #9fbdc2; border-radius: 12px; background: #fff; box-shadow: 0 26px 65px rgba(17, 43, 50, .34); }
 .stock-desglose-modal > header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 24px; border-bottom: 1px solid #cddde0; background: #f6f9f9; }
-.stock-desglose-modal > header span { color: #087f87; font-size: 10px; font-weight: 850; letter-spacing: .075em; text-transform: uppercase; }
+.stock-desglose-modal > header span { color: #0284c7; font-size: 10px; font-weight: 850; letter-spacing: .075em; text-transform: uppercase; }
 .stock-desglose-modal > header h3 { margin: 5px 0 3px; color: #1d3942; font-size: 19px; }
 .stock-desglose-modal > header small { color: #567078; font-size: 11px; font-weight: 750; }
-.stock-desglose-modal > header button { display: grid; place-items: center; flex: 0 0 auto; width: 38px; height: 38px; border: 1px solid #087f87 !important; border-radius: 50%; color: #fff !important; background: #087f87 !important; }
+.stock-desglose-modal > header button { display: grid; place-items: center; flex: 0 0 auto; width: 38px; height: 38px; border: 1px solid #0284c7 !important; border-radius: 50%; color: #fff !important; background: #0284c7 !important; }
 .stock-desglose-contenido { max-height: calc(100dvh - 245px); padding: 20px 24px; overflow-y: auto; }
 .stock-desglose-general { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 16px; margin-bottom: 18px; padding: 15px 17px; border: 1px solid #75adb2; border-radius: 9px; background: #edf7f7; }
 .stock-desglose-general > span { color: #315861; font-size: 11px; font-weight: 850; letter-spacing: .045em; text-transform: uppercase; }
-.stock-desglose-general > strong { grid-column: 2; grid-row: 1 / 3; color: #076d74; font-size: 28px; line-height: 1; }
+.stock-desglose-general > strong { grid-column: 2; grid-row: 1 / 3; color: #0369a1; font-size: 28px; line-height: 1; }
 .stock-desglose-general > small { color: #61777e; font-size: 10px; }
 .stock-desglose-sucursal { margin-top: 14px; overflow: hidden; border: 1px solid #c5d7da; border-radius: 9px; }
 .stock-desglose-sucursal:first-of-type { margin-top: 0; }
@@ -2558,18 +2558,18 @@ body.inventario-redimensionando * {
 .stock-desglose-sucursal > header > div:last-child { justify-items: end; }
 .stock-desglose-sucursal > header span { color: #60777e; font-size: 9px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
 .stock-desglose-sucursal > header strong { color: #203e47; font-size: 13px; }
-.stock-desglose-sucursal > header b { color: #08757d; font-size: 18px; }
+.stock-desglose-sucursal > header b { color: #0284c7; font-size: 18px; }
 .stock-desglose-head,.stock-desglose-fila { display: grid; grid-template-columns: minmax(120px, 1fr) 85px 115px minmax(260px, 2fr); gap: 10px; align-items: center; }
 .stock-desglose-lotes { min-width: 0; padding-block: 12px; }
 .stock-desglose-lotes details { border: 1px solid #d5e5e7; border-radius: 9px; background: #f8fbfb; overflow: hidden; }
-.stock-desglose-lotes summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; color: #08757d; font-size: 11px; font-weight: 700; padding: 10px 12px; list-style: none; border: 0; background: transparent; }
+.stock-desglose-lotes summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; color: #0284c7; font-size: 11px; font-weight: 700; padding: 10px 12px; list-style: none; border: 0; background: transparent; }
 .stock-desglose-lotes summary::-webkit-details-marker { display: none; }
 .stock-desglose-lotes summary:hover { background: #edf6f6; }
 .stock-desglose-lotes summary > span { display: flex; align-items: center; gap: 8px; }
 .stock-desglose-lotes summary em { display: inline-grid; place-items: center; min-width: 21px; height: 21px; padding-inline: 4px; border-radius: 6px; background: #e3f0f1; font-size: 10px; font-style: normal; }
 .stock-desglose-lotes summary svg { flex-shrink: 0; transition: transform .15s ease; }
 .stock-desglose-lotes details[open] summary svg { transform: rotate(180deg); }
-.stock-desglose-lotes summary:focus-visible { outline: 2px solid #08757d; outline-offset: 3px; }
+.stock-desglose-lotes summary:focus-visible { outline: 2px solid #0284c7; outline-offset: 3px; }
 .stock-desglose-lotes-lista { list-style: none; margin: 0; padding: 0 12px; max-height: 240px; overflow-y: auto; background: #fff; border-top: 1px solid #e0ebed; }
 .stock-desglose-lotes-lista > li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 11px 0; }
 .stock-desglose-lotes-lista > li + li { border-top: 1px solid #edf2f3; }
@@ -2577,7 +2577,7 @@ body.inventario-redimensionando * {
 .stock-desglose-lote-identidad strong { color: #294750; font-size: 12px; overflow-wrap: anywhere; }
 .stock-desglose-lote-identidad small,.stock-desglose-lote-cantidad small { color: #6a8086; font-size: 10px; overflow-wrap: anywhere; }
 .stock-desglose-lote-cantidad { text-align: right; }
-.stock-desglose-lote-cantidad strong { color: #08757d; font-size: 15px; font-variant-numeric: tabular-nums; }
+.stock-desglose-lote-cantidad strong { color: #0284c7; font-size: 15px; font-variant-numeric: tabular-nums; }
 .stock-desglose-fila > strong,.stock-desglose-fila > b,.stock-desglose-fila > span { align-self: start; margin-top: 23px; }
 .stock-desglose-head { min-height: 36px; padding: 0 13px; color: #557078; background: #e9f1f2; font-size: 10px; font-weight: 850; letter-spacing: .035em; text-transform: uppercase; }
 .stock-desglose-fila { min-height: 52px; padding: 0 13px; border-bottom: 1px solid #d2e0e2; color: #294750; font-size: 12px; }
@@ -2589,8 +2589,8 @@ body.inventario-redimensionando * {
 .stock-desglose-modal > footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px 20px; border-top: 1px solid #d6e2e4; background: #fafcfc; }
 .stock-desglose-modal > footer > span { color: #587078; font-size: 11px; font-weight: 750; }
 .stock-desglose-modal > footer > div { display: flex; align-items: baseline; gap: 10px; color: #49656d; font-size: 11px; font-weight: 750; text-transform: uppercase; }
-.stock-desglose-modal > footer > div strong { color: #076d74; font-size: 22px; }
-.stock-desglose-modal > footer > button { min-width: 100px; height: 40px; border: 1px solid #087f87 !important; border-radius: 8px; color: #fff !important; background: #087f87 !important; font-size: 12px; font-weight: 750; }
+.stock-desglose-modal > footer > div strong { color: #0369a1; font-size: 22px; }
+.stock-desglose-modal > footer > button { min-width: 100px; height: 40px; border: 1px solid #0284c7 !important; border-radius: 8px; color: #fff !important; background: #0284c7 !important; font-size: 12px; font-weight: 750; }
 @media (max-width: 760px) { .stock-desglose-sucursal { overflow-x: auto; } .stock-desglose-head,.stock-desglose-fila { min-width: 650px; } .stock-desglose-contenido { padding: 16px; } .stock-desglose-modal > header,.stock-desglose-modal > footer { padding-inline: 16px; } }
 
 /* Galería de ventas: pie visible y acción principal inequívoca. */
@@ -2607,13 +2607,13 @@ body.inventario-redimensionando * {
 .sistema-contable .punto-tarjetas article > footer b { color: #213640 !important; }
 .sistema-contable .punto-tarjetas article > footer small { color: #425d69 !important; }
 .sistema-contable .punto-tarjetas article > footer > button {
-  border: 1px solid #087f87 !important;
+  border: 1px solid #0284c7 !important;
   border-radius: 8px !important;
   color: #fff !important;
-  background: #087f87 !important;
+  background: #0284c7 !important;
   box-shadow: 0 3px 8px rgb(8 127 135 / 26%) !important;
 }
-.sistema-contable .punto-tarjetas article > footer > button:hover { background: #066970 !important; }
+.sistema-contable .punto-tarjetas article > footer > button:hover { background: #0369a1 !important; }
 }
 
 /* Barra superior en azul grisáceo: complementa al sidebar sin repetir su color. */
@@ -2629,19 +2629,19 @@ body.inventario-redimensionando * {
   .sistema-contable .punto-listado-stock { display: inline-block; padding: 5px 10px; border-radius: 6px; background: #e7f1f3; color: #365b67; font-variant-numeric: tabular-nums; }
   .sistema-contable .punto-listado-precio { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .sistema-contable .punto-listado-encabezado > :nth-child(4) { text-align: right; }
-  .sistema-contable .punto-listado-fila button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 8px 12px; border: 1px solid #087f87 !important; border-radius: 7px; background: #087f87 !important; color: #fff !important; font-weight: 600; }
-  .sistema-contable .punto-listado-fila button:hover { background: #066970 !important; }
+  .sistema-contable .punto-listado-fila button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 8px 12px; border: 1px solid #0284c7 !important; border-radius: 7px; background: #0284c7 !important; color: #fff !important; font-weight: 600; }
+  .sistema-contable .punto-listado-fila button:hover { background: #0369a1 !important; }
 }
 @layer contable-corporativo {
   .sistema-contable .sistema-topbar {
-    background: #087f87 !important;
-    border-bottom-color: #06676e !important;
+    background: #0284c7 !important;
+    border-bottom-color: #0369a1 !important;
     color: #fff !important;
   }
   .sistema-contable .sistema-topbar .topbar-titulo h1,
   .sistema-contable .sistema-topbar .perfil strong { color: #fff !important; }
   .sistema-contable .sistema-topbar .topbar-titulo small,
-  .sistema-contable .sistema-topbar .perfil small { color: #e0f4f4 !important; }
+  .sistema-contable .sistema-topbar .perfil small { color: #e0f2fe !important; }
   .sistema-contable .sistema-topbar .perfil { background: transparent !important; border-color: #66adb2 !important; }
   .sistema-contable .sistema-topbar .busqueda-global,
   .sistema-contable .sistema-topbar :is(.topbar-icono, .salir-sistema) {
