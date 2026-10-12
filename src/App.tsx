@@ -127,7 +127,7 @@ const config: SystemConfig = {
   ],
   modules,
   sidebarGroups: ['GENERAL', 'VENTAS', 'ALMACENES', 'MOVIMIENTOS', 'ADMINISTRACION'],
-  renderModule: (id, select, activeId) =>
+  renderModule: (id, select, activeId, session) =>
     id === 'resumen' ? (
       <VistaDiferida><DashboardContable onSelect={select} /></VistaDiferida>
     ) : id === 'notificaciones' ? (
@@ -145,9 +145,9 @@ const config: SystemConfig = {
     ) : id === 'usuarios' ? (
       <VistaDiferida><UsuariosView /></VistaDiferida>
     ) : id === 'sucursales-cajas' ? (
-      <VistaDiferida><ConfiguracionView inicial="sucursales-almacenes" /></VistaDiferida>
+      <VistaDiferida><ConfiguracionView inicial="general" usuarioSesion={session?.user} /></VistaDiferida>
     ) : id === 'configuracion' ? (
-      <VistaDiferida><ConfiguracionView vacia /></VistaDiferida>
+      <VistaDiferida><ConfiguracionView inicial="contable" usuarioSesion={session?.user} /></VistaDiferida>
     ) : undefined,
 };
 
