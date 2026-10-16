@@ -23,7 +23,7 @@ export function Login({
   });
   const [remember, setRemember] = useState(Boolean(username));
   const minimumPasswordLength =
-    config.id === 'clinico' || config.id === 'contable' ? 5 : 6;
+    config.id === 'clinico' || config.id === 'contable' ? 4 : 6;
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState('');
