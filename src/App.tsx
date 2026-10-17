@@ -135,7 +135,7 @@ const config: SystemConfig = {
     ) : id === 'ventas' ? (
       <VistaDiferida><VentasView activeId={activeId} /></VistaDiferida>
     ) : id === 'inventario' ? (
-      <VistaDiferida><InventarioView activeId={activeId} /></VistaDiferida>
+      <VistaDiferida><InventarioView activeId={activeId} permisos={session?.permissions ?? []} /></VistaDiferida>
     ) : id === 'almacenes' ? (
       <VistaDiferida><AlmacenesView activeId={activeId} /></VistaDiferida>
     ) : id === 'adquisiciones' ? (
@@ -143,7 +143,7 @@ const config: SystemConfig = {
     ) : id === 'traspasos' ? (
       <VistaDiferida><MovimientosView activeId={activeId} tipo="traspasos" /></VistaDiferida>
     ) : id === 'usuarios' ? (
-      <VistaDiferida><UsuariosView /></VistaDiferida>
+      <VistaDiferida><UsuariosView permisos={session?.permissions ?? []} /></VistaDiferida>
     ) : id === 'sucursales-cajas' ? (
       <VistaDiferida><ConfiguracionView inicial="general" usuarioSesion={session?.user} /></VistaDiferida>
     ) : id === 'configuracion' ? (

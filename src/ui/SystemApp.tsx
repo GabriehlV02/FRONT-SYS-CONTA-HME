@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { Login } from './components/Login';
 import { Sidebar } from './components/Sidebar';
 import type { AuthSession, SystemConfig } from './types';
+import { cerrarSesion, recuperarSesion } from './auth';
 
 const sessionDurationMs = 6 * 60 * 60_000;
 const memoryExpirations = new Map<SystemConfig['id'], number>();
@@ -62,6 +63,10 @@ function clearStoredSession(id: SystemConfig['id']) {
   try {
     sessionStorage.removeItem(sessionKey(id));
     localStorage.removeItem(sessionKey(id));
+    if (id === 'contable') {
+      sessionStorage.removeItem('contable_token');
+      sessionStorage.removeItem('contable_asignacion');
+    }
   } catch { /* Almacenamiento opcional. */ }
 }
 
@@ -80,8 +85,24 @@ function readStoredExpiration(id: SystemConfig['id']): number {
 }
 
 export function SystemApp({ config }: { config: SystemConfig }) {
-  const modules = config.modules;
-  const [session, setSession] = useState<AuthSession | null>(() => readStoredSession(config.id));
+  const [session, setSession] = useState<AuthSession | null>(() => config.id === 'contable' ? null : readStoredSession(config.id));
+  const modules = useMemo(() => {
+    if (config.id !== 'contable') return config.modules;
+    const permisosPorModulo: Record<string, string[]> = {
+      resumen: [], notificaciones: [], ventas: ['VENTAS_VER'], inventario: ['INVENTARIO_VER', 'INVENTARIO_GESTIONAR'],
+      almacenes: ['INVENTARIO_VER', 'INVENTARIO_GESTIONAR'], adquisiciones: ['MOVIMIENTOS_GESTIONAR'], traspasos: ['MOVIMIENTOS_GESTIONAR'],
+      usuarios: ['USUARIOS_VER', 'USUARIOS_CREAR', 'ROLES_GESTIONAR'],
+      'sucursales-cajas': ['INVENTARIO_GESTIONAR'], configuracion: ['ROLES_GESTIONAR'],
+    };
+    return config.modules.filter(item => {
+      const requeridos = permisosPorModulo[item.id];
+      return requeridos !== undefined && (requeridos.length === 0 || requeridos.some(permiso => session?.permissions.includes(permiso)));
+    });
+  }, [config.id, config.modules, session]);
+  const visibleConfig = useMemo(() => ({ ...config, modules }), [config, modules]);
+  const [checkingSession, setCheckingSession] = useState(config.id === 'contable');
+  const [sessionError, setSessionError] = useState('');
+  const [loggingOut, setLoggingOut] = useState(false);
   const [active, setActive] = useState(() => modules[0]?.id ?? 'resumen');
   const [open, setOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -95,6 +116,48 @@ export function SystemApp({ config }: { config: SystemConfig }) {
     return normalizedQuery ? modules.filter(item => normalizarBusqueda(item.name).includes(normalizedQuery)) : [];
   }, [modules, query]);
   const quickModules = useMemo(() => modules.filter(item => config.quickIds.includes(item.id)), [config.quickIds, modules]);
+
+  useEffect(() => {
+    if (!modules.some(item => active === item.id || active.startsWith(item.id + '-'))) {
+      setActive(modules[0]?.id ?? 'resumen');
+    }
+  }, [active, modules]);
+
+  useEffect(() => {
+    if (config.id !== 'contable') return;
+    clearStoredSession(config.id);
+    const controller = new AbortController();
+    let vigente = true;
+    async function checkSession() {
+      try {
+        const current = await recuperarSesion(controller.signal);
+        if (vigente) { setSession(current); setSessionError(''); }
+      } catch (error) {
+        if (vigente && !controller.signal.aborted) {
+          setSession(null);
+          setSessionError('No se pudo verificar la sesión. Comprueba la conexión e inicia sesión.');
+        }
+      } finally {
+        if (vigente) setCheckingSession(false);
+      }
+    }
+    function expired() {
+      clearStoredSession(config.id);
+      setSession(null);
+      setSessionError('Tu sesión expiró o el acceso fue deshabilitado. Inicia sesión nuevamente.');
+    }
+    void checkSession();
+    window.addEventListener('focus', checkSession);
+    window.addEventListener('contable:sesion-expirada', expired);
+    window.addEventListener('contable:actualizar-sesion', checkSession);
+    return () => {
+      vigente = false;
+      controller.abort();
+      window.removeEventListener('focus', checkSession);
+      window.removeEventListener('contable:sesion-expirada', expired);
+      window.removeEventListener('contable:actualizar-sesion', checkSession);
+    };
+  }, [config.id]);
 
   function closeMenu() { setOpen(false); requestAnimationFrame(() => menuButton.current?.focus()); }
   useEffect(() => {
@@ -121,7 +184,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   }, [open]);
 
   useEffect(() => {
-    if (!session) return;
+    if (!session || config.id === 'contable') return;
     const remaining = readStoredExpiration(config.id) - Date.now();
     if (remaining <= 0) {
       clearStoredSession(config.id);
@@ -151,15 +214,36 @@ export function SystemApp({ config }: { config: SystemConfig }) {
     };
   }, [notificationsOpen]);
 
-  function select(id: string) { setActive(id); setQuery(''); if (open) closeMenu(); }
-  function login(nextSession: AuthSession) { storeSession(config.id, nextSession); setSession(nextSession); }
-  function logout() { clearStoredSession(config.id); setSession(null); setActive(modules[0]?.id ?? 'resumen'); setOpen(false); setQuery(''); }
-  if (!session) return <Login config={config} onLogin={login}/>;
+  function select(id: string) {
+    if (!modules.some(item => id === item.id || id.startsWith(item.id + '-'))) return;
+    setActive(id); setQuery(''); if (open) closeMenu();
+  }
+  function login(nextSession: AuthSession) {
+    if (config.id !== 'contable') storeSession(config.id, nextSession);
+    setSessionError('');
+    setSession(nextSession);
+  }
+  async function logout() {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    setSessionError('');
+    try {
+      if (config.id === 'contable') await cerrarSesion();
+      clearStoredSession(config.id);
+      setSession(null); setActive(modules[0]?.id ?? 'resumen'); setOpen(false); setQuery('');
+    } catch {
+      setSessionError('No se pudo cerrar la sesión. Comprueba la conexión y vuelve a intentarlo.');
+    } finally {
+      setLoggingOut(false);
+    }
+  }
+  if (checkingSession) return <main className="login-page"><p role="status">Verificando sesión…</p></main>;
+  if (!session) return <Login config={config} onLogin={login} notice={sessionError}/>;
 
   const moduleId = selected?.id ?? active;
   const moduleContent = config.renderModule?.(moduleId, select, active, session);
   return <div className={`sistema-app sistema-${config.id} ${collapsed ? 'sidebar-replegado' : ''}`}>
-    <Sidebar config={config} active={active} open={open} collapsed={collapsed} onSelect={select} onClose={closeMenu} onCollapse={() => setCollapsed(!collapsed)} onLogout={logout} session={session}/>
+    <Sidebar config={visibleConfig} active={active} open={open} collapsed={collapsed} onSelect={select} onClose={closeMenu} onCollapse={() => setCollapsed(!collapsed)} onLogout={logout} session={session}/>
     <div className="sistema-cuerpo" inert={open}>
       <header className="sistema-topbar">
         <button ref={menuButton} className="abrir-menu" onClick={() => setOpen(true)} aria-label="Abrir menú" aria-expanded={open} aria-controls="system-sidebar"><Icon name="menu"/></button>
@@ -186,9 +270,10 @@ export function SystemApp({ config }: { config: SystemConfig }) {
           </section>}
         </div>
         <div className="perfil"><span className="perfil-avatar"><Icon name="user" size={21}/></span><div><strong title={session.user}>{session.user === 'demo' ? 'Usuario de prueba' : session.user}</strong><small>{session.role || config.role}</small></div></div>
-        <button className="salir-rapido" onClick={logout} aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="logout" size={19}/></button>
+        <button className="salir-rapido" onClick={logout} disabled={loggingOut} aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="logout" size={19}/></button>
       </header>
       <main className="area-trabajo"><div className="content-limit">
+        {sessionError && <p className="login-error" role="alert">{sessionError}</p>}
         {!moduleContent && <div className="pagina-cabecera"><div><p>{config.category}</p><h2>{active === 'resumen' ? config.dashboardTitle : selected.name}</h2><small>{selected.description}</small></div>{config.id !== 'clinico' && <span className="demo-badge"><span/> Modo demostración</span>}</div>}
         {moduleContent ? <div key={active}>{moduleContent}</div> : (active === 'resumen' ? <>
           <section className="metricas" aria-label="Resumen del sistema">{config.metrics.map(item => <article key={item.title}><div className="metrica-heading"><span>{item.title}</span><span className="metric-icon"><Icon name={item.icon}/></span></div><strong>{item.value}</strong><small>{item.note} · Demo</small></article>)}</section>

@@ -60,7 +60,7 @@ export function Sidebar({
         </div>
         <div className="sidebar-scroll">
           <nav className="sistema-nav" aria-label="Módulos del sistema">
-            {groups.map((group) => (
+            {groups.filter(group => modules.some(item => item.group === group)).map((group) => (
               <section key={group}>
                 <p>{group}</p>
                 {modules

@@ -5,13 +5,16 @@ import { Brand } from './Brand';
 import { LoginBalancePanel } from './LoginBalancePanel';
 import { LoginFondoFiguras } from './LoginFondoFiguras';
 import type { AuthSession, SystemConfig } from '../types';
+import { iniciarSesion } from '../auth';
 
 export function Login({
   onLogin,
   config,
+  notice,
 }: {
   onLogin: (session: AuthSession) => void;
   config: SystemConfig;
+  notice?: string;
 }) {
   const esContable = config.id === 'contable';
   const [username, setUsername] = useState(() => {
@@ -31,6 +34,7 @@ export function Login({
 
   async function enter(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return;
     setError('');
     setLoading(true);
     let nextSession: AuthSession = {
@@ -41,32 +45,9 @@ export function Login({
 
     if (config.id === 'contable') {
       try {
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usuario: username.trim(), password }),
-        });
-        const data = (await response.json().catch(() => ({}))) as {
-          message?: string;
-          token?: string;
-          asignacion?: { sucursal: string; caja: string; almacen: string };
-          usuario?: { nombre?: string; rol?: string; permisos?: string[] };
-        };
-        if (!response.ok) {
-          setError(data.message || 'No se pudo iniciar sesión.');
-          return;
-        }
-        sessionStorage.setItem('contable_token', data.token || '');
-        sessionStorage.setItem('contable_asignacion', JSON.stringify(data.asignacion || null));
-        nextSession = {
-          user: data.usuario?.nombre || 'Administrador',
-          role: data.usuario?.rol || config.role,
-          permissions: Array.isArray(data.usuario?.permisos)
-            ? data.usuario.permisos
-            : [],
-        };
-      } catch {
-        setError('No se pudo conectar con el servidor contable.');
+        nextSession = await iniciarSesion(username.trim(), password);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'No se pudo conectar con el servidor contable.');
         return;
       } finally {
         setLoading(false);
@@ -102,6 +83,7 @@ export function Login({
           required
           pattern=".*\S.*"
           autoComplete="username"
+          maxLength={60}
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           placeholder="Ingresa tu usuario"
@@ -118,6 +100,7 @@ export function Login({
           minLength={minimumPasswordLength}
           type={visible ? 'text' : 'password'}
           autoComplete="current-password"
+          maxLength={255}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Ingresa tu contraseña"
@@ -162,9 +145,9 @@ export function Login({
         </label>
         {!esContable && <span>{config.role}</span>}
       </div>
-      {error && (
+      {(error || notice) && (
         <p className="login-error" role="alert">
-          {error}
+          {error || notice}
         </p>
       )}
       <button className="login-submit" type="submit" disabled={loading}>
@@ -172,9 +155,9 @@ export function Login({
         {!loading && <Icon name="arrowRight" size={18} />}
       </button>
       <div className="login-seguro">
-        <Icon name="check" size={16} /> Sesión protegida · Expira tras 6 horas
+        <Icon name="check" size={16} /> Sesión protegida{!esContable && ' · Expira tras 6 horas'}
       </div>
-      {(config.id !== 'contable' || import.meta.env.DEV) && (
+      {config.id !== 'contable' && (
         <div className="demo-access">
           <button
             type="button"

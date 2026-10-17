@@ -1,3 +1,4 @@
+import { apiFetch } from '@ui/auth';
 import CapturaCodigo from './CapturaCodigo';
 import { categoriasRegistro as categoriasIniciales, unidadesRegistro as unidadesIniciales, clasificacionesRegistro as clasificacionesIniciales, type OpcionesInventario } from '../datos/registroOpciones';
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
@@ -144,15 +145,23 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   const [opcionesCargadas, setOpcionesCargadas] = useState(false);
   useEffect(() => {
     let vigente = true;
-    fetch('/api/inventario/opciones').then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(({ data }) => { if (vigente) { setOpcionesRegistro(data); setOpcionesCargadas(true); } })
+    apiFetch('/api/v1/inventario/opciones').then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(({ data }: { data: OpcionesInventario }) => {
+        if (!vigente) return;
+        setOpcionesRegistro(data); setOpcionesCargadas(true);
+        setFormularioRegistro(actual => ({ ...actual,
+          unidadMedida: data.unidades.includes(actual.unidadMedida) ? actual.unidadMedida : data.unidades[0] || '',
+          clasificacion: data.clasificaciones.includes(actual.clasificacion) ? actual.clasificacion : data.clasificaciones[0] || '',
+        }));
+        setTipoRegistro(actual => data.tipos[normalizarTexto(actual)] ? actual : (Object.keys(data.tipos)[0] || '') as TipoRegistro);
+      })
       .catch(() => { if (vigente) setErrorOpciones('No se pudieron cargar las opciones. Vuelve a abrir esta subvista.'); });
     return () => { vigente = false; };
   }, []);
   const categoriasRegistro = opcionesRegistro.categorias;
   const unidadesRegistro = opcionesRegistro.unidades;
   const clasificacionesRegistro = opcionesRegistro.clasificaciones;
-  const subcategoriasPorCategoria = useMemo(() => ({ ...subcategoriasIniciales, ...Object.fromEntries(Object.entries(categoriasRegistro).map(([nombre, datos]) => [nombre, datos.subcategorias])) }), [categoriasRegistro]);
+  const subcategoriasPorCategoria = useMemo(() => ({ ...(opcionesCargadas ? {} : subcategoriasIniciales), ...Object.fromEntries(Object.entries(categoriasRegistro).map(([nombre, datos]) => [nombre, datos.subcategorias])) }), [categoriasRegistro, opcionesCargadas]);
   const subvista = tipo;
   const [modo, setModo] = useState<ModoInventario>('listado');
   const [porPagina, setPorPagina] = useState<number | 'Todos'>(20);
@@ -200,7 +209,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
 
   async function cargarRegistros() {
     try {
-      const respuesta = await fetch('/api/inventario');
+      const respuesta = await apiFetch('/api/inventario');
       if (!respuesta.ok) throw new Error('No se pudo cargar el inventario.');
       const datos = (await respuesta.json().catch(() => ({ data: [] }))) as {
         data?: RegistroInventario[];
@@ -315,7 +324,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   useEffect(() => {
     if (!modalRegistroAbierto) return;
     setSiguienteNumero(null);
-    fetch('/api/inventario/siguiente-codigo').then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    apiFetch('/api/inventario/siguiente-codigo').then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(r => setSiguienteNumero(r.numero)).catch(() => setMensajeGuardado('No se pudo consultar el siguiente codigo. Se asignara al guardar.'));
   }, [modalRegistroAbierto]);
   const codigoRegistro = categoriaRegistro && siguienteNumero !== null
@@ -596,7 +605,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     }
 
     try {
-      const respuesta = await fetch('/api/inventario', {
+      const respuesta = await apiFetch('/api/inventario', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -665,7 +674,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
 
     try {
       const id = edicionRegistro.id ?? edicionRegistro.codigo;
-      const respuesta = await fetch(`/api/inventario/${id}`, {
+      const respuesta = await apiFetch(`/api/inventario/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

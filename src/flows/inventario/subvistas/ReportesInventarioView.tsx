@@ -1,3 +1,4 @@
+import { apiFetch } from '@ui/auth';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import '../InventarioView.css';
@@ -64,7 +65,7 @@ export function ReportesInventarioView({ onVolver }: { onVolver?: () => void }) 
   useEffect(() => {
     let vigente = true;
     Promise.all(['/api/inventario', '/api/stock/lotes'].map(async url => {
-      const respuesta = await fetch(url); if (!respuesta.ok) throw new Error();
+      const respuesta = await apiFetch(url); if (!respuesta.ok) throw new Error();
       const { data } = await respuesta.json(); if (!Array.isArray(data)) throw new Error(); return data;
     })).then(([items, stock]) => { if (vigente) { setRegistros(items); setLotes(stock); } })
       .catch(() => { if (vigente) setError('No se pudieron cargar el inventario y sus almacenes. Vuelve a abrir Reportes.'); });

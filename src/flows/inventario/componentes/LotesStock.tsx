@@ -1,3 +1,4 @@
+import { apiFetch } from '@ui/auth';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
@@ -134,7 +135,7 @@ export function LotesStock() {
         const base = actual.filter((lote) => !lote.id.startsWith('recepcion-'));
         return incorporarRecepciones(base);
       });
-    fetch('/api/stock/lotes')
+    apiFetch('/api/stock/lotes')
       .then(async (respuesta) => {
         if (!respuesta.ok) throw new Error('No se pudo cargar el stock');
         return respuesta.json();

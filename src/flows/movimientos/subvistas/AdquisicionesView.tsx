@@ -1,4 +1,5 @@
-﻿import { useEffect, useMemo, useState } from 'react';
+import { apiFetch } from '@ui/auth';
+import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
 import { MovimientosNavegacion, type SubvistaAdquisiciones } from '../componentes/MovimientosNavegacion';
@@ -105,7 +106,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [marcaLinea, setMarcaLinea] = useState('');
   const [ingresoId, setIngresoId] = useState(() => `ING-${crypto.randomUUID()}`);
   const [guardando, setGuardando] = useState(false);
-  useEffect(() => { fetch('/api/adquisiciones').then(async r => { if (!r.ok) throw new Error('No se pudieron cargar los ingresos'); return r.json(); }).then(r => { if (Array.isArray(r.data) && r.data.length) setRegistros(r.data); }).catch(() => undefined); }, []);
+  useEffect(() => { apiFetch('/api/adquisiciones').then(async r => { if (!r.ok) throw new Error('No se pudieron cargar los ingresos'); return r.json(); }).then(r => { if (Array.isArray(r.data) && r.data.length) setRegistros(r.data); }).catch(() => undefined); }, []);
   const [loteLinea, setLoteLinea] = useState('');
   const [venceLinea, setVenceLinea] = useState('');
   const [observacionLinea, setObservacionLinea] = useState('');
@@ -113,7 +114,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   useEffect(() => {
     if (!cargandoStock) return;
     let vigente = true;
-    fetch('/api/inventario')
+    apiFetch('/api/inventario')
       .then(async (respuesta) => {
         if (!respuesta.ok) throw new Error('No se pudo cargar el catálogo de inventario.');
         return respuesta.json() as Promise<{ data?: ItemInventario[] }>;
@@ -205,7 +206,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     let vigente = true;
     setCargandoEstudios(true);
     setErrorEstudios('');
-    fetch('/api/stock/estudios').then(async respuesta => {
+    apiFetch('/api/stock/estudios').then(async respuesta => {
       if (!respuesta.ok) throw new Error('No se pudieron cargar los estudios de stock.');
       return respuesta.json();
     }).then(({ data }) => { if (vigente) setEstudios(data); })
@@ -296,7 +297,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     };
     setGuardando(true);
     try {
-      const respuesta = await fetch('/api/adquisiciones', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registro) });
+      const respuesta = await apiFetch('/api/adquisiciones', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(registro) });
       const resultado = await respuesta.json();
       if (!respuesta.ok) throw new Error(resultado.message || 'No se pudo registrar el ingreso.');
       setRegistros(actuales => [resultado.data, ...actuales.filter(x => x.id !== resultado.data.id)]);

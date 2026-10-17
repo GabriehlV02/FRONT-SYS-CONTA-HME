@@ -1,3 +1,4 @@
+import { apiFetch } from '@ui/auth';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import './ControlesVencimientoView.css';
@@ -9,7 +10,7 @@ const diasHasta = (fecha: string, hoy: string) => Math.round((Date.parse(`${fech
 
 export function ControlesVencimientoView() {
   const [lotes, setLotes] = useState<Lote[]>([]), [filtro, setFiltro] = useState<Filtro>('todos'), [busqueda, setBusqueda] = useState(''), [cargando, setCargando] = useState(true), [error, setError] = useState('');
-  useEffect(() => { let vigente = true; fetch('/api/stock/lotes').then(async respuesta => { const datos = await respuesta.json(); if (!respuesta.ok || !Array.isArray(datos.data)) throw new Error(); if (vigente) setLotes(datos.data); }).catch(() => { if (vigente) setError('No se pudieron cargar los lotes para el control de vencimientos.'); }).finally(() => { if (vigente) setCargando(false); }); return () => { vigente = false; }; }, []);
+  useEffect(() => { let vigente = true; apiFetch('/api/stock/lotes').then(async respuesta => { const datos = await respuesta.json(); if (!respuesta.ok || !Array.isArray(datos.data)) throw new Error(); if (vigente) setLotes(datos.data); }).catch(() => { if (vigente) setError('No se pudieron cargar los lotes para el control de vencimientos.'); }).finally(() => { if (vigente) setCargando(false); }); return () => { vigente = false; }; }, []);
   const hoy = fechaHoy();
   const alertas = useMemo(() => lotes.filter(lote => lote.disponible > 0 && lote.vence).map(lote => ({ ...lote, dias: diasHasta(lote.vence!, hoy) })).filter(lote => lote.dias <= 90).sort((a, b) => a.dias - b.dias), [hoy, lotes]);
   const vencidos = alertas.filter(lote => lote.dias < 0), proximos = alertas.filter(lote => lote.dias >= 0);

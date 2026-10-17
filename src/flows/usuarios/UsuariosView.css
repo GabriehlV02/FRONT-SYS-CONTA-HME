@@ -579,3 +579,10 @@
     flex-direction: column;
   }
 }
+
+.usuarios-modal select { box-sizing: border-box; width: 100%; min-height: 43px; padding: 0 12px; border: 1px solid #c3d5da; border-radius: 8px; background: #fff; color: #173944; }
+.usuarios-modal select:focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.usuarios-rol-resumen { margin: 0 24px 18px; color: #294751; font-size: 12px; }
+
+.pacientes-usuarios-tabla .usuarios-tabla-head, .pacientes-usuarios-tabla .usuarios-tabla-fila { grid-template-columns: 48px minmax(220px, 1.5fr) minmax(130px, 1fr) minmax(140px, 1fr) 120px 100px; }
+.pacientes-registro-exito { margin: 0 0 14px; padding: 10px 12px; border: 1px solid #9ccfc2; border-radius: 8px; background: #effaf5; color: #16634d; font-size: 13px; }

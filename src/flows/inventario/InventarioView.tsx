@@ -11,7 +11,7 @@ import { MedicosProfesionalesView } from './subvistas/MedicosProfesionalesView';
 import { ConfiguracionAdminView } from './subvistas/ConfiguracionAdminView';
 import './InventarioView.css';
 
-export function InventarioView({ activeId }: { activeId?: string }) {
+export function InventarioView({ activeId, permisos = [] }: { activeId?: string; permisos?: string[] }) {
   const resolveSubvista = (id?: string): SubvistaInventario =>
     id === 'inventario-admin' ? 'admin' : id === 'inventario-servicios'
       ? 'servicios'
@@ -28,12 +28,12 @@ export function InventarioView({ activeId }: { activeId?: string }) {
   return (
     <section className="inventario-vista">
       <InventarioNavegacion activa={subvista} onSeleccionar={setSubvista} />
-      {subvista === 'productos' && <ProductosInsumosView />}
+      {subvista === 'productos' && <ProductosInsumosView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} />}
       {subvista === 'servicios' && <ServiciosView />}
       {subvista === 'medicos' && <MedicosProfesionalesView />}
       {subvista === 'todo' && <CatalogoView tipo="todo" onReportes={() => setSubvista('reportes')} />}
       {subvista === 'reportes' && <ReportesInventarioView onVolver={() => setSubvista('todo')} />}
-      {subvista === 'admin' && <ConfiguracionAdminView />}
+      {subvista === 'admin' && <ConfiguracionAdminView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} />}
     </section>
   );
 }

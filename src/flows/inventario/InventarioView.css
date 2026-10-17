@@ -2127,3 +2127,52 @@
 .sistema-contable .reporte-descargas .reporte-exportaciones button:hover { box-shadow: 0 4px 10px #183b5238; filter: brightness(.92); transform: translateY(-1px); }
 .reporte-descargas .reporte-exportaciones button:focus-visible { outline: 2px solid var(--export-color); outline-offset: 3px; }
 @media (min-width: 761px) and (max-width: 1050px) { .reporte-configuracion .reporte-descargas { grid-column: 1 / -1; } .reporte-descargas .reporte-exportaciones { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.inventario-admin-form-campos { display: grid; gap: 14px; margin-top: 16px; }
+.inventario-admin-form-campos label { display: grid; gap: 6px; font-size: 13px; }
+.inventario-admin-form-campos input, .inventario-admin-form-campos select, .inventario-admin-form-campos textarea { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid #c3d5da; border-radius: 7px; color: #173944; background: #fff; font: inherit; }
+.inventario-admin-modal :focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.inventario-admin-error { margin: 12px 0 !important; padding: 10px 12px; border-radius: 7px; color: #b42318; background: #fff1f2; font-size: 13px; }
+.inventario-admin-ayuda, .inventario-admin-exito { margin: 0 16px 12px; font-size: 12px; color: #31535d; }
+.inventario-admin-exito { color: #16634d; }
+.inventario-admin-prefijo { display: block; margin-top: 3px; color: #496672; }
+.inventario-admin-switch:disabled { cursor: default; opacity: .65; }
+.productos-base-encabezado { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+.productos-base-encabezado h2 { margin: 0 0 6px; font-size: 21px; }
+.productos-base-encabezado p, .productos-base-modal > p { margin: 0; color: #526c7a; font-size: 13px; line-height: 1.6; }
+.productos-base .inventario-nuevo { background: #0088bd; color: white; flex-shrink: 0; }
+.productos-base button:disabled { opacity: .55; cursor: default; transform: none; }
+.productos-base .inventario-filtros label { flex: 1; min-width: 220px; }
+.productos-base .inventario-filtros select { width: auto; min-width: 130px; font-weight: 400; }
+.productos-base-resumen { display: flex; align-items: center; gap: 12px; margin: 16px 0 12px; font-size: 12px; color: #526c7a; }
+.productos-base-resumen label { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.productos-base select, .productos-base input, .productos-base textarea { color: #203b4b; }
+.productos-base-resumen select, .productos-base-paginacion button, .productos-base-acciones button, .productos-base-error button { border: 1px solid #bed1da; border-radius: 5px; background: white; padding: 7px 10px; color: #17455b; }
+.productos-base-tabla { overflow: auto; border: 1px solid #bed1da; border-radius: 7px; min-height: 310px; }
+.productos-base-tabla table { border-collapse: collapse; width: 100%; min-width: 1050px; font-size: 12px; }
+.productos-base-tabla th, .productos-base-tabla td { padding: 13px 12px; text-align: left; border-bottom: 1px solid #cad9df; }
+.productos-base-tabla th { background: #e4eef1; font-weight: 500; color: #163d53; white-space: nowrap; }
+.productos-base-tabla tbody tr:nth-child(even) { background: #f5f9fa; }
+.productos-base-tabla td:first-child { color: #006b91; white-space: nowrap; }
+.productos-base-tabla small { display: block; margin-top: 5px; max-width: 320px; color: #526c7a; overflow-wrap: anywhere; }
+.productos-base-acciones { display: flex; gap: 6px; }
+.productos-base-tabla .productos-base-vacio { padding: 85px 15px; text-align: center; color: #526c7a; }
+.productos-base-vacio strong { font-size: 15px; }
+.productos-base-paginacion { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 12px; font-size: 12px; }
+.productos-base-error { padding: 10px; color: #922626; background: #fff1f1; border-radius: 5px; }
+.productos-base-mensaje { color: #216c4f; font-size: 13px; }
+.productos-base-mensaje:empty { display: none; }
+.productos-base-modal { width: min(680px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); overflow-y: auto; }
+.productos-base-modal > p { margin: 12px 0 18px; }
+.productos-base-modal fieldset { padding: 0; margin: 0; border: 0; min-width: 0; }
+.productos-base-campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.productos-base-campos label { display: flex; flex-direction: column; gap: 7px; color: #20475d; font-size: 13px; }
+.productos-base-campos input, .productos-base-campos select, .productos-base-campos textarea { box-sizing: border-box; width: 100%; padding: 10px; border: 1px solid #b9cfd9; border-radius: 5px; background: white; font: inherit; }
+.productos-base-campos textarea { resize: vertical; }
+.productos-base-ancho { grid-column: 1 / -1; }
+.productos-base-modal footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.productos-base :focus-visible { outline: 2px solid #0084b5; outline-offset: 3px; }
+@media (max-width: 700px) { .productos-base-encabezado { align-items: flex-start; flex-direction: column; } .productos-base-campos { grid-template-columns: 1fr; } .productos-base-paginacion { justify-content: center; } }
+.productos-base-modal > p { padding: 0 20px; }
+.productos-base-modal > form { padding: 0 20px 20px; }
+.productos-base-modal footer { margin-left: -20px; margin-right: -20px; margin-bottom: -20px; padding: 16px 20px; }

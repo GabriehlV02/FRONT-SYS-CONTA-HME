@@ -1,3 +1,4 @@
+import { apiFetch } from '@ui/auth';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import { useRef } from 'react';
@@ -73,12 +74,12 @@ export function PuntoVentaView() {
   const [cobrando, setCobrando] = useState(false);
   const [ventaId, setVentaId] = useState(() => crypto.randomUUID());
   async function cargarCatalogo() {
-    const r = await fetch('/api/inventario'); if (!r.ok) throw new Error('No se pudo cargar el catálogo');
+    const r = await apiFetch('/api/inventario'); if (!r.ok) throw new Error('No se pudo cargar el catálogo');
     const { data } = await r.json();
     const activos: ItemVenta[] = Array.isArray(data) ? data.filter((i: any) => String(i.estado || '').toUpperCase() === 'ACTIVO').map((i: any) => ({ id: String(i.id), codigo: i.codigo, nombre: i.nombre, tipo: (i.tipo === 'SERVICIO' ? 'Servicio' : i.tipo === 'INSUMO' ? 'Insumo' : 'Producto') as TipoVenta, precio: i.precioVenta, stock: i.stock })) : [];
     setCatalogo(activos.length ? activos : catalogoLocal);
   }
-  useEffect(() => { cargarCatalogo().catch(e => setMensaje(e.message)); fetch('/api/stock/lotes').then(r => r.json()).then(({data}) => { const nombres = [...new Set<string>(data.map((l: any) => l.almacen))]; setAlmacenes(nombres); setAlmacen(nombres[0] || ''); }).catch(() => setMensaje('No se pudieron cargar los almacenes')); }, []);
+  useEffect(() => { cargarCatalogo().catch(e => setMensaje(e.message)); apiFetch('/api/stock/lotes').then(r => r.json()).then(({data}) => { const nombres = [...new Set<string>(data.map((l: any) => l.almacen))]; setAlmacenes(nombres); setAlmacen(nombres[0] || ''); }).catch(() => setMensaje('No se pudieron cargar los almacenes')); }, []);
   const [sucursal, setSucursal] = useState('Hospital María Esperanza');
   const [caja, setCaja] = useState('Caja 01 · Recepción');
   useEffect(() => {
@@ -121,7 +122,7 @@ export function PuntoVentaView() {
     setContextoDestino(document.getElementById('ventas-contexto-slot'));
   }, []);
   useEffect(() => {
-    fetch('/api/clientes')
+    apiFetch('/api/clientes')
       .then((respuesta) => respuesta.ok ? respuesta.json() : Promise.reject())
       .then((resultado) => setClientesRegistrados(Array.isArray(resultado.data) ? resultado.data : []))
       .catch(() => setClientesRegistrados([]));
@@ -248,7 +249,7 @@ export function PuntoVentaView() {
       return;
     }
     try {
-      const respuesta = await fetch('/api/clientes', {
+      const respuesta = await apiFetch('/api/clientes', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cliente),
       });
       const resultado = await respuesta.json();
@@ -269,7 +270,7 @@ export function PuntoVentaView() {
     if (!lineas.length || pendiente > 0 || cobrando) return;
     setCobrando(true);
     try {
-      const r = await fetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${sessionStorage.getItem('contable_token') || ''}` }, body: JSON.stringify({ id: ventaId, sucursal, caja, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
+      const r = await apiFetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ventaId, sucursal, caja, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
       const resultado = await r.json();
       if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
       setMensaje('Venta registrada. Stock descontado por fecha de ingreso (FIFO).');
