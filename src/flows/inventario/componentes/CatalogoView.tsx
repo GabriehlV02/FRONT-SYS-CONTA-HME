@@ -139,7 +139,11 @@ const registrosDemoIniciales: RegistroInventario[] = [
   })),
 ];
 
-export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onReportes?: () => void }) {
+export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo: TipoCatalogo; onReportes?: () => void; puedeGestionar?: boolean }) {
+  const endpoint = tipo === 'servicios' ? '/api/v1/inventario/servicios' : '/api/inventario';
+  const [guardando, setGuardando] = useState(false);
+  const [cargando, setCargando] = useState(tipo === 'servicios');
+  const [errorCarga, setErrorCarga] = useState('');
   const [opcionesRegistro, setOpcionesRegistro] = useState<OpcionesInventario>({ unidades: unidadesIniciales, categorias: categoriasIniciales, clasificaciones: clasificacionesIniciales, tipos: { PRODUCTO: 'PRODUCTO', INSUMO: 'INSUMO', SERVICIO: 'SERVICIO' } });
   const [errorOpciones, setErrorOpciones] = useState('');
   const [opcionesCargadas, setOpcionesCargadas] = useState(false);
@@ -148,6 +152,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     apiFetch('/api/v1/inventario/opciones').then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(({ data }: { data: OpcionesInventario }) => {
         if (!vigente) return;
+        if (tipo === 'servicios') data = { ...data, tipos: Object.fromEntries(Object.entries(data.tipos).filter(([, base]) => base === 'SERVICIO')) };
         setOpcionesRegistro(data); setOpcionesCargadas(true);
         setFormularioRegistro(actual => ({ ...actual,
           unidadMedida: data.unidades.includes(actual.unidadMedida) ? actual.unidadMedida : data.unidades[0] || '',
@@ -189,7 +194,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   const [categoriaRegistro, setCategoriaRegistro] = useState('');
   const [subcategoriaRegistro, setSubcategoriaRegistro] = useState('');
   const [serieHabilitada, setSerieHabilitada] = useState(false);
-  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(registrosDemoIniciales);
+  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(tipo === 'servicios' ? [] : registrosDemoIniciales);
   const [mensajeGuardado, setMensajeGuardado] = useState('');
   const [formularioRegistro, setFormularioRegistro] = useState({
     clasificacion: 'SIN CLASIFICAR',
@@ -208,23 +213,29 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   });
 
   async function cargarRegistros() {
+    setCargando(true);
     try {
-      const respuesta = await apiFetch('/api/inventario');
+      setErrorCarga('');
+      const respuesta = await apiFetch(endpoint);
       if (!respuesta.ok) throw new Error('No se pudo cargar el inventario.');
       const datos = (await respuesta.json().catch(() => ({ data: [] }))) as {
         data?: RegistroInventario[];
       };
       const siguientes = Array.isArray(datos.data) ? datos.data : [];
-      if (siguientes.length > 0) {
+      if (siguientes.length > 0 || tipo === 'servicios') {
         setRegistrosGuardados(siguientes);
         return siguientes;
       }
       setRegistrosGuardados(registrosDemoIniciales);
       return registrosDemoIniciales;
     } catch {
+      if (tipo === 'servicios') {
+        setErrorCarga('No se pudieron cargar los servicios. Intenta nuevamente.');
+        return [];
+      }
       setRegistrosGuardados(registrosDemoIniciales);
       return registrosDemoIniciales;
-    }
+    } finally { setCargando(false); }
   }
 
   useEffect(() => {
@@ -322,7 +333,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   }, [categoriaRegistro, subcategoriasPorCategoria]);
   const [siguienteNumero, setSiguienteNumero] = useState<number | null>(null);
   useEffect(() => {
-    if (!modalRegistroAbierto) return;
+    if (!modalRegistroAbierto || tipo === 'servicios') return;
     setSiguienteNumero(null);
     apiFetch('/api/inventario/siguiente-codigo').then(r => { if (!r.ok) throw new Error(); return r.json(); })
       .then(r => setSiguienteNumero(r.numero)).catch(() => setMensajeGuardado('No se pudo consultar el siguiente codigo. Se asignara al guardar.'));
@@ -571,6 +582,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     event.preventDefault();
     setMensajeGuardado('');
 
+    if (guardando || !puedeGestionar) return;
     const payload: RegistroInventario = {
       clasificacion: formularioRegistro.clasificacion,
       imagen: formularioRegistro.imagen,
@@ -604,8 +616,9 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
       return;
     }
 
+    setGuardando(true);
     try {
-      const respuesta = await apiFetch('/api/inventario', {
+      const respuesta = await apiFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -613,7 +626,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
 
       if (!respuesta.ok) {
         const errorData = await respuesta.json().catch(() => ({}));
-        throw new Error(errorData.message || 'No se pudo guardar el registro.');
+        throw new Error(errorData.errors ? Object.values(errorData.errors).flat().join(' ') : errorData.message || 'No se pudo guardar el registro.');
       }
 
       const respuestaJson = (await respuesta.json().catch(() => ({}))) as {
@@ -625,16 +638,17 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     } catch (error) {
       setMensajeGuardado(error instanceof Error ? error.message : 'No se pudo guardar el registro.');
       return;
-    }
+    } finally { setGuardando(false); }
 
+    setMensajeGuardado(tipo === 'servicios' ? 'Servicio registrado correctamente.' : 'Registro guardado correctamente.');
     setFormularioRegistro({
-      clasificacion: 'SIN CLASIFICAR',
+      clasificacion: '',
     imagen: '',
     codigo: '',
       nombre: '',
       descripcion: '',
       unidadMedida: '',
-      tipo: tipo === 'servicios' ? 'Servicio' : 'Producto',
+      tipo: tipo === 'servicios' ? Object.keys(opcionesRegistro.tipos)[0] || '' : 'Producto',
       categoria: '',
       grupo: '',
       precioVenta: '',
@@ -651,7 +665,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
   async function guardarEdicionRegistro(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setMensajeGuardado('');
-    if (!edicionRegistro) return;
+    if (!edicionRegistro || guardando || !puedeGestionar) return;
 
     const payload: RegistroInventario = {
       ...edicionRegistro,
@@ -672,9 +686,11 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
         : '',
     };
 
+    if (tipo === 'servicios') delete payload.stock;
+    setGuardando(true);
     try {
       const id = edicionRegistro.id ?? edicionRegistro.codigo;
-      const respuesta = await apiFetch(`/api/inventario/${id}`, {
+      const respuesta = await apiFetch(`${endpoint}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -682,7 +698,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
 
       if (!respuesta.ok) {
         const errorData = await respuesta.json().catch(() => ({}));
-        throw new Error(errorData.message || 'No se pudo actualizar el registro.');
+        throw new Error(errorData.errors ? Object.values(errorData.errors).flat().join(' ') : errorData.message || 'No se pudo actualizar el registro.');
       }
 
       const respuestaJson = (await respuesta.json().catch(() => ({ data: payload }))) as {
@@ -702,8 +718,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
     } catch (error) {
       setMensajeGuardado(error instanceof Error ? error.message : 'No se pudo actualizar el registro.');
       return;
-    }
-
+    } finally { setGuardando(false); }
     setEdicionRegistro(null);
   }
 
@@ -900,15 +915,19 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                 <Icon name="audit" size={17} /> Reportes
               </button>
             )}
-            <button
+            {puedeGestionar && <button
               className="inventario-nuevo"
               type="button"
+              disabled={tipo === 'servicios' && (!opcionesCargadas || cargando)}
               onClick={() => setModalRegistroAbierto(true)}
             >
               <Icon name="plus" size={17} /> Registro
-            </button>
+            </button>}
           </div>
         </div>
+        {errorCarga && <p role="alert">{errorCarga} <button type="button" onClick={() => void cargarRegistros()}>Reintentar</button></p>}
+        {tipo === 'servicios' && !cargando && !errorCarga && registrosGuardados.length === 0 && <p role="status">No hay servicios registrados. Usa Registro para crear el primero.</p>}
+        {tipo === 'servicios' && cargando && <p role="status">Cargando servicios…</p>}
         {controlesSuperiores}
         {modo === 'listado' ? (
           <div
@@ -1011,7 +1030,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     >
                       <Icon name="eye" size={15} />
                     </button>
-                    <button
+                    {puedeGestionar && <button
                       type="button"
                       onClick={() => {
                         const registroBase =
@@ -1042,7 +1061,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                       }}
                     >
                       Editar
-                    </button>
+                    </button>}
                   </div>
                 </article>
               );
@@ -1337,7 +1356,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="inactivo">Inactivo</option>
                   </select>
                 </label>
-                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={edicionRegistro.clasificacion || 'SIN CLASIFICAR'} onChange={e => setEdicionRegistro(actual => actual ? { ...actual, clasificacion: e.target.value } : actual)}>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
+                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={edicionRegistro.clasificacion || ''} onChange={e => setEdicionRegistro(actual => actual ? { ...actual, clasificacion: e.target.value } : actual)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
                 <CapturaCodigo codigo={edicionRegistro.numeroSerie || ''} imagen={edicionRegistro.imagen} onCodigo={valor => setEdicionRegistro(actual => actual ? { ...actual, numeroSerie: valor, usarNumeroSerie: Boolean(valor) } : actual)} onImagen={valor => setEdicionRegistro(actual => actual ? { ...actual, imagen: valor } : actual)} />
               </div>
               <footer>
@@ -1348,8 +1367,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                 >
                   Cancelar
                 </button>
-                <button className="inventario-primario" type="submit">
-                  Guardar cambios
+                <button className="inventario-primario" type="submit" disabled={guardando}>
+                  {guardando ? 'Guardando…' : 'Guardar cambios'}
                 </button>
               </footer>
             </form>
@@ -1380,7 +1399,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
               <div>
                 <span>Nuevo registro</span>
                 <h3 id="inventario-modal-registro-titulo">
-                  Registrar inventario
+                  {esServicio ? 'Registrar servicio' : 'Registrar inventario'}
                 </h3>
               </div>
               <button
@@ -1393,6 +1412,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
             </header>
             <form onSubmit={guardarRegistroInventario}>
               {errorOpciones && <p role="alert">{errorOpciones}</p>}
+              {esServicio && opcionesCargadas && (!unidadesRegistro.length || !Object.keys(categoriasRegistro).some(nombre => categoriasRegistro[nombre].subcategorias.length) || !Object.keys(opcionesRegistro.tipos).length) && <p role="status">Antes de registrar, configura un tipo Servicio activo, una unidad de medida y una categoría con subcategoría en Configuración admin.</p>}
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
               <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label>
@@ -1407,7 +1427,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     onChange={(event) =>
                       actualizarCampoRegistro('nombre', event.target.value)
                     }
-                    placeholder="Ej. Jeringa descartable 10 ml"
+                    placeholder={esServicio ? 'Ej. Consulta médica general' : 'Ej. Jeringa descartable 10 ml'}
                   />
                 </label>
                 <label className="inventario-campo-completo">
@@ -1527,7 +1547,7 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                     <option value="inactivo">Inactivo</option>
                   </select>
                 </label>
-                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={formularioRegistro.clasificacion} onChange={e => actualizarCampoRegistro('clasificacion', e.target.value)}>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
+                <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={formularioRegistro.clasificacion} onChange={e => actualizarCampoRegistro('clasificacion', e.target.value)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
                 <CapturaCodigo codigo={formularioRegistro.numeroSerie} imagen={formularioRegistro.imagen} onCodigo={valor => { actualizarCampoRegistro('numeroSerie', valor); setSerieHabilitada(Boolean(valor)); }} onImagen={valor => actualizarCampoRegistro('imagen', valor)} />
               </div>
               <footer>
@@ -1538,8 +1558,8 @@ export function CatalogoView({ tipo, onReportes }: { tipo: TipoCatalogo; onRepor
                 >
                   Cancelar
                 </button>
-                <button className="inventario-primario" type="submit">
-                  Guardar registro
+                <button className="inventario-primario" type="submit" disabled={guardando}>
+                  {guardando ? 'Guardando…' : 'Guardar registro'}
                 </button>
               </footer>
             </form>

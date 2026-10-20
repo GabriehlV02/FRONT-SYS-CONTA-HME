@@ -1,610 +1,121 @@
 import { apiFetch } from '@ui/auth';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
-import { SelectMenu } from '@ui/components/SelectMenu';
-import { productosDemo } from '../datos/catalogoDemo';
+import { leerRespuesta } from '../../usuarios/accesos';
+import '../InventarioView.css';
 
 type Lote = {
-  id: string;
-  codigo: string;
-  nombre: string;
-  tipo: string;
-  categoria: string;
-  subcategoria: string;
-  unidad: string;
-  marca: string;
-  lote: string;
-  fecha: string;
-  almacen: string;
-  sucursal?: string;
-  disponible: number;
-  costoUnitario: number;
-  vence: string;
+  id: string; itemId: number; loteId: number; codigo: string; nombre: string;
+  generico: string; codigoGenerico: string; tipo: string; categoria: string; subcategoria: string;
+  unidad: string; presentacion: string; marca: string; lote: string; fecha: string;
+  almacenId: number | null; almacen: string; sucursalId: number | null; sucursal: string;
+  disponible: number; costoUnitario: string | null; vence: string;
+  precio1: string; precio2: string; precio3: string;
 };
-
-const sucursalPorAlmacen: Record<string, string> = {
-  'Almacén central': 'Hospital María Esperanza',
-  Farmacia: 'Hospital María Esperanza',
-  'Insumos policonsultorio': 'Policonsultorio Diabetes',
-};
-
-const obtenerSucursal = (lote: Lote) => {
-  if (lote.sucursal?.trim()) return lote.sucursal.trim();
-  if (sucursalPorAlmacen[lote.almacen]) return sucursalPorAlmacen[lote.almacen];
-  const partes = lote.almacen.split(' - ');
-  return partes.length > 1 ? partes[0].trim() : 'Sucursal no asignada';
-};
-
-const existenciasDemo = [10, 15, 20, 25, 30, 35, 40, 45, 0, -3];
-const lotesDemo: Lote[] = productosDemo.map((producto, indice) => ({
-  id: `demo-${indice + 1}`,
-  codigo: `ITM-${String(indice + 1).padStart(4, '0')}`,
-  nombre: producto.nombre,
-  tipo: indice % 2 === 0 ? 'Insumo' : 'Producto',
-  categoria: producto.categoria,
-  subcategoria: 'General',
-  unidad: producto.presentacion,
-  marca: producto.marca,
-  lote:
-    existenciasDemo[indice % existenciasDemo.length] > 0
-      ? `LT-${String(2501 + indice).padStart(4, '0')}`
-      : 'Sin lote',
-  fecha:
-    existenciasDemo[indice % existenciasDemo.length] > 0
-      ? `2026-${String((indice % 9) + 1).padStart(2, '0')}-${String((indice % 20) + 1).padStart(2, '0')}`
-      : 'Sin ingreso',
-  almacen: indice % 3 === 0 ? 'Farmacia' : 'Almacén central',
-  disponible: existenciasDemo[indice % existenciasDemo.length],
-  costoUnitario: 8 + (indice % 12) * 4.5,
-  vence:
-    existenciasDemo[indice % existenciasDemo.length] > 0
-      ? `2027-${String((indice % 9) + 1).padStart(2, '0')}-28`
-      : '',
-}));
-
-type RecepcionLocal = {
-  id: string;
-  codigo: string;
-  producto: string;
-  lote: string;
-  cantidad: number;
-  unidad: string;
-  movimientoId: string;
-  almacen: string;
-  fecha: string;
-  estado?: 'recibido' | 'devuelto';
-};
-const leerRecepciones = (): Lote[] => {
-  try {
-    const recepciones = JSON.parse(
-      localStorage.getItem('contable-stock-recepciones') || '[]',
-    ) as RecepcionLocal[];
-    return recepciones.map((linea) => ({
-      id: `recepcion-${linea.movimientoId}-${linea.id}`,
-      codigo: linea.codigo,
-      nombre: linea.producto,
-      tipo: linea.unidad === 'Unidad' ? 'Insumo' : 'Producto',
-      categoria:
-        linea.estado === 'devuelto'
-          ? 'Devolución de traspaso'
-          : 'Traspaso entre almacenes',
-      subcategoria:
-        linea.estado === 'devuelto' ? 'No recibido' : 'Recepcionado',
-      unidad: linea.unidad,
-      marca: linea.producto.includes('Guantes')
-        ? 'SafeTouch'
-        : linea.producto.includes('Jeringa')
-          ? 'BolMed'
-          : 'MediCare',
-      lote: linea.lote,
-      fecha: linea.fecha,
-      almacen: linea.almacen,
-      disponible: linea.cantidad,
-      costoUnitario: 0,
-      vence: '',
-    }));
-  } catch {
-    return [];
-  }
-};
+type Campo = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'marca' | 'lote' | 'disponible' | 'almacen' | 'vence';
+const columnas: { texto: string; campo: Campo }[] = [
+  { texto: 'Código', campo: 'codigo' }, { texto: 'Nombre o identificación', campo: 'nombre' },
+  { texto: 'Tipo', campo: 'tipo' }, { texto: 'Categoría', campo: 'categoria' },
+  { texto: 'Subcategoría', campo: 'subcategoria' }, { texto: 'Unidad', campo: 'unidad' },
+  { texto: 'Marca', campo: 'marca' }, { texto: 'Lote', campo: 'lote' },
+  { texto: 'Stock', campo: 'disponible' }, { texto: 'Almacén', campo: 'almacen' }, { texto: 'Vence', campo: 'vence' },
+];
+const clave = (id: number | null) => id === null ? 'sin-asignar' : String(id);
+const textoBusqueda = (texto: string) => texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es');
+const cantidad = (valor: number) => valor.toLocaleString('es-BO', { maximumFractionDigits: 3 });
+const sumar = (lotes: Lote[]) => Number(lotes.reduce((total, lote) => total + lote.disponible, 0).toFixed(3));
+const dinero = (valor: string | null, decimales = 2) => valor === null ? 'Sin costo registrado' : 'Bs ' + Number(valor).toLocaleString('es-BO', { minimumFractionDigits: decimales, maximumFractionDigits: decimales });
 
 export function LotesStock() {
-  const [lotes, setLotes] = useState<Lote[]>(lotesDemo);
+  const [lotes, setLotes] = useState<Lote[]>([]);
+  const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
+  const [recarga, setRecarga] = useState(0);
   const [busqueda, setBusqueda] = useState('');
   const [sucursal, setSucursal] = useState('todas');
   const [almacen, setAlmacen] = useState('todos');
   const [filas, setFilas] = useState(20);
   const [pagina, setPagina] = useState(1);
+  const [orden, setOrden] = useState<Campo>('codigo');
+  const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [detalle, setDetalle] = useState<Lote | null>(null);
   const [almacenDetalle, setAlmacenDetalle] = useState('todos');
-  const [stockDetalleAbierto, setStockDetalleAbierto] = useState(false);
+  const dialogo = useRef<HTMLElement>(null);
+  const origen = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!detalle) setStockDetalleAbierto(false);
-  }, [detalle]);
-
+    const controller = new AbortController();
+    setCargando(true); setError('');
+    apiFetch('/api/v1/stock/lotes', { signal: controller.signal }).then(leerRespuesta<{ data: Lote[] }>).then(respuesta => setLotes(respuesta.data))
+      .catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'No se pudo consultar el stock.'); })
+      .finally(() => { if (!controller.signal.aborted) setCargando(false); });
+    const actualizar = () => setRecarga(valor => valor + 1);
+    window.addEventListener('contable-stock-actualizado', actualizar);
+    return () => { controller.abort(); window.removeEventListener('contable-stock-actualizado', actualizar); };
+  }, [recarga]);
   useEffect(() => {
-    const incorporarRecepciones = (base: Lote[]) => [
-      ...leerRecepciones(),
-      ...base,
-    ];
-    const actualizarRecepciones = () =>
-      setLotes((actual) => {
-        const base = actual.filter((lote) => !lote.id.startsWith('recepcion-'));
-        return incorporarRecepciones(base);
-      });
-    apiFetch('/api/stock/lotes')
-      .then(async (respuesta) => {
-        if (!respuesta.ok) throw new Error('No se pudo cargar el stock');
-        return respuesta.json();
-      })
-      .then((respuesta) => {
-        const reales = Array.isArray(respuesta.data)
-          ? (respuesta.data as Array<
-              Partial<Lote> & Pick<Lote, 'id' | 'codigo'>
-            >)
-          : [];
-        const codigosReales = new Set(reales.map((lote) => lote.codigo));
-        const catalogo = new Map(lotesDemo.map((lote) => [lote.codigo, lote]));
-        setLotes(
-          incorporarRecepciones([
-            ...reales.map(
-              (lote) => ({ ...catalogo.get(lote.codigo), ...lote }) as Lote,
-            ),
-            ...lotesDemo.filter((lote) => !codigosReales.has(lote.codigo)),
-          ]),
-        );
-      })
-      .catch(() =>
-        setError(
-          'Se muestran existencias de ejemplo mientras se conecta el inventario.',
-        ),
-      );
-    window.addEventListener(
-      'contable-stock-actualizado',
-      actualizarRecepciones,
-    );
-    return () =>
-      window.removeEventListener(
-        'contable-stock-actualizado',
-        actualizarRecepciones,
-      );
-  }, []);
+    if (!detalle) return;
+    dialogo.current?.querySelector<HTMLElement>('button')?.focus();
+    const contenedor = document.querySelector('.sistema-contable') || document.body;
+    const hermanos = Array.from(contenedor.children).filter((elemento): elemento is HTMLElement => elemento instanceof HTMLElement && !elemento.contains(dialogo.current));
+    const estados = hermanos.map(elemento => elemento.inert);
+    hermanos.forEach(elemento => { elemento.inert = true; });
+    const scroll = document.body.style.overflow; document.body.style.overflow = 'hidden';
+    return () => { hermanos.forEach((elemento, indice) => { elemento.inert = estados[indice]; }); document.body.style.overflow = scroll; };
+  }, [!!detalle]);
 
-  const almacenes = useMemo(
-    () =>
-      [...new Set(lotes.map((lote) => lote.almacen).filter(Boolean))].sort(),
-    [lotes],
-  );
-  const almacenesDetalle = useMemo(() => {
-    if (!detalle) return [];
-    return [...new Set(
-      lotes
-        .filter((lote) => lote.codigo === detalle.codigo)
-        .map((lote) => lote.almacen)
-        .filter(Boolean),
-    )].sort();
-  }, [detalle, lotes]);
-  const existenciaDetalle = useMemo(() => {
-    if (!detalle) return 0;
-    return lotes
-      .filter((lote) =>
-        lote.codigo === detalle.codigo &&
-        (almacenDetalle === 'todos' || lote.almacen === almacenDetalle),
-      )
-      .reduce((total, lote) => total + lote.disponible, 0);
-  }, [almacenDetalle, detalle, lotes]);
-  const stockPorAlmacen = useMemo(() => {
-    if (!detalle) return [];
-    const cantidades = new Map<string, { nombre: string; sucursal: string; cantidad: number; lotes: Lote[] }>();
-    lotes
-      .filter((lote) => lote.codigo === detalle.codigo)
-      .forEach((lote) => {
-        const sucursalLote = obtenerSucursal(lote);
-        const clave = `${sucursalLote}\u0000${lote.almacen}`;
-        const actual = cantidades.get(clave);
-        cantidades.set(clave, {
-          nombre: lote.almacen,
-          sucursal: sucursalLote,
-          cantidad: (actual?.cantidad || 0) + lote.disponible,
-          lotes: [...(actual?.lotes || []), ...(lote.disponible > 0 ? [lote] : [])],
-        });
+  const sucursales = useMemo(() => Array.from(new Map(lotes.map(lote => [clave(lote.sucursalId), lote.sucursal])).entries()).sort((a, b) => a[1].localeCompare(b[1], 'es')), [lotes]);
+  const almacenes = useMemo(() => Array.from(new Map(lotes.filter(lote => sucursal === 'todas' || clave(lote.sucursalId) === sucursal).map(lote => [clave(lote.almacenId), { nombre: lote.almacen, sucursal: lote.sucursal }])).entries()).sort((a, b) => a[1].nombre.localeCompare(b[1].nombre, 'es')), [lotes, sucursal]);
+  const visibles = useMemo(() => {
+    const texto = textoBusqueda(busqueda.trim());
+    return lotes.filter(lote => (sucursal === 'todas' || clave(lote.sucursalId) === sucursal) && (almacen === 'todos' || clave(lote.almacenId) === almacen) &&
+      (!texto || textoBusqueda([lote.codigo, lote.nombre, lote.generico, lote.codigoGenerico, lote.marca, lote.lote, lote.almacen, lote.sucursal, lote.presentacion].join(' ')).includes(texto)))
+      .sort((a, b) => {
+        const comparacion = orden === 'disponible' ? a.disponible - b.disponible : String(a[orden]).localeCompare(String(b[orden]), 'es', { numeric: true });
+        return (comparacion || a.id.localeCompare(b.id)) * (direccion === 'asc' ? 1 : -1);
       });
-    return [...cantidades.values()].sort((a, b) =>
-      a.sucursal.localeCompare(b.sucursal, 'es') || a.nombre.localeCompare(b.nombre, 'es'),
-    );
-  }, [detalle, lotes]);
-  const stockPorSucursal = useMemo(() => {
-    const grupos = new Map<string, typeof stockPorAlmacen>();
-    stockPorAlmacen.forEach((item) => grupos.set(
-      item.sucursal,
-      [...(grupos.get(item.sucursal) || []), item],
-    ));
-    return [...grupos.entries()].map(([nombre, almacenesSucursal]) => ({
-      nombre,
-      almacenes: almacenesSucursal,
-      total: almacenesSucursal.reduce((suma, item) => suma + item.cantidad, 0),
-    }));
-  }, [stockPorAlmacen]);
-  const lotesVisibles = useMemo(() => {
-    const texto = busqueda.trim().toLocaleLowerCase('es');
-    return lotes.filter(
-      (lote) =>
-        (almacen === 'todos' || lote.almacen === almacen) &&
-        (sucursal === 'todas' || sucursal === 'hospital-maria-esperanza') &&
-        (!texto ||
-          `${lote.codigo} ${lote.nombre} ${lote.marca} ${lote.lote} ${lote.almacen}`
-            .toLocaleLowerCase('es')
-            .includes(texto)),
-    );
-  }, [almacen, busqueda, lotes, sucursal]);
-  const totalPaginas = Math.max(1, Math.ceil(lotesVisibles.length / filas));
+  }, [lotes, sucursal, almacen, busqueda, orden, direccion]);
+  const totalPaginas = Math.max(1, Math.ceil(visibles.length / filas));
   const paginaActual = Math.min(pagina, totalPaginas);
-  const lotesPagina = lotesVisibles.slice(
-    (paginaActual - 1) * filas,
-    paginaActual * filas,
-  );
+  const lotesPagina = visibles.slice((paginaActual - 1) * filas, paginaActual * filas);
+  const filasDetalle = detalle ? lotes.filter(lote => lote.itemId === detalle.itemId) : [];
+  const almacenesDetalle = Array.from(new Map(filasDetalle.map(lote => [clave(lote.almacenId), lote])).entries());
+  const detalleFiltrado = filasDetalle.filter(lote => almacenDetalle === 'todos' || clave(lote.almacenId) === almacenDetalle);
+  const gruposDetalle = Array.from(new Map(detalleFiltrado.map(lote => [clave(lote.sucursalId), lote.sucursal])).entries()).map(([id, nombre]) => ({ id, nombre, lotes: detalleFiltrado.filter(lote => clave(lote.sucursalId) === id) }));
+  const sinIngresos = lotes.filter(lote => lote.almacenId === null).length;
+  const cerrar = () => { setDetalle(null); requestAnimationFrame(() => origen.current?.focus()); };
 
-  return (
-    <section className="stock-lotes">
-      <div className="stock-lotes-filtros">
-        <label className="stock-lotes-busqueda">
-          <div>
-            <Icon name="search" size={17} />
-            <input
-              aria-label="Buscar ítem, marca, lote o almacén"
-              placeholder="Buscar ítem, marca, lote o almacén..."
-              value={busqueda}
-              onChange={(event) => {
-                setBusqueda(event.target.value);
-                setPagina(1);
-              }}
-            />
-          </div>
-        </label>
-        <label>
-          <select
-            aria-label="Filtrar por sucursal"
-            value={sucursal}
-            onChange={(event) => {
-              setSucursal(event.target.value);
-              setAlmacen('todos');
-              setPagina(1);
-            }}
-          >
-            <option value="todas">Todas las sucursales</option>
-            <option value="hospital-maria-esperanza">
-              Hospital María Esperanza
-            </option>
-          </select>
-        </label>
-        <label>
-          <select
-            aria-label="Filtrar por almacén"
-            value={almacen}
-            onChange={(event) => {
-              setAlmacen(event.target.value);
-              setPagina(1);
-            }}
-          >
-            <option value="todos">Todos los almacenes</option>
-            {almacenes.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {error && (
-        <p className="stock-lotes-error" role="alert">
-          {error}
-        </p>
-      )}
-      <PaginacionTabla
-        total={lotesVisibles.length}
-        filas={filas}
-        pagina={paginaActual}
-        totalPaginas={totalPaginas}
-        onFilas={(cantidad) => {
-          setFilas(cantidad);
-          setPagina(1);
-        }}
-        onPagina={setPagina}
-      />
-      <div className="stock-lotes-tabla">
-        <table>
-          <colgroup>
-            <col className="col-codigo" />
-            <col className="col-nombre" />
-            <col className="col-tipo" />
-            <col className="col-categoria" />
-            <col className="col-subcategoria" />
-            <col className="col-unidad" />
-            <col className="col-marca" />
-            <col className="col-lote" />
-            <col className="col-stock" />
-            <col className="col-almacen" />
-            <col className="col-vence" />
-            <col className="col-acciones" />
-          </colgroup>
-          <thead>
-            <tr>
-              {[
-                'Código',
-                'Nombre o identificación',
-                'Tipo',
-                'Categoría',
-                'Sub categoría',
-                'Unidad',
-                'Marca',
-                'Lote',
-                'Stock',
-                'Almacén',
-                'Vence',
-                'Acciones',
-              ].map((columna) => (
-                <th key={columna}>{columna}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {lotesPagina.map((lote) => (
-              <tr key={lote.id}>
-                <td>{lote.codigo}</td>
-                <td className="stock-lote-nombre">{lote.nombre}</td>
-                <td>
-                  <span className="stock-lote-tipo">{lote.tipo}</span>
-                </td>
-                <td>{lote.categoria}</td>
-                <td>{lote.subcategoria}</td>
-                <td>{lote.unidad}</td>
-                <td>{lote.marca}</td>
-                <td>{lote.lote}</td>
-                <td
-                  className={
-                    lote.disponible < 0
-                      ? 'stock-negativo'
-                      : lote.disponible === 0
-                        ? 'stock-cero'
-                        : ''
-                  }
-                >
-                  {lote.disponible}
-                </td>
-                <td>{lote.almacen}</td>
-                <td>{lote.vence || 'Sin vencimiento'}</td>
-                <td>
-                  <button
-                    className="stock-lote-detalle"
-                    type="button"
-                    onClick={() => {
-                      setDetalle(lote);
-                      setAlmacenDetalle(lote.almacen);
-                    }}
-                  >
-                    <Icon name="eye" size={15} /> Ver detalle
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {!lotesVisibles.length && !error && (
-          <div className="stock-lotes-vacio">
-            <Icon name="package" size={24} />
-            <div>
-              <strong>
-                {lotes.length
-                  ? 'No hay coincidencias'
-                  : 'No hay ingresos registrados'}
-              </strong>
-              <p>
-                {lotes.length
-                  ? 'Cambia los filtros para consultar otros lotes.'
-                  : 'El stock aparecerá después de registrar una adquisición.'}
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-      {detalle && (
-        <div
-          className="stock-lote-detalle-fondo"
-          role="presentation"
-          onMouseDown={() => setDetalle(null)}
-        >
-          <section
-            className="stock-lote-detalle-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="stock-lote-detalle-titulo"
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <header>
-              <div>
-                <div className="stock-lote-identificacion">
-                  <span>Código</span>
-                  <strong>{detalle.codigo}</strong>
-                </div>
-                <h3 id="stock-lote-detalle-titulo">{detalle.nombre}</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setDetalle(null)}
-                aria-label="Cerrar detalle"
-              >
-                <Icon name="close" size={18} />
-              </button>
-            </header>
-            <div className="stock-lote-detalle-datos">
-              <p>
-                <span>Tipo de ítem</span>
-                <strong>{detalle.tipo}</strong>
-              </p>
-              <p>
-                <span>Categoría</span>
-                <strong>{detalle.categoria}</strong>
-              </p>
-              <p className="stock-lote-costo">
-                <span>Costo unitario</span>
-                <strong>Bs {detalle.costoUnitario.toFixed(2)}</strong>
-              </p>
-              <p>
-                <span>Subcategoría</span>
-                <strong>{detalle.subcategoria}</strong>
-              </p>
-              <div className="stock-lote-separador" aria-hidden="true" />
-              <p>
-                <span>Almacén</span>
-                <SelectMenu
-                  className="stock-lote-almacen-select"
-                  value={almacenDetalle === 'todos' ? 'Todos' : almacenDetalle}
-                  options={['Todos', ...almacenesDetalle]}
-                  formatOption={(opcion) => {
-                    const cantidad = stockPorAlmacen
-                      .filter((item) => opcion === 'Todos' || item.nombre === opcion)
-                      .reduce((total, item) => total + item.cantidad, 0);
-                    return `${opcion} (Stock: ${cantidad.toLocaleString('es-BO')})`;
-                  }}
-                  onChange={(opcion) => setAlmacenDetalle(opcion === 'Todos' ? 'todos' : opcion)}
-                  ariaLabel="Seleccionar almacén para consultar existencias"
-                />
-              </p>
-              <p className="stock-lote-dato-destacado">
-                <span>Existencia disponible</span>
-                <span className="stock-lote-existencia-control">
-                  <strong>{existenciaDetalle}</strong>
-                  <button type="button" onClick={() => setStockDetalleAbierto(true)}>
-                    <Icon name="eye" size={15} /> Ver stock
-                  </button>
-                </span>
-              </p>
-              <p>
-                <span>Marca</span>
-                <strong>{detalle.marca}</strong>
-              </p>
-              <p>
-                <span>Lote</span>
-                <strong>{detalle.lote}</strong>
-              </p>
-              <p>
-                <span>Presentación</span>
-                <strong>{detalle.unidad}</strong>
-              </p>
-              <p>
-                <span>Vencimiento</span>
-                <strong>{detalle.vence || 'Sin vencimiento'}</strong>
-              </p>
-              <p>
-                <span>Fecha de ingreso</span>
-                <strong>{detalle.fecha || 'Sin registro'}</strong>
-              </p>
-              <p className={`stock-lote-estado ${existenciaDetalle > 0 ? 'disponible' : 'sin-stock'}`}>
-                <span>Estado de existencias</span>
-                <strong>
-                  {existenciaDetalle < 0
-                    ? 'Stock negativo'
-                    : existenciaDetalle === 0
-                      ? 'Sin existencias'
-                      : 'Disponible'}
-                </strong>
-              </p>
-            </div>
-            <footer>
-              <button type="button" onClick={() => setDetalle(null)}>
-                Cerrar
-              </button>
-            </footer>
-          </section>
-          {stockDetalleAbierto && (
-            <div
-              className="stock-desglose-fondo"
-              role="presentation"
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                setStockDetalleAbierto(false);
-              }}
-            >
-              <section
-                className="stock-desglose-modal"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="stock-desglose-titulo"
-                onMouseDown={(event) => event.stopPropagation()}
-              >
-                <header>
-                  <div>
-                    <span>Stock por almacén</span>
-                    <h3 id="stock-desglose-titulo">{detalle.nombre}</h3>
-                    <small>{detalle.codigo}</small>
-                  </div>
-                  <button type="button" onClick={() => setStockDetalleAbierto(false)} aria-label="Cerrar stock por almacén">
-                    <Icon name="close" size={18} />
-                  </button>
-                </header>
-                <div className="stock-desglose-contenido">
-                  <div className="stock-desglose-general">
-                    <span>Stock general</span>
-                    <strong>{stockPorAlmacen.reduce((total, item) => total + item.cantidad, 0)}</strong>
-                    <small>Suma de todas las sucursales y almacenes</small>
-                  </div>
-                  {stockPorSucursal.map((grupo) => (
-                    <section className="stock-desglose-sucursal" key={grupo.nombre}>
-                      <header>
-                        <div><span>Sucursal</span><strong>{grupo.nombre}</strong></div>
-                        <div><span>Total sucursal</span><b>{grupo.total}</b></div>
-                      </header>
-                      <div className="stock-desglose-head" role="row">
-                        <span>Almacén</span><span>Existencia</span><span>Estado</span><span>Lotes</span>
-                      </div>
-                      {grupo.almacenes.map((item) => (
-                        <div className="stock-desglose-fila" role="row" key={`${grupo.nombre}-${item.nombre}`}>
-                          <strong>{item.nombre}</strong>
-                          <b>{item.cantidad}</b>
-                          <span className={item.cantidad > 0 ? 'disponible' : 'sin-stock'}>
-                            {item.cantidad < 0 ? 'Stock negativo' : item.cantidad === 0 ? 'Sin existencias' : 'Disponible'}
-                          </span>
-                          <div className="stock-desglose-lotes">
-                            {item.lotes.length ? (
-                              <details>
-                                <summary aria-label={`Ver lotes de ${item.nombre}, ${grupo.nombre}`}>
-                                  <span>Lotes disponibles <em>{item.lotes.length}</em></span>
-                                  <Icon name="chevronDown" size={15} />
-                                </summary>
-                                <ul className="stock-desglose-lotes-lista" aria-label={`Lotes disponibles en ${item.nombre}`}>
-                                    {item.lotes.map((lote) => (
-                                      <li key={lote.id}>
-                                        <div className="stock-desglose-lote-identidad">
-                                          <strong>{lote.lote || 'Sin lote'}</strong>
-                                          <small>Marca: {lote.marca || 'Sin marca'}</small>
-                                        </div>
-                                        <div className="stock-desglose-lote-cantidad">
-                                          <strong>{lote.disponible.toLocaleString('es-BO')}</strong>
-                                          <small>{lote.unidad || 'unidades'}</small>
-                                        </div>
-                                      </li>
-                                    ))}
-                                </ul>
-                              </details>
-                            ) : <small>Sin lotes disponibles</small>}
-                          </div>
-                        </div>
-                      ))}
-                    </section>
-                  ))}
-                </div>
-                <footer>
-                  <span>{stockPorSucursal.length} {stockPorSucursal.length === 1 ? 'sucursal' : 'sucursales'}</span>
-                  <button type="button" onClick={() => setStockDetalleAbierto(false)}>Cerrar</button>
-                </footer>
-              </section>
-            </div>
-          )}
-        </div>
-      )}
-    </section>
-  );
+  return <section className="stock-lotes stock-general-real">
+    <div className="stock-lotes-filtros"><label className="stock-lotes-busqueda"><div><Icon name="search" size={17}/><input type="search" aria-label="Buscar ítem, marca, lote o almacén" placeholder="Buscar ítem, genérico, marca, lote o almacén…" value={busqueda} onChange={evento => { setBusqueda(evento.target.value); setPagina(1); }} /></div></label>
+      <label><select aria-label="Filtrar por sucursal" value={sucursal} onChange={evento => { setSucursal(evento.target.value); setAlmacen('todos'); setPagina(1); }}><option value="todas">Todas las sucursales</option>{sucursales.map(([id, nombre]) => <option key={id} value={id}>{nombre}</option>)}</select></label>
+      <label><select aria-label="Filtrar por almacén" value={almacen} onChange={evento => { setAlmacen(evento.target.value); setPagina(1); }}><option value="todos">Todos los almacenes</option>{almacenes.map(([id, datos]) => <option key={id} value={id}>{datos.nombre}{id !== 'sin-asignar' && sucursal === 'todas' ? ' · ' + datos.sucursal : ''}</option>)}</select></label>
+      <button className="stock-actualizar" type="button" disabled={cargando} onClick={() => setRecarga(valor => valor + 1)}>{cargando ? 'Actualizando…' : 'Actualizar'}</button>
+    </div>
+    {error && <p className="stock-lotes-error" role="alert">{error} <button type="button" onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
+    {!cargando && !error && sinIngresos > 0 && <p className="stock-general-aviso" role="status">{sinIngresos} {sinIngresos === 1 ? 'lote todavía no tiene un ingreso registrado' : 'lotes todavía no tienen ingresos registrados'}. Su stock es cero hasta registrar la compra y asignar el almacén.</p>}
+    <PaginacionTabla total={visibles.length} filas={filas} pagina={paginaActual} totalPaginas={totalPaginas} onFilas={valor => { setFilas(valor); setPagina(1); }} onPagina={setPagina}/>
+    <div className="stock-lotes-tabla" aria-busy={cargando}><table data-interactiva="true"><thead><tr>{columnas.map(columna => <th key={columna.campo} scope="col" aria-sort={orden === columna.campo ? direccion === 'asc' ? 'ascending' : 'descending' : 'none'}><button type="button" className="stock-orden" onClick={() => { setOrden(columna.campo); setDireccion(orden === columna.campo && direccion === 'asc' ? 'desc' : 'asc'); setPagina(1); }}>{columna.texto}<span aria-hidden="true">{orden === columna.campo ? direccion === 'asc' ? '↑' : '↓' : '↕'}</span></button></th>)}<th scope="col">Acciones</th></tr></thead><tbody>{lotesPagina.map(lote => <tr key={lote.id}>
+      <td>{lote.codigo}<small>{lote.codigoGenerico}</small></td><td className="stock-lote-nombre">{lote.nombre}<small>{lote.generico} · {lote.presentacion}</small></td><td><span className="stock-lote-tipo">{lote.tipo}</span></td><td>{lote.categoria}</td><td>{lote.subcategoria}</td><td>{lote.unidad}</td><td>{lote.marca}</td><td>{lote.lote}</td><td className={lote.disponible === 0 ? 'stock-cero' : lote.disponible < 0 ? 'stock-negativo' : ''}>{cantidad(lote.disponible)}</td><td>{lote.almacen}<small>{lote.sucursalId !== null ? lote.sucursal : ''}</small></td><td>{lote.vence || 'Sin vencimiento'}</td><td><button className="stock-lote-detalle" aria-label={'Ver detalle de ' + lote.nombre + ', lote ' + lote.lote} type="button" onClick={evento => { origen.current = evento.currentTarget; setDetalle(lote); setAlmacenDetalle(clave(lote.almacenId)); }}><Icon name="eye" size={15}/> Ver detalle</button></td>
+    </tr>)}</tbody></table>
+      {cargando && <p className="stock-lotes-vacio" role="status">Consultando existencias…</p>}
+      {!cargando && !error && !visibles.length && <div className="stock-lotes-vacio" role="status"><Icon name="package" size={24}/><div><strong>{lotes.length ? 'No hay coincidencias' : 'No hay lotes registrados'}</strong><p>{lotes.length ? 'Cambia la búsqueda o los filtros para consultar otras existencias.' : 'Registra los lotes en Ítems general. Las cantidades aparecerán al registrar los ingresos de compra.'}</p></div></div>}
+    </div>
+    {detalle && createPortal(<div className="stock-lote-detalle-fondo stock-general-detalle-fondo"><section ref={dialogo} className="stock-lote-detalle-modal stock-general-detalle" role="dialog" aria-modal="true" aria-labelledby="stock-lote-detalle-titulo" onKeyDown={evento => {
+      if (evento.key === 'Escape') { evento.preventDefault(); cerrar(); }
+      if (evento.key === 'Tab') {
+        const elementos = dialogo.current?.querySelectorAll<HTMLElement>('button:enabled, select:enabled, summary');
+        if (!elementos?.length) return;
+        const primero = elementos[0], ultimo = elementos[elementos.length - 1];
+        if (evento.shiftKey && document.activeElement === primero) { evento.preventDefault(); ultimo.focus(); }
+        if (!evento.shiftKey && document.activeElement === ultimo) { evento.preventDefault(); primero.focus(); }
+      }
+    }}><header><div><small>{detalle.codigo} · {detalle.codigoGenerico}</small><h3 id="stock-lote-detalle-titulo">{detalle.nombre}</h3><p>{detalle.generico} · {detalle.marca}</p></div><button type="button" onClick={cerrar} aria-label="Cerrar detalle"><Icon name="close" size={18}/></button></header>
+      <div className="stock-general-detalle-cuerpo"><dl className="stock-general-datos"><div><dt>Lote seleccionado</dt><dd>{detalle.lote}</dd></div><div><dt>Vencimiento</dt><dd>{detalle.vence || 'Sin vencimiento'}</dd></div><div><dt>Presentación</dt><dd>{detalle.presentacion}</dd></div><div><dt>Unidad de medida</dt><dd>{detalle.unidad}</dd></div><div><dt>Almacén del lote</dt><dd>{detalle.almacen}</dd></div><div><dt>Sucursal del lote</dt><dd>{detalle.sucursal}</dd></div><div><dt>Stock de este lote en el almacén</dt><dd>{cantidad(detalle.disponible)}</dd></div><div><dt>Costo unitario registrado</dt><dd>{dinero(detalle.costoUnitario, 4)}</dd></div><div><dt>Fecha de ingreso</dt><dd>{detalle.fecha || 'Sin ingreso registrado'}</dd></div><div><dt>Categoría</dt><dd>{detalle.categoria} / {detalle.subcategoria}</dd></div></dl>
+      <div className="stock-general-precios">{[detalle.precio1, detalle.precio2, detalle.precio3].map((precio, indice) => <div key={indice}><small>Precio {indice + 1} del lote</small><strong>{dinero(precio)}</strong></div>)}</div>
+      <section className="stock-general-distribucion"><h4>Existencias del ítem en todos sus lotes</h4><label>Consultar almacén<select aria-label="Consultar almacén en el detalle" value={almacenDetalle} onChange={evento => setAlmacenDetalle(evento.target.value)}><option value="todos">Todos los almacenes</option>{almacenesDetalle.map(([id, lote]) => <option key={id} value={id}>{lote.almacen}{lote.sucursalId !== null ? ' · ' + lote.sucursal : ''}</option>)}</select></label><p className="stock-general-total">Stock total del ítem: <strong>{cantidad(sumar(detalleFiltrado))}</strong></p>
+        {gruposDetalle.map(grupo => <details key={grupo.id} open><summary>{grupo.nombre} <strong>{cantidad(sumar(grupo.lotes))}</strong></summary><div className="stock-general-desglose"><table data-interactiva="true"><thead><tr><th>Almacén</th><th>Lote</th><th>Stock</th><th>Vence</th></tr></thead><tbody>{grupo.lotes.map(lote => <tr key={lote.id}><td>{lote.almacen}</td><td>{lote.lote}</td><td>{cantidad(lote.disponible)}</td><td>{lote.vence || 'Sin fecha'}</td></tr>)}</tbody></table></div></details>)}
+      </section></div><footer><button type="button" onClick={cerrar}>Cerrar</button></footer></section></div>, document.querySelector('.sistema-contable') || document.body)}
+  </section>;
 }

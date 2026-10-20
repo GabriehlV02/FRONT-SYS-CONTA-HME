@@ -8,7 +8,6 @@ type Props = {
   collapsed: boolean;
   onSelect: (id: string) => void;
   onClose: () => void;
-  onCollapse: () => void;
   onLogout: () => void;
   session: AuthSession;
 };
@@ -19,7 +18,6 @@ export function Sidebar({
   collapsed,
   onSelect,
   onClose,
-  onCollapse,
   onLogout,
   session,
 }: Props) {
@@ -40,17 +38,6 @@ export function Sidebar({
         <div className="marca-container">
           <Brand name={config.name} sidebar subtitle={config.subtitle} />
           <button
-            className="replegar-menu"
-            onClick={onCollapse}
-            aria-label={
-              collapsed ? 'Desplegar menú lateral' : 'Replegar menú lateral'
-            }
-            aria-expanded={!collapsed}
-            title={collapsed ? 'Desplegar menú' : 'Replegar menú'}
-          >
-            <Icon name={collapsed ? 'chevronRight' : 'chevronLeft'} size={17} />
-          </button>
-          <button
             className="cerrar-menu"
             onClick={onClose}
             aria-label="Cerrar menú"
@@ -62,7 +49,7 @@ export function Sidebar({
           <nav className="sistema-nav" aria-label="Módulos del sistema">
             {groups.filter(group => modules.some(item => item.group === group)).map((group) => (
               <section key={group}>
-                <p>{group}</p>
+                <p>{group.toLocaleLowerCase('es')}</p>
                 {modules
                   .filter((item) => item.group === group)
                   .map((item) => (

@@ -68,7 +68,7 @@ export function Login({
   const loginForm = (
     <form className="login-card" onSubmit={enter}>
       {!esContable && <Brand name={config.name} subtitle={config.subtitle} />}
-      <p className="login-kicker">{config.loginTitle}</p>
+      <p className="login-kicker">{esContable ? 'Acceso al sistema contable' : config.loginTitle}</p>
       <h1>Iniciar sesión</h1>
       <p className="login-subtitulo">
         Ingresa tus credenciales para acceder al sistema.

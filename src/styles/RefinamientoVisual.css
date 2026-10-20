@@ -1,0 +1,413 @@
+@layer hme-diseno, contable-corporativo;
+
+@layer hme-diseno {
+  :is(.sistema-contable, .login-page-contable) {
+    --ui-font: "Segoe UI Variable", "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+    --ui-ink: #203640 !important;
+    --ui-muted: #58717b !important;
+    --ui-line: #d2e0e5 !important;
+    --ui-canvas: #f0f5f6 !important;
+    --ui-soft: #eef5f7 !important;
+    --ui-accent: #0284c7 !important;
+    --ui-accent-hover: #0369a1 !important;
+    --ui-accent-soft: #e5f4f3 !important;
+    --ui-shadow: 0 2px 5px rgb(27 60 73 / 3%) !important;
+  }
+  .sistema-contable { color: var(--ui-ink) !important; font-family: var(--ui-font) !important; }
+  .sistema-contable *, .login-page-contable * { box-sizing: border-box; }
+  .sistema-contable .sistema-cuerpo { min-width: 0; }
+  .sistema-contable .sistema-topbar { display: flex !important; align-items: center !important; flex-wrap: nowrap !important; }
+  .sistema-contable .sistema-topbar .search-container { flex: 1 1 360px !important; order: 0 !important; min-width: 0 !important; width: auto !important; margin-left: 12px !important; }
+  .sistema-contable .topbar-plegar { display: grid !important; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; min-height: 36px; padding: 0; border: 1px solid rgb(255 255 255 / 28%); border-radius: 8px; color: white; background: transparent; box-shadow: none; }
+  .sistema-contable .topbar-plegar:hover { background: rgb(255 255 255 / 16%) !important; }
+  .sistema-contable .sistema-topbar > .notificaciones { margin-left: auto !important; flex: 0 0 auto; }
+  .sistema-contable .sistema-topbar > .salir-rapido { flex: 0 0 38px; }
+  .sistema-contable .area-trabajo { padding: 28px clamp(16px, 2.1vw, 36px) 36px !important; }
+  .sistema-contable .content-limit { width: 100%; max-width: 1760px !important; margin-inline: auto; }
+  .sistema-contable .sistema-topbar { height: 72px !important; min-height: 72px !important; padding-inline: 24px !important; gap: 16px !important; box-shadow: none !important; border-bottom: 1px solid rgb(255 255 255 / 18%) !important; }
+  .sistema-contable .topbar-icono { border-radius: 10px !important; width: 40px !important; height: 40px !important; flex: 0 0 40px; }
+  .sistema-contable .topbar-titulo { min-width: 120px !important; max-width: 250px; flex: 0 1 auto; }
+  .sistema-contable .topbar-titulo h1 { font-size: 17px !important; line-height: 1.3 !important; font-weight: 600 !important; }
+  .sistema-contable .topbar-titulo small { font-size: 11px !important; opacity: .9; }
+  .sistema-contable .search-container { max-width: 520px !important; min-width: 120px; }
+  .sistema-contable .busqueda-global { border-radius: 8px !important; height: 40px !important; padding-inline: 13px !important; box-shadow: none !important; }
+  .sistema-contable .perfil { gap: 10px !important; padding: 0 8px 0 18px !important; border: 0 !important; border-left: 1px solid rgb(255 255 255 / 28%) !important; border-radius: 0 !important; flex: 0 1 auto; min-width: 0; }
+  .sistema-contable .perfil > div { min-width: 0; max-width: 210px; }
+  .sistema-contable .perfil :is(strong, small) { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sistema-contable .perfil strong { font-size: 13px !important; }
+  .sistema-contable .perfil small { font-size: 11px !important; }
+  .sistema-contable .perfil-avatar { width: 36px !important; height: 36px !important; border: 1px solid rgb(255 255 255 / 65%) !important; }
+  .sistema-contable .sistema-sidebar { box-shadow: none !important; }
+  .sistema-contable .sidebar-scroll .sistema-nav { padding: 14px 14px 10px !important; display: block !important; }
+  .sistema-contable .sistema-nav section + section { margin-top: 11px !important; padding-top: 11px !important; }
+  .sistema-contable .sistema-nav section p { margin: 0 12px 7px !important; font-size: 11px !important; font-weight: 500 !important; letter-spacing: .03em !important; text-transform: capitalize !important; color: #a8bfc8 !important; }
+  .sistema-contable .sistema-nav .nav-modulo { min-height: 44px !important; padding: 10px 12px !important; border-radius: 7px !important; margin-block: 2px !important; border: 1px solid transparent !important; box-shadow: none !important; }
+  .sistema-contable .sistema-nav .nav-modulo.activo { background: #254f65 !important; border-color: #3b7088 !important; color: white !important; box-shadow: inset 3px 0 0 #22b9d3 !important; }
+  .sistema-contable .sistema-nav .nav-modulo:hover:not(.activo) { background: #2d424c !important; }
+  .sistema-contable .boton-salir { margin-bottom: 14px !important; border-radius: 7px !important; background: transparent !important; }
+
+  .sistema-contable .saltar-contenido { position: fixed; inset: 10px auto auto 50%; transform: translate(-50%, -150%); z-index: 5000; padding: 12px 20px; border-radius: 7px; color: #fff; background: #0369a1; text-decoration: none; }
+  .sistema-contable .saltar-contenido:focus { transform: translate(-50%, 0); }
+  .sistema-contable :is(button, a, input, select, textarea, [tabindex]):focus-visible, .login-page-contable :is(button, input, a):focus-visible { outline: 3px solid #0284c7 !important; outline-offset: 3px !important; box-shadow: none !important; }
+  .sistema-contable .sistema-sidebar button:focus-visible, .sistema-contable .sistema-topbar button:focus-visible { outline-color: #7ee0e8 !important; }
+  /* El buscador compuesto recibe un solo foco en su contenedor. */
+  .sistema-contable :is(label, div):has(> input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i])) {
+    border: 1px solid var(--ui-line) !important;
+    border-radius: 8px !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  .sistema-contable :is(label, div):has(> input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i])):focus-within {
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important;
+    outline: none !important;
+  }
+  .sistema-contable :is(label, div) > input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i]),
+  .sistema-contable :is(label, div) > input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i]):is(:focus, :focus-visible) {
+    border: 0 !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .sistema-contable :is(.busqueda-global, [class*="buscador"], [class*="busqueda"], [class*="filtro"]):has(input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i]):focus):not(:has(> input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i]))) {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: var(--ui-line) !important;
+  }
+  .sistema-contable :is(select, .select-menu-trigger):is(:focus, :focus-visible, [aria-expanded="true"]) {
+    outline: none !important;
+    outline-offset: 0 !important;
+    border-color: #0284c7 !important;
+    box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important;
+  }
+  .sistema-contable :is(label, .select-menu, [class*="buscador"], [class*="busqueda"], [class*="filtro"]):has(:is(select:focus, .select-menu-trigger:focus, .select-menu-trigger[aria-expanded="true"])) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .sistema-contable button { transition: background-color .15s ease, border-color .15s ease !important; }
+  .sistema-contable button:hover { transform: none !important; }
+  .sistema-contable button:disabled { cursor: not-allowed !important; box-shadow: none !important; opacity: .52; }
+  .sistema-contable .sistema-cuerpo :is(h2, h3, h4) { letter-spacing: -.025em !important; font-weight: 600 !important; }
+  .sistema-contable .sistema-cuerpo h2 { font-size: clamp(21px, 1.65vw, 25px) !important; }
+  .sistema-contable .sistema-cuerpo h3 { font-size: 17px !important; }
+  .sistema-contable .sistema-cuerpo p { line-height: 1.65 !important; }
+  .sistema-contable .sistema-cuerpo :is(label, legend) { line-height: 1.45 !important; font-weight: 500 !important; }
+  .sistema-contable .sistema-cuerpo :is(input, select, textarea) { font-weight: 400 !important; font-size: 13px !important; border-radius: 7px !important; }
+  .sistema-contable .sistema-cuerpo :is(input, textarea)::placeholder { color: #70858d !important; opacity: 1; }
+  .sistema-contable .sistema-cuerpo select { text-overflow: ellipsis; padding-right: 28px; }
+  .sistema-contable .sistema-cuerpo input[type="number"] { font-variant-numeric: tabular-nums; }
+  .sistema-contable :is(.inventario-filtros, .usuarios-filtros, .profesionales-barra, .configuracion-barra, .stock-herramientas, .control-herramientas) :is(input, select) { min-height: 42px !important; }
+  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .adquisiciones-nuevo, .traspasos-nuevo, .primario, .inventario-primario) { min-height: 42px !important; border-radius: 7px !important; padding-inline: 17px !important; font-size: 13px !important; font-weight: 600 !important; box-shadow: none !important; }
+  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario) { background: #007dac !important; color: white !important; }
+  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario):hover:not(:disabled) { background: #0369a1 !important; }
+
+  .sistema-contable .subvistas-carrusel { margin-bottom: 20px !important; }
+  .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) { background: transparent !important; border: 0 !important; border-bottom: 1px solid #cbdce2 !important; border-radius: 0 !important; padding: 0 0 8px !important; gap: 7px !important; box-shadow: none !important; width: auto !important; max-width: 100%; }
+  .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button { min-height: 40px !important; border: 1px solid transparent !important; border-radius: 7px !important; padding: 10px 15px !important; font-size: 13px !important; background: transparent !important; color: #526e79 !important; font-weight: 500 !important; box-shadow: none !important; }
+  .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button:is(.activo, [aria-current="page"]) { color: #006e9b !important; background: #fff !important; border-color: #add1df !important; box-shadow: 0 2px 0 #0284c7 !important; }
+  .sistema-contable .subvistas-flecha { top: 3px !important; width: 34px !important; height: 34px !important; border-color: #bed4df !important; box-shadow: 0 2px 7px rgb(27 60 73 / 10%) !important; }
+  .sistema-contable .vista-encabezado { display: flex; align-items: center; gap: 14px; margin: 0 0 22px; padding: 4px 2px; }
+  .sistema-contable .vista-encabezado-icono { display: grid; place-items: center; flex: 0 0 46px; width: 46px; height: 46px; border-radius: 12px; background: #e0f0f4 !important; color: #087c9f !important; }
+  .sistema-contable .vista-encabezado h2 { margin: 0 0 5px !important; }
+  .sistema-contable .vista-encabezado p { margin: 0 !important; max-width: 75ch; font-size: 13px !important; }
+  .sistema-contable :is(.inventario-contenido, .usuarios-contenido, .movimientos-contenido, .configuracion-operativa, .stock-lotes, .profesionales-vista, .controles-vencimiento, .avisos-precio) { border: 1px solid #d2e0e5 !important; border-radius: 12px !important; padding: 24px !important; box-shadow: 0 2px 5px rgb(27 60 73 / 3%) !important; min-width: 0; }
+  .sistema-contable :is(.inventario-contenido, .usuarios-contenido) { min-height: 0 !important; }
+  .sistema-contable .productos-base-encabezado { align-items: flex-start !important; margin-bottom: 24px !important; gap: 22px !important; }
+  .sistema-contable .productos-base-encabezado p { max-width: 68ch; font-size: 13px !important; line-height: 1.65 !important; }
+  .sistema-contable .productos-base-encabezado h2 { margin-bottom: 7px !important; }
+  .sistema-contable .productos-base .inventario-filtros { display: flex; gap: 10px !important; flex-wrap: wrap !important; padding: 14px !important; background: #f5f9fa !important; border: 1px solid #dce8eb !important; border-radius: 9px !important; }
+  .sistema-contable .productos-base .inventario-filtros label { flex: 1 1 300px !important; min-width: min(100%, 240px) !important; width: auto !important; background: #fff !important; }
+  .sistema-contable .productos-base .inventario-filtros select { width: auto !important; flex: 1 1 160px; min-width: 150px !important; max-width: 100%; background: #fff !important; }
+  .sistema-contable .items-general .inventario-filtros select[aria-label="Filtrar por agrupador"] { flex-basis: 230px; }
+  .sistema-contable .productos-base-resumen { margin: 18px 0 14px !important; gap: 12px !important; flex-wrap: wrap; }
+  .sistema-contable .productos-base-resumen select { min-height: 32px !important; }
+  .sistema-contable :is(.productos-base-tabla, .usuarios-tabla, .profesionales-tabla, .adquisiciones-tabla, .traspasos-tabla, .configuracion-tabla, .control-tabla) { border: 1px solid #d2e0e5 !important; border-radius: 8px !important; box-shadow: none !important; }
+  .sistema-contable :is(.productos-base-tabla, .usuarios-tabla) { min-height: 260px !important; }
+  .sistema-contable .area-trabajo table { font-variant-numeric: tabular-nums; }
+  .sistema-contable .area-trabajo table :is(th, td) { padding: 13px 16px !important; border-color: #e0eaee !important; font-size: 13px !important; vertical-align: middle; }
+  .sistema-contable .area-trabajo table thead :is(tr, th) { background: #edf4f6 !important; color: #3a5966 !important; font-size: 12px !important; font-weight: 600 !important; }
+  .sistema-contable .area-trabajo tbody tr:nth-child(even) { background: #f9fbfc !important; }
+  .sistema-contable .area-trabajo tbody tr:hover { background: #eef8fa !important; }
+  .sistema-contable .area-trabajo td { border-right: 0 !important; }
+  .sistema-contable :is(.usuarios-tabla-head, .inventario-tabla-head, .configuracion-tabla-head, .profesionales-head, .adquisiciones-head, .traspasos-head, .control-tabla-head, .inventario-tabla-productos-cabecera) { background: #edf4f6 !important; color: #3a5966 !important; min-height: 44px !important; font-size: 12px !important; font-weight: 500 !important; }
+  .sistema-contable :is(.usuarios-tabla-fila, .configuracion-tabla-fila, .profesionales-fila, .adquisiciones-fila, .traspasos-fila) { min-height: 56px; font-size: 13px !important; }
+  .sistema-contable :is(.usuarios-tabla-fila, .inventario-tabla-productos .inventario-fila):hover { background-color: #eef8fa !important; }
+  .sistema-contable :is(.inventario-contador, .usuarios-contador, .profesionales-contador, .movimientos-contador) { border: 1px solid #c6e4e6 !important; background: #eaf6f5 !important; color: #006e85 !important; border-radius: 6px !important; padding: 5px 10px !important; font-size: 12px !important; font-weight: 500 !important; }
+  .sistema-contable :is(.productos-base-paginacion, .inventario-paginas, .paginacion-tabla) { margin-top: 16px; gap: 8px !important; }
+  .sistema-contable :is(.productos-base-paginacion, .inventario-paginas) button { min-height: 34px !important; border-radius: 6px !important; box-shadow: none !important; }
+  .sistema-contable .productos-base-paginacion span { padding-inline: 6px; font-size: 12px !important; color: #526e79 !important; }
+  .sistema-contable :is(.productos-base-acciones, .inventario-acciones) { gap: 7px !important; }
+  .sistema-contable .productos-base-acciones > button:not(.inventario-nuevo) { min-height: 34px; border-radius: 6px !important; font-size: 12px !important; }
+  .sistema-contable .stock-general-real .stock-orden { background: transparent !important; color: #3a5966 !important; border: 0 !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important; min-height: 24px !important; font-size: 12px !important; font-weight: 500 !important; }
+  .sistema-contable .stock-general-detalle > header > div { display: grid !important; gap: 5px !important; }
+  .sistema-contable .stock-general-detalle > header h3 { font-size: 21px !important; font-weight: 600 !important; }
+  .sistema-contable .stock-general-desglose table { width: 100% !important; border-collapse: collapse !important; font-size: 13px !important; }
+  .sistema-contable .stock-general-desglose :is(th, td) { border-color: #e0eaee !important; border-radius: 0 !important; padding: 12px 14px !important; text-align: left !important; }
+  .sistema-contable .stock-general-desglose thead :is(tr, th) { background: #edf4f6 !important; color: #3a5966 !important; font-weight: 500 !important; }
+  .sistema-contable .stock-general-desglose tbody tr { background: white !important; }
+  .sistema-contable .stock-general-desglose tbody tr:nth-child(even) { background: #f8fbfc !important; }
+  .sistema-contable .items-general .productos-base-tabla :is(th, td):is(:nth-child(7), :nth-child(8), :nth-child(9)),
+  .sistema-contable .items-general-lotes .productos-base-tabla :is(th, td):is(:nth-child(3), :nth-child(4), :nth-child(5)) { text-align: right !important; white-space: nowrap; }
+  .sistema-contable :is(.items-general-vacio, .productos-base-vacio, .usuarios-tabla-vacio, .pacientes-vacio, .profesionales-vacio) { padding: 45px 20px !important; color: #58717b !important; line-height: 1.6 !important; background: #fbfdfd !important; }
+
+  .sistema-contable .dashboard-hero { padding: 4px 2px 22px !important; margin-bottom: 0 !important; align-items: center; }
+  .sistema-contable .dashboard-hero h2 { font-size: clamp(25px, 2.2vw, 31px) !important; margin: 0 0 8px !important; }
+  .sistema-contable .dashboard-hero > div > p { display: none !important; }
+  .sistema-contable .dashboard-hero > div > span { display: block; color: #58717b !important; max-width: 72ch; font-size: 14px !important; }
+  .sistema-contable .dashboard-metricas { gap: 0 !important; border: 1px solid #d2e0e5; border-radius: 12px; overflow: hidden; background: #fff; }
+  .sistema-contable .dashboard-metricas article { border: 0 !important; border-right: 1px solid #e0eaee !important; border-radius: 0 !important; box-shadow: none !important; padding: 22px 24px !important; background: #fff !important; }
+  .sistema-contable .dashboard-metricas article:last-child { border-right: 0 !important; }
+  .sistema-contable .dashboard-metricas article::before { display: none !important; }
+  .sistema-contable .dashboard-metricas article > div { color: #526e79 !important; font-size: 13px !important; }
+  .sistema-contable .dashboard-metricas article > strong { display: block; margin: 12px 0 5px !important; font-size: clamp(26px, 2.3vw, 34px) !important; letter-spacing: -.04em !important; line-height: 1.2 !important; font-weight: 600 !important; }
+  .sistema-contable .dashboard-metricas article svg { width: 20px !important; color: #0284c7 !important; }
+  .sistema-contable .dashboard-accesos { gap: 10px !important; margin-block: 18px 24px !important; }
+  .sistema-contable .dashboard-accesos button { border: 1px solid #d2e0e5 !important; border-radius: 8px !important; background: transparent !important; min-height: 50px !important; box-shadow: none !important; padding: 12px 16px !important; }
+  .sistema-contable .dashboard-accesos button:hover { border-color: #8abccc !important; background: #fff !important; }
+  .sistema-contable .dashboard-detalle { gap: 18px !important; }
+  .sistema-contable .dashboard-panel { padding: 24px !important; border: 1px solid #d2e0e5 !important; border-radius: 12px !important; box-shadow: none !important; }
+  .sistema-contable .dashboard-panel h3 { margin: 0 0 6px !important; }
+  .sistema-contable .dashboard-panel p { margin-top: 4px !important; font-size: 13px !important; }
+  .sistema-contable .dashboard-ranking article { border: 0 !important; border-bottom: 1px solid #e3ecef !important; border-radius: 0 !important; padding: 15px 0 !important; box-shadow: none !important; }
+  .sistema-contable .dashboard-ranking article:last-child { border-bottom: 0 !important; }
+  .sistema-contable .dashboard-ranking article > b { width: 30px !important; height: 30px !important; border-radius: 7px !important; background: #eaf5f7 !important; color: #007899 !important; }
+  .sistema-contable .dashboard-barras { border-bottom: 1px solid #dce8eb; padding-top: 24px; background: repeating-linear-gradient(to top, transparent 0, transparent 49px, #edf3f5 49px, #edf3f5 50px); }
+  .sistema-contable .dashboard-barras > div > i { background: transparent !important; border: 0 !important; border-radius: 0 !important; }
+  .sistema-contable .dashboard-barras b { border-radius: 3px !important; }
+
+  .sistema-contable .ventas-cabecera-subvistas { gap: 16px !important; margin-bottom: 18px !important; }
+  .sistema-contable .ventas-cabecera-subvistas .subvistas-carrusel { margin-bottom: 0 !important; }
+  .sistema-contable .punto-pos-contexto { border-radius: 9px !important; padding: 10px 14px !important; background: white !important; }
+  .sistema-contable .punto-contexto { gap: 12px !important; background: white !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+  .sistema-contable .punto-contexto label { font-size: 12px !important; }
+  .sistema-contable .punto-contexto select { min-height: 36px !important; }
+  .sistema-contable .punto-pos-layout { gap: 20px !important; align-items: start; }
+  .sistema-contable :is(.punto-catalogo, .punto-carrito) { border-radius: 12px !important; box-shadow: none !important; }
+  .sistema-contable .punto-catalogo { padding: 18px !important; }
+  .sistema-contable .punto-carrito { padding: 18px !important; }
+  .sistema-contable .punto-carrito > header { padding: 0 0 14px !important; margin-bottom: 16px !important; background: white !important; border-bottom: 1px solid #dce8eb; }
+  .sistema-contable .punto-tarjetas { gap: 12px !important; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)) !important; }
+  .sistema-contable .punto-tarjetas > article { border-radius: 8px !important; box-shadow: none !important; }
+  .sistema-contable :is(.punto-cliente, .punto-pago-mixto, .punto-resumen, .punto-factura) { border-radius: 8px !important; padding: 14px !important; box-shadow: none !important; }
+  .sistema-contable .punto-total { padding: 16px 0 !important; border-top: 1px solid #cbdfe6 !important; background: #eef8fa !important; }
+  .sistema-contable :is(.ventas-kpis, .caja-dia-kpis) { gap: 14px !important; }
+  .sistema-contable :is(.ventas-kpi, .caja-dia-kpis > article) { padding: 20px !important; border-radius: 10px !important; box-shadow: none !important; }
+  .sistema-contable .ventas-panel-head { align-items: center; padding-bottom: 16px !important; margin-bottom: 14px !important; border-bottom: 1px solid #e0eaee; }
+  .sistema-contable .adquisiciones-filtros, .sistema-contable .traspasos-cabecera, .sistema-contable .configuracion-barra { gap: 12px !important; }
+  .sistema-contable .adquisiciones-filtros { border-radius: 9px !important; padding: 16px !important; background: #f6fafb !important; box-shadow: none !important; }
+  .sistema-contable .adquisiciones-filtros label > span { text-transform: none !important; letter-spacing: 0 !important; font-size: 12px !important; }
+  .sistema-contable .configuracion-bloque { margin-top: 26px !important; }
+  .sistema-contable .configuracion-bloque:first-of-type { margin-top: 18px !important; }
+  .sistema-contable .configuracion-bloque > header { margin-bottom: 16px !important; }
+  .sistema-contable .inventario-admin-recuadros { gap: 20px !important; }
+  .sistema-contable .inventario-admin-recuadro { border-radius: 12px !important; border-color: #d2e0e5 !important; padding: 22px !important; background: white !important; }
+  .sistema-contable .inventario-admin-recuadro h2 { font-size: 18px !important; margin-bottom: 18px !important; }
+  .sistema-contable .inventario-admin-controles { gap: 12px !important; padding-inline: 0 !important; margin-bottom: 14px !important; }
+  .sistema-contable .inventario-admin-tabla-contenedor { margin-inline: 0 !important; }
+  .sistema-contable .reporte-inventario-layout { gap: 24px !important; }
+  .sistema-contable .reporte-configuracion { border: 1px solid #d2e0e5 !important; border-radius: 12px !important; box-shadow: none !important; padding: 22px !important; }
+  .sistema-contable .reporte-vista-previa { border-radius: 12px !important; box-shadow: none !important; }
+  .sistema-contable .notificaciones-portada { align-items: center; gap: 24px !important; margin-bottom: 24px !important; }
+  .sistema-contable .notificaciones-portada > div > span { display: none !important; }
+  .sistema-contable .notificaciones-portada h2 { margin-bottom: 8px !important; }
+  .sistema-contable .notificaciones-resumen article { border-radius: 9px !important; padding: 16px 20px !important; box-shadow: none !important; }
+  .sistema-contable .notificaciones-herramientas { border-radius: 10px !important; padding: 16px !important; gap: 12px !important; }
+  .sistema-contable .notificacion-tarjeta { border-radius: 9px !important; padding: 20px !important; box-shadow: none !important; margin-bottom: 10px; }
+  .sistema-contable .notificacion-tarjeta:hover { transform: none !important; }
+  .sistema-contable .notificacion-tarjeta.nueva { border-left: 3px solid #0284c7 !important; }
+  .sistema-contable .notificacion-tarjeta .notificacion-contenido strong { font-size: 15px !important; }
+  .sistema-contable .notificaciones-ayuda { border-radius: 10px !important; padding: 24px !important; align-self: start; }
+
+  .sistema-contable :is(.inventario-modal-fondo, .usuarios-modal-fondo, .configuracion-modal-fondo, .adquisiciones-modal-fondo, .traspasos-modal-fondo, .profesionales-fondo, .inventario-admin-modal-fondo, .caja-exportar-fondo) { z-index: 1600 !important; padding: 24px !important; background: rgb(17 37 47 / 50%) !important; backdrop-filter: blur(3px); }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .adquisiciones-modal, .adquisiciones-carga-stock, .traspasos-modal, .inventario-admin-modal, .caja-exportar-modal) { border-radius: 14px !important; max-height: calc(100dvh - 48px) !important; overflow-y: auto; box-shadow: 0 24px 80px rgb(13 39 51 / 23%) !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .adquisiciones-modal, .traspasos-modal) > header { padding: 22px 26px !important; background: #f4f9fa !important; border-bottom: 1px solid #dce8eb !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .adquisiciones-modal, .traspasos-modal) header :is(h2, h3) { margin: 0 !important; font-size: 21px !important; color: #203640 !important; font-weight: 600 !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal) header p { text-transform: none !important; letter-spacing: 0 !important; font-size: 12px !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal) :is(label > span, header > div > span) { text-transform: none !important; letter-spacing: 0 !important; }
+  .sistema-contable :is(.inventario-modal-cuerpo, .usuarios-modal-cuerpo, .configuracion-modal-cuerpo, .productos-base-campos) { gap: 18px !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .inventario-admin-modal, .traspasos-modal, .adquisiciones-modal) :is(input:not([type="checkbox"]):not([type="radio"]), select) { min-height: 42px !important; font-size: 14px !important; background: white !important; font-weight: 400 !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .inventario-admin-modal) :is(label, legend) { font-size: 13px !important; font-weight: 500 !important; color: #395663 !important; }
+  .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal) footer { gap: 10px !important; border-top: 1px solid #e0eaee !important; background: #f8fbfc !important; }
+  .sistema-contable [role="alert"] { line-height: 1.55 !important; border-radius: 7px; }
+
+  .login-page-contable .login-card { border: 1px solid #d2e0e5 !important; border-radius: 16px !important; box-shadow: 0 16px 48px rgb(23 68 86 / 8%) !important; padding: clamp(28px, 3vw, 44px) !important; }
+  .login-page-contable .login-card h1 { font-size: 31px !important; letter-spacing: -.035em; font-weight: 600; }
+  .login-page-contable :is(.login-kicker, .login-balance-kicker) { text-transform: none !important; letter-spacing: 0 !important; font-size: 13px !important; font-weight: 500 !important; }
+  .login-page-contable .login-card > p { line-height: 1.65; color: #58717b; }
+  .login-page-contable .login-label { font-size: 13px !important; font-weight: 500 !important; margin-bottom: 8px !important; }
+  .login-page-contable .login-input { min-height: 48px !important; border-radius: 8px !important; border-color: #c9dce3 !important; background: #fff !important; box-shadow: none !important; }
+  .login-page-contable .login-input:focus-within { outline: 2px solid #0284c7 !important; outline-offset: 2px; }
+  .login-page-contable .login-submit { min-height: 48px !important; border-radius: 8px !important; background: #007dac !important; font-weight: 600 !important; box-shadow: none !important; }
+  .login-page-contable .login-submit:hover { background: #0369a1 !important; }
+  .login-page-contable :is(.login-circulos, .mini-triangulo, .triangulo-orbita) { display: none !important; }
+
+  @media (min-width: 1101px) {
+    .sistema-contable .punto-pos-layout { grid-template-columns: minmax(0, 1fr) 320px !important; }
+    .sistema-contable .punto-carrito { position: sticky; top: 90px; max-height: calc(100dvh - 110px); overflow-y: auto; }
+  }
+  @media (max-width: 1100px) {
+    .sistema-contable .sistema-topbar { gap: 10px !important; padding-inline: 16px !important; }
+    .sistema-contable .topbar-titulo { min-width: 110px !important; }
+    .sistema-contable .perfil > div { display: none !important; }
+    .sistema-contable .productos-base-encabezado { flex-wrap: wrap; }
+    .sistema-contable .ventas-cabecera-subvistas { flex-wrap: wrap; }
+    .sistema-contable .ventas-contexto-slot { flex: 1 1 100% !important; }
+    .sistema-contable .punto-pos-contexto { position: static !important; width: 100% !important; }
+    .sistema-contable .punto-pos-layout { grid-template-columns: 1fr !important; }
+    .sistema-contable .punto-carrito { position: static !important; max-height: none !important; width: 100% !important; }
+    .sistema-contable .reporte-inventario-layout { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 1000px) {
+    .sistema-contable .topbar-plegar { display: none !important; }
+    .sistema-contable .sistema-cuerpo { margin-left: 0 !important; width: 100% !important; min-width: 0 !important; }
+    .sistema-contable .sistema-sidebar { width: min(260px, 88vw) !important; transform: translateX(-100%) !important; z-index: 2000 !important; }
+    .sistema-contable .sistema-sidebar.sidebar-abierto { transform: translateX(0) !important; }
+    .sistema-contable .abrir-menu, .sistema-contable .cerrar-menu { display: grid !important; place-items: center; }
+    .sistema-contable .replegar-menu { display: none !important; }
+    .sistema-contable .menu-fondo { z-index: 1900 !important; }
+    .sistema-contable.sidebar-replegado .sistema-sidebar :is(.nav-texto, .marca-texto) { display: block !important; }
+    .sistema-contable .sistema-sidebar .nav-modulo { justify-content: flex-start !important; }
+  }
+  @media (max-width: 760px) {
+    .sistema-contable .sistema-topbar { min-height: 64px !important; height: auto !important; padding: 10px 14px !important; flex-wrap: nowrap !important; gap: 9px !important; }
+    .sistema-contable .topbar-icono { display: none !important; }
+    .sistema-contable .topbar-titulo { min-width: 0 !important; flex: 1; }
+    .sistema-contable .topbar-titulo h1 { max-width: none !important; font-size: 15px !important; }
+    .sistema-contable .topbar-titulo small { font-size: 10px !important; }
+    .sistema-contable .search-container { display: none !important; }
+    .sistema-contable .perfil { display: none !important; }
+    .sistema-contable .area-trabajo { padding: 18px 14px 28px !important; }
+    .sistema-contable .vista-encabezado { align-items: flex-start; gap: 11px; margin-bottom: 18px; }
+    .sistema-contable .vista-encabezado-icono { width: 40px; height: 40px; flex-basis: 40px; }
+    .sistema-contable .vista-encabezado h2 { font-size: 21px !important; }
+    .sistema-contable .subvistas-carrusel { margin-bottom: 18px !important; }
+    .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button { min-height: 44px !important; padding-inline: 12px !important; }
+    .sistema-contable :is(.inventario-contenido, .usuarios-contenido, .movimientos-contenido, .configuracion-operativa, .stock-lotes, .profesionales-vista, .controles-vencimiento, .avisos-precio) { padding: 16px !important; border-radius: 10px !important; }
+    .sistema-contable .dashboard-hero { align-items: flex-start !important; flex-direction: column; gap: 16px !important; }
+    .sistema-contable .dashboard-metricas { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .sistema-contable .dashboard-metricas article { padding: 18px !important; border-bottom: 1px solid #e0eaee !important; }
+    .sistema-contable .dashboard-metricas article:nth-child(2) { border-right: 0 !important; }
+    .sistema-contable .dashboard-metricas article > strong { font-size: 27px !important; }
+    .sistema-contable .dashboard-accesos { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .sistema-contable .dashboard-accesos button { padding: 12px !important; font-size: 12px !important; }
+    .sistema-contable .dashboard-detalle { grid-template-columns: 1fr !important; }
+    .sistema-contable .dashboard-panel { padding: 20px !important; }
+    .sistema-contable .productos-base-encabezado { gap: 16px !important; }
+    .sistema-contable .productos-base-encabezado > .productos-base-acciones { flex-wrap: wrap; }
+    .sistema-contable .productos-base .inventario-filtros { padding: 12px !important; }
+    .sistema-contable .productos-base .inventario-filtros :is(label, select) { width: 100% !important; min-width: 0 !important; flex-basis: 100% !important; }
+    .sistema-contable :is(.productos-base-paginacion, .inventario-paginas) { flex-wrap: wrap; justify-content: center; }
+    .sistema-contable :is(.productos-base-paginacion, .productos-base-acciones, .paginacion-tabla) button { min-height: 42px !important; }
+    .sistema-contable .notificaciones-portada { flex-direction: column; align-items: stretch !important; }
+    .sistema-contable .notificaciones-resumen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .sistema-contable .notificaciones-resumen article { padding: 12px !important; min-width: 0; }
+    .sistema-contable .notificaciones-cuerpo { grid-template-columns: 1fr !important; }
+    .sistema-contable .notificaciones-herramientas { flex-wrap: wrap; }
+    .sistema-contable .notificacion-tarjeta { padding: 16px !important; }
+    .sistema-contable .notificacion-acciones { flex-wrap: wrap; }
+    .sistema-contable :is(.inventario-modal-fondo, .usuarios-modal-fondo, .configuracion-modal-fondo, .adquisiciones-modal-fondo, .traspasos-modal-fondo, .profesionales-fondo, .inventario-admin-modal-fondo) { padding: 12px !important; }
+    .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal, .profesionales-modal, .adquisiciones-modal, .adquisiciones-carga-stock, .traspasos-modal, .inventario-admin-modal) { max-width: calc(100vw - 24px) !important; max-height: calc(100dvh - 24px) !important; border-radius: 12px !important; }
+    .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal) > header { padding: 18px 20px !important; }
+    .sistema-contable :is(.inventario-modal, .usuarios-modal, .configuracion-modal) header :is(h2, h3) { font-size: 20px !important; }
+    .sistema-contable .productos-base-campos { grid-template-columns: 1fr !important; }
+    .sistema-contable .inventario-admin-recuadro { padding: 16px !important; }
+    .sistema-contable .punto-contexto { grid-template-columns: 1fr !important; }
+    .sistema-contable .punto-tarjetas { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; }
+    .sistema-contable .punto-busquedas { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .sistema-contable .punto-busquedas > label { grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; }
+    .sistema-contable .punto-busquedas > button { width: 100% !important; min-height: 44px !important; }
+    .sistema-contable .notificaciones-boton, .sistema-contable .abrir-menu { width: 40px !important; height: 40px !important; min-height: 40px !important; }
+    .login-page-contable .login-card { padding: 28px 24px !important; }
+    .login-page-contable .login-card h1 { font-size: 27px !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sistema-contable *, .login-page-contable * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+  @media print {
+    .sistema-contable .saltar-contenido { display: none !important; }
+    .sistema-contable .area-trabajo { padding: 0 !important; }
+    .sistema-contable .reporte-vista-previa { border: 0 !important; box-shadow: none !important; }
+  }
+}
+
+@layer hme-diseno {
+  .sistema-contable .adquisiciones-recepcion-real { width: min(1120px, 100%) !important; max-width: 100% !important; min-width: 0 !important; padding: 20px !important; gap: 16px !important; box-sizing: border-box; }
+  .sistema-contable .adquisiciones-recepcion-real .adquisiciones-carga-header { display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; padding: 0 0 14px !important; margin: 0 !important; border: 0 !important; border-bottom: 1px solid var(--ui-line) !important; background: #fff !important; }
+  .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-lote-panel, .adquisiciones-linea-form) { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; margin: 0; min-width: 0 !important; padding: 16px !important; border: 1px solid var(--ui-line) !important; }
+  .sistema-contable .adquisiciones-recepcion-real .adquisiciones-linea-form > label:nth-child(-n+2) { grid-column: span 2; }
+  .sistema-contable .adquisiciones-recepcion-real label { color: var(--ui-ink); font-size: 12px; font-weight: 500; }
+  .sistema-contable .adquisiciones-recepcion-real :is(input, select) { font-weight: 400 !important; font-size: 13px !important; color: var(--ui-ink) !important; border-color: var(--ui-line) !important; background: #fff !important; }
+  .sistema-contable .adquisiciones-recepcion-real :is(input:not([placeholder*="buscar" i]), select):focus { border-color: #0284c7 !important; outline: none !important; box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important; }
+  .sistema-contable .adquisiciones-recepcion-real button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--ui-line); border-radius: 7px; background: #fff; color: var(--ui-ink); cursor: pointer; box-shadow: none !important; }
+  .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-agregar-linea, .adquisiciones-cargar) { color: #fff !important; background: #007dac !important; border-color: #007dac !important; }
+  .sistema-contable .adquisiciones-recepcion-real button:disabled { opacity: .55 !important; cursor: default; }
+  .sistema-contable .adquisiciones-recepcion-real h3.adquisiciones-carga-seccion { border: 0 !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
+  .sistema-contable .adquisiciones-recepcion-real input[readonly] { color: var(--ui-muted) !important; background: var(--ui-soft) !important; }
+  .sistema-contable .adquisiciones-recepcion-real .adquisiciones-agregar-linea { grid-column: auto !important; }
+  .sistema-contable .adquisiciones-recepcion-real > p { margin: 0; line-height: 1.5; font-size: 13px; }
+  .sistema-contable .adquisiciones-recepcion-lineas { display: grid; gap: 10px; }
+  .sistema-contable .adquisiciones-recepcion-lineas article { display: flex; justify-content: space-between; gap: 16px; padding: 14px; border: 1px solid var(--ui-line); border-radius: 8px; background: var(--ui-soft); overflow-wrap: anywhere; }
+  .sistema-contable .adquisiciones-recepcion-lineas article > div { min-width: 0; }
+  .sistema-contable .adquisiciones-recepcion-lineas p { margin: 6px 0 0; line-height: 1.5; font-size: 12px; color: var(--ui-muted); }
+  .sistema-contable .adquisiciones-recepcion-real .adquisiciones-carga-footer { position: static !important; inset: auto !important; padding: 14px 0 0; background: #fff !important; }
+  @media (max-width: 760px) {
+    .sistema-contable .adquisiciones-recepcion-real { padding: 16px !important; }
+    .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-lote-panel, .adquisiciones-linea-form) { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; padding: 12px !important; }
+    .sistema-contable .adquisiciones-recepcion-real .adquisiciones-linea-form > label:nth-child(-n+2) { grid-column: 1 / -1; }
+    .sistema-contable .adquisiciones-recepcion-lineas article { flex-direction: column; gap: 10px; }
+  }
+  @media (max-width: 480px) {
+    .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-lote-panel, .adquisiciones-linea-form) { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+}
+
+@layer hme-diseno {
+  .sistema-contable .adquisiciones-recepcion-real .recepcion-editor-contenido { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin: 0; padding: 0; border: 0 !important; background: transparent !important; box-shadow: none !important; min-width: 0; }
+  .sistema-contable .recepcion-editor-lote :is(section, fieldset, div, label) { min-width: 0; }
+  .sistema-contable .recepcion-editor-lote label { display: flex; flex-direction: column; gap: 7px; }
+  .sistema-contable .recepcion-editor-lote :is(input:not([type="radio"]), select) { width: 100%; height: 42px; padding: 0 11px; border: 1px solid var(--ui-line); border-radius: 7px; box-sizing: border-box; }
+  .sistema-contable .recepcion-producto { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 16px 24px; padding: 18px; background: #f3f8fa; border: 1px solid var(--ui-line); border-radius: 9px; }
+  .sistema-contable .recepcion-seccion-titulo { grid-column: 1 / -1; }
+  .sistema-contable .recepcion-seccion-titulo h3 { margin: 0; padding: 0 !important; background: transparent !important; border: 0 !important; font-size: 17px; }
+  .sistema-contable .recepcion-seccion-titulo p, .sistema-contable .recepcion-precios > p, .sistema-contable .recepcion-ayuda { margin: 7px 0 0; color: var(--ui-muted); line-height: 1.5; font-size: 12px; }
+  .sistema-contable :is(.recepcion-selector-grupo, .recepcion-selector-producto) { display: flex; flex-direction: column; gap: 7px; }
+  .sistema-contable .recepcion-selector-producto .recepcion-buscar-producto { display: flex; flex-direction: row; align-items: center; padding-inline: 10px; margin-bottom: 5px; }
+  .sistema-contable .recepcion-selector-producto .recepcion-buscar-producto input { padding-inline: 0; }
+  .sistema-contable .recepcion-producto-ficha { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 16px; align-items: center; padding-top: 14px; border-top: 1px solid var(--ui-line); }
+  .sistema-contable .recepcion-producto-ficha > div { display: flex; gap: 12px; align-items: center; }
+  .sistema-contable .recepcion-producto-ficha > div > svg { color: #007dac; flex-shrink: 0; }
+  .sistema-contable .recepcion-producto-ficha strong { display: block; font-size: 15px; overflow-wrap: anywhere; }
+  .sistema-contable .recepcion-producto-ficha span { display: block; margin-top: 3px; font-size: 12px; color: var(--ui-muted); }
+  .sistema-contable .recepcion-producto-ficha dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; gap: 14px; }
+  .sistema-contable .recepcion-producto-ficha dt { color: var(--ui-muted); font-size: 11px; }
+  .sistema-contable .recepcion-producto-ficha dd { margin: 5px 0 0; font-size: 13px; color: var(--ui-ink); overflow-wrap: anywhere; }
+  .sistema-contable .recepcion-editor-lote :is(.recepcion-datos-lote, .recepcion-precios) { padding: 0; margin: 0; border: 0; }
+  .sistema-contable .recepcion-editor-lote legend { font-weight: 600; font-size: 16px; padding: 0; margin-bottom: 14px; color: var(--ui-ink); }
+  .sistema-contable .recepcion-precios { padding-left: 24px !important; border-left: 1px solid var(--ui-line) !important; }
+  .sistema-contable .recepcion-modo-lote { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .sistema-contable .recepcion-modo-lote label { flex-direction: row; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+  .sistema-contable .recepcion-modo-lote input[type="radio"] { width: 16px; height: 16px; padding: 0; margin: 0; accent-color: #007dac; flex-shrink: 0; }
+  .sistema-contable .recepcion-campos-lote { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: end; }
+  .sistema-contable .recepcion-campos-lote small { display: inline; color: var(--ui-muted); font-size: 11px; }
+  .sistema-contable .recepcion-campos-precios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+  .sistema-contable .recepcion-observacion { margin-top: 18px; }
+  .sistema-contable .recepcion-observacion small { font-size: 11px; color: var(--ui-muted); }
+  .sistema-contable .recepcion-agregar-resumen { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid var(--ui-line); padding-top: 16px; }
+  .sistema-contable .recepcion-agregar-resumen span { display: block; color: var(--ui-muted); font-size: 12px; margin-bottom: 5px; }
+  .sistema-contable .recepcion-agregar-resumen strong { color: var(--ui-ink); font-size: 22px; }
+  .sistema-contable .recepcion-agregar-resumen > div:last-child { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sistema-contable .recepcion-agregar-resumen button { display: inline-flex; align-items: center; gap: 7px; }
+  .sistema-contable .recepcion-editor-lote fieldset:disabled { opacity: .6; }
+  @media (max-width: 760px) {
+    .sistema-contable .adquisiciones-recepcion-real .recepcion-editor-contenido { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+    .sistema-contable .recepcion-producto { grid-template-columns: minmax(0, 1fr); padding: 14px; }
+    .sistema-contable .recepcion-producto-ficha { grid-template-columns: minmax(0, 1fr); }
+    .sistema-contable .recepcion-producto-ficha dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sistema-contable .recepcion-precios { padding-left: 0 !important; border-left: 0 !important; border-top: 1px solid var(--ui-line) !important; padding-top: 18px !important; }
+    .sistema-contable .recepcion-agregar-resumen { align-items: stretch; }
+    .sistema-contable .recepcion-agregar-resumen > div:last-child { width: 100%; }
+    .sistema-contable .recepcion-agregar-resumen button { flex: 1; }
+  }
+}

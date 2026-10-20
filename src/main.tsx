@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
+import './styles/RefinamientoVisual.css';
 import './styles.css';
 import './subvistas.css';
 import './topbar.css';

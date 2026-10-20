@@ -1,5 +1,5 @@
 ﻿import { CatalogoView } from '../componentes/CatalogoView';
 
-export function ServiciosView() {
-  return <CatalogoView tipo="servicios" />;
+export function ServiciosView({ puedeGestionar = false }: { puedeGestionar?: boolean }) {
+  return <CatalogoView tipo="servicios" puedeGestionar={puedeGestionar} />;
 }

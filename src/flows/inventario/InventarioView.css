@@ -2176,3 +2176,65 @@
 .productos-base-modal > p { padding: 0 20px; }
 .productos-base-modal > form { padding: 0 20px 20px; }
 .productos-base-modal footer { margin-left: -20px; margin-right: -20px; margin-bottom: -20px; padding: 16px 20px; }
+.items-general .productos-base-tabla table { min-width: 1540px; }
+.items-general .productos-base-tabla td { vertical-align: middle; }
+.items-general .productos-base-tabla td:nth-child(7), .items-general .productos-base-tabla td:nth-child(8), .items-general .productos-base-tabla td:nth-child(9) { white-space: nowrap; }
+.items-general .productos-base-resumen button, .items-general-lotes button { padding: 8px 12px; border: 1px solid #bad0da; border-radius: 5px; color: #16445a; background: white; }
+.items-general .productos-base-resumen button[aria-pressed="true"] { color: white; background: #0088bd; border-color: #0088bd; }
+.items-general-vacio { text-align: center; padding: 30px 12px; color: #526c7a; }
+.items-general-ayuda { color: #526c7a; font-size: 13px; line-height: 1.5; }
+.items-general-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 16px; }
+.items-general-galeria article { padding: 20px; border: 1px solid #c3d6de; border-radius: 8px; background: #f8fbfc; }
+.items-general-galeria small { color: #00799d; }
+.items-general-galeria h3 { margin: 12px 0 8px; }
+.items-general-galeria p { font-size: 13px; color: #526c7a; }
+.items-general-galeria dl { display: flex; justify-content: space-between; gap: 8px; }
+.items-general-galeria dt { font-size: 12px; color: #526c7a; }
+.items-general-galeria dd { margin: 6px 0; font-weight: 600; font-size: 14px; }
+.items-general-modal { width: min(850px, calc(100vw - 32px)); }
+.items-general-modal .items-general-lotes { padding: 20px; }
+.items-general-lotes .productos-base-tabla { margin: 16px 0; min-height: 180px; }
+.items-general-lotes .productos-base-tabla table { min-width: 690px; }
+.items-general-modal .items-general-lotes .inventario-nuevo { background: #0088bd; color: white; }
+.items-general-modal button:focus-visible { outline: 2px solid #0088bd; outline-offset: 3px; }
+@media (max-width: 700px) { .items-general .productos-base-resumen { flex-wrap: wrap; } .items-general .inventario-filtros select { max-width: 100%; } .items-general .productos-base-encabezado > .productos-base-acciones { flex-wrap: wrap; } }
+.sistema-contable .items-general-modal-fondo { z-index: 1200; }
+.stock-general-real .stock-lotes-filtros { grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr) minmax(180px, 1fr) auto; }
+.stock-general-real .stock-actualizar { border: 1px solid #b7d3df; border-radius: 7px; color: #006e97; padding: 10px 15px; background: white; min-height: 42px; }
+.stock-general-real .stock-general-aviso { padding: 12px 15px; border: 1px solid #d0e5ea; border-radius: 7px; background: #f0f8fa; color: #476876; font-size: 13px; }
+.stock-general-real .stock-lotes-tabla { overflow-x: auto; }
+.stock-general-real .stock-lotes-tabla table { width: 100%; min-width: 1580px; table-layout: auto; }
+.stock-general-real .stock-lotes-tabla th { white-space: nowrap; }
+.stock-general-real .stock-lotes-tabla td { white-space: normal; }
+.stock-general-real .stock-lotes-tabla td:nth-child(2) { min-width: 250px; }
+.stock-general-real .stock-lotes-tabla td:nth-child(10) { min-width: 175px; }
+.stock-general-real .stock-lotes-tabla td small { display: block; font-size: 11px; font-weight: 400; color: #58717b; margin-top: 5px; }
+.stock-general-real .stock-orden { padding: 0; border: 0; background: transparent; color: inherit; display: inline-flex; align-items: center; gap: 8px; font: inherit; text-align: left; }
+.stock-general-real .stock-orden span { color: #63828e; }
+.stock-general-real .stock-lotes-error { padding: 12px; }
+.stock-general-real .stock-lotes-error button { margin-left: 8px; }
+.stock-general-detalle-fondo { z-index: 1700; }
+.stock-general-detalle { width: min(900px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); overflow-y: auto; }
+.stock-general-detalle > header { padding: 20px 24px; }
+.stock-general-detalle > header p { margin: 5px 0 0; }
+.stock-general-detalle-cuerpo { padding: 22px 24px; }
+.stock-general-datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; margin: 0; }
+.stock-general-datos dt { font-size: 12px; color: #58717b; margin-bottom: 5px; }
+.stock-general-datos dd { margin: 0; font-size: 14px; color: #203640; overflow-wrap: anywhere; }
+.stock-general-precios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+.stock-general-precios > div { padding: 14px; border: 1px solid #d2e3e9; background: #f2f9fa; border-radius: 8px; }
+.stock-general-precios small, .stock-general-precios strong { display: block; }
+.stock-general-precios strong { margin-top: 7px; font-variant-numeric: tabular-nums; }
+.stock-general-distribucion h4 { margin: 24px 0 14px; }
+.stock-general-distribucion > label { display: grid; gap: 7px; }
+.stock-general-distribucion select { padding: 10px; border: 1px solid #c4d9e2; border-radius: 7px; background: white; }
+.stock-general-total { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; background: #eaf5f7; border-radius: 7px; }
+.stock-general-distribucion details { border: 1px solid #d2e0e5; border-radius: 7px; margin-top: 12px; }
+.stock-general-distribucion summary { padding: 12px 14px; cursor: pointer; }
+.stock-general-distribucion summary strong { float: right; }
+.stock-general-desglose { overflow: auto; }
+.stock-general-desglose table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13px; }
+.stock-general-desglose :is(th, td) { padding: 12px; border-top: 1px solid #e0eaee; text-align: left; }
+.stock-general-detalle footer { padding: 16px 24px; border-top: 1px solid #d2e0e5; }
+@media(max-width: 900px) { .stock-general-real .stock-lotes-filtros { grid-template-columns: 1fr 1fr; } .stock-general-real .stock-lotes-busqueda { grid-column: 1 / -1; } }
+@media(max-width: 600px) { .stock-general-real .stock-lotes-filtros { grid-template-columns: 1fr; } .stock-general-detalle-cuerpo { padding: 18px; } .stock-general-datos { grid-template-columns: 1fr; } .stock-general-precios { grid-template-columns: 1fr; } }

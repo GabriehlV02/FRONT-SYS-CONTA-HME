@@ -243,12 +243,14 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   const moduleId = selected?.id ?? active;
   const moduleContent = config.renderModule?.(moduleId, select, active, session);
   return <div className={`sistema-app sistema-${config.id} ${collapsed ? 'sidebar-replegado' : ''}`}>
-    <Sidebar config={visibleConfig} active={active} open={open} collapsed={collapsed} onSelect={select} onClose={closeMenu} onCollapse={() => setCollapsed(!collapsed)} onLogout={logout} session={session}/>
+    <a className="saltar-contenido" href="#contenido-principal">Ir al contenido principal</a>
+    <Sidebar config={visibleConfig} active={active} open={open} collapsed={collapsed} onSelect={select} onClose={closeMenu} onLogout={logout} session={session}/>
     <div className="sistema-cuerpo" inert={open}>
       <header className="sistema-topbar">
         <button ref={menuButton} className="abrir-menu" onClick={() => setOpen(true)} aria-label="Abrir menú" aria-expanded={open} aria-controls="system-sidebar"><Icon name="menu"/></button>
-        <span className="topbar-icono" aria-label="Panel ejecutivo contable">
-          <Icon name="cash" />
+        <button className="topbar-plegar" type="button" onClick={() => setCollapsed(value => !value)} aria-label={collapsed ? 'Desplegar menú lateral' : 'Replegar menú lateral'} title={collapsed ? 'Desplegar menú lateral' : 'Replegar menú lateral'} aria-expanded={!collapsed} aria-controls="system-sidebar"><Icon name={collapsed ? 'chevronRight' : 'chevronLeft'} size={19}/></button>
+        <span className="topbar-icono" aria-hidden="true">
+          <Icon name={selected.icon} />
         </span>
         <div className="topbar-titulo"><h1>{selected.name}</h1><small>{config.name}</small></div>
         <div className="search-container"><label className="busqueda-global"><Icon name="search" size={17}/><input type="search" aria-label="Buscar módulo" placeholder="Buscar un módulo…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === 'Escape') setQuery(''); }}/></label>
@@ -272,7 +274,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
         <div className="perfil"><span className="perfil-avatar"><Icon name="user" size={21}/></span><div><strong title={session.user}>{session.user === 'demo' ? 'Usuario de prueba' : session.user}</strong><small>{session.role || config.role}</small></div></div>
         <button className="salir-rapido" onClick={logout} disabled={loggingOut} aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="logout" size={19}/></button>
       </header>
-      <main className="area-trabajo"><div className="content-limit">
+      <main className="area-trabajo" id="contenido-principal" tabIndex={-1}><div className="content-limit">
         {sessionError && <p className="login-error" role="alert">{sessionError}</p>}
         {!moduleContent && <div className="pagina-cabecera"><div><p>{config.category}</p><h2>{active === 'resumen' ? config.dashboardTitle : selected.name}</h2><small>{selected.description}</small></div>{config.id !== 'clinico' && <span className="demo-badge"><span/> Modo demostración</span>}</div>}
         {moduleContent ? <div key={active}>{moduleContent}</div> : (active === 'resumen' ? <>
