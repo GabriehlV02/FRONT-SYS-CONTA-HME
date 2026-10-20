@@ -13,6 +13,7 @@ import './login-panel-refresh.css';
 import './tema-financiero.css';
 import './styles/ContableCorporativo.css';
 import './login-fondo-animado.css';
+import './login-institutional.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );
