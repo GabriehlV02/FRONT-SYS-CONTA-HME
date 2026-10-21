@@ -399,9 +399,9 @@
 .login-balance-right .login-opciones {
   margin: -4px 0 clamp(14px, 3.2vh, 26px);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   color: #174861;
   font-size: clamp(13px, min(1.22vw, 2.2vh), 18px);
   font-weight: 500;
@@ -428,7 +428,8 @@
 
 .login-balance-right .login-opciones:after {
   content: '¿Olvidaste tu contraseña?';
-  margin-left: auto;
+  order: -1;
+  margin-left: 0;
   color: #0aaed6;
   font-weight: 800;
 }

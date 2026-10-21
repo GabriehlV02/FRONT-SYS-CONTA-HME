@@ -15,6 +15,7 @@ import './styles/ContableCorporativo.css';
 import './login-fondo-animado.css';
 import './login-institutional.css';
 import './login-contable-profesional.css';
+import './styles/ResponsiveContable.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );

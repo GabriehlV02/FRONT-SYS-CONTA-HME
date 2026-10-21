@@ -1,0 +1,72 @@
+/* Capa final de adaptación: escritorio, tabletas horizontales/verticales y móvil. */
+.sistema-contable {
+  --safe-inline: clamp(12px, 2.8vw, 48px);
+  --tap-target: 44px;
+}
+.sistema-contable :where(button, input, select, textarea) { max-width: 100%; }
+.sistema-contable :where(input, select, textarea) { font-size: max(16px, 1em); }
+.sistema-contable :where(button, [role="button"], select) { min-height: var(--tap-target); }
+.sistema-contable .area-trabajo { padding-inline: var(--safe-inline); overflow-x: clip; }
+.sistema-contable .content-limit,
+.sistema-contable .ventas-vista,
+.sistema-contable .inventario-vista,
+.sistema-contable .movimientos-vista,
+.sistema-contable .usuarios-vista { min-width: 0; }
+
+/* Las pestañas y tablas conservan todos sus datos y se desplazan en lugar de recortarse. */
+.sistema-contable :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .horizontal-subvista-nav) {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.sistema-contable :is(.inventario-tabla, .movimientos-tabla, .usuarios-tabla, .ventas-tabla, .productos-base-tabla, .stock-lotes-tabla, .recepcion-tabla, .caja-dia-tabla, .inventario-admin-tabla-contenedor) {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 1180px) {
+  .sistema-contable .sistema-topbar { padding-inline: clamp(14px, 2vw, 22px); }
+  .sistema-contable .area-trabajo { padding-block: clamp(18px, 2.5vw, 28px); }
+  .sistema-contable :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido) { min-width: 0; }
+  .sistema-contable :is(.pagina-cabecera, .ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera) { flex-wrap: wrap; }
+}
+
+/* iPad y tabletas Android: navegación táctil sin perder área de trabajo. */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .sistema-contable .sistema-sidebar { width: 236px; }
+  .sistema-contable .sistema-cuerpo { margin-left: 236px; }
+  .sistema-contable.sidebar-replegado .sistema-cuerpo { margin-left: 76px; }
+  .sistema-contable.sidebar-replegado .sistema-sidebar { width: 76px; }
+  .sistema-contable .search-container { width: min(30vw, 300px); }
+  .sistema-contable .perfil > div { display: none; }
+  .sistema-contable :is(.ventas-filtros, .inventario-filtros, .movimientos-filtros, .usuarios-filtros) { flex-wrap: wrap; }
+}
+
+@media (max-width: 760px) {
+  .sistema-contable .sistema-topbar { min-height: 58px; height: auto; padding-block: 7px; flex-wrap: wrap; }
+  .sistema-contable .topbar-titulo { flex: 1; }
+  .sistema-contable .search-container { order: 5; flex: 1 0 100%; max-width: none; width: 100%; }
+  .sistema-contable .busqueda-global { width: 100%; min-height: var(--tap-target); }
+  .sistema-contable .search-results { top: calc(100% + 6px); width: 100%; }
+  .sistema-contable .area-trabajo { min-height: calc(100dvh - 116px); padding-block: 16px; }
+  .sistema-contable :is(.pagina-cabecera, .ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera, .panel-cabecera) { align-items: stretch; }
+  .sistema-contable :is(.pagina-cabecera > *, .ventas-cabecera > *, .inventario-cabecera > *, .movimientos-cabecera > *, .usuarios-cabecera > *) { max-width: 100%; }
+  .sistema-contable :is(.ventas-filtros, .inventario-filtros, .movimientos-filtros, .usuarios-filtros) { display: grid; grid-template-columns: 1fr; }
+  .sistema-contable :is(.ventas-filtros > *, .inventario-filtros > *, .movimientos-filtros > *, .usuarios-filtros > *) { width: 100%; min-width: 0; }
+}
+
+@media (max-width: 420px) {
+  .sistema-contable .topbar-titulo small,
+  .sistema-contable .topbar-icono { display: none; }
+  .sistema-contable .topbar-titulo h1 { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+  .sistema-contable .area-trabajo { padding-inline: 12px; }
+  .sistema-contable :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .panel) { border-radius: 10px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .sistema-contable :is(button, .nav-modulo, .ventas-tabs button, .inventario-subvistas button, .movimientos-subvistas button, .usuarios-subvistas button) { min-height: var(--tap-target); }
+}
