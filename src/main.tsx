@@ -16,6 +16,7 @@ import './login-fondo-animado.css';
 import './login-institutional.css';
 import './login-contable-profesional.css';
 import './styles/ResponsiveContable.css';
+import './login-contable-rrhh-layout.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );

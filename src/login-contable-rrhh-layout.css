@@ -1,0 +1,20 @@
+/* Ajuste final: la composición del login sigue la escala de RRHH. */
+.login-page-contable .login-acceso-panel .login-card {
+  width: min(100%, 430px) !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.login-page-contable .login-acceso-panel .login-card::before {
+  display: none !important;
+  content: none !important;
+}
+
+@media (max-width: 900px) {
+  .login-page-contable .login-acceso-panel .login-card {
+    padding: 0 !important;
+  }
+}

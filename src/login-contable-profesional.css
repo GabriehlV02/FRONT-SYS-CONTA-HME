@@ -471,3 +471,77 @@
     .login-page-contable .login-acceso-panel .login-submit { transition: none !important; }
   }
 }
+
+/* Distribución de acceso alineada al portal de RRHH, con identidad contable. */
+@layer contable-corporativo {
+  .login-page-contable {
+    display: block !important;
+    min-height: 100svh !important;
+    padding: 18px !important;
+    overflow: hidden !important;
+    background:
+      radial-gradient(ellipse at 8% 8%, rgb(24 137 145 / 8%), transparent 30%),
+      radial-gradient(ellipse at 94% 92%, rgb(22 100 113 / 7%), transparent 34%),
+      #f6f8f6 !important;
+  }
+
+  .login-page-contable .login-balance-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    width: 100% !important;
+    height: calc(100svh - 36px) !important;
+    min-height: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .login-page-contable .login-balance-layout::before {
+    inset: 0 0 0 50% !important;
+    background: #f6f8f6 !important;
+  }
+
+  .login-page-contable .login-ilustracion-panel {
+    padding: clamp(48px, 5.3vw, 82px) !important;
+    border-radius: 22px 0 0 22px !important;
+  }
+
+  .login-page-contable .login-ilustracion-panel .login-brand {
+    width: min(100%, 315px) !important;
+    height: 104px !important;
+  }
+
+  .login-page-contable .login-balance-copy {
+    margin-top: clamp(60px, 13vh, 142px) !important;
+  }
+
+  .login-page-contable .login-balance-copy h2 {
+    max-width: 460px;
+    font-size: clamp(36px, 4vw, 58px) !important;
+  }
+
+  .login-page-contable .login-acceso-panel {
+    padding: clamp(42px, 7vw, 112px) !important;
+  }
+
+  .login-page-contable .login-acceso-panel .login-card {
+    width: min(100%, 430px) !important;
+  }
+
+  @media (max-width: 900px) {
+    .login-page-contable {
+      padding: 0 !important;
+      overflow: auto !important;
+    }
+
+    .login-page-contable .login-balance-layout {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 100svh !important;
+    }
+
+    .login-page-contable .login-ilustracion-panel {
+      border-radius: 0 !important;
+    }
+  }
+}
