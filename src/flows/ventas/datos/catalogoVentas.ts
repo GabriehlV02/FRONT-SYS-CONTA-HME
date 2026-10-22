@@ -7,6 +7,8 @@ export type ItemVenta = {
   codigo: string;
   precio: number;
   stock?: number;
+  almacenId?: number;
+  categoria?: string;
 };
 
 export const catalogoVentas: ItemVenta[] = [

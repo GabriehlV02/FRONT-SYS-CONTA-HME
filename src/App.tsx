@@ -135,19 +135,19 @@ const config: SystemConfig = {
     ) : id === 'ventas' ? (
       <VistaDiferida><VentasView activeId={activeId} /></VistaDiferida>
     ) : id === 'inventario' ? (
-      <VistaDiferida><InventarioView activeId={activeId} permisos={session?.permissions ?? []} /></VistaDiferida>
+      <VistaDiferida><InventarioView activeId={activeId} permisos={session?.permissions ?? []} administraCatalogo={session?.administraCatalogo} /></VistaDiferida>
     ) : id === 'almacenes' ? (
       <VistaDiferida><AlmacenesView activeId={activeId} /></VistaDiferida>
     ) : id === 'adquisiciones' ? (
-      <VistaDiferida><MovimientosView activeId={activeId} tipo="adquisiciones" /></VistaDiferida>
+      <VistaDiferida><MovimientosView activeId={activeId} administraCatalogo={session?.administraCatalogo} tipo="adquisiciones" /></VistaDiferida>
     ) : id === 'traspasos' ? (
-      <VistaDiferida><MovimientosView activeId={activeId} tipo="traspasos" /></VistaDiferida>
+      <VistaDiferida><MovimientosView activeId={activeId} administraCatalogo={session?.administraCatalogo} tipo="traspasos" /></VistaDiferida>
     ) : id === 'usuarios' ? (
       <VistaDiferida><UsuariosView permisos={session?.permissions ?? []} /></VistaDiferida>
     ) : id === 'sucursales-cajas' ? (
-      <VistaDiferida><ConfiguracionView inicial="general" usuarioSesion={session?.user} /></VistaDiferida>
+      <VistaDiferida><ConfiguracionView administraCatalogo={session?.administraCatalogo} inicial="general" usuarioSesion={session?.user} /></VistaDiferida>
     ) : id === 'configuracion' ? (
-      <VistaDiferida><ConfiguracionView inicial="contable" usuarioSesion={session?.user} /></VistaDiferida>
+      <VistaDiferida><ConfiguracionView administraCatalogo={session?.administraCatalogo} inicial="contable" usuarioSesion={session?.user} /></VistaDiferida>
     ) : undefined,
 };
 

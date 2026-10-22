@@ -6,9 +6,11 @@ import { EncabezadoVista } from '@ui/components/EncabezadoVista';
 
 export function MovimientosView({
   activeId,
+  administraCatalogo = false,
   tipo = 'adquisiciones',
 }: {
   activeId?: string;
+  administraCatalogo?: boolean;
   tipo?: 'adquisiciones' | 'traspasos';
 }) {
   const resolveTipo = (id?: string): 'adquisiciones' | 'traspasos' =>
@@ -26,7 +28,7 @@ export function MovimientosView({
     <section className="movimientos-vista">
       <EncabezadoVista titulo={subvista === 'adquisiciones' ? 'Compras y recepciones' : 'Movimientos entre almacenes'} descripcion={subvista === 'adquisiciones' ? 'Revisa las notas de ingreso, los proveedores y el detalle de cada recepción.' : 'Consulta los envíos, las recepciones y las devoluciones entre almacenes.'} icono={subvista === 'adquisiciones' ? 'fileText' : 'arrowRight'} />
       {subvista === 'adquisiciones' && (
-        <AdquisicionesView activeId={activeId} />
+        <AdquisicionesView activeId={activeId} administraCatalogo={administraCatalogo} />
       )}
       {subvista === 'traspasos' && <TraspasosView activeId={activeId} />}
     </section>

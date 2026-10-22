@@ -17,7 +17,7 @@ const moneda = (valor: string | number, decimales = 2) => new Intl.NumberFormat(
 const normalizar = (valor: string) => valor.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es').trim();
 const hoy = () => { const fecha = new Date(); return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`; };
 
-export function AdquisicionesView({ activeId }: { activeId?: string }) {
+export function AdquisicionesView({ activeId, administraCatalogo = false }: { activeId?: string; administraCatalogo?: boolean }) {
   const resolver = (id?: string): SubvistaAdquisiciones => id === 'adquisiciones-comprobante' ? 'comprobante' : 'cargado';
   const [subvista, setSubvista] = useState(() => resolver(activeId));
   const [registros, setRegistros] = useState<Ingreso[]>([]);
@@ -35,16 +35,16 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const [modal, setModal] = useState<'crear' | 'detalle' | null>(null);
   const [detalle, setDetalle] = useState<Ingreso | null>(null);
   const [cabecera, setCabecera] = useState({ fecha: hoy(), proveedor: '', comprobante: '', almacen_id: '' });
+  const [sucursalDestino, setSucursalDestino] = useState('');
   const [linea, setLinea] = useState(lineaInicial);
   const [lineas, setLineas] = useState<Linea[]>([]);
   const [editando, setEditando] = useState<string | null>(null);
-  const [buscarItem, setBuscarItem] = useState('');
   const [grupoId, setGrupoId] = useState('');
   const [modoLote, setModoLote] = useState<'nuevo' | 'existente'>('nuevo');
   const [errorModal, setErrorModal] = useState('');
   const [guardando, setGuardando] = useState(false);
   const [nuevoAlmacen, setNuevoAlmacen] = useState(false);
-  const [formAlmacen, setFormAlmacen] = useState({ nombre: '', codigo: '', sucursal_id: '', sucursal_nombre: '' });
+  const [formAlmacen, setFormAlmacen] = useState({ nombre: '', codigo: '', sucursal_id: '' });
   const [guardandoAlmacen, setGuardandoAlmacen] = useState(false);
   const [estudios, setEstudios] = useState<{ codigo: string; nombre: string; stock: number }[]>([]);
   const [errorEstudios, setErrorEstudios] = useState('');
@@ -89,7 +89,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
   const item = opciones.items.find(item => String(item.itemId) === linea.itemId);
   const grupos = [...new Map(opciones.items.map(i => [i.grupoId, { id: i.grupoId, codigo: i.codigoGenerico, nombre: i.generico }])).values()].sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   const productosGrupo = opciones.items.filter(i => String(i.grupoId) === grupoId);
-  const productosVisibles = productosGrupo.filter(i => String(i.itemId) === linea.itemId || [i.codigo, i.nombre, i.marca, i.presentacion].some(v => normalizar(v).includes(normalizar(buscarItem))));
+  const almacenesDestino = opciones.almacenes.filter(a => String(a.sucursal.id) === sucursalDestino);
   const loteExistente = item?.lotes.find(lote => normalizar(lote.numero) === normalizar(linea.lote));
   const filtrados = useMemo(() => registros.filter(registro => (!desde || registro.fecha >= desde) && (!hasta || registro.fecha <= hasta)
     && (!almacenFiltro || String(registro.almacenId) === almacenFiltro)
@@ -103,7 +103,8 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     if (registro) { setDetalle(registro); setModal('detalle'); return; }
     solicitudId.current = crypto.randomUUID(); envioPendiente.current = null; setPendiente(false);
     setCabecera({ fecha: hoy(), proveedor: '', comprobante: '', almacen_id: String(opciones.almacenes[0]?.id ?? '') });
-    setLinea(lineaInicial); setLineas([]); setEditando(null); setBuscarItem(''); setGrupoId(''); setModoLote('nuevo'); setNuevoAlmacen(false); setModal('crear');
+    setSucursalDestino(String(opciones.almacenes[0]?.sucursal.id ?? opciones.sucursales[0]?.id ?? ''));
+    setLinea(lineaInicial); setLineas([]); setEditando(null); setGrupoId(''); setModoLote('nuevo'); setNuevoAlmacen(false); setModal('crear');
   }
   function cambiarItem(id: string) {
     const seleccionado = opciones.items.find(item => String(item.itemId) === id);
@@ -121,7 +122,7 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     const nueva: Linea = { ...linea, id: editando ?? crypto.randomUUID(), itemId: item.itemId, codigo: item.codigo, producto: item.nombre, categoria: item.categoria, marca: item.marca,
       lote: linea.lote.trim(), cantidad: Number(linea.cantidad), costoUnitario: Number(linea.costoUnitario), unidad: item.unidadMedida };
     setLineas(actuales => editando ? actuales.map(l => l.id === editando ? nueva : l) : [...actuales, nueva]);
-    setLinea(lineaInicial); setEditando(null); setBuscarItem(''); setErrorModal('');
+    setLinea(lineaInicial); setEditando(null); setErrorModal('');
   }
   async function guardar(event: FormEvent) {
     event.preventDefault(); if (bloqueoEnvio.current || !lineas.length || editando) return;
@@ -144,7 +145,8 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
     try {
       const { data } = await leerRespuesta<{ data: Almacen }>(await apiFetch('/api/v1/adquisiciones/almacenes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formAlmacen, sucursal_id: formAlmacen.sucursal_id ? Number(formAlmacen.sucursal_id) : null }) }));
       setOpciones(actual => ({ ...actual, almacenes: [...actual.almacenes, data], sucursales: actual.sucursales.some(s => s.id === data.sucursal.id) ? actual.sucursales : [...actual.sucursales, data.sucursal] }));
-      setCabecera(actual => ({ ...actual, almacen_id: String(data.id) })); setNuevoAlmacen(false); setFormAlmacen({ nombre: '', codigo: '', sucursal_id: '', sucursal_nombre: '' });
+      setSucursalDestino(String(data.sucursal.id));
+      setCabecera(actual => ({ ...actual, almacen_id: String(data.id) })); setNuevoAlmacen(false); setFormAlmacen({ nombre: '', codigo: '', sucursal_id: '' });
     } catch (error) { setErrorModal(error instanceof Error ? error.message : 'No se pudo registrar el almacén.'); }
     finally { setGuardandoAlmacen(false); }
   }
@@ -192,38 +194,38 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
         {modal === 'crear' ? <>
           {pendiente && <p role="status">La confirmación está pendiente. Reintenta el mismo ingreso para comprobarlo sin duplicar el stock.</p>}
           <form id="guardar-ingreso" onSubmit={guardar}><fieldset className="adquisiciones-lote-panel" disabled={guardando || pendiente}>
-            <label>Almacén destino<select required value={cabecera.almacen_id} onChange={e => setCabecera({ ...cabecera, almacen_id: e.target.value })}><option value="">Selecciona un almacén</option>{opciones.almacenes.map(a => <option key={a.id} value={a.id}>{a.sucursal.nombre} - {a.nombre}</option>)}</select></label>
+            <label>Sucursal destino<select required value={sucursalDestino} onChange={e => { const id = e.target.value; setSucursalDestino(id); setCabecera(actual => ({ ...actual, almacen_id: String(opciones.almacenes.find(a => String(a.sucursal.id) === id)?.id ?? '') })); }}><option value="">Selecciona una sucursal</option>{opciones.sucursales.map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}</select></label>
+            <label>Almacén destino<select required disabled={!sucursalDestino || !almacenesDestino.length} value={cabecera.almacen_id} onChange={e => setCabecera({ ...cabecera, almacen_id: e.target.value })}><option value="">{sucursalDestino && !almacenesDestino.length ? 'Esta sucursal no tiene almacenes' : 'Selecciona un almacén'}</option>{almacenesDestino.map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
             <label>Fecha de recepción<input type="date" required max={hoy()} value={cabecera.fecha} onChange={e => setCabecera({ ...cabecera, fecha: e.target.value })} /></label>
             <label>Proveedor<input required maxLength={200} value={cabecera.proveedor} onChange={e => setCabecera({ ...cabecera, proveedor: e.target.value })} /></label>
             <label>Comprobante<input maxLength={100} placeholder="Factura, recibo o nota" value={cabecera.comprobante} onChange={e => setCabecera({ ...cabecera, comprobante: e.target.value })} /></label>
           </fieldset></form>
-          <button type="button" disabled={guardando || pendiente || guardandoAlmacen} aria-expanded={nuevoAlmacen} onClick={() => setNuevoAlmacen(v => !v)}>{nuevoAlmacen ? 'Cancelar nuevo almacén' : 'Registrar almacén destino'}</button>
+          {administraCatalogo && <button type="button" disabled={guardando || pendiente || guardandoAlmacen || !opciones.sucursales.length} aria-expanded={nuevoAlmacen} onClick={() => { setFormAlmacen(actual => ({ ...actual, sucursal_id: actual.sucursal_id || sucursalDestino || String(opciones.sucursales[0]?.id ?? '') })); setNuevoAlmacen(v => !v); }}>{nuevoAlmacen ? 'Cancelar nuevo almacén' : 'Registrar almacén destino'}</button>}
+          {!opciones.sucursales.length && <p role="status">Registra una sucursal en Configuración general para recibir stock.</p>}
           {nuevoAlmacen && <form onSubmit={guardarAlmacen}><fieldset className="adquisiciones-lote-panel" disabled={guardandoAlmacen}>
-            <label>Sucursal<select value={formAlmacen.sucursal_id} onChange={e => setFormAlmacen({ ...formAlmacen, sucursal_id: e.target.value })}><option value="">Crear una sucursal</option>{opciones.sucursales.map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}</select></label>
-            {!formAlmacen.sucursal_id && <label>Nombre de la sucursal<input required maxLength={150} value={formAlmacen.sucursal_nombre} onChange={e => setFormAlmacen({ ...formAlmacen, sucursal_nombre: e.target.value })} /></label>}
+            <label>Sucursal<select required value={formAlmacen.sucursal_id} onChange={e => setFormAlmacen({ ...formAlmacen, sucursal_id: e.target.value })}><option value="">Selecciona una sucursal registrada</option>{opciones.sucursales.map(s => <option key={s.id} value={s.id}>{s.nombre}</option>)}</select></label>
             <label>Nombre del almacén<input required maxLength={150} value={formAlmacen.nombre} onChange={e => setFormAlmacen({ ...formAlmacen, nombre: e.target.value })} /></label>
             <label>Código del almacén<input required maxLength={30} value={formAlmacen.codigo} onChange={e => setFormAlmacen({ ...formAlmacen, codigo: e.target.value })} /></label><button type="submit">{guardandoAlmacen ? 'Guardando…' : 'Guardar almacén'}</button>
           </fieldset></form>}
           <form className="recepcion-editor-lote" onSubmit={agregar}>
             <fieldset className="recepcion-editor-contenido" disabled={guardando || pendiente}>
               <section className="recepcion-producto" aria-labelledby="recepcion-producto-titulo">
-                <div className="recepcion-seccion-titulo"><h3 id="recepcion-producto-titulo">Selecciona el producto</h3><p>Busca dentro de un grupo y elige el producto comercial que estás recibiendo.</p></div>
+                <div className="recepcion-seccion-titulo"><h3 id="recepcion-producto-titulo">Selecciona el producto</h3><p>Selecciona un grupo y elige el producto comercial que estás recibiendo.</p></div>
                 {!opciones.items.length && <p role="status">Aún no hay productos disponibles. Registra el grupo en Productos e insumos y su producto comercial en Ítems general.</p>}
                 <div className="recepcion-selector-grupo">
                   <label htmlFor="recepcion-grupo">Grupo / genérico</label>
-                  <select id="recepcion-grupo" required value={grupoId} onChange={e => { setGrupoId(e.target.value); setBuscarItem(''); cambiarItem(''); }}>
+                  <select id="recepcion-grupo" required value={grupoId} onChange={e => { setGrupoId(e.target.value); cambiarItem(''); }}>
                     <option value="">Selecciona un grupo registrado</option>
                     {grupos.map(g => <option key={g.id} value={g.id}>{g.codigo} · {g.nombre} ({opciones.items.filter(i => i.grupoId === g.id).length} productos)</option>)}
                   </select>
                 </div>
                 <div className="recepcion-selector-producto">
-                  <label className="recepcion-buscar-producto"><Icon name="search" size={17} /><input aria-label="Buscar producto en el grupo" disabled={!grupoId} value={buscarItem} onChange={e => setBuscarItem(e.target.value)} placeholder="Buscar por código, nombre comercial o marca" /></label>
                   <label htmlFor="recepcion-producto">Producto comercial</label>
                   <select id="recepcion-producto" required disabled={!grupoId} value={linea.itemId} onChange={e => cambiarItem(e.target.value)}>
                     <option value="">{grupoId ? 'Selecciona el producto registrado' : 'Primero selecciona un grupo'}</option>
-                    {productosVisibles.map(i => <option key={i.itemId} value={i.itemId}>{i.codigo} · {i.nombre} · {i.marca} · {i.presentacion}</option>)}
+                    {productosGrupo.map(i => <option key={i.itemId} value={i.itemId}>{i.codigo} · {i.nombre} · {i.marca} · {i.presentacion}</option>)}
                   </select>
-                  {grupoId && !productosVisibles.length && <p role="status">No hay productos del grupo que coincidan con la búsqueda.</p>}
+                  {grupoId && !productosGrupo.length && <p role="status">No hay productos registrados en este grupo.</p>}
                 </div>
                 {item && <div className="recepcion-producto-ficha"><div><Icon name="package" size={21} /><div><strong>{item.nombre}</strong><span>{item.codigo}</span></div></div><dl>
                   <div><dt>Marca</dt><dd>{item.marca || 'Sin marca'}</dd></div><div><dt>Presentación</dt><dd>{item.presentacion || 'Sin presentación'}</dd></div><div><dt>Unidad</dt><dd>{item.unidadMedida}</dd></div><div><dt>Categoría</dt><dd>{item.categoria}</dd></div>
@@ -264,11 +266,11 @@ export function AdquisicionesView({ activeId }: { activeId?: string }) {
         <div className="adquisiciones-recepcion-lineas">
           {visible.length === 0 && <p>Los lotes que agregues aparecerán aquí. Después podrás confirmar el ingreso completo.</p>}
           {visible.map(l => <article key={l.id}><div><strong>{l.codigo} · {l.producto}</strong><p>{l.marca} · Lote {l.lote} · Vence: {l.vence || 'Sin vencimiento'}</p><p>{l.cantidad} {l.unidad} × {moneda(l.costoUnitario, 4)} · Subtotal: {moneda(l.subtotal ?? l.cantidad * l.costoUnitario)}</p><p>Precio 1: {moneda(l.precio1)} · Precio 2: {moneda(l.precio2)} · Precio 3: {moneda(l.precio3)}</p>{l.observacion && <p>{l.observacion}</p>}</div>
-            {modal === 'crear' && <div className="adquisiciones-linea-acciones"><button type="button" disabled={guardando || pendiente} onClick={() => { setEditando(l.id); setBuscarItem(''); const producto = opciones.items.find(i => i.itemId === l.itemId); setGrupoId(String(producto?.grupoId ?? '')); setModoLote(producto?.lotes.some(lote => normalizar(lote.numero) === normalizar(l.lote)) ? 'existente' : 'nuevo'); setLinea({ ...l, itemId: String(l.itemId), cantidad: String(l.cantidad), costoUnitario: String(l.costoUnitario) }); }}>Editar</button><button type="button" disabled={guardando || pendiente} onClick={() => { setLineas(actual => actual.filter(i => i.id !== l.id)); if (editando === l.id) { setEditando(null); setLinea(lineaInicial); } }}>Quitar</button></div>}
+            {modal === 'crear' && <div className="adquisiciones-linea-acciones"><button type="button" disabled={guardando || pendiente} onClick={() => { setEditando(l.id); const producto = opciones.items.find(i => i.itemId === l.itemId); setGrupoId(String(producto?.grupoId ?? '')); setModoLote(producto?.lotes.some(lote => normalizar(lote.numero) === normalizar(l.lote)) ? 'existente' : 'nuevo'); setLinea({ ...l, itemId: String(l.itemId), cantidad: String(l.cantidad), costoUnitario: String(l.costoUnitario) }); }}>Editar</button><button type="button" disabled={guardando || pendiente} onClick={() => { setLineas(actual => actual.filter(i => i.id !== l.id)); if (editando === l.id) { setEditando(null); setLinea(lineaInicial); } }}>Quitar</button></div>}
           </article>)}
         </div>
         <div className="adquisiciones-detalle-total">Total: <strong>{moneda(modal === 'detalle' ? detalle?.total ?? 0 : totalProvisional)}</strong></div>
-        <footer className="adquisiciones-carga-footer"><button type="button" disabled={guardando || guardandoAlmacen} onClick={cerrar}>{modal === 'crear' ? 'Cancelar' : 'Cerrar'}</button>{modal === 'detalle' && <button type="button" onClick={() => window.print()}>Imprimir</button>}{modal === 'crear' && <button type="submit" form="guardar-ingreso" className="adquisiciones-cargar" disabled={guardando || guardandoAlmacen || nuevoAlmacen || !lineas.length || Boolean(editando)}>{guardando ? 'Guardando ingreso…' : pendiente ? 'Reintentar confirmación' : 'Guardar registro'}</button>}</footer>
+        <footer className="adquisiciones-carga-footer"><button type="button" disabled={guardando || guardandoAlmacen} onClick={cerrar}>{modal === 'crear' ? 'Cancelar' : 'Cerrar'}</button>{modal === 'detalle' && <button type="button" onClick={() => window.print()}>Imprimir</button>}{modal === 'crear' && <button type="submit" form="guardar-ingreso" className="adquisiciones-cargar" disabled={guardando || guardandoAlmacen || nuevoAlmacen || !cabecera.almacen_id || !lineas.length || Boolean(editando)}>{guardando ? 'Guardando ingreso…' : pendiente ? 'Reintentar confirmación' : 'Guardar registro'}</button>}</footer>
       </section>
     </div>, document.querySelector('.sistema-contable') || document.body)}
   </>;

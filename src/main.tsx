@@ -1,3 +1,6 @@
+import './styles/LoginCentrado.css';
+import './styles/PopupsContables.css';
+import './styles/ExperienciaContable.css';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.tsx';
 import './styles/RefinamientoVisual.css';

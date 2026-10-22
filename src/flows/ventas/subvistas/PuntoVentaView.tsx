@@ -8,7 +8,7 @@ import {
   type ItemVenta,
   type TipoVenta,
 } from '../datos/catalogoVentas';
-import { productosDemo, serviciosDemo } from '../../inventario/datos/catalogoDemo';
+import { cargarCatalogoAutorizado, type AlmacenVenta } from '../datos/cargarCatalogo';
 
 type Linea = ItemVenta & { cantidad: number };
 type Pago = { id: number; metodo: string; monto: string };
@@ -24,23 +24,6 @@ type Cliente = {
 };
 const money = (value: number) => `Bs ${value.toFixed(2)}`;
 const nuevoPago = (id: number): Pago => ({ id, metodo: 'Efectivo', monto: '' });
-const catalogoLocal: ItemVenta[] = [
-  ...productosDemo.map((item, indice) => ({
-    id: `item-${indice + 1}`,
-    codigo: `ITM-${String(indice + 1).padStart(4, '0')}`,
-    nombre: item.nombre,
-    tipo: indice % 2 === 0 ? 'Insumo' as const : 'Producto' as const,
-    precio: 15 + (indice % 10) * 12,
-    stock: item.disponible ? 10 + (indice % 8) * 5 : 0,
-  })),
-  ...serviciosDemo.map((item, indice) => ({
-    id: `servicio-${indice + 1}`,
-    codigo: `SRV-${String(indice + 1).padStart(4, '0')}`,
-    nombre: item.nombre,
-    tipo: 'Servicio' as const,
-    precio: 50 + (indice % 12) * 25,
-  })),
-];
 const serviciosLaboratorio: ServicioLaboratorio[] = [
   { id: 'lab-hemograma', codigo: 'LAB-001', nombre: 'Hemograma completo', tipo: 'Servicio', precio: 50, categoria: 'Hematología' },
   { id: 'lab-grupo', codigo: 'LAB-002', nombre: 'Grupo sanguíneo y factor RH', tipo: 'Servicio', precio: 35, categoria: 'Hematología' },
@@ -68,22 +51,22 @@ export function PuntoVentaView() {
   const [asignacion] = useState<{ sucursal: string; caja: string; almacen: string } | null>(() => {
     try { return JSON.parse(sessionStorage.getItem('contable_asignacion') || 'null'); } catch { return null; }
   });
-  const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>(catalogoLocal);
-  const [almacenes, setAlmacenes] = useState<string[]>([]);
+  const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>([]);
+  const [almacenes, setAlmacenes] = useState<AlmacenVenta[]>([]);
   const [almacen, setAlmacen] = useState('');
   const [cobrando, setCobrando] = useState(false);
   const [ventaId, setVentaId] = useState(() => crypto.randomUUID());
   async function cargarCatalogo() {
-    const r = await apiFetch('/api/inventario'); if (!r.ok) throw new Error('No se pudo cargar el catálogo');
-    const { data } = await r.json();
-    const activos: ItemVenta[] = Array.isArray(data) ? data.filter((i: any) => String(i.estado || '').toUpperCase() === 'ACTIVO').map((i: any) => ({ id: String(i.id), codigo: i.codigo, nombre: i.nombre, tipo: (i.tipo === 'SERVICIO' ? 'Servicio' : i.tipo === 'INSUMO' ? 'Insumo' : 'Producto') as TipoVenta, precio: i.precioVenta, stock: i.stock })) : [];
-    setCatalogo(activos.length ? activos : catalogoLocal);
+    const resultado = await cargarCatalogoAutorizado();
+    setCatalogo(resultado.data);
+    setAlmacenes(resultado.almacenes);
+    setAlmacen(actual => resultado.almacenes.some(a => String(a.id) === actual) ? actual : String(resultado.almacenes[0]?.id ?? ''));
   }
-  useEffect(() => { cargarCatalogo().catch(e => setMensaje(e.message)); apiFetch('/api/stock/lotes').then(r => r.json()).then(({data}) => { const nombres = [...new Set<string>(data.map((l: any) => l.almacen))]; setAlmacenes(nombres); setAlmacen(nombres[0] || ''); }).catch(() => setMensaje('No se pudieron cargar los almacenes')); }, []);
+  useEffect(() => { cargarCatalogo().catch(e => { setCatalogo([]); setAlmacenes([]); setMensaje(e.message); }); }, []);
   const [sucursal, setSucursal] = useState('Hospital María Esperanza');
   const [caja, setCaja] = useState('Caja 01 · Recepción');
   useEffect(() => {
-    if (asignacion) { setSucursal(asignacion.sucursal); setCaja(asignacion.caja); setAlmacen(asignacion.almacen); }
+    if (asignacion) { setSucursal(asignacion.sucursal); setCaja(asignacion.caja); }
   }, [asignacion, almacenes]);
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<'Todos' | TipoVenta>('Todos');
@@ -133,12 +116,13 @@ export function PuntoVentaView() {
     () =>
       catalogoVentas.filter(
         (item) =>
+          (item.almacenId === undefined || String(item.almacenId) === almacen) &&
           (tipo === 'Todos' || item.tipo === tipo) &&
           `${item.nombre} ${item.codigo} ${item.tipo}`
             .toLowerCase()
             .includes(busqueda.toLowerCase()),
       ),
-    [busqueda, tipo, catalogoVentas],
+    [busqueda, tipo, catalogoVentas, almacen],
   );
   useEffect(() => {
     if (modoVista !== 'galeria' || !galeriaRef.current) return;
@@ -300,7 +284,7 @@ export function PuntoVentaView() {
         </div>, document.body,
       )}
       {contextoDestino && createPortal(<header className="punto-pos-cabecera punto-pos-contexto">
-        <div className="punto-contexto"><label>Almacén de salida<select disabled={Boolean(asignacion)} value={almacen} onChange={e => setAlmacen(e.target.value)}><option value="">Seleccionar almacén</option>{(asignacion ? [asignacion.almacen] : almacenes).map(a => <option key={a}>{a}</option>)}</select></label>
+        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => { setAlmacen(e.target.value); setLineas([]); }}><option value="">Seleccionar almacén</option>{almacenes.map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
           <label>
             Sucursal
             {asignacion ? <input aria-label="Sucursal asignada" value={asignacion.sucursal} readOnly /> : <SelectMenu

@@ -1,7 +1,7 @@
 import type { AuthSession } from './types';
 
 type SessionResponse = {
-  usuario: { id: string; usuario: string; nombre: string; rol: string; permisos: string[] };
+  usuario: { id: string; usuario: string; nombre: string; rol: string; permisos: string[]; administra_catalogo?: boolean };
 };
 
 export class AuthError extends Error {
@@ -45,7 +45,7 @@ async function readSession(response: Response): Promise<AuthSession> {
   if (!usuario || typeof usuario.nombre !== 'string' || typeof usuario.rol !== 'string' || !Array.isArray(usuario.permisos)) {
     throw new AuthError('El servidor devolvió una sesión inválida.', 502);
   }
-  return { user: usuario.nombre, role: usuario.rol, permissions: usuario.permisos };
+  return { user: usuario.nombre, role: usuario.rol, permissions: usuario.permisos, administraCatalogo: usuario.administra_catalogo === true };
 }
 
 export async function iniciarSesion(usuario: string, password: string): Promise<AuthSession> {

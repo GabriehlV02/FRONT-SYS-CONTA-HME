@@ -5,6 +5,7 @@ export type AuthSession = {
   user: string;
   role?: string;
   permissions: string[];
+  administraCatalogo?: boolean;
 };
 
 export type SystemConfig = {

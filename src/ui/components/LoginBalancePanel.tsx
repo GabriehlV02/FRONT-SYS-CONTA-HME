@@ -3,6 +3,7 @@ import { Brand } from './Brand';
 export function LoginBalancePanel({ subtitle }: { subtitle: string }) {
   return <section className="login-balance-panel">
     <Brand name="Balance" subtitle={subtitle} logoSrc="/logo-hospital-contable-corporativo.png" />
+    <img className="login-contable-ilustracion" src="/login-contable-ilustracion.svg" alt="" aria-hidden="true" />
     <div className="login-balance-copy">
       <span className="login-balance-kicker">SISTEMA ADMINISTRATIVO</span>
       <h2>Control claro.<br /><strong>Decisiones seguras.</strong></h2>

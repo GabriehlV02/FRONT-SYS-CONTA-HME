@@ -372,11 +372,11 @@ export function TraspasosView({ activeId }: { activeId?: string }) {
                 </span>
                 <span>{movimiento.origen}</span>
                 <span>{movimiento.destino}</span>
-                <span
+                <div className="traspasos-estado-celda"><span
                   className={`traspasos-estado ${movimiento.estado === "Recibido" ? "recibido" : ""}`}
                 >
                   {movimiento.estado}
-                </span>
+                </span></div>
                 <div>
                   {subvista === "recepcion" ? (
                     <button

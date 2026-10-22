@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   InventarioNavegacion,
   type SubvistaInventario,
@@ -12,7 +12,7 @@ import { ConfiguracionAdminView } from './subvistas/ConfiguracionAdminView';
 import './InventarioView.css';
 import { EncabezadoVista } from '@ui/components/EncabezadoVista';
 
-export function InventarioView({ activeId, permisos = [] }: { activeId?: string; permisos?: string[] }) {
+export function InventarioView({ activeId, permisos = [], administraCatalogo = false }: { activeId?: string; permisos?: string[]; administraCatalogo?: boolean }) {
   const resolveSubvista = (id?: string): SubvistaInventario =>
     id === 'inventario-admin' ? 'admin' : id === 'inventario-servicios'
       ? 'servicios'
@@ -32,12 +32,12 @@ export function InventarioView({ activeId, permisos = [] }: { activeId?: string;
       {subvista === 'servicios' && <EncabezadoVista titulo="Servicios" descripcion="Administra las prestaciones del hospital, sus tarifas y clasificación." icono="asset" />}
       {subvista === 'medicos' && <EncabezadoVista titulo="Médicos y profesionales" descripcion="Consulta los profesionales, sus especialidades y datos de contacto." icono="users" />}
       {subvista === 'admin' && <EncabezadoVista titulo="Configuración de inventario" descripcion="Organiza los tipos, unidades de medida, categorías y familias del catálogo." icono="settings" />}
-      {subvista === 'productos' && <ProductosInsumosView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} />}
-      {subvista === 'servicios' && <ServiciosView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} />}
+      {subvista === 'productos' && <ProductosInsumosView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
+      {subvista === 'servicios' && <ServiciosView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
       {subvista === 'medicos' && <MedicosProfesionalesView />}
-      {subvista === 'todo' && <ItemsGeneralView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} onReportes={() => setSubvista('reportes')} />}
+      {subvista === 'todo' && <ItemsGeneralView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} onReportes={() => setSubvista('reportes')} />}
       {subvista === 'reportes' && <ReportesInventarioView onVolver={() => setSubvista('todo')} />}
-      {subvista === 'admin' && <ConfiguracionAdminView puedeGestionar={permisos.includes('INVENTARIO_GESTIONAR')} />}
+      {subvista === 'admin' && <ConfiguracionAdminView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
     </section>
   );
 }

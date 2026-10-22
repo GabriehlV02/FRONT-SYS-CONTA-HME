@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from 'react';
-import { productosDemo, serviciosDemo } from '../../inventario/datos/catalogoDemo';
+import { useEffect, useState, type FormEvent } from 'react';
+import { cargarCatalogoAutorizado } from '../datos/cargarCatalogo';
+import type { ItemVenta } from '../datos/catalogoVentas';
 
 export type Cargo = { concepto: string; cantidad: number; monto: number; fecha: string };
 type Pago = { id: string; monto: number; nombre: string; documento: string; telefono: string; relacion: string; metodo: string; fecha: string };
@@ -8,12 +9,16 @@ export function leerMovimientos(id: string): Movimientos {
   try { const datos = JSON.parse(localStorage.getItem(`contable-cuenta-${id}`) || 'null'); if (Array.isArray(datos?.cargos) && Array.isArray(datos?.pagos)) return datos; } catch { /* Sin datos locales válidos. */ }
   return { cargos: [], pagos: [] };
 }
-const catalogo = [...productosDemo.map((item, i) => ({ nombre: item.nombre, categoria: item.categoria, precio: 15 + (i % 10) * 12 })), ...serviciosDemo.map((item, i) => ({ nombre: item.nombre, categoria: item.categoria, precio: 50 + (i % 12) * 25 }))];
+
 const bs = (valor: number) => `Bs ${valor.toFixed(2)}`;
 const fecha = (valor: string) => new Date(valor).toLocaleString('es-BO');
 const inicial = { nombre: '', documento: '', telefono: '', relacion: '', metodo: 'Efectivo', monto: '' };
 
 export function OperacionCuenta({ id, modo, saldo, movimientos, onGuardar }: { id: string; modo: 'cargar' | 'cobrar'; saldo: number; movimientos: Movimientos; onGuardar: (datos: Movimientos) => void }) {
+  const [catalogo, setCatalogo] = useState<ItemVenta[]>([]);
+  useEffect(() => {
+    cargarCatalogoAutorizado().then(resultado => setCatalogo(resultado.data)).catch(e => setMensaje(e.message));
+  }, []);
   const [busqueda, setBusqueda] = useState('');
   const [carrito, setCarrito] = useState<(typeof catalogo[number] & { cantidad: number })[]>([]);
   const [formulario, setFormulario] = useState(inicial);
