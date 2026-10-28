@@ -1,4 +1,4 @@
-﻿import Icon from '@ui/components/Icon';
+import Icon from '@ui/components/Icon';
 
 export function AlmacenesView() {
   return (
@@ -19,10 +19,9 @@ export function AlmacenesView() {
           <option>Categoria</option>
         </select>
         <div className="inventario-orden">
-          <span>Ordenar por</span>
           <select aria-label="Campo para ordenar">
-            <option>Nombre</option>
-            <option>Código</option>
+            <option>Ordenar por nombre</option>
+            <option>Ordenar por código</option>
             <option>Categoría</option>
             <option>Otro</option>
           </select>

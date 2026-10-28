@@ -22,10 +22,6 @@ const subvistas: { id: SubvistaConfiguracion; nombre: string; icono: IconName; d
   { id: 'usuario', nombre: 'Configuración usuario', icono: 'users', descripcion: 'Usuarios habilitados y permisos operativos.' },
 ];
 
-const cajasIniciales: Caja[] = [
-  { id: 1, nombre: 'Caja Recepción', codigo: 'CAJ-001', sucursalId: 1, almacenIds: [1], tiposItem: ['Productos', 'Insumos'], estado: 'Activa' },
-  { id: 2, nombre: 'Caja Farmacia', codigo: 'CAJ-002', sucursalId: 1, almacenIds: [2], tiposItem: ['Productos', 'Insumos'], estado: 'Activa' },
-];
 const usuariosSistema: UsuarioSistema[] = [
   { id: 1, nombre: 'Administrador', usuario: 'admin' },
   { id: 2, nombre: 'Operador contable', usuario: 'operador' },
@@ -55,7 +51,7 @@ export function ConfiguracionView({ inicial = 'contable', usuarioSesion = 'Usuar
   const [subvista, setSubvista] = useState<SubvistaConfiguracion>(inicial);
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
   const [almacenes, setAlmacenes] = useState<Almacen[]>([]);
-  const [cajas, setCajas] = useState(cajasIniciales);
+  const [cajas, setCajas] = useState<Caja[]>([]);
   const [dispositivos, setDispositivos] = useState<Dispositivo[]>([]);
   const [vendedores, setVendedores] = useState(vendedoresIniciales);
   const [cargando, setCargando] = useState(true);
@@ -64,11 +60,17 @@ export function ConfiguracionView({ inicial = 'contable', usuarioSesion = 'Usuar
   useEffect(() => {
     const controller = new AbortController();
     setCargando(true); setError('');
-    void apiFetch('/api/v1/configuracion/general', { signal: controller.signal }).then(async respuesta => {
+    void Promise.all([
+      apiFetch('/api/v1/configuracion/general', { signal: controller.signal }),
+      apiFetch('/api/v1/configuracion/cajas', { signal: controller.signal }),
+    ]).then(async ([respuesta, respuestaCajas]) => {
       const resultado = await respuesta.json();
       if (!respuesta.ok) throw new Error(resultado.message || 'No se pudo cargar la configuración general.');
+      const resultadoCajas = await respuestaCajas.json();
+      if (!respuestaCajas.ok) throw new Error(resultadoCajas.message || 'No se pudieron cargar las cajas.');
       if (!controller.signal.aborted) {
         setSucursales(resultado.data.sucursales); setAlmacenes(resultado.data.almacenes); setDispositivos(resultado.data.dispositivos);
+        setCajas(resultadoCajas.data);
       }
     }).catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'No se pudo cargar la configuración general.'); })
       .finally(() => { if (!controller.signal.aborted) setCargando(false); });
@@ -81,7 +83,7 @@ export function ConfiguracionView({ inicial = 'contable', usuarioSesion = 'Usuar
     </HorizontalSubvistaNav>
     {error && <div role="alert"><p>{error}</p><button type="button" onClick={() => setRevision(actual => actual + 1)}>Volver a cargar</button></div>}
     {cargando && <p role="status">Cargando configuración general…</p>}
-    {subvista === 'contable' && <Cajas sucursales={sucursales} almacenes={almacenes} cajas={cajas} onCrear={(item) => setCajas((actual) => [...actual, item])} />}
+    {subvista === 'contable' && <Cajas puedeGestionar={administraCatalogo && !cargando && !error} sucursales={sucursales} almacenes={almacenes} cajas={cajas} onCrear={async (item) => { const caja = await registrarConfiguracion<Caja>('cajas', item); setCajas(actual => [...actual, caja]); }} />}
     {subvista === 'general' && <AlmacenesSucursales puedeGestionar={administraCatalogo} sucursales={sucursales} almacenes={almacenes} dispositivos={dispositivos} usuarioSesion={usuarioSesion} cargando={cargando} onSucursal={async (item) => { const creado = await registrarConfiguracion<Sucursal>("sucursales", item); setSucursales(actual => [...actual, creado]); }} onAlmacen={async (item) => { const creado = await registrarConfiguracion<Almacen>("almacenes", item); setAlmacenes(actual => [...actual, creado]); }} onDispositivo={async (item) => { const creado = await registrarConfiguracion<Dispositivo>("dispositivos", item); setDispositivos(actual => [...actual, creado]); }} />}
     {subvista === 'usuario' && <Vendedores sucursales={sucursales} almacenes={almacenes} cajas={cajas} vendedores={vendedores} onCrear={(item) => setVendedores((actual) => [...actual, item])} />}
   </section>;
@@ -133,19 +135,31 @@ function AlmacenesSucursales({ puedeGestionar, cargando, sucursales, almacenes, 
   </div>;
 }
 
-function Cajas({ sucursales, almacenes, cajas, onCrear }: { sucursales: Sucursal[]; almacenes: Almacen[]; cajas: Caja[]; onCrear: (item: Caja) => void }) {
+function Cajas({ sucursales, almacenes, cajas, onCrear, puedeGestionar }: { sucursales: Sucursal[]; almacenes: Almacen[]; cajas: Caja[]; puedeGestionar: boolean; onCrear: (item: Omit<Caja, 'id' | 'estado'>) => Promise<void> }) {
   const [buscar, setBuscar] = useState('');
   const [abierto, setAbierto] = useState(false);
   const [form, setForm] = useState({ nombre: '', codigo: '', sucursalId: String(sucursales.find(s => s.estado === 'Activa')?.id || ''), almacenIds: [] as number[], tiposItem: [] as TipoItem[] });
-  const disponibles = almacenes.filter((item) => item.sucursalId === Number(form.sucursalId));
+  const [guardando, setGuardando] = useState(false);
+  const [errorFormulario, setErrorFormulario] = useState('');
+  const disponibles = almacenes.filter((item) => item.sucursalId === Number(form.sucursalId) && item.estado === 'Activo');
   const tiposPermitidos = tiposItem.filter((tipo) => almacenes.some((almacen) => form.almacenIds.includes(almacen.id) && almacen.tiposItem.includes(tipo)));
   const visibles = useMemo(() => cajas.filter((item) => `${item.nombre} ${item.codigo} ${sucursales.find((s) => s.id === item.sucursalId)?.nombre || ''}`.toLowerCase().includes(buscar.toLowerCase())), [buscar, cajas, sucursales]);
-  const guardar = (event: FormEvent) => { event.preventDefault(); if (!form.nombre.trim() || !form.codigo.trim() || !form.sucursalId || !form.almacenIds.length || !form.tiposItem.length) return; onCrear({ id: Date.now(), nombre: form.nombre.trim(), codigo: form.codigo.trim().toUpperCase(), sucursalId: Number(form.sucursalId), almacenIds: form.almacenIds, tiposItem: form.tiposItem, estado: 'Activa' }); setForm({ nombre: '', codigo: '', sucursalId: String(sucursales.find(s => s.estado === 'Activa')?.id || ''), almacenIds: [], tiposItem: [] }); setAbierto(false); };
+  const guardar = async (event: FormEvent) => {
+    event.preventDefault();
+    if (guardando || !puedeGestionar) return;
+    if (!form.almacenIds.length || !form.tiposItem.length) { setErrorFormulario('Selecciona al menos un almacén y un tipo de ítem.'); return; }
+    setGuardando(true); setErrorFormulario('');
+    try {
+      await onCrear({ ...form, nombre: form.nombre.trim(), codigo: form.codigo.trim().toUpperCase(), sucursalId: Number(form.sucursalId) });
+      setForm({ nombre: '', codigo: '', sucursalId: String(sucursales.find(s => s.estado === 'Activa')?.id || ''), almacenIds: [], tiposItem: [] }); setAbierto(false);
+    } catch (error) { setErrorFormulario(error instanceof Error ? error.message : 'No se pudo guardar la caja.'); }
+    finally { setGuardando(false); }
+  };
   const cambiarSucursal = (valor: string) => setForm({ ...form, sucursalId: valor, almacenIds: [], tiposItem: [] });
   const cambiarAlmacen = (id: number) => { const almacenIds = form.almacenIds.includes(id) ? form.almacenIds.filter((item) => item !== id) : [...form.almacenIds, id]; const permitidos = tiposItem.filter((tipo) => almacenes.some((almacen) => almacenIds.includes(almacen.id) && almacen.tiposItem.includes(tipo))); setForm({ ...form, almacenIds, tiposItem: form.tiposItem.filter((tipo) => permitidos.includes(tipo)) }); };
 
-  return <div className="configuracion-operativa"><div className="configuracion-barra"><label><Icon name="search" size={17} /><input value={buscar} onChange={(event) => setBuscar(event.target.value)} placeholder="Buscar caja, código o sucursal" /></label><span>{visibles.length} cajas</span><button type="button" onClick={() => setAbierto(true)}><Icon name="plus" size={16} /> Nueva caja</button></div><section className="configuracion-bloque"><header><div><h2>Cajas</h2><small>Los tipos de ítems de cada caja están limitados por sus almacenes.</small></div><b>{visibles.length}</b></header><div className="configuracion-tabla configuracion-cajas-tabla"><div className="configuracion-tabla-head"><span>N°</span><span>Código</span><span>Caja</span><span>Sucursal</span><span>Almacenes asociados</span><span>Tipos de ítems</span><span>Estado</span></div>{visibles.map((item, indice) => <article key={item.id}><span>{indice + 1}</span><strong>{item.codigo}</strong><span>{item.nombre}</span><span>{sucursales.find((sucursal) => sucursal.id === item.sucursalId)?.nombre}</span><span className="configuracion-etiquetas">{item.almacenIds.map((id) => <i key={id}>{almacenes.find((almacen) => almacen.id === id)?.nombre}</i>)}</span><span className="configuracion-etiquetas">{item.tiposItem.map((tipo) => <i key={tipo}>{tipo}</i>)}</span><span><i>{item.estado}</i></span></article>)}</div></section>
-    {abierto && <Modal titulo="Nueva caja" onCerrar={() => setAbierto(false)}><form onSubmit={guardar}><div className="configuracion-modal-campos"><label>Nombre<input required value={form.nombre} onChange={(event) => setForm({ ...form, nombre: event.target.value })} /></label><label>Código<input required value={form.codigo} onChange={(event) => setForm({ ...form, codigo: event.target.value })} /></label><label className="campo-completo">Sucursal<select required value={form.sucursalId} onChange={(event) => cambiarSucursal(event.target.value)}>{sucursales.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select></label><fieldset className="campo-completo"><legend>Almacenes relacionados</legend>{disponibles.map((item) => <label key={item.id}><input type="checkbox" checked={form.almacenIds.includes(item.id)} onChange={() => cambiarAlmacen(item.id)} /> {item.nombre} <small>({item.tiposItem.join(', ')})</small></label>)}{!disponibles.length && <small>No hay almacenes registrados en esta sucursal.</small>}</fieldset><fieldset className="campo-completo"><legend>Tipos de ítems habilitados en la caja</legend>{tiposPermitidos.map((tipo) => <label key={tipo}><input type="checkbox" checked={form.tiposItem.includes(tipo)} onChange={() => setForm({ ...form, tiposItem: form.tiposItem.includes(tipo) ? form.tiposItem.filter((item) => item !== tipo) : [...form.tiposItem, tipo] })} /> {tipo}</label>)}{!form.almacenIds.length && <small>Selecciona al menos un almacén para habilitar tipos de ítems.</small>}</fieldset></div><footer><button type="button" onClick={() => setAbierto(false)}>Cancelar</button><button type="submit">Guardar caja</button></footer></form></Modal>}
+  return <div className="configuracion-operativa"><div className="configuracion-barra"><label><Icon name="search" size={17} /><input value={buscar} onChange={(event) => setBuscar(event.target.value)} placeholder="Buscar caja, código o sucursal" /></label><span>{visibles.length} cajas</span><button type="button" disabled={!puedeGestionar || !sucursales.some(s => s.estado === 'Activa')} onClick={() => { setErrorFormulario(''); setForm(actual => ({ ...actual, sucursalId: String(sucursales.find(s => s.estado === 'Activa')?.id || '') })); setAbierto(true); }}><Icon name="plus" size={16} /> Nueva caja</button></div><section className="configuracion-bloque"><header><div><h2>Cajas</h2><small>Los tipos de ítems de cada caja están limitados por sus almacenes.</small></div><b>{visibles.length}</b></header><div className="configuracion-tabla configuracion-cajas-tabla"><div className="configuracion-tabla-head"><span>N°</span><span>Código</span><span>Caja</span><span>Sucursal</span><span>Almacenes asociados</span><span>Tipos de ítems</span><span>Estado</span></div>{visibles.map((item, indice) => <article key={item.id}><span>{indice + 1}</span><strong>{item.codigo}</strong><span>{item.nombre}</span><span>{sucursales.find((sucursal) => sucursal.id === item.sucursalId)?.nombre}</span><span className="configuracion-etiquetas">{item.almacenIds.map((id) => <i key={id}>{almacenes.find((almacen) => almacen.id === id)?.nombre}</i>)}</span><span className="configuracion-etiquetas">{item.tiposItem.map((tipo) => <i key={tipo}>{tipo}</i>)}</span><span><i>{item.estado}</i></span></article>)}</div></section>
+    {abierto && <Modal titulo="Nueva caja" onCerrar={() => { if (!guardando) setAbierto(false); }}><form onSubmit={guardar}>{errorFormulario && <p role="alert">{errorFormulario}</p>}<div className="configuracion-modal-campos"><label>Nombre<input required maxLength={150} value={form.nombre} onChange={(event) => setForm({ ...form, nombre: event.target.value })} /></label><label>Código<input required maxLength={30} value={form.codigo} onChange={(event) => setForm({ ...form, codigo: event.target.value })} /></label><label className="campo-completo">Sucursal<select required value={form.sucursalId} onChange={(event) => cambiarSucursal(event.target.value)}>{sucursales.filter(s => s.estado === 'Activa').map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select></label><fieldset className="campo-completo"><legend>Almacenes relacionados</legend>{disponibles.map((item) => <label key={item.id}><input type="checkbox" checked={form.almacenIds.includes(item.id)} onChange={() => cambiarAlmacen(item.id)} /> {item.nombre} <small>({item.tiposItem.join(', ')})</small></label>)}{!disponibles.length && <small>No hay almacenes registrados en esta sucursal.</small>}</fieldset><fieldset className="campo-completo"><legend>Tipos de ítems habilitados en la caja</legend>{tiposPermitidos.map((tipo) => <label key={tipo}><input type="checkbox" checked={form.tiposItem.includes(tipo)} onChange={() => setForm({ ...form, tiposItem: form.tiposItem.includes(tipo) ? form.tiposItem.filter((item) => item !== tipo) : [...form.tiposItem, tipo] })} /> {tipo}</label>)}{!form.almacenIds.length && <small>Selecciona al menos un almacén para habilitar tipos de ítems.</small>}</fieldset></div><footer><button type="button" disabled={guardando} onClick={() => setAbierto(false)}>Cancelar</button><button type="submit" disabled={guardando}>{guardando ? 'Guardando…' : 'Guardar caja'}</button></footer></form></Modal>}
   </div>;
 }
 

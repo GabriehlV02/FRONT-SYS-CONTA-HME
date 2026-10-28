@@ -1,0 +1,43 @@
+/* Shared toolbar geometry; this layer precedes historical theme overrides. */
+@layer contable-controles {
+  .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) {
+    display:flex!important; flex-wrap:wrap!important; align-items:flex-end!important; gap:12px!important;
+    min-width:0!important; max-width:100%!important; height:auto!important; box-sizing:border-box!important;
+  }
+  .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) > :is(label,select,.select-menu,.inventario-orden) {
+    box-sizing:border-box!important; min-width:0!important; max-width:100%!important; margin:0!important; flex:1 1 170px!important;
+  }
+  .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) > label:has(input:not([type=date])) { flex:3 1 280px!important; }
+  .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) :is(select,input:not([type=checkbox]):not([type=radio]),.select-menu-trigger) {
+    box-sizing:border-box!important; min-width:0!important; max-width:100%!important; height:44px!important; min-height:44px!important; margin:0!important;
+  }
+  .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) > button { min-height:44px!important; margin:0!important; flex-shrink:0!important; max-width:100%!important; }
+  /* A search control owns its single border and focus indicator. */
+  .sistema-contable :is(label,div):has(> svg):has(> input:not([type=checkbox]):not([type=radio])) {
+    display:flex!important; align-items:center!important; gap:10px!important; box-sizing:border-box!important;
+    min-width:0!important; max-width:100%!important; height:44px!important; min-height:44px!important;
+    padding:0 12px!important; border:1px solid #ccd9e5!important; border-radius:7px!important; background:#fff!important; box-shadow:none!important;
+  }
+  .sistema-contable :is(label,div):has(> svg) > input:not([type=checkbox]):not([type=radio]) {
+    flex:1 1 0!important; width:100%!important; min-width:0!important; max-width:100%!important; height:40px!important; min-height:0!important;
+    margin:0!important; padding:0!important; border:0!important; border-radius:0!important; outline:none!important; box-shadow:none!important; background:transparent!important;
+  }
+  .sistema-contable :is(label,div):has(> input) > svg { flex-shrink:0!important; position:static!important; transform:none!important; }
+  .sistema-contable :is(label,div):has(> svg):has(> input):focus-within { border-color:#0086c4!important; box-shadow:0 0 0 2px #0086c41a!important; outline:none!important; }
+  .sistema-contable select:focus-visible { outline:2px solid #0086c433!important; outline-offset:0!important; border-color:#0086c4!important; }
+  .sistema-contable .inventario-orden:not(.select-menu) { display:flex!important; align-items:center!important; gap:8px!important; padding:0!important; height:44px!important; border:0!important; background:transparent!important; box-shadow:none!important; }
+  .sistema-contable .inventario-orden:not(.select-menu) > span { position:static!important; white-space:nowrap!important; font-size:12px!important; flex-shrink:0!important; }
+  .sistema-contable .inventario-orden:not(.select-menu) > select { flex:1!important; width:100%!important; }
+  .sistema-contable .inventario-orden.select-menu { padding:0!important; border:0!important; background:transparent!important; }
+  .sistema-contable .select-menu-trigger { width:100%!important; display:flex!important; align-items:center!important; justify-content:space-between!important; gap:8px!important; }
+  .sistema-contable .select-menu-trigger > span { overflow:hidden!important; text-overflow:ellipsis!important; white-space:nowrap!important; min-width:0!important; }
+  .sistema-contable .stock-lotes-busqueda { padding:0!important; border:0!important; background:transparent!important; box-shadow:none!important; }
+  .sistema-contable .stock-lotes-busqueda > div { width:100%!important; }
+  @media(max-width:640px) {
+    .sistema-contable :is(.inventario-filtros,.stock-lotes-filtros,.usuarios-filtros,.movimientos-filtros,.adquisiciones-filtros,.configuracion-barra,.configuracion-dispositivos-barra,.notificaciones-herramientas,.control-herramientas,.cuentas-abiertas-herramientas,.caja-dia-filtros,.punto-catalogo-filtros) > :is(label,select,.select-menu,.inventario-orden) { flex-basis:100%!important; width:100%!important; }
+  }
+}
+@layer contable-controles {
+ .sistema-contable .inventario-orden:not(.select-menu) { flex-direction:row!important; }
+ .sistema-contable .inventario-orden:not(.select-menu) > select { border:1px solid #ccd9e5!important; border-radius:7px!important; background-color:white!important; padding:0 12px!important; }
+}
