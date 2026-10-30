@@ -67,3 +67,40 @@
 .sistema-contable .item-card-acciones .productos-base-acciones button { flex: 1; min-height: 34px; padding: 6px 8px; border: 1px solid #bfd3e1; border-radius: 6px; background: #fff; color: #165879; font-size: 12px; font-weight: 550; }
 .sistema-contable .item-card-acciones .productos-base-acciones button:first-child { background: #007fb5; border-color: #007fb5; color: #fff; }
 .sistema-contable .item-card-acciones button:focus-visible { outline: 2px solid #008ec4; outline-offset: 3px; }
+
+.sistema-contable .items-general-vistas {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid #c7dde6;
+  border-radius: 8px;
+  background: #edf5f8;
+}
+.sistema-contable .items-general .items-general-vistas button {
+  min-height: 32px;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #386078;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.sistema-contable .items-general .items-general-vistas button[aria-pressed="true"] {
+  border-color: #007eb5;
+  color: #fff;
+  background: #007eb5;
+  box-shadow: 0 2px 5px rgb(0 94 137 / 18%);
+}
+.sistema-contable .items-general-lista { min-height: 0; max-width: 100%; }
+.sistema-contable .items-general-lista table { min-width: 1540px; }
+.sistema-contable .items-general-lista td { vertical-align: middle; }
+.sistema-contable .items-general-lista td:nth-child(n+7):nth-child(-n+9) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sistema-contable .items-general-lista .productos-base-acciones { flex-wrap: nowrap; white-space: nowrap; }
+.sistema-contable .items-general-lista:focus-visible { outline: 2px solid #008ec4; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .sistema-contable .items-general-vistas { order: 3; }
+  .sistema-contable .items-general .productos-base-resumen label { margin-left: auto; }
+}
