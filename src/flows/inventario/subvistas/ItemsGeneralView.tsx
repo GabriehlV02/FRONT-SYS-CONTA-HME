@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { apiFetch } from '@ui/auth';
+import './ItemsGeneralCards.css';
 import { leerRespuesta } from '../../usuarios/accesos';
 
 type Opcion = { id: string; nombre: string; activo: boolean };
@@ -24,7 +25,6 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
   const [direccion, setDireccion] = useState('asc');
   const [filas, setFilas] = useState(20);
   const [numero, setNumero] = useState(1);
-  const [galeria, setGaleria] = useState(false);
   const [recarga, setRecarga] = useState(0);
   const [cargando, setCargando] = useState(true);
   const [opcionesListas, setOpcionesListas] = useState(false);
@@ -135,9 +135,15 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
     {(error || errorOpciones) && <p role="alert" className="productos-base-error">{error || errorOpciones} <button onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
     {opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
     <p role="status" className="productos-base-mensaje">{mensaje}</p>
-    <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><label>Filas <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label><button aria-pressed={!galeria} onClick={() => setGaleria(false)}>Listado</button><button aria-pressed={galeria} onClick={() => setGaleria(true)}>Galería</button></div>
+    <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><label>Por página <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
     {!cargando && !error && pagina.data.length === 0 && <p className="items-general-vacio">{buscar || grupo || estado ? 'No hay ítems que coincidan con los filtros.' : 'Todavía no hay ítems comerciales. Registra el primero y vincúlalo a su agrupador.'}</p>}
-    {!galeria ? <div className="productos-base-tabla" aria-busy={cargando}><table data-interactiva="true"><thead><tr>{['Código del ítem', 'Agrupador genérico', 'Nombre comercial', 'Marca', 'Presentación', 'Unidad', 'Precio 1', 'Precio 2', 'Precio 3', 'Lotes', 'Estado', 'Acciones'].map(titulo => <th key={titulo} scope="col">{titulo}</th>)}</tr></thead><tbody>{pagina.data.map(item => <tr key={item.id}><td>{item.codigo}</td><td><strong>{item.producto_base.codigo}</strong><small>{item.producto_base.nombre}</small></td><td><strong>{item.nombre_comercial}</strong><small>{item.codigo_barras}</small></td><td>{item.marca}</td><td>{item.presentacion}</td><td>{item.unidad.nombre}</td><td>{dinero(item.precio_1)}</td><td>{dinero(item.precio_2)}</td><td>{dinero(item.precio_3)}</td><td>{item.lotes.length}</td><td>{item.estado === 'ACTIVO' ? 'Activo' : 'Inactivo'}</td><td>{botones(item)}</td></tr>)}</tbody></table></div> : <div className="items-general-galeria">{pagina.data.map(item => <article key={item.id}><small>{item.producto_base.codigo} · {item.producto_base.nombre}</small><h3>{item.nombre_comercial}</h3><p>{item.marca} · {item.presentacion}</p><p>{item.codigo} · {item.estado === 'ACTIVO' ? 'Activo' : 'Inactivo'}</p><dl>{(['precio_1', 'precio_2', 'precio_3'] as const).map((campo, indice) => <div key={campo}><dt>Precio {indice + 1}</dt><dd>{dinero(item[campo])}</dd></div>)}</dl>{botones(item)}</article>)}</div>}
+    <div className="items-general-galeria" aria-busy={cargando}>{pagina.data.map(item => <article key={item.id} className="item-comercial-card">
+      <header className="item-card-cabecera"><span className="item-card-codigo">{item.codigo}</span><span className={'item-card-estado ' + (item.estado === 'ACTIVO' ? 'activo' : 'inactivo')}>{item.estado === 'ACTIVO' ? 'Activo' : 'Inactivo'}</span></header>
+      <div className="item-card-identidad"><h3>{item.nombre_comercial}</h3><div className="item-card-grupo"><span>Agrupador genérico</span><strong>{item.producto_base.nombre}</strong><small>{item.producto_base.codigo}</small></div></div>
+      <dl className="item-card-datos"><div><dt>Marca / laboratorio</dt><dd>{item.marca || 'Sin registrar'}</dd></div><div><dt>Presentación</dt><dd>{item.presentacion || 'Sin registrar'}</dd></div><div><dt>Unidad</dt><dd>{item.unidad.nombre}</dd></div>{item.codigo_barras && <div><dt>Código de barras</dt><dd>{item.codigo_barras}</dd></div>}</dl>
+      <dl className="item-card-precios">{(['precio_1', 'precio_2', 'precio_3'] as const).map((campo, indice) => <div key={campo}><dt>Precio {indice + 1}</dt><dd>{dinero(item[campo])}</dd></div>)}</dl>
+      <footer className="item-card-acciones">{botones(item)}</footer>
+    </article>)}</div>
     {paginacion}
     {modal && createPortal(<div className="inventario-modal-fondo items-general-modal-fondo"><div ref={dialogo} className="inventario-modal productos-base-modal items-general-modal" role="dialog" aria-modal="true" aria-labelledby="item-titulo" onKeyDown={event => {
       if (event.key === 'Escape') { event.preventDefault(); cerrar(); }

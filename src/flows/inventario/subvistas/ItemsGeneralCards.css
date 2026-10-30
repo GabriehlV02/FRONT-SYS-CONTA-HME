@@ -1,0 +1,69 @@
+.sistema-contable .items-general-galeria {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+.sistema-contable .items-general-galeria .item-comercial-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #cfdee7;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgb(24 57 76 / 4%);
+  color: #173c52;
+}
+.sistema-contable .item-card-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #f4f9fc;
+  border-bottom: 1px solid #e0eaf0;
+}
+.sistema-contable .item-card-codigo { font-size: 12px; font-weight: 650; color: #3e6179; }
+.sistema-contable .item-card-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.sistema-contable .item-card-estado::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.sistema-contable .item-card-estado.activo { color: #23704f; background: #eaf6ef; }
+.sistema-contable .item-card-estado.inactivo { color: #626c78; background: #e9edf1; }
+.sistema-contable .item-card-identidad { padding: 12px 12px 0; }
+.sistema-contable .item-card-identidad h3 {
+  margin: 0 0 9px;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: -.25px;
+  color: #12394f;
+  overflow-wrap: anywhere;
+}
+.sistema-contable .item-card-grupo { display: grid; gap: 2px; padding-left: 8px; border-left: 3px solid #0796c6; }
+.sistema-contable .item-card-grupo > span { font-size: 11px; color: #60788a; }
+.sistema-contable .item-card-grupo strong { font-size: 13px; line-height: 1.4; font-weight: 550; overflow-wrap: anywhere; }
+.sistema-contable .item-card-grupo small { font-size: 11px; color: #60788a; }
+.sistema-contable .items-general-galeria .item-card-datos { display: grid; gap: 6px; margin: 12px; }
+.sistema-contable .item-card-datos > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px; align-items: baseline; }
+.sistema-contable .item-card-datos dt { font-size: 12px; color: #60788a; line-height: 1.5; }
+.sistema-contable .item-card-datos dd { margin: 0; font-size: 12px; font-weight: 500; color: #294b61; line-height: 1.5; overflow-wrap: anywhere; text-align: right; }
+.sistema-contable .items-general-galeria .item-card-precios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: auto 12px 0; padding: 10px 0; border-top: 1px solid #e0eaf0; }
+.sistema-contable .item-card-precios > div { min-width: 0; padding: 0 8px; border-left: 1px solid #e0eaf0; }
+.sistema-contable .item-card-precios > div:first-child { padding-left: 0; border: 0; }
+.sistema-contable .item-card-precios dt { font-size: 11px; color: #60788a; }
+.sistema-contable .item-card-precios dd { margin: 4px 0 0; font-size: 13px; line-height: 1.5; font-weight: 650; color: #173c52; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sistema-contable .item-card-acciones { padding: 9px 12px; border-top: 1px solid #e0eaf0; background: #f8fbfd; }
+.sistema-contable .item-card-acciones .productos-base-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.sistema-contable .item-card-acciones .productos-base-acciones button { flex: 1; min-height: 34px; padding: 6px 8px; border: 1px solid #bfd3e1; border-radius: 6px; background: #fff; color: #165879; font-size: 12px; font-weight: 550; }
+.sistema-contable .item-card-acciones .productos-base-acciones button:first-child { background: #007fb5; border-color: #007fb5; color: #fff; }
+.sistema-contable .item-card-acciones button:focus-visible { outline: 2px solid #008ec4; outline-offset: 3px; }

@@ -1750,6 +1750,7 @@
 .punto-tarjetas article {
   overflow: hidden;
   display: grid;
+  grid-template-rows: 1fr auto;
   border: 1px solid #d5dfea;
   border-radius: 14px;
   background: #fff;

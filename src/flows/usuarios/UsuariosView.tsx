@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import {
   UsuariosNavegacion,
   type SubvistaUsuarios,
@@ -16,12 +16,12 @@ export function UsuariosView({ permisos }: { permisos: string[] }) {
     <section className="usuarios-vista">
       <UsuariosNavegacion activa={subvista} onSeleccionar={setSubvista} />
       <EncabezadoVista
-        titulo={subvista === 'usuarios' ? 'Usuarios del sistema' : subvista === 'pacientes-usuarios' ? 'Acceso de pacientes' : 'Roles y permisos'}
-        descripcion={subvista === 'usuarios' ? 'Administra las cuentas del equipo y su acceso a sucursales, cajas y almacenes.' : subvista === 'pacientes-usuarios' ? 'Gestiona las cuentas de pacientes para el portal de estudios.' : 'Define qué puede consultar y gestionar cada usuario del sistema.'}
+        titulo={subvista === 'usuarios' ? 'Usuarios del sistema' : subvista === 'pacientes-usuarios' ? 'Registro de pacientes' : 'Roles y permisos'}
+        descripcion={subvista === 'usuarios' ? 'Administra las cuentas del equipo y su acceso a sucursales, cajas y almacenes.' : subvista === 'pacientes-usuarios' ? 'Registra y consulta los pacientes compartidos con el sistema clínico.' : 'Define qué puede consultar y gestionar cada usuario del sistema.'}
         icono={subvista === 'roles-permisos' ? 'userCheck' : 'users'}
       />
       {subvista === 'usuarios' && (permisos.includes('USUARIOS_VER') ? <ListadoUsuariosView puedeCrear={permisos.includes('USUARIOS_CREAR')} /> : <p role="status">No tienes permiso para consultar usuarios.</p>)}
-      {subvista === 'pacientes-usuarios' && (permisos.includes('USUARIOS_VER') ? <PacientesUsuariosView puedeCrear={permisos.includes('USUARIOS_CREAR')} /> : <p role="status">No tienes permiso para consultar cuentas de pacientes.</p>)}
+      {subvista === 'pacientes-usuarios' && (permisos.includes('USUARIOS_VER') ? <PacientesUsuariosView puedeCrear={permisos.includes('USUARIOS_CREAR')} /> : <p role="status">No tienes permiso para consultar pacientes.</p>)}
       {subvista === 'roles-permisos' && (permisos.includes('ROLES_GESTIONAR') ? <RolesPermisosView /> : <p role="status">No tienes permiso para gestionar roles y permisos.</p>)}
     </section>
   );

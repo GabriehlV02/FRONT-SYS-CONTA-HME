@@ -6,14 +6,7 @@ type EstadoCuenta = 'Pendiente' | 'Parcial' | 'Vencida' | 'Cerrada';
 type FiltroCuenta = 'Todas' | 'Internaciones' | 'Deudas' | 'Cerradas';
 type Cuenta = { id: string; paciente: string; documento: string; origen: string; fecha: string; total: number; saldo: number; estado: EstadoCuenta };
 
-const cuentasIniciales: Cuenta[] = [
-  { id: 'CTA-1048', paciente: 'María Fernanda Rojas', documento: 'CI 6842159', origen: 'Consulta externa', fecha: '24 Sep 2026', total: 380, saldo: 180, estado: 'Parcial' },
-  { id: 'CTA-1047', paciente: 'José Luis Vargas', documento: 'CI 4973621', origen: 'Laboratorio', fecha: '24 Sep 2026', total: 245, saldo: 245, estado: 'Pendiente' },
-  { id: 'CTA-1042', paciente: 'Ana Belén Mamani', documento: 'CI 7251846', origen: 'Internación', fecha: '22 Sep 2026', total: 1850, saldo: 740, estado: 'Parcial' },
-  { id: 'CTA-1039', paciente: 'Carlos Méndez Flores', documento: 'CI 3918475', origen: 'Imagenología', fecha: '20 Sep 2026', total: 520, saldo: 520, estado: 'Vencida' },
-  { id: 'CTA-1035', paciente: 'Sofía Aguilar Soto', documento: 'CI 8124763', origen: 'Procedimiento', fecha: '19 Sep 2026', total: 310, saldo: 310, estado: 'Pendiente' },
-  { id: 'CTA-1031', paciente: 'Diego Arce Molina', documento: 'CI 5489326', origen: 'Consulta externa', fecha: '18 Sep 2026', total: 180, saldo: 0, estado: 'Cerrada' },
-];
+const cuentasIniciales: Cuenta[] = [];
 const moneda = (monto: number) => `Bs ${monto.toFixed(2)}`;
 
 export function CuentasAbiertasView() {

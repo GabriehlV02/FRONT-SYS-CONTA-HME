@@ -1,3 +1,4 @@
+import ModalRegistroPaciente from '../../usuarios/subvistas/ModalRegistroPaciente';
 import { apiFetch } from '@ui/auth';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
@@ -16,6 +17,7 @@ type TipoCuentaNueva = 'Deuda' | 'Internación';
 type ServicioLaboratorio = ItemVenta & { categoria: string };
 type Cliente = {
   id?: string;
+  paciente_id?: string;
   nombre: string;
   documento: string;
   correo: string;
@@ -70,7 +72,6 @@ export function PuntoVentaView() {
   }, [asignacion, almacenes]);
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<'Todos' | TipoVenta>('Todos');
-  const [modoVista, setModoVista] = useState<'galeria' | 'listado'>('galeria');
   const [contextoDestino, setContextoDestino] = useState<HTMLElement | null>(null);
   const [cantidadVisible, setCantidadVisible] = useState(5);
   const [paginaCatalogo, setPaginaCatalogo] = useState(1);
@@ -84,6 +85,9 @@ export function PuntoVentaView() {
     celular: '',
     direccion: '',
   });
+  const [buscarPaciente, setBuscarPaciente] = useState('');
+  const [registroPacienteAbierto, setRegistroPacienteAbierto] = useState(false);
+  const [errorPacientes, setErrorPacientes] = useState('');
   const [clienteModo, setClienteModo] = useState<
     'inicio' | 'buscar' | 'registrar'
   >('inicio');
@@ -98,18 +102,31 @@ export function PuntoVentaView() {
   const [ventaCobrada, setVentaCobrada] = useState(false);
   const [cuentaModalAbierta, setCuentaModalAbierta] = useState(false);
   const [tipoCuentaNueva, setTipoCuentaNueva] = useState<TipoCuentaNueva>('Deuda');
-  const [cuentaPaciente, setCuentaPaciente] = useState({ nombre: '', documento: '', celular: '' });
+  const [cuentaPaciente, setCuentaPaciente] = useState({ paciente_id:'', nombre: '', documento: '', celular: '' });
+  const [pacientesCuenta, setPacientesCuenta] = useState<{id:string;nombres:string;apellido_paterno:string;apellido_materno:string;ci:string;telefono?:string}[]>([]);
+  const [buscarCuentaPaciente, setBuscarCuentaPaciente] = useState('');
+  useEffect(()=>{if(!cuentaModalAbierta)return;const controller=new AbortController();const timer=window.setTimeout(()=>{void apiFetch('/api/v1/pacientes?por_pagina=100&buscar='+encodeURIComponent(buscarCuentaPaciente),{signal:controller.signal}).then(async r=>{const datos=await r.json();if(!r.ok)throw new Error(datos.message || 'No se pudieron consultar los pacientes.');setPacientesCuenta(datos.data);}).catch(causa=>{if(!controller.signal.aborted)setMensaje((causa as Error).message);});},200);return()=>{controller.abort();window.clearTimeout(timer);};},[cuentaModalAbierta,buscarCuentaPaciente]);
   const [laboratoriosAbiertos, setLaboratoriosAbiertos] = useState(false);
   const [laboratoriosSeleccionados, setLaboratoriosSeleccionados] = useState<string[]>([]);
   useEffect(() => {
     setContextoDestino(document.getElementById('ventas-contexto-slot'));
   }, []);
   useEffect(() => {
-    apiFetch('/api/clientes')
-      .then((respuesta) => respuesta.ok ? respuesta.json() : Promise.reject())
-      .then((resultado) => setClientesRegistrados(Array.isArray(resultado.data) ? resultado.data : []))
-      .catch(() => setClientesRegistrados([]));
-  }, []);
+    if(clienteModo !== 'buscar') return;
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        const buscar = encodeURIComponent(buscarPaciente.trim());
+        const respuestas = await Promise.all([apiFetch('/api/v1/clientes?buscar='+buscar,{signal:controller.signal}),apiFetch('/api/v1/pacientes?por_pagina=20&buscar='+buscar,{signal:controller.signal})]);
+        if(respuestas.some(r=>!r.ok)) throw new Error('No se pudieron consultar clientes y pacientes.');
+        const [clientes,pacientes] = await Promise.all(respuestas.map(r=>r.json()));
+        const registros: Cliente[] = clientes.data.map((c: any)=>({id:c.id,paciente_id:c.paciente_id,nombre:c.nombre_razon_social,documento:c.nit_ci || '',correo:c.correo || '',celular:c.telefono || '',direccion:''}));
+        for(const p of pacientes.data) { if(!registros.some(c=>c.documento===p.ci)) registros.push({paciente_id:p.id,nombre:[p.nombres,p.apellido_paterno,p.apellido_materno].join(' '),documento:p.ci,correo:'',celular:p.telefono || '',direccion:p.direccion_domicilio || ''}); }
+        if(!controller.signal.aborted){setClientesRegistrados(registros);setErrorPacientes('');}
+      } catch(causa) {if(!controller.signal.aborted){setClientesRegistrados([]);setErrorPacientes((causa as Error).message);}}
+    },250);
+    return ()=>{controller.abort();window.clearTimeout(timer);};
+  },[buscarPaciente,clienteModo]);
   const codigoCuentaNueva = tipoCuentaNueva === 'Internación' ? 'INT-1050' : 'DEU-1050';
   const totalLaboratorios = serviciosLaboratorio.filter((servicio) => laboratoriosSeleccionados.includes(servicio.id)).reduce((total, servicio) => total + servicio.precio, 0);
   const resultados = useMemo(
@@ -125,7 +142,7 @@ export function PuntoVentaView() {
     [busqueda, tipo, catalogoVentas, almacen],
   );
   useEffect(() => {
-    if (modoVista !== 'galeria' || !galeriaRef.current) return;
+    if (!galeriaRef.current) return;
     const galeria = galeriaRef.current;
     const medir = () => {
       const columnas = getComputedStyle(galeria).gridTemplateColumns
@@ -137,22 +154,15 @@ export function PuntoVentaView() {
     const observador = new ResizeObserver(medir);
     observador.observe(galeria);
     return () => observador.disconnect();
-  }, [modoVista]);
+  }, []);
 
-  const elementosPorPagina = modoVista === 'galeria'
-    ? cantidadVisible * columnasGaleria
-    : cantidadVisible;
+  const elementosPorPagina = cantidadVisible * columnasGaleria;
   const totalPaginasCatalogo = Math.max(1, Math.ceil(resultados.length / elementosPorPagina));
   const paginaCatalogoActual = Math.min(paginaCatalogo, totalPaginasCatalogo);
   const resultadosPagina = resultados.slice(
     (paginaCatalogoActual - 1) * elementosPorPagina,
     paginaCatalogoActual * elementosPorPagina,
   );
-  const cambiarVista = (vista: 'galeria' | 'listado') => {
-    setModoVista(vista);
-    setCantidadVisible(vista === 'galeria' ? 5 : 10);
-    setPaginaCatalogo(1);
-  };
   const subtotal = lineas.reduce(
     (total, linea) => total + linea.precio * linea.cantidad,
     0,
@@ -206,18 +216,6 @@ export function PuntoVentaView() {
     );
   const actualizarCliente = (campo: keyof Cliente, valor: string) =>
     setCliente((actual) => ({ ...actual, [campo]: valor }));
-  const seleccionarCliente = () => {
-    setCliente({
-      nombre: 'Cliente mostrador',
-      documento: '0',
-      correo: '',
-      celular: '',
-      direccion: '',
-    });
-    setClienteSeleccionado(true);
-    setClienteModo('inicio');
-    setClienteExpandido(false);
-  };
   const usarCliente = (registro: Cliente) => {
     setCliente({ ...registro });
     setClienteSeleccionado(true);
@@ -233,8 +231,8 @@ export function PuntoVentaView() {
       return;
     }
     try {
-      const respuesta = await apiFetch('/api/clientes', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cliente),
+      const respuesta = await apiFetch('/api/v1/clientes', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({nombre_razon_social:cliente.nombre,nit_ci:cliente.documento,telefono:cliente.celular,correo:cliente.correo || null}),
       });
       const resultado = await respuesta.json();
       if (respuesta.status === 409 && resultado.data) {
@@ -243,7 +241,8 @@ export function PuntoVentaView() {
         return;
       }
       if (!respuesta.ok) throw new Error(resultado.message || 'No se pudo registrar el paciente.');
-      const registrado = resultado.data as Cliente;
+      const dato = resultado.data;
+      const registrado: Cliente = {id:dato.id,nombre:dato.nombre_razon_social,documento:dato.nit_ci || '',celular:dato.telefono || '',correo:dato.correo || '',direccion:''};
       setClientesRegistrados((actuales) => [registrado, ...actuales]);
       usarCliente(registrado);
     } catch (error) {
@@ -252,12 +251,20 @@ export function PuntoVentaView() {
   };
   const cobrar = async () => {
     if (!lineas.length || pendiente > 0 || cobrando) return;
+    if(!clienteSeleccionado) {setMensaje('Selecciona un cliente o paciente para registrar el cobro.');return;}
     setCobrando(true);
     try {
-      const r = await apiFetch('/api/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ventaId, sucursal, caja, almacen, lineas: lineas.map(l => ({ codigo: l.codigo, cantidad: l.cantidad, precio: l.precio })), descuento: descuentoAplicado, pagado }) });
+      let clienteId = cliente.id;
+      if(!clienteId) {
+        const respuesta = await apiFetch('/api/v1/clientes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cliente.paciente_id ? {paciente_id:cliente.paciente_id} : {nombre_razon_social:cliente.nombre,nit_ci:cliente.documento,telefono:cliente.celular})});
+        const datos = await respuesta.json();
+        if(!respuesta.ok) throw new Error(datos.message || 'No se pudo vincular el paciente.');
+        clienteId=datos.data.id;setCliente(actual=>({...actual,id:clienteId}));
+      }
+      const r = await apiFetch('/api/v1/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cliente_id:clienteId, detalles:lineas.map(l=>({codigo_item:l.codigo,nombre_item:l.nombre,tipo_item:l.tipo,cantidad:l.cantidad,precio_unitario:l.precio})),descuento:descuentoAplicado }) });
       const resultado = await r.json();
       if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
-      setMensaje('Venta registrada. Stock descontado por fecha de ingreso (FIFO).');
+      setMensaje('Venta registrada y vinculada al cliente o paciente.');
       setVentaCobrada(true);
       setLineas([]); setPagos([nuevoPago(Date.now())]); setDescuento(''); setVentaId(crypto.randomUUID());
       await cargarCatalogo();
@@ -272,7 +279,7 @@ export function PuntoVentaView() {
   };
 
   return (
-    <section className="punto-venta punto-pos">
+    <section className="punto-venta punto-pos">{registroPacienteAbierto && <ModalRegistroPaciente onCerrar={()=>setRegistroPacienteAbierto(false)} onRegistrado={p=>usarCliente({paciente_id:p.id,nombre:[p.nombres,p.apellido_paterno,p.apellido_materno].join(' '),documento:p.ci,correo:'',celular:p.telefono || '',direccion:p.direccion_domicilio || ''})} />}
       {avisoClienteDuplicado && createPortal(
         <div className="cliente-duplicado-capa" role="alertdialog" aria-modal="true" aria-labelledby="cliente-duplicado-titulo">
           <div className="cliente-duplicado-dialogo">
@@ -344,32 +351,15 @@ export function PuntoVentaView() {
             </div>
             <div className="punto-vista-controles">
               <label className="punto-cantidad-visible">
-                <span>{modoVista === 'galeria' ? 'Filas' : 'Mostrar'}</span>
+                <span>Filas</span>
                 <SelectMenu
                   ariaLabel="Cantidad de productos y servicios visibles"
                   value={String(cantidadVisible)}
-                  options={modoVista === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
+                  options={['5', '10', '15']}
                   onChange={(valor) => { setCantidadVisible(Number(valor)); setPaginaCatalogo(1); }}
                 />
               </label>
-              <div className="punto-modo-vista" role="group" aria-label="Tipo de vista">
-              <button
-                type="button"
-                className={modoVista === 'listado' ? 'activo' : ''}
-                aria-pressed={modoVista === 'listado'}
-                onClick={() => cambiarVista('listado')}
-              >
-                <Icon name="menu" size={16} /> Listado
-              </button>
-              <button
-                type="button"
-                className={modoVista === 'galeria' ? 'activo' : ''}
-                aria-pressed={modoVista === 'galeria'}
-                onClick={() => cambiarVista('galeria')}
-              >
-                <Icon name="image" size={16} /> Galería
-              </button>
-              </div>
+
               <div className="punto-paginacion-catalogo" aria-label="Paginación del catálogo">
                 <button type="button" disabled={paginaCatalogoActual === 1} onClick={() => setPaginaCatalogo(paginaCatalogoActual - 1)} aria-label="Página anterior">‹</button>
                 <span>{paginaCatalogoActual}/{totalPaginasCatalogo}</span>
@@ -384,19 +374,10 @@ export function PuntoVentaView() {
               {mensaje}
             </p>
           )}
-          {modoVista === 'galeria' ? (
+
             <div className="punto-tarjetas" ref={galeriaRef}>
               {resultadosPagina.map((item) => (
               <article key={item.id}>
-                <div className="punto-tarjeta-avatar">
-                  <span>
-                    {item.nombre
-                      .split(' ')
-                      .slice(0, 2)
-                      .map((palabra) => palabra[0])
-                      .join('')}
-                  </span>
-                </div>
                 <div className="punto-tarjeta-info">
                   <small>{item.codigo}</small>
                   <strong>{item.nombre}</strong>
@@ -417,31 +398,11 @@ export function PuntoVentaView() {
               </article>
               ))}
             </div>
-          ) : (
-            <div className="punto-listado-columnas" role="table" aria-label="Listado de productos">
-              <div className="punto-listado-fila punto-listado-encabezado" role="row">
-                <span role="columnheader">Código</span><span role="columnheader">Nombre del ítem</span><span role="columnheader">Stock</span><span role="columnheader">Precio</span><span role="columnheader">Acción</span>
-              </div>
-              {resultadosPagina.map((item) => (
-                <div className="punto-listado-fila" key={item.id} role="row">
-                  <span role="cell" className="punto-listado-codigo">{item.codigo}</span>
-                  <div role="cell" className="punto-listado-nombre">
-                    <strong>{item.nombre}</strong>
-                    <small>{item.tipo}</small>
-                  </div>
-                  <span role="cell"><span className="punto-listado-stock">{item.tipo === 'Servicio' ? 'No aplica' : item.stock ?? '—'}</span></span>
-                  <strong role="cell" className="punto-listado-precio">{money(item.precio)}</strong>
-                  <span role="cell"><button type="button" aria-label={`Agregar ${item.nombre} al carrito`} onClick={() => agregar(item)}>
-                    <Icon name="plus" size={16} /> Agregar
-                  </button></span>
-                </div>
-              ))}
-            </div>
-          )}
+
           <footer className="punto-paginacion-inferior" aria-label="Paginación del catálogo">
             <span className="punto-paginacion-resumen">
               Mostrando <strong>{resultados.length ? (paginaCatalogoActual - 1) * elementosPorPagina + 1 : 0}–{Math.min(paginaCatalogoActual * elementosPorPagina, resultados.length)}</strong> de <strong>{resultados.length}</strong>
-              {modoVista === 'galeria' && <small> · {cantidadVisible} filas × {columnasGaleria} por fila</small>}
+              <small> · {cantidadVisible} filas × {columnasGaleria} por fila</small>
             </span>
             <div className="punto-paginacion-navegacion">
               <button type="button" disabled={paginaCatalogoActual === 1} onClick={() => setPaginaCatalogo(paginaCatalogoActual - 1)}>
@@ -489,25 +450,23 @@ export function PuntoVentaView() {
             {!clienteSeleccionado && clienteModo === 'inicio' && (
               <div className="cliente-acciones">
                 <button type="button" onClick={() => setClienteModo('buscar')}>
-                  <Icon name="search" size={15} /> Buscar cliente
+                  <Icon name="search" size={15} /> Buscar cliente o paciente
                 </button>
                 <button
                   type="button"
                   onClick={() => setClienteModo('registrar')}
                 >
                   <Icon name="plus" size={15} /> Registrar cliente
-                </button>
+                </button><button type="button" onClick={()=>setRegistroPacienteAbierto(true)}>Registrar paciente</button>
               </div>
             )}
             {!clienteSeleccionado && clienteModo === 'buscar' && (
               <div className="cliente-busqueda">
                 <label>
                   <Icon name="search" size={16} />
-                  <input placeholder="Buscar por nombre, NIT o CI" />
+                  <input value={buscarPaciente} onChange={e=>setBuscarPaciente(e.target.value)} placeholder="Buscar por nombre, NIT o CI" />
                 </label>
-                <button type="button" onClick={seleccionarCliente}>
-                  Seleccionar cliente
-                </button>
+                {errorPacientes && <p role="alert">{errorPacientes}</p>}{clientesRegistrados.map((p,index)=><button key={p.id || p.paciente_id || index} type="button" onClick={()=>usarCliente(p)}>{p.nombre} · {p.documento}</button>)}
                 <button
                   className="cliente-secundario"
                   type="button"
@@ -774,9 +733,9 @@ export function PuntoVentaView() {
           <div className="cuenta-modal-cuerpo">
             <fieldset><legend>Tipo de cuenta</legend><div className="cuenta-tipo-opciones">{(['Deuda', 'Internación'] as const).map((opcion) => <button key={opcion} type="button" className={tipoCuentaNueva === opcion ? 'activo' : ''} onClick={() => setTipoCuentaNueva(opcion)}>{opcion}</button>)}</div></fieldset>
             <div className="cuenta-codigo"><span>Código asignado automáticamente</span><strong>{codigoCuentaNueva}</strong></div>
-            <fieldset><legend>Datos del cliente / paciente</legend><div className="cuenta-modal-campos"><label>Nombre completo<input value={cuentaPaciente.nombre} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, nombre: event.target.value }))} placeholder="Nombre del paciente" /></label><label>CI / NIT<input value={cuentaPaciente.documento} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, documento: event.target.value }))} placeholder="Documento de identidad" /></label><label>Celular<input value={cuentaPaciente.celular} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, celular: event.target.value }))} placeholder="Número de contacto" /></label></div></fieldset>
+            <fieldset><legend>Datos del cliente / paciente</legend><div className="cuenta-modal-campos"><label>Nombre completo<input aria-label="Buscar paciente para cuenta" value={buscarCuentaPaciente} onChange={e=>setBuscarCuentaPaciente(e.target.value)} placeholder="Buscar por nombre o CI"/><select aria-label="Paciente de la cuenta" value={cuentaPaciente.paciente_id} onChange={e=>{const p=pacientesCuenta.find(p=>p.id===e.target.value);setCuentaPaciente(p?{paciente_id:p.id,nombre:[p.nombres,p.apellido_paterno,p.apellido_materno].join(' '),documento:p.ci,celular:p.telefono || ''}:{paciente_id:'',nombre:'',documento:'',celular:''});}}><option value="">Seleccionar paciente registrado</option>{pacientesCuenta.map(p=><option key={p.id} value={p.id}>{[p.nombres,p.apellido_paterno,p.apellido_materno].join(' ')} · {p.ci}</option>)}</select></label><label>CI / NIT<input value={cuentaPaciente.documento} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, documento: event.target.value }))} placeholder="Documento de identidad" /></label><label>Celular<input value={cuentaPaciente.celular} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, celular: event.target.value }))} placeholder="Número de contacto" /></label></div></fieldset>
           </div>
-          <footer><button type="button" className="cuenta-cancelar" onClick={() => setCuentaModalAbierta(false)}>Cancelar</button><button type="button" className="cuenta-crear" onClick={() => { if (!cuentaPaciente.nombre.trim() || !cuentaPaciente.documento.trim()) { setMensaje('Completa el nombre y CI/NIT para crear la cuenta.'); return; } setMensaje(`Cuenta ${codigoCuentaNueva} creada para ${cuentaPaciente.nombre}.`); setCuentaModalAbierta(false); setCuentaPaciente({ nombre: '', documento: '', celular: '' }); }}><Icon name="plus" size={16} /> Crear cuenta</button></footer>
+          <footer><button type="button" className="cuenta-cancelar" onClick={() => setCuentaModalAbierta(false)}>Cancelar</button><button type="button" className="cuenta-crear" onClick={() => { if (!cuentaPaciente.nombre.trim() || !cuentaPaciente.documento.trim()) { setMensaje('Completa el nombre y CI/NIT para crear la cuenta.'); return; } setMensaje(`Cuenta ${codigoCuentaNueva} creada para ${cuentaPaciente.nombre}.`); setCuentaModalAbierta(false); setCuentaPaciente({ paciente_id:'', nombre: '', documento: '', celular: '' }); }}><Icon name="plus" size={16} /> Crear cuenta</button></footer>
         </section>
       </div>}
     </section>

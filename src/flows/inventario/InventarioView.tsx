@@ -34,7 +34,7 @@ export function InventarioView({ activeId, permisos = [], administraCatalogo = f
       {subvista === 'admin' && <EncabezadoVista titulo="Configuración de inventario" descripcion="Organiza los tipos, unidades de medida, categorías y familias del catálogo." icono="settings" />}
       {subvista === 'productos' && <ProductosInsumosView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
       {subvista === 'servicios' && <ServiciosView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
-      {subvista === 'medicos' && <MedicosProfesionalesView />}
+      {subvista === 'medicos' && <MedicosProfesionalesView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
       {subvista === 'todo' && <ItemsGeneralView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} onReportes={() => setSubvista('reportes')} />}
       {subvista === 'reportes' && <ReportesInventarioView onVolver={() => setSubvista('todo')} />}
       {subvista === 'admin' && <ConfiguracionAdminView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}

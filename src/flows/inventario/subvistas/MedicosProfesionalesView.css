@@ -1,0 +1,47 @@
+.sistema-contable .profesionales-usuario-autocompletar {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.sistema-contable .profesionales-usuario-autocompletar > small {
+  color: #526b78;
+  font-size: 12px;
+}
+.sistema-contable .profesionales-usuario-resultados {
+  position: absolute;
+  z-index: 5;
+  top: 68px;
+  inset-inline: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff;
+  border: 1px solid #b9d5e4;
+  border-radius: 9px;
+  box-shadow: 0 8px 24px rgb(20 55 75 / 15%);
+}
+.sistema-contable .profesionales-usuario-opcion {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #e5edf2;
+  color: #173e55;
+  overflow-wrap: anywhere;
+}
+.sistema-contable .profesionales-usuario-opcion:hover,
+.sistema-contable .profesionales-usuario-opcion[aria-selected=true] {
+  background: #e9f6fc;
+  box-shadow: inset 3px 0 #008ac3;
+}
+.sistema-contable .profesionales-usuario-opcion small {
+  color: #526b78;
+  font-size: 12px;
+}
+.sistema-contable .profesionales-usuario-resultados > p {
+  margin: 0;
+  padding: 14px;
+  color: #526b78;
+}

@@ -7,16 +7,13 @@ import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { useRef } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
-import imagenGuantesEjemplo from '../../../assets/inventario/guantes-nitrilo-ejemplo.jpg';
 
-type ModoInventario = 'galeria' | 'listado';
 type CampoOrden = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'stock' | 'precio' | 'estado' | 'serie' | 'marca';
 type TipoRegistro = string;
 type TipoCatalogo = 'productos' | 'servicios' | 'todo';
 type RegistroInventario = {
   tipoOpcion?: string;
   clasificacion?: string;
-  imagen?: string;
   id?: number;
   codigo: string;
   nombre: string;
@@ -168,8 +165,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   const clasificacionesRegistro = opcionesRegistro.clasificaciones;
   const subcategoriasPorCategoria = useMemo(() => ({ ...(opcionesCargadas ? {} : subcategoriasIniciales), ...Object.fromEntries(Object.entries(categoriasRegistro).map(([nombre, datos]) => [nombre, datos.subcategorias])) }), [categoriasRegistro, opcionesCargadas]);
   const subvista = tipo;
-  const [modo, setModo] = useState<ModoInventario>('listado');
-  const [porPagina, setPorPagina] = useState<number | 'Todos'>(20);
+  const [porPagina, setPorPagina] = useState<number | 'Todos'>(5);
   const [pagina, setPagina] = useState(1);
   const [busqueda, setBusqueda] = useState('');
   const [categoria, setCategoria] = useState('todas');
@@ -198,7 +194,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   const [mensajeGuardado, setMensajeGuardado] = useState('');
   const [formularioRegistro, setFormularioRegistro] = useState({
     clasificacion: 'SIN CLASIFICAR',
-    imagen: '',
     codigo: '',
     nombre: '',
     descripcion: '',
@@ -260,7 +255,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   }, []);
 
   useEffect(() => {
-    if (modo !== 'galeria' || !galeriaRef.current) return;
+    if (!galeriaRef.current) return;
     const galeria = galeriaRef.current;
     const medir = () => {
       const columnas = getComputedStyle(galeria).gridTemplateColumns.split(' ').filter(Boolean).length;
@@ -270,7 +265,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     const observador = new ResizeObserver(medir);
     observador.observe(galeria);
     return () => observador.disconnect();
-  }, [modo]);
+  }, []);
 
   const titulo =
     subvista === 'servicios'
@@ -476,9 +471,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   }, [busqueda, campoOrden, categoria, direccion, elementosDemo]);
   const cantidadPorPagina = porPagina === 'Todos'
     ? Math.max(productosFiltrados.length, 1)
-    : modo === 'galeria'
-      ? porPagina * columnasGaleria
-      : porPagina;
+    : porPagina * columnasGaleria;
   const totalPaginas = Math.max(
     1,
     Math.ceil(productosFiltrados.length / cantidadPorPagina),
@@ -500,11 +493,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     setPagina(1);
   }
 
-  function cambiarModo(siguiente: ModoInventario) {
-    setModo(siguiente);
-    setPagina(1);
-    setPorPagina(siguiente === 'galeria' ? 5 : 10);
-  }
 
   function ordenarPor(campo: CampoOrden) {
     setPagina(1);
@@ -585,7 +573,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     if (guardando || !puedeGestionar) return;
     const payload: RegistroInventario = {
       clasificacion: formularioRegistro.clasificacion,
-      imagen: formularioRegistro.imagen,
       codigo: normalizarTexto(formularioRegistro.codigo || codigoRegistro),
       nombre: normalizarTexto(formularioRegistro.nombre),
       descripcion: formularioRegistro.descripcion.trim(),
@@ -643,7 +630,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     setMensajeGuardado(tipo === 'servicios' ? 'Servicio registrado correctamente.' : 'Registro guardado correctamente.');
     setFormularioRegistro({
       clasificacion: '',
-    imagen: '',
     codigo: '',
       nombre: '',
       descripcion: '',
@@ -731,7 +717,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         {productosFiltrados.length === 0 ? 0 : desde + 1}-
         {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
-        {modo === 'galeria' && <> · {porPagina} filas × {columnasGaleria} por fila</>}
+        <span> · {porPagina} filas × {columnasGaleria} por fila</span>
       </span>
       <div className="inventario-paginas">
         <label className="inventario-cantidad-vista">
@@ -741,29 +727,10 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
             value={String(porPagina)}
             onChange={cambiarPorPagina}
             ariaLabel={`${nombreElementos} visibles por página`}
-            options={modo === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
+            options={['5', '10', '15']}
           />
         </label>
-        <div
-          className="inventario-modo inventario-modo-paginacion"
-          role="group"
-          aria-label="Modo de visualización"
-        >
-          <button
-            className={modo === 'listado' ? 'activo' : ''}
-            aria-pressed={modo === 'listado'}
-            onClick={() => cambiarModo('listado')}
-          >
-            <Icon name="menu" size={16} /> Listado
-          </button>
-          <button
-            className={modo === 'galeria' ? 'activo' : ''}
-            aria-pressed={modo === 'galeria'}
-            onClick={() => cambiarModo('galeria')}
-          >
-            <Icon name="image" size={16} /> Galería
-          </button>
-        </div>
+
         <button
           disabled={paginaActual === 1}
           onClick={() => setPagina(1)}
@@ -807,15 +774,15 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         {productosFiltrados.length}
       </span>
       <label>
-        {modo === 'galeria' ? 'Filas' : 'Mostrar'}
+        Filas
         <SelectMenu
           className="inventario-cantidad-select"
           value={String(porPagina)}
           onChange={cambiarPorPagina}
           ariaLabel="Productos por página"
-          options={modo === 'galeria' ? ['5', '10', '15'] : ['10', '15', '20']}
+          options={['5', '10', '15']}
         />
-        {modo === 'listado' && nombreElementos}
+
       </label>
       <div className="inventario-paginas">
         <button
@@ -929,173 +896,81 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         {tipo === 'servicios' && !cargando && !errorCarga && registrosGuardados.length === 0 && <p role="status">No hay servicios registrados. Usa Registro para crear el primero.</p>}
         {tipo === 'servicios' && cargando && <p role="status">Cargando servicios…</p>}
         {controlesSuperiores}
-        {modo === 'listado' ? (
-          <div
-            className="inventario-tabla inventario-tabla-productos"
-            role="table"
-            aria-label={titulo}
-            style={estiloColumnas}
-          >
-            <div className="inventario-tabla-head" role="row" style={estiloGrilla}>
-              {columnasCatalogo.map((columna, indice) => (
-                <span
-                  className={columna.campo ? 'inventario-columna-ordenable' : ''}
-                  role="columnheader"
-                  aria-sort={columna.campo && campoOrden === columna.campo ? (direccion === 'asc' ? 'ascending' : 'descending') : undefined}
-                  key={columna.etiqueta}
-                >
-                  {columna.campo ? (
-                    <button type="button" onClick={() => ordenarPor(columna.campo!)}>
-                      <span>{columna.etiqueta}</span>
-                      <i aria-hidden="true">{campoOrden === columna.campo ? (direccion === 'asc' ? '▲' : '▼') : '↕'}</i>
-                    </button>
-                  ) : columna.etiqueta}
-                  {indice < columnasCatalogo.length - 1 && (
-                    <span
-                      className="inventario-redimensionador"
-                      role="separator"
-                      aria-orientation="vertical"
-                      aria-label={`Cambiar ancho de ${columna.etiqueta}`}
-                      onPointerDown={(event) => iniciarRedimension(indice, event)}
-                    />
-                  )}
-                </span>
-              ))}
-            </div>
-            {productosPagina.map((producto) => {
-              const datosTabla = obtenerDatosTabla(producto);
-              return (
-                <article
-                  className={`inventario-row${producto.revisionPrecio ? ' requiere-revision' : ''}`}
-                  role="row"
-                  key={producto.nombre}
-                  style={estiloGrilla}
-                >
-                      <span className="inventario-codigo">{datosTabla.codigo}</span>
-                  <div className="inventario-producto-cell">
-                    <strong>{producto.nombre}{producto.revisionPrecio && <small> - Precio provisional: revision pendiente</small>}</strong>
-                  </div>
-                  <span className="inventario-chip">{datosTabla.tipoProducto}</span>
-                  <span className="inventario-chip">{producto.categoria}</span>
-                  <span>{datosTabla.subcategoria}</span>
-                  <span>{datosTabla.unidad}</span>
-                  <span className="inventario-stock">{datosTabla.stock}</span>
-                  <span className="inventario-precio">{datosTabla.precio}</span>
-                      <span
-                    className={`inventario-disponible ${
-                      normalizarTexto(datosTabla.estado) === 'ACTIVO'
-                        ? 'activo'
-                        : 'inactivo'
-                    }`}
-                  >
-                    <i />{' '}
-                    {normalizarTexto(datosTabla.estado) === 'ACTIVO'
-                      ? 'ACTIVO'
-                      : 'INACTIVO'}
-                  </span>
-                  <span className="inventario-serie">{datosTabla.serie}</span>
-                  <div className="inventario-acciones">
-                    <button
-                      type="button"
-                      aria-label={`Ver ${producto.nombre}`}
-                      onClick={() => {
-                        const registroBase =
-                          registrosGuardados.find(
-                            (item) =>
-                              item.codigo === producto.codigo,
-                          ) || {
-                            id: Date.now() + Math.random(),
-                            codigo: datosTabla.codigo,
-                            nombre: producto.nombre,
-                            categoria: producto.categoria,
-                            grupo: datosTabla.subcategoria,
-                            tipo: datosTabla.tipoProducto,
-                            unidadMedida: datosTabla.unidad,
-                            descripcion: 'Registro sin descripcion adicional.',
-                            precioVenta: Number(
-                              datosTabla.precio.replace(/[^0-9.]/g, ''),
-                            ),
-                            estado:
-                              normalizarTexto(datosTabla.estado) === 'ACTIVO'
-                                ? 'activo'
-                                : 'inactivo',
-                            numeroSerie: datosTabla.serie === 'Sin serie' ? '' : datosTabla.serie,
-                            usarNumeroSerie: datosTabla.serie !== 'Sin serie',
-                          };
-                        setDetalleRegistro({
-                          ...registroBase,
-                          estado: String(registroBase.estado ?? 'activo').toLowerCase() as 'activo' | 'inactivo',
-                        });
-                      }}
-                    >
-                      <Icon name="eye" size={15} />
-                    </button>
-                    {puedeGestionar && <button
-                      type="button"
-                      onClick={() => {
-                        const registroBase =
-                          registrosGuardados.find(
-                            (item) =>
-                              item.codigo === producto.codigo,
-                          ) || {
-                            id: Date.now() + Math.random(),
-                            codigo: datosTabla.codigo,
-                            nombre: producto.nombre,
-                            categoria: producto.categoria,
-                            grupo: datosTabla.subcategoria,
-                            tipo: datosTabla.tipoProducto,
-                            unidadMedida: datosTabla.unidad,
-                            descripcion: 'Registro sin descripcion adicional.',
-                            precioVenta: Number(
-                              datosTabla.precio.replace(/[^0-9.]/g, ''),
-                            ),
-                            estado: normalizarTexto(datosTabla.estado) === 'ACTIVO' ? 'activo' : 'inactivo',
-                            numeroSerie: datosTabla.serie === 'Sin serie' ? '' : datosTabla.serie,
-                            usarNumeroSerie: datosTabla.serie !== 'Sin serie',
-                          };
-                        setEdicionRegistro({
-                          ...registroBase,
-                          confirmarPrecio: false,
-                          estado: normalizarEstadoFormulario(registroBase.estado),
-                        });
-                      }}
-                    >
-                      Editar
-                    </button>}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
           <div className="inventario-galeria" aria-label={titulo} ref={galeriaRef}>
             {productosPagina.map((producto) => {
               const datos = obtenerDatosTabla(producto);
               return <article className={`inventario-card inventario-card-compacta${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
-                <div className="inventario-card-imagen">
-                  <small>{producto.categoria}</small>
-                  {producto.nombre.toLocaleLowerCase('es').includes('guantes')
-                    ? <img src={imagenGuantesEjemplo} alt={`Ejemplo visual de ${producto.nombre}`} />
-                    : <span>{producto.nombre.split(' ').slice(0, 2).map((palabra) => palabra[0]).join('')}</span>}
-                  <strong><i /> {datos.estado}</strong>
-                </div>
                 <div className="inventario-card-cuerpo">
                   <small>{datos.codigo}</small>
                   <h3>{producto.nombre}</h3>
+                  <p>{producto.categoria} · {datos.estado}</p>
                   <p>{datos.tipoProducto}{!esServicio && <> · Stock {datos.stock}</>}</p>
                   {producto.revisionPrecio && <em>Precio pendiente de revisión</em>}
                 </div>
                 <footer className="inventario-card-pie">
                   <div><b>{datos.precio}</b><small>{datos.unidad}</small></div>
                   <div className="inventario-card-actions">
-                    <button type="button"><Icon name="eye" size={15} /> Ver</button>
-                    <button type="button">Editar</button>
+                    <button type="button" onClick={() => {
+                        const registroBase =
+                          registrosGuardados.find(
+                            (item) =>
+                              item.codigo === producto.codigo,
+                          ) || {
+                            id: Date.now() + Math.random(),
+                            codigo: datos.codigo,
+                            nombre: producto.nombre,
+                            categoria: producto.categoria,
+                            grupo: datos.subcategoria,
+                            tipo: datos.tipoProducto,
+                            unidadMedida: datos.unidad,
+                            descripcion: 'Registro sin descripcion adicional.',
+                            precioVenta: Number(
+                              datos.precio.replace(/[^0-9.]/g, ''),
+                            ),
+                            estado:
+                              normalizarTexto(datos.estado) === 'ACTIVO'
+                                ? 'activo'
+                                : 'inactivo',
+                            numeroSerie: datos.serie === 'Sin serie' ? '' : datos.serie,
+                            usarNumeroSerie: datos.serie !== 'Sin serie',
+                          };
+                        setDetalleRegistro({
+                          ...registroBase,
+                          estado: String(registroBase.estado ?? 'activo').toLowerCase() as 'activo' | 'inactivo',
+                        });
+                      }}><Icon name="eye" size={15} /> Ver</button>
+                    {puedeGestionar && <button type="button" onClick={() => {
+                        const registroBase =
+                          registrosGuardados.find(
+                            (item) =>
+                              item.codigo === producto.codigo,
+                          ) || {
+                            id: Date.now() + Math.random(),
+                            codigo: datos.codigo,
+                            nombre: producto.nombre,
+                            categoria: producto.categoria,
+                            grupo: datos.subcategoria,
+                            tipo: datos.tipoProducto,
+                            unidadMedida: datos.unidad,
+                            descripcion: 'Registro sin descripcion adicional.',
+                            precioVenta: Number(
+                              datos.precio.replace(/[^0-9.]/g, ''),
+                            ),
+                            estado: normalizarTexto(datos.estado) === 'ACTIVO' ? 'activo' : 'inactivo',
+                            numeroSerie: datos.serie === 'Sin serie' ? '' : datos.serie,
+                            usarNumeroSerie: datos.serie !== 'Sin serie',
+                          };
+                        setEdicionRegistro({
+                          ...registroBase,
+                          confirmarPrecio: false,
+                          estado: normalizarEstadoFormulario(registroBase.estado),
+                        });
+                      }}>Editar</button>}
                   </div>
                 </footer>
               </article>;
             })}
           </div>
-        )}
         {controles}
       </div>
       {detalleRegistro && (
@@ -1357,7 +1232,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
                   </select>
                 </label>
                 <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={edicionRegistro.clasificacion || ''} onChange={e => setEdicionRegistro(actual => actual ? { ...actual, clasificacion: e.target.value } : actual)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
-                <CapturaCodigo codigo={edicionRegistro.numeroSerie || ''} imagen={edicionRegistro.imagen} onCodigo={valor => setEdicionRegistro(actual => actual ? { ...actual, numeroSerie: valor, usarNumeroSerie: Boolean(valor) } : actual)} onImagen={valor => setEdicionRegistro(actual => actual ? { ...actual, imagen: valor } : actual)} />
+                <CapturaCodigo codigo={edicionRegistro.numeroSerie || ''} onCodigo={valor => setEdicionRegistro(actual => actual ? { ...actual, numeroSerie: valor, usarNumeroSerie: Boolean(valor) } : actual)} />
               </div>
               <footer>
                 <button
@@ -1548,7 +1423,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
                   </select>
                 </label>
                 <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={formularioRegistro.clasificacion} onChange={e => actualizarCampoRegistro('clasificacion', e.target.value)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
-                <CapturaCodigo codigo={formularioRegistro.numeroSerie} imagen={formularioRegistro.imagen} onCodigo={valor => { actualizarCampoRegistro('numeroSerie', valor); setSerieHabilitada(Boolean(valor)); }} onImagen={valor => actualizarCampoRegistro('imagen', valor)} />
+                <CapturaCodigo codigo={formularioRegistro.numeroSerie} onCodigo={valor => { actualizarCampoRegistro('numeroSerie', valor); setSerieHabilitada(Boolean(valor)); }} />
               </div>
               <footer>
                 <button

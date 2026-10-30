@@ -1845,7 +1845,7 @@
 
 .sistema-contable .inventario-catalogo .inventario-card-compacta {
   display: grid;
-  grid-template-rows: 104px minmax(112px, auto) auto;
+  grid-template-rows: minmax(112px, 1fr) auto;
   overflow: hidden;
   border: 1px solid #c6d8dc;
   border-radius: 12px;
@@ -2104,10 +2104,10 @@
 .captura-imagen-panel button:disabled { opacity: .55; cursor: wait; }
 .captura-imagen-panel button:focus-visible { outline: 3px solid #549cf4; outline-offset: 3px; }
 @media (max-width: 480px) { .captura-imagen-panel { padding: 14px; } .captura-imagen-marco { padding: 10px; } }
-/* Registro y edicion: formulario a la izquierda, fotografia a la derecha. */
-.sistema-contable .inventario-modal.inventario-modal-registro { width: min(1240px, calc(100vw - 32px)); }
+/* Registro y edición sin columna reservada para fotografías. */
+.sistema-contable .inventario-modal.inventario-modal-registro { width: min(900px, calc(100vw - 32px)); }
 @media (min-width: 1000px) {
-  .inventario-modal-registro .inventario-modal-registro-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(280px, .95fr); gap: 12px 18px; align-items: start; }
+  .inventario-modal-registro .inventario-modal-registro-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px 18px; align-items: start; }
   .inventario-modal-registro .inventario-campo-completo { grid-column: 1 / 3; }
   .inventario-modal-registro .captura-codigo { display: contents; }
   .inventario-modal-registro .captura-codigo > label,
