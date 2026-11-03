@@ -12,6 +12,7 @@ type Lote = {
   unidad: string; presentacion: string; marca: string; lote: string; fecha: string;
   almacenId: number | null; almacen: string; sucursalId: number | null; sucursal: string;
   disponible: number; costoUnitario: string | null; vence: string;
+  ubicacion: string | null;
   precio1: string; precio2: string; precio3: string;
 };
 type Campo = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'marca' | 'lote' | 'disponible' | 'almacen' | 'vence';
@@ -42,6 +43,9 @@ export function LotesStock() {
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [detalle, setDetalle] = useState<Lote | null>(null);
   const [almacenDetalle, setAlmacenDetalle] = useState('todos');
+  const [ubicacion, setUbicacion] = useState('');
+  const [guardandoUbicacion, setGuardandoUbicacion] = useState(false);
+  const [errorUbicacion, setErrorUbicacion] = useState('');
   const dialogo = useRef<HTMLElement>(null);
   const origen = useRef<HTMLElement | null>(null);
 
@@ -86,6 +90,16 @@ export function LotesStock() {
   const gruposDetalle = Array.from(new Map(detalleFiltrado.map(lote => [clave(lote.sucursalId), lote.sucursal])).entries()).map(([id, nombre]) => ({ id, nombre, lotes: detalleFiltrado.filter(lote => clave(lote.sucursalId) === id) }));
   const sinIngresos = lotes.filter(lote => lote.almacenId === null).length;
   const cerrar = () => { setDetalle(null); requestAnimationFrame(() => origen.current?.focus()); };
+  const guardarUbicacion = async () => {
+    if (!detalle?.almacenId || !ubicacion.trim()) return;
+    setGuardandoUbicacion(true); setErrorUbicacion('');
+    try {
+      const respuesta = await apiFetch(`/api/v1/inventario/items/${detalle.itemId}/ubicacion`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ almacen_id: detalle.almacenId, ubicacion: ubicacion.trim() }) });
+      await leerRespuesta(respuesta);
+      setLotes(actuales => actuales.map(lote => lote.itemId === detalle.itemId && lote.almacenId === detalle.almacenId ? { ...lote, ubicacion: ubicacion.trim() } : lote));
+    } catch (error) { setErrorUbicacion(error instanceof Error ? error.message : 'No se pudo guardar la ubicación.'); }
+    finally { setGuardandoUbicacion(false); }
+  };
 
   return <section className="stock-lotes stock-general-real">
     <div className="stock-lotes-filtros"><label className="stock-lotes-busqueda"><div><Icon name="search" size={17}/><input type="search" aria-label="Buscar ítem, marca, lote o almacén" placeholder="Buscar ítem, genérico, marca, lote o almacén…" value={busqueda} onChange={evento => { setBusqueda(evento.target.value); setPagina(1); }} /></div></label>
@@ -115,6 +129,7 @@ export function LotesStock() {
       <div className="stock-general-detalle-cuerpo"><dl className="stock-general-datos"><div><dt>Lote seleccionado</dt><dd>{detalle.lote}</dd></div><div><dt>Vencimiento</dt><dd>{detalle.vence || 'Sin vencimiento'}</dd></div><div><dt>Presentación</dt><dd>{detalle.presentacion}</dd></div><div><dt>Unidad de medida</dt><dd>{detalle.unidad}</dd></div><div><dt>Almacén del lote</dt><dd>{detalle.almacen}</dd></div><div><dt>Sucursal del lote</dt><dd>{detalle.sucursal}</dd></div><div><dt>Stock de este lote en el almacén</dt><dd>{cantidad(detalle.disponible)}</dd></div><div><dt>Costo unitario registrado</dt><dd>{dinero(detalle.costoUnitario, 4)}</dd></div><div><dt>Fecha de ingreso</dt><dd>{detalle.fecha || 'Sin ingreso registrado'}</dd></div><div><dt>Categoría</dt><dd>{detalle.categoria} / {detalle.subcategoria}</dd></div></dl>
       <div className="stock-general-precios">{[detalle.precio1, detalle.precio2, detalle.precio3].map((precio, indice) => <div key={indice}><small>Precio {indice + 1} del lote</small><strong>{dinero(precio)}</strong></div>)}</div>
       <section className="stock-general-distribucion"><h4>Existencias del ítem en todos sus lotes</h4><label>Consultar almacén<select aria-label="Consultar almacén en el detalle" value={almacenDetalle} onChange={evento => setAlmacenDetalle(evento.target.value)}><option value="todos">Todos los almacenes</option>{almacenesDetalle.map(([id, lote]) => <option key={id} value={id}>{lote.almacen}{lote.sucursalId !== null ? ' · ' + lote.sucursal : ''}</option>)}</select></label><p className="stock-general-total">Stock total del ítem: <strong>{cantidad(sumar(detalleFiltrado))}</strong></p>
+        {Array.from(new Map(detalleFiltrado.filter(lote => lote.almacenId !== null).map(lote => [lote.almacenId, lote])).values()).map(lote => <div className="stock-general-total" key={'ubicacion-' + lote.almacenId}><label>Ubicación en {lote.almacen}{lote.sucursal ? ' · ' + lote.sucursal : ''}<input aria-label={'Ubicación en ' + lote.almacen} value={ubicacion || lote.ubicacion || ''} placeholder="Ej.: Estante 2" onChange={evento => setUbicacion(evento.target.value)} onFocus={() => setUbicacion(lote.ubicacion || '')}/></label><button type="button" disabled={guardandoUbicacion || !ubicacion.trim()} onClick={guardarUbicacion}>{guardandoUbicacion ? 'Guardando…' : 'Guardar ubicación'}</button>{errorUbicacion && <p role="alert">{errorUbicacion}</p>}</div>)}
         {gruposDetalle.map(grupo => <details key={grupo.id} open><summary>{grupo.nombre} <strong>{cantidad(sumar(grupo.lotes))}</strong></summary><div className="stock-general-desglose"><table data-interactiva="true"><thead><tr><th>Almacén</th><th>Lote</th><th>Stock</th><th>Vence</th></tr></thead><tbody>{grupo.lotes.map(lote => <tr key={lote.id}><td>{lote.almacen}</td><td>{lote.lote}</td><td>{cantidad(lote.disponible)}</td><td>{lote.vence || 'Sin fecha'}</td></tr>)}</tbody></table></div></details>)}
       </section></div><footer><button type="button" onClick={cerrar}>Cerrar</button></footer></section></div>, document.querySelector('.sistema-contable') || document.body)}
   </section>;
