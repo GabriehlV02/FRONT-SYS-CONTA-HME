@@ -9,7 +9,7 @@ import {
   type ItemVenta,
   type TipoVenta,
 } from '../datos/catalogoVentas';
-import { cargarCatalogoAutorizado, type AlmacenVenta } from '../datos/cargarCatalogo';
+import { cargarCatalogoAutorizado, type AlmacenVenta, type CajaVenta } from '../datos/cargarCatalogo';
 
 type Linea = ItemVenta & { cantidad: number };
 type Pago = { id: number; metodo: string; monto: string };
@@ -50,27 +50,32 @@ const serviciosLaboratorio: ServicioLaboratorio[] = [
 ];
 
 export function PuntoVentaView() {
-  const [asignacion] = useState<{ sucursal: string; caja: string; almacen: string } | null>(() => {
-    try { return JSON.parse(sessionStorage.getItem('contable_asignacion') || 'null'); } catch { return null; }
-  });
   const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>([]);
   const [almacenes, setAlmacenes] = useState<AlmacenVenta[]>([]);
+  const [cajas, setCajas] = useState<CajaVenta[]>([]);
+  const [cajaId, setCajaId] = useState('');
   const [almacen, setAlmacen] = useState('');
   const [cobrando, setCobrando] = useState(false);
   const [ventaId, setVentaId] = useState(() => crypto.randomUUID());
   async function cargarCatalogo() {
     const resultado = await cargarCatalogoAutorizado();
     setCatalogo(resultado.data);
+    setCajas(resultado.cajas || []);
+    const siguienteCaja = resultado.cajas?.find(c => String(c.id) === cajaId) || resultado.cajas?.[0];
+    setCajaId(String(siguienteCaja?.id ?? ''));
+    const almacenesDeCaja = resultado.almacenes.filter(a => siguienteCaja?.almacenIds.includes(a.id));
     setAlmacenes(resultado.almacenes);
-    setAlmacen(actual => resultado.almacenes.some(a => String(a.id) === actual) ? actual : String(resultado.almacenes[0]?.id ?? ''));
+    setAlmacen(actual => almacenesDeCaja.some(a => String(a.id) === actual) ? actual : String(almacenesDeCaja[0]?.id ?? ''));
   }
-  useEffect(() => { cargarCatalogo().catch(e => { setCatalogo([]); setAlmacenes([]); setMensaje(e.message); }); }, []);
-  const [sucursal, setSucursal] = useState('Hospital María Esperanza');
-  const [caja, setCaja] = useState('Caja 01 · Recepción');
-  useEffect(() => {
-    if (asignacion) { setSucursal(asignacion.sucursal); setCaja(asignacion.caja); }
-  }, [asignacion, almacenes]);
-  const [busqueda, setBusqueda] = useState('');
+  useEffect(() => { cargarCatalogo().catch(e => { setCatalogo([]); setAlmacenes([]); setCajas([]); setMensaje(e.message); }); }, []);
+  const cajaActual = cajas.find(item => String(item.id) === cajaId);
+  const cambiarCaja = (id: string) => {
+    const seleccionada = cajas.find(item => String(item.id) === id);
+    setCajaId(id);
+    const almacenesFiltrados = almacenes.filter(a => seleccionada?.almacenIds.includes(a.id));
+    setAlmacen(String(almacenesFiltrados[0]?.id ?? ''));
+    setLineas([]);
+  };  const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<'Todos' | TipoVenta>('Todos');
   const [contextoDestino, setContextoDestino] = useState<HTMLElement | null>(null);
   const [cantidadVisible, setCantidadVisible] = useState(5);
@@ -261,7 +266,9 @@ export function PuntoVentaView() {
         if(!respuesta.ok) throw new Error(datos.message || 'No se pudo vincular el paciente.');
         clienteId=datos.data.id;setCliente(actual=>({...actual,id:clienteId}));
       }
-      const r = await apiFetch('/api/v1/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cliente_id:clienteId, detalles:lineas.map(l=>({codigo_item:l.codigo,nombre_item:l.nombre,tipo_item:l.tipo,cantidad:l.cantidad,precio_unitario:l.precio})),descuento:descuentoAplicado }) });
+      if (!cajaId) throw new Error('No tienes una caja habilitada para registrar ventas.');
+      if (lineas.some(linea => linea.tipo !== 'Servicio') && !almacen) throw new Error('Selecciona el almacén de salida para los productos.');
+      const r = await apiFetch('/api/v1/ventas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cliente_id:clienteId, caja_id:Number(cajaId), almacen_id:almacen ? Number(almacen) : null, detalles:lineas.map(l=>({codigo_item:l.codigo,nombre_item:l.nombre,tipo_item:l.tipo,cantidad:l.cantidad,precio_unitario:l.precio})),descuento:descuentoAplicado }) });
       const resultado = await r.json();
       if (!r.ok) throw new Error(resultado.message || 'No se pudo registrar la venta');
       setMensaje('Venta registrada y vinculada al cliente o paciente.');
@@ -291,29 +298,9 @@ export function PuntoVentaView() {
         </div>, document.body,
       )}
       {contextoDestino && createPortal(<header className="punto-pos-cabecera punto-pos-contexto">
-        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => { setAlmacen(e.target.value); setLineas([]); }}><option value="">Seleccionar almacén</option>{almacenes.map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
-          <label>
-            Sucursal
-            {asignacion ? <input aria-label="Sucursal asignada" value={asignacion.sucursal} readOnly /> : <SelectMenu
-              ariaLabel="Seleccionar sucursal"
-              value={sucursal}
-              onChange={setSucursal}
-              options={[
-                'Hospital María Esperanza',
-                'Centro de Hemodialisis',
-                'Policonsultorio-Diabetes',
-              ]}
-            />}
-          </label>
-          <label>
-            Caja
-            {asignacion ? <input aria-label="Caja asignada" value={asignacion.caja} readOnly /> : <SelectMenu
-              ariaLabel="Seleccionar caja"
-              value={caja}
-              onChange={setCaja}
-              options={['Caja 01 · Recepción', 'Caja 02 · Farmacia']}
-            />}
-          </label>
+        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => { setAlmacen(e.target.value); setLineas([]); }}><option value="">Seleccionar almacén</option>{almacenes.filter(a => cajaActual?.almacenIds.includes(a.id)).map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
+          <label>Sucursal<input aria-label="Sucursal de la caja" value={cajaActual?.sucursal || ''} readOnly placeholder="Selecciona una caja" /></label>
+          <label>Caja<select aria-label="Seleccionar caja" value={cajaId} onChange={event => cambiarCaja(event.target.value)}><option value="">Seleccionar caja</option>{cajas.map(item => <option key={item.id} value={item.id}>{item.nombre} · {item.codigo}</option>)}</select></label>
         </div>
       </header>, contextoDestino)}
       <div className="punto-pos-layout">
