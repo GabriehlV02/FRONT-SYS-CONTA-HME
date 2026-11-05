@@ -1,5 +1,6 @@
 import ModalRegistroPaciente from '../../usuarios/subvistas/ModalRegistroPaciente';
 import { apiFetch } from '@ui/auth';
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import { useRef } from 'react';
@@ -354,13 +355,13 @@ export function PuntoVentaView() {
               </div>
             </div>
           </div>
-          {mensaje && (
+          {mensaje && (/registrada|emitida| creada /i.test(mensaje) ? <AvisoTemporal mensaje={mensaje} /> : (
             <p
               className={`punto-aviso ${mensaje.includes('agregado') ? 'exito' : ''}`}
             >
               {mensaje}
             </p>
-          )}
+          ))}
 
             <div className="punto-tarjetas" ref={galeriaRef}>
               {resultadosPagina.map((item) => (

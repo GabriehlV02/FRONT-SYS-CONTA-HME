@@ -1,46 +1,115 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { apiFetch } from '@ui/auth';
 import Icon from '@ui/components/Icon';
+import './CajaDiaReal.css';
 
-const ventas = [
-  { hora: '08:14', factura: 'F-000124', vendedor: 'Lucia Mendoza', cliente: 'Clinica San Gabriel', pago: 'Efectivo', total: 'Bs 1.250,00' },
-  { hora: '09:32', factura: 'F-000123', vendedor: 'Lucia Mendoza', cliente: 'Maria Fernanda Rojas', pago: 'QR', total: 'Bs 480,00' },
-  { hora: '11:06', factura: 'F-000122', vendedor: 'Diego Salazar', cliente: 'Laboratorio Central', pago: 'Efectivo', total: 'Bs 890,00' },
-  { hora: '14:48', factura: 'F-000121', vendedor: 'Diego Salazar', cliente: 'Carlos Paredes', pago: 'Tarjeta', total: 'Bs 320,00' },
-];
+type Pago = { metodo: string; monto: string | number };
+type Venta = {
+  id: string; codigo: string; total: string | number; descuento: string | number; cobrada_en: string | null;
+  created_at: string; usuario_sistema_id: string | null; caja_id: number | null;
+  cliente: { nombre_razon_social: string } | null;
+  caja: { id: number; nombre: string; codigo: string } | null;
+  sucursal: { nombre: string } | null;
+  usuario_sistema: { nombres: string; apellidos: string | null; usuario: string } | null;
+  pagos: Pago[] | null; cambio: string | number | null;
+  detalles: { id: string; nombre_item: string; cantidad: string | number; precio_unitario: string | number; total: string | number }[];
+};
+type RespuestaVentas = { data: Venta[]; current_page: number; last_page: number };
+const moneda = (valor: number) => `Bs ${valor.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const vendedor = (venta: Venta) => venta.usuario_sistema ? [venta.usuario_sistema.nombres, venta.usuario_sistema.apellidos].filter(Boolean).join(' ') || venta.usuario_sistema.usuario : 'No registrado';
+const fechaVenta = (venta: Venta) => new Date(venta.cobrada_en || venta.created_at);
+const fechaLocal = (venta: Venta) => {
+  const fecha = fechaVenta(venta);
+  return Number.isNaN(fecha.getTime()) ? '' : new Intl.DateTimeFormat('en-CA', { timeZone: 'America/La_Paz', year: 'numeric', month: '2-digit', day: '2-digit' }).format(fecha);
+};
+const mostrarFecha = (venta: Venta) => {
+  const fecha = fechaVenta(venta);
+  return Number.isNaN(fecha.getTime()) ? 'No registrada' : new Intl.DateTimeFormat('es-BO', { timeZone: 'America/La_Paz', dateStyle: 'short', timeStyle: 'short' }).format(fecha);
+};
+const metodos = (venta: Venta) => venta.pagos?.length ? [...new Set(venta.pagos.map(pago => pago.metodo))].join(', ') : 'No registrado';
 
 export function CajaDiaView() {
-  const [exportarAbierto, setExportarAbierto] = useState(false);
-  const [contenidoExportar, setContenidoExportar] = useState('Ventas del dia');
-  const [formatoExportar, setFormatoExportar] = useState('Excel');
+  const [ventas, setVentas] = useState<Venta[]>([]);
+  const [fecha, setFecha] = useState('');
+  const [caja, setCaja] = useState('');
+  const [usuario, setUsuario] = useState('');
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
+  const [revision, setRevision] = useState(0);
+  const [seleccionada, setSeleccionada] = useState<Venta | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setCargando(true); setError('');
+    const cargar = async () => {
+      const resultados: Venta[] = [];
+      let pagina = 1;
+      let ultima = 1;
+      do {
+        const respuesta = await apiFetch(`/api/v1/ventas?per_page=100&page=${pagina}`, { signal: controller.signal });
+        const cuerpo = await respuesta.json();
+        if (!respuesta.ok) throw new Error(cuerpo.message || 'No se pudieron consultar las ventas.');
+        const resultado = cuerpo as RespuestaVentas;
+        if (!Array.isArray(resultado.data) || !Number.isInteger(resultado.last_page) || resultado.last_page < 1) throw new Error('El servidor devolvió un listado de ventas inválido.');
+        resultados.push(...resultado.data);
+        ultima = resultado.last_page;
+        pagina++;
+      } while (pagina <= ultima);
+      if (!controller.signal.aborted) setVentas(resultados);
+    };
+    void cargar().catch(causa => { if (!controller.signal.aborted) { setVentas([]); setError(causa instanceof Error ? causa.message : 'No se pudieron consultar las ventas.'); } })
+      .finally(() => { if (!controller.signal.aborted) setCargando(false); });
+    return () => controller.abort();
+  }, [revision]);
+
+  const cajas = useMemo(() => [...new Map(ventas.filter(v => v.caja).map(v => [String(v.caja!.id), v.caja!])).values()].sort((a, b) => a.nombre.localeCompare(b.nombre)), [ventas]);
+  const vendedores = useMemo(() => [...new Map(ventas.filter(v => v.usuario_sistema_id).map(v => [v.usuario_sistema_id!, vendedor(v)])).entries()].sort((a, b) => a[1].localeCompare(b[1])), [ventas]);
+  const visibles = useMemo(() => ventas.filter(v => (!fecha || fechaLocal(v) === fecha) && (!caja || String(v.caja_id) === caja) && (!usuario || v.usuario_sistema_id === usuario)), [ventas, fecha, caja, usuario]);
+  const total = visibles.reduce((suma, venta) => suma + Math.round(Number(venta.total) * 100), 0);
+  const resumen = new Map<string, { nombre: string; cantidad: number; total: number }>();
+  const cobros = new Map<string, number>();
+  let sinPago = 0;
+  for (const venta of visibles) {
+    const clave = venta.usuario_sistema_id || 'sin-usuario';
+    const actual = resumen.get(clave) || { nombre: vendedor(venta), cantidad: 0, total: 0 };
+    actual.cantidad++; actual.total += Math.round(Number(venta.total) * 100); resumen.set(clave, actual);
+    if (!venta.pagos?.length) { sinPago++; continue; }
+    let cambioPendiente = Math.round(Number(venta.cambio || 0) * 100);
+    for (const pago of venta.pagos) {
+      let monto = Math.round(Number(pago.monto) * 100);
+      if (pago.metodo === 'Efectivo' && cambioPendiente > 0) {
+        const deduccion = Math.min(monto, cambioPendiente);
+        monto -= deduccion; cambioPendiente -= deduccion;
+      }
+      cobros.set(pago.metodo, (cobros.get(pago.metodo) || 0) + monto);
+    }
+  }
   const exportar = () => {
-    const filas = contenidoExportar === 'Ventas del dia'
-      ? [['Hora', 'Factura', 'Vendedor', 'Cliente', 'Pago', 'Total'], ...ventas.map(venta => [venta.hora, venta.factura, venta.vendedor, venta.cliente, venta.pago, venta.total])]
-      : contenidoExportar === 'Historico de cierres'
-        ? [['Fecha', 'Caja', 'Ventas', 'Total', 'Estado'], ['27 sep. 2026', 'Caja 01 - Recepcion', '4', 'Bs 3.180,00', 'Cuadrado'], ['26 sep. 2026', 'Caja 01 - Recepcion', '7', 'Bs 4.520,00', 'Cuadrado']]
-        : [['Indicador', 'Valor'], ['Ventas del dia', '4'], ['Total facturado', 'Bs 2.940,00'], ['Vendedores', '2'], ['Ticket promedio', 'Bs 735,00']];
-    const csv = filas.map(fila => fila.map(valor => `"${valor.replaceAll('"', '""')}"`).join(',')).join('\n');
-    const html = `<table>${filas.map((fila, indice) => `<tr>${fila.map(valor => `<${indice ? 'td' : 'th'}>${valor}</${indice ? 'td' : 'th'}>`).join('')}</tr>`).join('')}</table>`;
-    const esCsv = formatoExportar === 'CSV';
-    const blob = new Blob([esCsv ? `\ufeff${csv}` : `\ufeff${html}`], { type: esCsv ? 'text/csv;charset=utf-8' : formatoExportar === 'Excel' ? 'application/vnd.ms-excel' : 'application/msword' });
-    const enlace = document.createElement('a');
-    enlace.href = URL.createObjectURL(blob);
-    enlace.download = `caja-01-${contenidoExportar.toLowerCase().replaceAll(' ', '-')}.${esCsv ? 'csv' : formatoExportar === 'Excel' ? 'xls' : 'doc'}`;
-    enlace.click();
-    URL.revokeObjectURL(enlace.href);
-    setExportarAbierto(false);
+    const filas = [['Fecha', 'Venta', 'Sucursal', 'Caja', 'Vendedor', 'Cliente', 'Pago', 'Total (Bs)'], ...visibles.map(v => [mostrarFecha(v), v.codigo, v.sucursal?.nombre || 'No registrada', v.caja?.nombre || 'No registrada', vendedor(v), v.cliente?.nombre_razon_social || 'No registrado', metodos(v), Number(v.total).toFixed(2)])];
+    const csv = filas.map(fila => fila.map(celda => {
+      const texto = String(celda);
+      const seguro = /^[\s\u0000-\u001f]*[=+\-@]/.test(texto) ? `'${texto}` : texto;
+      return `"${seguro.replaceAll('"', '""')}"`;
+    }).join(';')).join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\ufeff', csv], { type: 'text/csv;charset=utf-8' }));
+    const enlace = document.createElement('a'); enlace.href = url; enlace.download = `ventas-${fecha || 'todas'}.csv`; enlace.click(); URL.revokeObjectURL(url);
   };
 
-  return <section className="caja-dia-vista" aria-label="Auditoria de caja diaria">
-    <section className="caja-dia-filtros" aria-label="Filtros de auditoria">
-      <label>Fecha<input type="date" defaultValue="2026-09-28" /></label>
-      <label>Caja<select defaultValue="Caja 01 · Recepcion"><option>Caja 01 · Recepcion</option><option>Caja 02 · Farmacia</option></select></label>
-      <label>Vendedor<select defaultValue="Todos"><option>Todos</option><option>Lucia Mendoza</option><option>Diego Salazar</option></select></label>
-      <button type="button" className="primario"><Icon name="search" size={16} /> Consultar</button>
-      <button type="button" className="secundario" onClick={() => setExportarAbierto(true)}><Icon name="fileText" size={16} /> Exportar reporte</button>
+  return <section className="caja-dia-vista" aria-label="Ventas por caja">
+    <section className="caja-dia-filtros" aria-label="Filtros de ventas">
+      <label>Fecha<input type="date" value={fecha} onChange={evento => setFecha(evento.target.value)} /></label>
+      <label>Caja<select value={caja} onChange={evento => setCaja(evento.target.value)}><option value="">Todas las cajas</option>{cajas.map(item => <option key={item.id} value={item.id}>{item.codigo} · {item.nombre}</option>)}</select></label>
+      <label>Vendedor<select value={usuario} onChange={evento => setUsuario(evento.target.value)}><option value="">Todos</option>{vendedores.map(([id, nombre]) => <option key={id} value={id}>{nombre}</option>)}</select></label>
+      <button type="button" className="primario" disabled={cargando} onClick={() => setRevision(valor => valor + 1)}><Icon name="search" size={16} /> Consultar</button>
+      <button type="button" className="secundario" disabled={cargando || !!error || !visibles.length} onClick={exportar}><Icon name="fileText" size={16} /> Exportar CSV</button>
     </section>
-    <div className="caja-dia-kpis"><article><span><Icon name="cash" size={18} /></span><div><small>Ventas del dia</small><strong>4</strong></div></article><article><span><Icon name="fileText" size={18} /></span><div><small>Total facturado</small><strong>Bs 2.940,00</strong></div></article><article><span><Icon name="user" size={18} /></span><div><small>Vendedores</small><strong>2</strong></div></article><article><span><Icon name="chart" size={18} /></span><div><small>Ticket promedio</small><strong>Bs 735,00</strong></div></article></div>
-    <div className="caja-dia-columnas"><section className="ventas-panel caja-dia-listado"><div className="ventas-panel-head"><div><h3>Ventas de Caja 01</h3><small>Detalle auditable de las ventas del 28 sep. 2026.</small></div><span className="caja-dia-sello">Caja abierta</span></div><div className="caja-dia-tabla" role="table"><div className="caja-dia-fila encabezado" role="row"><span>Hora</span><span>Factura</span><span>Vendedor</span><span>Cliente</span><span>Pago</span><span>Total</span><span /></div>{ventas.map(venta => <div className="caja-dia-fila" role="row" key={venta.factura}><span>{venta.hora}</span><strong>{venta.factura}</strong><span>{venta.vendedor}</span><span>{venta.cliente}</span><span>{venta.pago}</span><strong>{venta.total}</strong><button type="button" title="Inspeccionar venta" aria-label={`Inspeccionar venta ${venta.factura}`}><Icon name="eye" size={16} /></button></div>)}</div></section><aside className="caja-dia-resumen"><section><h3>Resumen por vendedor</h3><article><span>Lucia Mendoza</span><strong>2 ventas · Bs 1.730,00</strong></article><article><span>Diego Salazar</span><strong>2 ventas · Bs 1.210,00</strong></article></section><section><h3>Distribucion de cobros</h3><article><span>Efectivo</span><strong>Bs 2.140,00</strong></article><article><span>QR</span><strong>Bs 480,00</strong></article><article><span>Tarjeta</span><strong>Bs 320,00</strong></article></section></aside></div>
-    <section className="ventas-panel caja-dia-historico"><div className="ventas-panel-head"><div><h3>Historico de cierres</h3><small>Consulta los arqueos y totales de dias anteriores.</small></div><button type="button" className="secundario">Ver todo el historico <Icon name="arrowRight" size={15} /></button></div><div className="caja-historico-lista"><article><strong>27 sep. 2026</strong><span>Caja 01 · Recepcion</span><span>4 ventas</span><b>Bs 3.180,00</b><i>Cuadrado</i></article><article><strong>26 sep. 2026</strong><span>Caja 01 · Recepcion</span><span>7 ventas</span><b>Bs 4.520,00</b><i>Cuadrado</i></article></div></section>
-    {exportarAbierto && <div className="caja-exportar-fondo" onMouseDown={() => setExportarAbierto(false)}><section className="caja-exportar-modal" role="dialog" aria-modal="true" onMouseDown={event => event.stopPropagation()}><header><div><p>EXPORTAR REPORTE</p><h3>Configurar exportacion</h3></div><button type="button" onClick={() => setExportarAbierto(false)} aria-label="Cerrar"><Icon name="close" size={18} /></button></header><label>Que deseas exportar?<select value={contenidoExportar} onChange={event => setContenidoExportar(event.target.value)}><option>Ventas del dia</option><option>Resumen de caja</option><option>Historico de cierres</option></select></label><label>Formato del archivo<select value={formatoExportar} onChange={event => setFormatoExportar(event.target.value)}><option>Excel</option><option>Word</option><option>CSV</option></select></label><footer><button type="button" onClick={() => setExportarAbierto(false)}>Cancelar</button><button type="button" className="primario" onClick={exportar}><Icon name="fileText" size={16} /> Descargar</button></footer></section></div>}
+    {cargando && <p role="status">Cargando ventas registradas…</p>}
+    {error && <p role="alert">{error} <button type="button" onClick={() => setRevision(valor => valor + 1)}>Reintentar</button></p>}
+    <div className="caja-dia-kpis"><article><span><Icon name="cash" size={18} /></span><div><small>Ventas</small><strong>{cargando || error ? '—' : visibles.length}</strong></div></article><article><span><Icon name="fileText" size={18} /></span><div><small>Total vendido</small><strong>{cargando || error ? '—' : moneda(total / 100)}</strong></div></article><article><span><Icon name="user" size={18} /></span><div><small>Vendedores</small><strong>{cargando || error ? '—' : new Set(visibles.map(v => v.usuario_sistema_id).filter(Boolean)).size}</strong></div></article><article><span><Icon name="chart" size={18} /></span><div><small>Ticket promedio</small><strong>{cargando || error ? '—' : moneda(visibles.length ? total / 100 / visibles.length : 0)}</strong></div></article></div>
+    <div className="caja-dia-columnas"><section className="ventas-panel caja-dia-listado"><div className="ventas-panel-head"><div><h3>Ventas registradas</h3><small>{fecha ? `Ventas del ${fecha}` : 'Todas las fechas'} · {visibles.length} registros</small></div></div><div className="caja-dia-tabla" role="table" aria-label="Ventas registradas"><div className="caja-dia-fila encabezado" role="row"><span>Fecha y hora</span><span>Venta</span><span>Vendedor</span><span>Cliente</span><span>Pago</span><span>Total</span><span /></div>{visibles.map(venta => <div className="caja-dia-fila" role="row" key={venta.id}><span>{mostrarFecha(venta)}</span><strong>{venta.codigo}</strong><span>{vendedor(venta)}</span><span>{venta.cliente?.nombre_razon_social || 'No registrado'}</span><span>{metodos(venta)}</span><strong>{moneda(Number(venta.total))}</strong><button type="button" title="Ver detalle de la venta" aria-label={`Ver detalle de la venta ${venta.codigo}`} onClick={() => setSeleccionada(venta)}><Icon name="eye" size={16} /></button></div>)}</div>{!cargando && !error && !visibles.length && <p className="caja-dia-vacio">No hay ventas que coincidan con los filtros.</p>}</section>
+      <aside className="caja-dia-resumen"><section><h3>Resumen por vendedor</h3>{[...resumen.values()].map((item, indice) => <article key={indice}><span>{item.nombre}</span><strong>{item.cantidad} ventas · {moneda(item.total / 100)}</strong></article>)}{!resumen.size && <p>Sin ventas para mostrar.</p>}</section><section><h3>Distribución de cobros</h3>{[...cobros.entries()].map(([metodo, monto]) => <article key={metodo}><span>{metodo}</span><strong>{moneda(monto / 100)}</strong></article>)}{sinPago > 0 && <p>{sinPago} {sinPago === 1 ? 'venta sin método de pago registrado.' : 'ventas sin método de pago registrado.'}</p>}{!cobros.size && !sinPago && <p>Sin cobros para mostrar.</p>}</section></aside>
+    </div>
+    <section className="ventas-panel caja-dia-historico"><div className="ventas-panel-head"><div><h3>Histórico de cierres</h3><small>Los cierres de caja aún no están registrados en el sistema.</small></div></div></section>
+    {seleccionada && <div className="caja-exportar-fondo" role="presentation" onMouseDown={evento => { if (evento.target === evento.currentTarget) setSeleccionada(null); }}><section className="caja-exportar-modal caja-dia-detalle" role="dialog" aria-modal="true" aria-labelledby="caja-dia-detalle-titulo"><header><div><p>VENTA REGISTRADA</p><h3 id="caja-dia-detalle-titulo">{seleccionada.codigo}</h3></div><button type="button" onClick={() => setSeleccionada(null)} aria-label="Cerrar"><Icon name="close" size={18} /></button></header><p>{mostrarFecha(seleccionada)} · {seleccionada.caja?.nombre || 'Caja no registrada'}</p><p>Cliente: {seleccionada.cliente?.nombre_razon_social || 'No registrado'}<br />Vendedor: {vendedor(seleccionada)}</p><div className="caja-dia-detalle-items">{seleccionada.detalles.map(item => <article key={item.id}><span>{item.nombre_item}<small>{Number(item.cantidad)} × {moneda(Number(item.precio_unitario))}</small></span><strong>{moneda(Number(item.total))}</strong></article>)}</div><p>Pago: {metodos(seleccionada)}</p><strong>Total: {moneda(Number(seleccionada.total))}</strong><footer><button type="button" onClick={() => setSeleccionada(null)}>Cerrar</button></footer></section></div>}
   </section>;
 }

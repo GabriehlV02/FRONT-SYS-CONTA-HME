@@ -1,0 +1,7 @@
+.caja-dia-vacio { padding: 18px 12px; color: #607b87; }
+.caja-dia-vista .caja-dia-fila { grid-template-columns: 120px 112px 130px minmax(140px, 1fr) 100px 110px 38px; }
+.caja-dia-resumen section > p { margin: 10px 0 0; color: #607b87; font-size: 12px; line-height: 1.5; }
+.caja-dia-detalle { max-height: min(85vh, 720px); overflow-y: auto; }
+.caja-dia-detalle > p { margin: 0; line-height: 1.5; color: #456575; }
+.caja-dia-detalle-items article { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid #dce8ea; }
+.caja-dia-detalle-items small { display: block; margin-top: 3px; color: #68818d; }

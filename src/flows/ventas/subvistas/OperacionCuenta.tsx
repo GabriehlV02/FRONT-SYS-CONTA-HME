@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { cargarCatalogoAutorizado } from '../datos/cargarCatalogo';
 import type { ItemVenta } from '../datos/catalogoVentas';
 
@@ -58,7 +59,7 @@ export function OperacionCuenta({ id, modo, saldo, movimientos, onGuardar }: { i
       <small>La fecha y hora se registran automáticamente. Los excedentes quedan a favor del paciente.</small>
       <div className="cuenta-form-acciones"><button type="submit" className="cuenta-confirmar">Registrar pago</button><button type="button" className="cuenta-cancelar" onClick={() => { setFormulario(inicial); setMensaje(''); }}>Cancelar</button></div>
     </form>}
-    {mensaje && <p role="status">{mensaje}</p>}
+    {mensaje && (mensaje.startsWith('No se pudo') ? <p role="alert">{mensaje}</p> : <AvisoTemporal mensaje={mensaje} />)}
     <section className="cuenta-historial-pagos"><h4>Historial de pagos</h4>{!movimientos.pagos.length && <small>Sin pagos registrados en esta demostración.</small>}{[...movimientos.pagos].reverse().map(pago => <article key={pago.id}><strong>{bs(pago.monto)} · {pago.metodo}</strong><time dateTime={pago.fecha}>{fecha(pago.fecha)}</time><span>{pago.nombre} · {pago.documento}</span>{pago.telefono && <span>Tel. {pago.telefono}</span>}{pago.relacion && <span>{pago.relacion}</span>}</article>)}</section>
   </div>;
 }

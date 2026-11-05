@@ -1,3 +1,4 @@
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useState } from 'react';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
@@ -45,7 +46,7 @@ export function PacientesUsuariosView({ puedeCrear = true }: { puedeCrear?: bool
       {puedeCrear && <button className="usuarios-accion" onClick={() => { setMensaje(''); setAbierto(true); }}><Icon name="plus" size={17} />Registrar paciente</button>}
     </div>
     {error && <p className="usuarios-modal-error" role="alert">{error}</p>}
-    {mensaje && <p className="pacientes-registro-exito" role="status">{mensaje}</p>}
+    {mensaje && <AvisoTemporal mensaje={mensaje} />}
     <PaginacionTabla total={total} filas={filas} pagina={pagina} totalPaginas={paginas} onFilas={cantidad => { setFilas(cantidad); setPagina(1); }} onPagina={setPagina} />
     <div className="usuarios-tabla pacientes-usuarios-tabla" role="table" aria-label="Pacientes registrados" aria-busy={cargando}>
       <div className="usuarios-tabla-head" role="row">{['N°', 'Paciente', 'CI', 'Nacimiento', 'Género', 'Acciones'].map(columna => <span key={columna} role="columnheader">{columna}</span>)}</div>

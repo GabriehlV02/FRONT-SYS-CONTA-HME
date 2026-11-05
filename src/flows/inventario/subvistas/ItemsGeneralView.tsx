@@ -1,3 +1,4 @@
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { apiFetch } from '@ui/auth';
@@ -135,7 +136,7 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
     </div>
     {(error || errorOpciones) && <p role="alert" className="productos-base-error">{error || errorOpciones} <button onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
     {opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
-    <p role="status" className="productos-base-mensaje">{mensaje}</p>
+    <AvisoTemporal mensaje={mensaje} />
     <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><div className="items-general-vistas" role="group" aria-label="Vista de ítems"><button type="button" aria-pressed={vista === 'galeria'} onClick={() => setVista('galeria')}>Galería</button><button type="button" aria-pressed={vista === 'lista'} onClick={() => setVista('lista')}>Lista</button></div><label>Por página <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
     {!cargando && !error && pagina.data.length === 0 && <p className="items-general-vacio">{buscar || grupo || estado ? 'No hay ítems que coincidan con los filtros.' : 'Todavía no hay ítems comerciales. Registra el primero y vincúlalo a su agrupador.'}</p>}
     {vista === 'galeria' ? <div className="items-general-galeria" aria-busy={cargando}>{pagina.data.map(item => <article key={item.id} className="item-comercial-card">

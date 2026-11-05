@@ -1,3 +1,4 @@
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { apiFetch } from '@ui/auth';
 import { leerRespuesta } from '../../usuarios/accesos';
@@ -96,7 +97,7 @@ export function ProductosInsumosView({ puedeGestionar = false }: { puedeGestiona
       <select aria-label="Dirección del orden" value={direccion} onChange={event => { setDireccion(event.target.value); setNumeroPagina(1); }}><option value="asc">Ascendente</option><option value="desc">Descendente</option></select>
     </div>
     {error && <p role="alert" className="productos-base-error">{error} <button onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
-    <p role="status" className="productos-base-mensaje">{mensaje}</p>
+    <AvisoTemporal mensaje={mensaje} />
     <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} productos base</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><label>Filas <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumeroPagina(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
     <div className="productos-base-tabla" aria-busy={cargando}><table data-interactiva="true"><thead><tr><th scope="col">Código</th><th scope="col">Producto base</th><th scope="col">Tipo</th><th scope="col">Categoría</th><th scope="col">Subcategoría</th><th scope="col">Clasificación / familia</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
       <tbody>{!cargando && !error && pagina.data.length === 0 && <tr><td colSpan={8} className="productos-base-vacio"><strong>{buscar || categoria || estado ? 'No hay coincidencias' : 'Todavía no hay productos base'}</strong><p>{buscar || categoria || estado ? 'Prueba con otros filtros.' : 'Registra un producto como Paracetamol para agrupar sus futuros ítems.'}</p></td></tr>}

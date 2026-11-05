@@ -1,13 +1,16 @@
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { apiFetch } from '@ui/auth';
+import Icon from '@ui/components/Icon';
+import './ConfiguracionAdminAcordeon.css';
 
 type Catalogo = 'tipos' | 'unidades' | 'categorias' | 'subcategorias' | 'clasificaciones';
 type Registro = { id: string; nombre: string; clave: string; activo: boolean; descripcion?: string | null; tipo_base?: string; prefijo?: string; cantidad?: number; categoria_id?: string; categoria?: { id: string; nombre: string; activo: boolean } };
 type Catalogos = Record<Catalogo, Registro[]>;
 const iniciales: Catalogos = { tipos: [], unidades: [], categorias: [], subcategorias: [], clasificaciones: [] };
-const secciones: { catalogo: Catalogo; titulo: string }[] = [
-  { catalogo: 'tipos', titulo: 'Tipo' }, { catalogo: 'unidades', titulo: 'Unidad de medida' },
-  { catalogo: 'categorias', titulo: 'Categoría' }, { catalogo: 'subcategorias', titulo: 'Subcategoría' },
+const secciones: { catalogo: Catalogo; titulo: string; soloServicios?: boolean }[] = [
+  { catalogo: 'tipos', titulo: 'Tipos de productos e insumos' }, { catalogo: 'tipos', titulo: 'Tipos de servicio', soloServicios: true }, { catalogo: 'unidades', titulo: 'Unidad de medida' },
+  { catalogo: 'categorias', titulo: 'Categorías de productos e insumos' }, { catalogo: 'subcategorias', titulo: 'Subcategorías de productos e insumos' },
   { catalogo: 'clasificaciones', titulo: 'Clasificación / familia' },
 ];
 
@@ -26,6 +29,7 @@ export function ConfiguracionAdminView({ puedeGestionar = true }: { puedeGestion
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [recarga, setRecarga] = useState(0);
+  const [seccionAbierta, setSeccionAbierta] = useState<string | null>(null);
   useEffect(() => {
     const controller = new AbortController();
     setCargando(true); setError('');
@@ -38,14 +42,14 @@ export function ConfiguracionAdminView({ puedeGestionar = true }: { puedeGestion
   return <section className="inventario-admin" aria-label="Configuración admin">
     {error && <div className="inventario-admin-error" role="alert">{error} <button type="button" onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></div>}
     <div className="inventario-admin-recuadros">
-      {secciones.map(seccion => <RecuadroConfiguracion key={seccion.catalogo} {...seccion} registros={datos[seccion.catalogo]} categorias={datos.categorias.filter(categoria => categoria.activo)} cargando={cargando} puedeGestionar={puedeGestionar && !error} onGuardado={() => setRecarga(valor => valor + 1)} />)}
+      {secciones.map(seccion => <RecuadroConfiguracion key={seccion.titulo} {...seccion} abierto={seccionAbierta === seccion.titulo} onAlternar={() => setSeccionAbierta(actual => actual === seccion.titulo ? null : seccion.titulo)} registros={seccion.catalogo === 'tipos' ? datos.tipos.filter(registro => seccion.soloServicios ? registro.tipo_base === 'SERVICIO' : registro.tipo_base !== 'SERVICIO') : datos[seccion.catalogo]} categorias={datos.categorias.filter(categoria => categoria.activo)} cargando={cargando} puedeGestionar={puedeGestionar && !error} onGuardado={() => setRecarga(valor => valor + 1)} />)}
     </div>
   </section>;
 }
 
-function RecuadroConfiguracion({ titulo, catalogo, registros, categorias, cargando, puedeGestionar, onGuardado }: {
+function RecuadroConfiguracion({ titulo, catalogo, soloServicios = false, abierto, onAlternar, registros, categorias, cargando, puedeGestionar, onGuardado }: {
   titulo: string; catalogo: Catalogo; registros: Registro[]; categorias: Registro[];
-  cargando: boolean; puedeGestionar: boolean; onGuardado: () => void;
+  soloServicios?: boolean; abierto: boolean; onAlternar: () => void; cargando: boolean; puedeGestionar: boolean; onGuardado: () => void;
 }) {
   const [busqueda, setBusqueda] = useState('');
   const [modal, setModal] = useState<'registro' | 'estado' | null>(null);
@@ -69,7 +73,7 @@ function RecuadroConfiguracion({ titulo, catalogo, registros, categorias, cargan
 
   function abrir(modo: 'registro' | 'estado', boton: HTMLElement, registro: Registro | null = null) {
     ultimoBoton.current = boton; setPendiente(registro); setError(''); setMensaje('');
-    setFormulario({ nombre: '', descripcion: '', tipo_base: 'PRODUCTO', prefijo: '', categoria_id: '' });
+    setFormulario({ nombre: '', descripcion: '', tipo_base: soloServicios ? 'SERVICIO' : 'PRODUCTO', prefijo: '', categoria_id: '' });
     setModal(modo);
   }
   function cerrar() {
@@ -100,14 +104,17 @@ function RecuadroConfiguracion({ titulo, catalogo, registros, categorias, cargan
     } catch (error) { setError(error instanceof Error ? error.message : 'No se pudo guardar el registro.'); }
     finally { setGuardando(false); }
   }
-  return <section className="inventario-admin-recuadro">
-    <h2>{titulo}</h2>
+  const panelId = 'configuracion-panel-' + (soloServicios ? 'tipos-servicio' : catalogo);
+  const botonId = 'configuracion-boton-' + (soloServicios ? 'tipos-servicio' : catalogo);
+  return <section className={'inventario-admin-recuadro' + (abierto ? ' esta-abierto' : '')}>
+    <h2 className="inventario-admin-acordeon-titulo"><button id={botonId} type="button" className="inventario-admin-acordeon-boton" aria-expanded={abierto} aria-controls={panelId} onClick={onAlternar}><span className="inventario-admin-acordeon-nombre">{titulo}<small>{cargando ? 'Cargando…' : registros.length + (registros.length === 1 ? ' registro' : ' registros')}</small></span><span className="inventario-admin-acordeon-flecha" aria-hidden="true">{abierto ? '−' : '+'}</span></button></h2>
+    <div id={panelId} role="region" aria-labelledby={botonId} className="inventario-admin-acordeon-contenido" hidden={!abierto}>
     <div className="inventario-admin-controles">
-      <label><span>Buscar</span><input type="search" aria-label={'Buscar ' + titulo.toLocaleLowerCase()} value={busqueda} onChange={event => setBusqueda(event.target.value)} placeholder={'Buscar ' + titulo.toLocaleLowerCase()} /></label>
-      {puedeGestionar && <button type="button" className="inventario-admin-registrar" style={{ backgroundColor: '#0284c7', borderColor: '#0369a1', color: '#fff' }} disabled={cargando || sinCategoria} title={sinCategoria ? 'Registra primero una categoría activa.' : undefined} onClick={event => abrir('registro', event.currentTarget)}>Registrar nuevo</button>}
+      <div className="inventario-admin-busqueda"><Icon name="search" size={17} /><input type="search" aria-label={'Buscar ' + titulo.toLocaleLowerCase()} value={busqueda} onChange={event => setBusqueda(event.target.value)} placeholder={'Buscar ' + titulo.toLocaleLowerCase()} /></div>
+      {puedeGestionar && <button type="button" className="inventario-admin-registrar" disabled={cargando || sinCategoria} title={sinCategoria ? 'Registra primero una categoría de productos e insumos activa.' : undefined} onClick={event => abrir('registro', event.currentTarget)}>+ Registrar nuevo</button>}
     </div>
-    {sinCategoria && !cargando && <p className="inventario-admin-ayuda">Registra una categoría activa para añadir sus subcategorías.</p>}
-    {mensaje && <p className="inventario-admin-exito" role="status">{mensaje}</p>}
+    {sinCategoria && !cargando && <p className="inventario-admin-ayuda">Registra una categoría de productos e insumos activa para añadir sus subcategorías.</p>}
+    {mensaje && <AvisoTemporal mensaje={mensaje} />}
     <div className="inventario-admin-tabla-contenedor">
       <table className="inventario-admin-tabla-configuracion" aria-label={titulo} aria-busy={cargando}>
         <thead><tr><th>{esTipo ? 'Nombre del tipo' : 'Nombre'}</th>{esTipo && <th>Descripción</th>}{esSubcategoria && <th>Categoría</th>}<th>Estado</th>{esTipo && <th>Cantidad</th>}<th>Acciones</th></tr></thead>
@@ -122,7 +129,7 @@ function RecuadroConfiguracion({ titulo, catalogo, registros, categorias, cargan
       </table>
     </div>
     {modal && <div className="inventario-admin-modal-fondo" role="presentation" onClick={cerrar}>
-      <form className="inventario-admin-modal" role="dialog" aria-modal="true" aria-labelledby={'modal-' + catalogo} onSubmit={guardar} onClick={event => event.stopPropagation()} onKeyDown={event => {
+      <form className="inventario-admin-modal" role="dialog" aria-modal="true" aria-labelledby={'modal-' + (soloServicios ? 'tipos-servicio' : catalogo)} onSubmit={guardar} onClick={event => event.stopPropagation()} onKeyDown={event => {
         if (event.key === 'Escape') cerrar();
         if (event.key === 'Tab') {
           const campos = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled),input:not(:disabled),textarea:not(:disabled),select:not(:disabled)'));
@@ -131,16 +138,17 @@ function RecuadroConfiguracion({ titulo, catalogo, registros, categorias, cargan
           else if (!event.shiftKey && document.activeElement === ultimo) { event.preventDefault(); primero?.focus(); }
         }
       }}>
-        <h3 id={'modal-' + catalogo}>{modal === 'estado' ? 'Confirmar cambio' : 'Registrar ' + titulo.toLocaleLowerCase()}</h3>
+        <h3 id={'modal-' + (soloServicios ? 'tipos-servicio' : catalogo)}>{modal === 'estado' ? 'Confirmar cambio' : 'Registrar ' + titulo.toLocaleLowerCase()}</h3>
         {modal === 'estado' ? <p>¿Quieres cambiar <strong>{pendiente?.nombre}</strong> a {pendiente?.activo ? 'inactivo' : 'activo'}?</p> : <div className="inventario-admin-form-campos">
           <label>Nombre<input ref={primerCampo} required maxLength={100} disabled={guardando} value={formulario.nombre} onChange={event => setFormulario(actual => ({ ...actual, nombre: event.target.value }))} /></label>
-          {esTipo && <><label>Descripción<textarea maxLength={1000} rows={3} disabled={guardando} value={formulario.descripcion} onChange={event => setFormulario(actual => ({ ...actual, descripcion: event.target.value }))} /></label><label>Tipo de ítem<select disabled={guardando} value={formulario.tipo_base} onChange={event => setFormulario(actual => ({ ...actual, tipo_base: event.target.value }))}><option value="PRODUCTO">Producto</option><option value="INSUMO">Insumo</option><option value="SERVICIO">Servicio</option></select></label></>}
+          {esTipo && <><label>Descripción<textarea maxLength={1000} rows={3} disabled={guardando} value={formulario.descripcion} onChange={event => setFormulario(actual => ({ ...actual, descripcion: event.target.value }))} /></label>{!soloServicios && <label>Tipo de ítem<select disabled={guardando} value={formulario.tipo_base} onChange={event => setFormulario(actual => ({ ...actual, tipo_base: event.target.value }))}><option value="PRODUCTO">Producto</option><option value="INSUMO">Insumo</option></select></label>}</>}
           {catalogo === 'categorias' && <label>Prefijo de código<input required maxLength={10} pattern="[A-Za-z0-9]+" placeholder="Ej. FAR" disabled={guardando} value={formulario.prefijo} onChange={event => setFormulario(actual => ({ ...actual, prefijo: event.target.value }))} /></label>}
-          {esSubcategoria && <label>Categoría<select required disabled={guardando} value={formulario.categoria_id} onChange={event => setFormulario(actual => ({ ...actual, categoria_id: event.target.value }))}><option value="">Selecciona una categoría</option>{categorias.map(categoria => <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>)}</select></label>}
+          {esSubcategoria && <label>Categoría de productos e insumos<select required disabled={guardando} value={formulario.categoria_id} onChange={event => setFormulario(actual => ({ ...actual, categoria_id: event.target.value }))}><option value="">Selecciona una categoría</option>{categorias.map(categoria => <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>)}</select></label>}
         </div>}
         {error && <p className="inventario-admin-error" role="alert">{error}</p>}
         <div className="inventario-admin-modal-acciones"><button ref={botonConfirmar} type="submit" disabled={guardando}>{guardando ? 'Guardando…' : modal === 'estado' ? 'Sí, confirmar' : 'Registrar'}</button><button type="button" disabled={guardando} onClick={cerrar}>Cancelar</button></div>
       </form>
     </div>}
+    </div>
   </section>;
 }

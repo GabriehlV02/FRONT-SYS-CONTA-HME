@@ -1,0 +1,181 @@
+.sistema-contable .inventario-admin-recuadros {
+  gap: 8px !important;
+}
+
+.sistema-contable .inventario-admin-recuadro {
+  min-height: 0;
+  padding: 0 !important;
+  overflow: visible;
+  border-color: #d2e2e9 !important;
+}
+
+.sistema-contable .inventario-admin-recuadro.esta-abierto {
+  border-color: #8bc9e2 !important;
+}
+
+.sistema-contable .inventario-admin-recuadro .inventario-admin-acordeon-titulo {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.sistema-contable .inventario-admin-acordeon-boton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 16px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  color: #123c58;
+  background: transparent !important;
+  text-align: left;
+}
+
+.sistema-contable .inventario-admin-acordeon-boton:hover,
+.sistema-contable .inventario-admin-acordeon-boton[aria-expanded="true"] {
+  background: #f3f9fc !important;
+}
+
+.sistema-contable .inventario-admin-acordeon-boton:focus-visible {
+  outline: 3px solid #69b9df;
+  outline-offset: -3px;
+}
+
+.sistema-contable .inventario-admin-acordeon-nombre {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sistema-contable .inventario-admin-acordeon-nombre small {
+  color: #648296;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.sistema-contable .inventario-admin-acordeon-flecha {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: #087caf;
+  background: #e3f2f8;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.sistema-contable .inventario-admin-acordeon-contenido:not([hidden]) {
+  padding: 0 16px 16px;
+}
+
+.sistema-contable .inventario-admin-controles label {
+  min-width: 0;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-controles {
+  display: flex;
+  align-items: center;
+  gap: 12px !important;
+  padding: 12px 0 !important;
+  margin: 0 0 12px !important;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-busqueda {
+  display: flex;
+  align-items: center;
+  flex: 1 1 300px;
+  max-width: 440px;
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #c6dce7;
+  border-radius: 8px;
+  color: #287497;
+  background: #fff;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-busqueda span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-busqueda input {
+  flex: 1;
+  min-width: 0;
+  height: 100% !important;
+  padding: 0 9px !important;
+  border: 0 !important;
+  outline: 0;
+  background: transparent !important;
+  color: #153c57;
+  font-size: 13px;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-busqueda:focus-within {
+  outline: 2px solid #69b9df;
+  outline-offset: 1px;
+}
+
+.sistema-contable .inventario-admin button.inventario-admin-registrar {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 0 16px !important;
+  border: 1px solid #0876b2 !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  background: #087ebc !important;
+  font-weight: 700;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-tabla-contenedor {
+  padding: 0;
+}
+
+.sistema-contable .inventario-admin .inventario-admin-tabla-configuracion :is(th, td) {
+  height: auto !important;
+  padding: 9px 12px !important;
+  line-height: 1.35;
+  vertical-align: middle;
+}
+
+.sistema-contable .inventario-admin button.inventario-admin-switch {
+  display: inline-flex;
+  align-items: center;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  margin: 0;
+  padding: 2px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #a6b7bf !important;
+  box-shadow: none;
+}
+
+.sistema-contable .inventario-admin button.inventario-admin-switch.activo {
+  background: #0787bd !important;
+}
+
+.sistema-contable .inventario-admin button.inventario-admin-switch span {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  transform: none;
+}
+
+.sistema-contable .inventario-admin button.inventario-admin-switch.activo span {
+  transform: translateX(20px);
+}
+
+@media (max-width: 600px) {
+  .sistema-contable .inventario-admin-acordeon-boton { padding-inline: 16px; }
+  .sistema-contable .inventario-admin-acordeon-contenido:not([hidden]) { padding-inline: 16px; }
+  .sistema-contable .inventario-admin .inventario-admin-controles { align-items: stretch; flex-direction: column; }
+  .sistema-contable .inventario-admin .inventario-admin-busqueda { flex: none; max-width: none; }
+}

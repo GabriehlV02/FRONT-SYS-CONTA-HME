@@ -1,3 +1,4 @@
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { apiFetch } from '@ui/auth';
@@ -155,7 +156,7 @@ export function AdquisicionesView({ activeId, administraCatalogo = false }: { ac
   return <>
     <MovimientosNavegacion activa={subvista} onSeleccionar={setSubvista} />
     <div className="movimientos-contenido adquisiciones-contenido">
-      {mensaje && <p role="status">{mensaje}</p>}
+      {mensaje && <AvisoTemporal mensaje={mensaje} />}
       {subvista === 'cargado' ? <>
         {error && <div role="alert">{error} <button type="button" onClick={() => setRecarga(v => v + 1)}>Reintentar</button></div>}
         <div className="adquisiciones-controles"><div className="adquisiciones-filtros">

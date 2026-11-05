@@ -1,4 +1,5 @@
 import { apiFetch } from '@ui/auth';
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import CapturaCodigo from './CapturaCodigo';
 import { categoriasRegistro as categoriasIniciales, unidadesRegistro as unidadesIniciales, clasificacionesRegistro as clasificacionesIniciales, type OpcionesInventario } from '../datos/registroOpciones';
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
@@ -198,7 +199,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     nombre: '',
     descripcion: '',
     unidadMedida: '',
-    tipo: tipo === 'servicios' ? 'Servicio' : 'Producto' as TipoRegistro,
+    tipo: tipo === 'servicios' ? '' : 'Producto' as TipoRegistro,
     categoria: '',
     grupo: '',
     precioVenta: '',
@@ -595,6 +596,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     if (
       !payload.nombre ||
       !payload.descripcion ||
+      (esServicio && (!opcionesCargadas || !payload.tipoOpcion || opcionesRegistro.tipos[payload.tipoOpcion] !== 'SERVICIO')) ||
       (!esServicio && (!payload.categoria || !payload.grupo || !payload.unidadMedida)) ||
       Number.isNaN(payload.precioVenta)
     ) {
@@ -606,7 +608,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       const respuesta = await apiFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(esServicio ? { nombre: payload.nombre, descripcion: payload.descripcion, precioVenta: payload.precioVenta } : payload),
+        body: JSON.stringify(esServicio ? { nombre: payload.nombre, descripcion: payload.descripcion, precioVenta: payload.precioVenta, tipoOpcion: payload.tipoOpcion } : payload),
       });
 
       if (!respuesta.ok) {
@@ -632,7 +634,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       nombre: '',
       descripcion: '',
       unidadMedida: '',
-      tipo: tipo === 'servicios' ? Object.keys(opcionesRegistro.tipos)[0] || '' : 'Producto',
+      tipo: tipo === 'servicios' ? '' : 'Producto',
       categoria: '',
       grupo: '',
       precioVenta: '',
@@ -1089,6 +1091,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
               {esServicio ? <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label className="inventario-campo-completo"><span>Nombre del servicio</span><input required maxLength={150} value={edicionRegistro.nombre} onChange={e => setEdicionRegistro(actual => actual ? {...actual, nombre:e.target.value} : actual)} /></label>
+                <label className="inventario-campo-completo"><span>Tipo de servicio</span><select required value={edicionRegistro.tipoOpcion || ''} onChange={e => setEdicionRegistro(actual => actual ? {...actual, tipoOpcion:e.target.value} : actual)}><option value="">Selecciona un tipo de servicio</option>{edicionRegistro.tipoOpcion && !opcionesRegistro.tipos[edicionRegistro.tipoOpcion] && <option value={edicionRegistro.tipoOpcion} disabled>{edicionRegistro.tipoOpcion} (inactivo)</option>}{Object.keys(opcionesRegistro.tipos).map(opcion => <option key={opcion} value={opcion}>{opcion}</option>)}</select></label>
                 <label className="inventario-campo-completo"><span>Descripción</span><textarea required rows={3} maxLength={1000} value={edicionRegistro.descripcion} onChange={e => setEdicionRegistro(actual => actual ? {...actual, descripcion:e.target.value} : actual)} /></label>
                 <label><span>Precio de venta (Bs)</span><input required type="number" min="0" step="0.01" value={String(edicionRegistro.precioVenta)} onChange={e => setEdicionRegistro(actual => actual ? {...actual, precioVenta:Number(e.target.value)} : actual)} /></label>
               </div> : (
@@ -1255,11 +1258,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         </div>
       )}
 
-      {mensajeGuardado && (
-        <div className="inventario-toast" role="status" aria-live="polite">
-          {mensajeGuardado}
-        </div>
-      )}
+      {mensajeGuardado && !modalRegistroAbierto && !edicionRegistro && <AvisoTemporal mensaje={mensajeGuardado} />}
 
       {modalRegistroAbierto && (
         <div
@@ -1294,6 +1293,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
               {esServicio ? <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label className="inventario-campo-completo"><span>Nombre del servicio</span><input required maxLength={150} value={formularioRegistro.nombre} onChange={e => actualizarCampoRegistro('nombre', e.target.value)} placeholder="Ej. Consulta médica general" /></label>
+                <label className="inventario-campo-completo"><span>Tipo de servicio</span><select required disabled={!opcionesCargadas || !!errorOpciones} value={formularioRegistro.tipo} onChange={e => actualizarCampoRegistro('tipo', e.target.value)}><option value="">Selecciona un tipo de servicio</option>{Object.keys(opcionesRegistro.tipos).map(opcion => <option key={opcion} value={opcion}>{opcion}</option>)}</select>{opcionesCargadas && !Object.keys(opcionesRegistro.tipos).length && <small>Registra primero un tipo de servicio activo en Configuración admin.</small>}</label>
                 <label className="inventario-campo-completo"><span>Descripción</span><textarea required rows={3} maxLength={1000} value={formularioRegistro.descripcion} onChange={e => actualizarCampoRegistro('descripcion', e.target.value)} placeholder="Describe el servicio" /></label>
                 <label><span>Precio de venta (Bs)</span><input required min="0" step="0.01" type="number" value={formularioRegistro.precioVenta} onChange={e => actualizarCampoRegistro('precioVenta', e.target.value)} placeholder="0.00" /></label>
               </div> : (
