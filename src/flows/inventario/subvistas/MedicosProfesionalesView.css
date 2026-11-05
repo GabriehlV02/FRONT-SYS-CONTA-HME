@@ -45,3 +45,15 @@
   padding: 14px;
   color: #526b78;
 }
+
+/* Selector de especialidades dentro del formulario profesional. */
+.sistema-contable .profesionales-modal .profesionales-especialidad-campo { min-width: 0; }
+.sistema-contable .profesionales-modal .selector-multiple { gap: 8px; }
+.sistema-contable .profesionales-modal .selector-multiple-control { min-width: 0; min-height: 43px; border-color: #c7dce7; background: #fff; }
+.sistema-contable .profesionales-modal .selector-multiple-control input[type="search"] { flex: 1 1 auto; width: 1px; min-width: 0; min-height: 0 !important; height: 40px !important; padding: 0 !important; border: 0 !important; outline: 0; box-shadow: none !important; background: transparent !important; }
+.sistema-contable .profesionales-modal .selector-multiple-opciones { max-height: 220px; padding: 5px; border-color: #c7dce7; box-shadow: 0 8px 22px rgb(22 59 76 / 15%); }
+.sistema-contable .profesionales-modal .selector-multiple-opciones label { display: flex !important; align-items: center; gap: 10px; min-height: 42px; padding: 8px 10px; border-radius: 6px; color: #294a60 !important; font-size: 13px; line-height: 1.35; cursor: pointer; }
+.sistema-contable .profesionales-modal .selector-multiple-opciones label:hover, .sistema-contable .profesionales-modal .selector-multiple-opciones label:focus-within { background: #edf8fc; }
+.sistema-contable .profesionales-modal .selector-multiple-opciones input[type="checkbox"] { appearance: auto; flex: 0 0 18px !important; width: 18px !important; min-width: 18px !important; max-width: 18px !important; height: 18px !important; min-height: 18px !important; max-height: 18px !important; margin: 0; padding: 0 !important; border: initial !important; border-radius: 3px; box-shadow: none !important; accent-color: #0089bb; }
+.sistema-contable .profesionales-modal .selector-multiple-elegidos > span { padding: 3px 6px 3px 9px; line-height: 1.35; }
+.sistema-contable .profesionales-modal .selector-multiple-elegidos button { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; padding: 0; }

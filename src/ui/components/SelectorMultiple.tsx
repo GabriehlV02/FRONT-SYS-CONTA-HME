@@ -11,7 +11,8 @@ export default function SelectorMultiple({ etiqueta, opciones, seleccionados, on
   const contenedor = useRef<HTMLDivElement>(null);
   const [buscar, setBuscar] = useState('');
   const [abierto, setAbierto] = useState(false);
-  const visibles = opciones.filter(o => !o.inactiva && `${o.nombre} ${o.detalle || ''}`.toLocaleLowerCase().includes(buscar.toLocaleLowerCase()));
+  const normalizar = (valor: string) => valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const visibles = opciones.filter(o => !o.inactiva && normalizar(`${o.nombre} ${o.detalle || ''}`).includes(normalizar(buscar)));
   const cambiar = (valor: number) => onChange(seleccionados.includes(valor) ? seleccionados.filter(i => i !== valor) : [...seleccionados, valor]);
   return <div className="selector-multiple" ref={contenedor} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setAbierto(false); }} onKeyDown={event => {
     if (event.key === 'Escape' && abierto) { event.stopPropagation(); setAbierto(false); }

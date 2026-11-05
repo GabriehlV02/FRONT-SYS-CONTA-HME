@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { apiFetch } from '@ui/auth';
 import Icon from '@ui/components/Icon';
 import PaginacionTabla from '@ui/components/PaginacionTabla';
+import SelectorMultiple from '@ui/components/SelectorMultiple';
 import './MedicosProfesionalesView.css';
 
 type Usuario = {id:string;nombres:string;apellidos:string|null;ci:string|null;usuario:string;estado:string};
+type Especialidad = {id:number;nombre:string;activo:boolean};
 type Profesional = {id:string;usuario_id:string|null;usuario?:Usuario|null;nombres:string;apellidos:string;ci:string|null;tipo:string;especialidades:string[];rol:string;matricula:string|null;telefono:string|null;activo:boolean};
 const vacio = {usuario_id:'',tipo:'Médico/a',especialidad:'',rol:'',matricula:'',telefono:'',activo:true};
 async function respuesta<T>(r:Response):Promise<T> {
@@ -16,6 +18,7 @@ async function respuesta<T>(r:Response):Promise<T> {
 export function MedicosProfesionalesView({puedeGestionar=false}:{puedeGestionar?:boolean}) {
   const [profesionales,setProfesionales]=useState<Profesional[]>([]);
   const [usuarios,setUsuarios]=useState<Usuario[]>([]);
+  const [especialidades,setEspecialidades]=useState<Especialidad[]>([]);
   const [formulario,setFormulario]=useState(vacio);
   const [buscarUsuario,setBuscarUsuario]=useState('');
   const [mostrandoUsuarios,setMostrandoUsuarios]=useState(false);
@@ -38,6 +41,8 @@ export function MedicosProfesionalesView({puedeGestionar=false}:{puedeGestionar?
       if(puedeGestionar) {
         const opciones=await respuesta<{usuarios:Usuario[]}>(await apiFetch('/api/v1/inventario/profesionales/opciones'));
         setUsuarios(opciones.usuarios);
+        const catalogo=await respuesta<{data:Especialidad[]}>(await apiFetch('/api/v1/especialidades'));
+        setEspecialidades(catalogo.data);
       }
     } catch(causa) {setError((causa as Error).message);}
     finally {setCargando(false);}
@@ -46,6 +51,8 @@ export function MedicosProfesionalesView({puedeGestionar=false}:{puedeGestionar?
 
   const seleccionable=(u:Usuario)=>!profesionales.some(p=>p.usuario_id===u.id && p.id!==editando);
   const usuarioSeleccionado=usuarios.find(u=>u.id===formulario.usuario_id);
+  const especialidadesSeleccionadas=formulario.especialidad.split('\n').map(v=>v.trim()).filter(Boolean);
+  const especialidadesOpciones=[...especialidades.map(e=>({id:e.id,nombre:e.nombre,inactiva:!e.activo && !especialidadesSeleccionadas.includes(e.nombre)})),...especialidadesSeleccionadas.filter(nombre=>!especialidades.some(e=>e.nombre===nombre)).map((nombre,indice)=>({id:-(indice+1),nombre,detalle:'Asignada anteriormente'}))];
   const normalizar=(valor:string)=>valor.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
   const opciones=usuarios.filter(u=>seleccionable(u) && normalizar(`${u.nombres} ${u.apellidos || ''} ${u.ci || ''} ${u.usuario}`).includes(normalizar(buscarUsuario)));
   const listaAbierta=mostrandoUsuarios && buscarUsuario.trim().length>0;
@@ -123,7 +130,7 @@ export function MedicosProfesionalesView({puedeGestionar=false}:{puedeGestionar?
           <label>Nombre completo<input readOnly value={usuarioSeleccionado?[usuarioSeleccionado.nombres,usuarioSeleccionado.apellidos].filter(Boolean).join(' '):''}/></label><label>CI<input readOnly value={usuarioSeleccionado?.ci || ''} placeholder="Sin CI registrado"/></label>
           <label>Tipo de profesional *<select value={formulario.tipo} onChange={e=>setFormulario({...formulario,tipo:e.target.value})}><option>Médico/a</option><option>Enfermero/a</option><option>Otro profesional</option></select></label>
           <label>Estado del perfil<select value={formulario.activo?'1':'0'} onChange={e=>setFormulario({...formulario,activo:e.target.value==='1'})}><option value="1">Activo</option><option value="0">Inactivo</option></select></label>
-          <label className="profesionales-especialidad-campo">Especialidades (opcional)<small>Una por línea, cuando corresponda.</small><textarea rows={3} value={formulario.especialidad} onChange={e=>setFormulario({...formulario,especialidad:e.target.value})}/></label>
+          <div className="profesionales-especialidad-campo"><SelectorMultiple etiqueta="Especialidades (opcional)" opciones={especialidadesOpciones} seleccionados={especialidadesOpciones.filter(e=>especialidadesSeleccionadas.includes(e.nombre)).map(e=>e.id)} onChange={ids=>setFormulario({...formulario,especialidad:ids.map(id=>especialidadesOpciones.find(e=>e.id===id)?.nombre).filter((nombre): nombre is string=>Boolean(nombre)).join('\n')})} placeholder="Buscar especialidad" vacio="No hay especialidades activas." /></div>
           <label>Función en procedimientos (opcional)<input maxLength={100} value={formulario.rol} onChange={e=>setFormulario({...formulario,rol:e.target.value})} placeholder="Ej. Cirujano o instrumentista"/></label>
           <label>Matrícula profesional (opcional)<input maxLength={60} value={formulario.matricula} onChange={e=>setFormulario({...formulario,matricula:e.target.value})}/></label><label>Teléfono (opcional)<input maxLength={30} value={formulario.telefono} onChange={e=>setFormulario({...formulario,telefono:e.target.value})}/></label>
         </fieldset>
