@@ -595,9 +595,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     if (
       !payload.nombre ||
       !payload.descripcion ||
-      !payload.categoria ||
-      !payload.grupo ||
-      !payload.unidadMedida ||
+      (!esServicio && (!payload.categoria || !payload.grupo || !payload.unidadMedida)) ||
       Number.isNaN(payload.precioVenta)
     ) {
       return;
@@ -608,7 +606,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       const respuesta = await apiFetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(esServicio ? { nombre: payload.nombre, descripcion: payload.descripcion, precioVenta: payload.precioVenta } : payload),
       });
 
       if (!respuesta.ok) {
@@ -885,7 +883,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
             {puedeGestionar && <button
               className="inventario-nuevo"
               type="button"
-              disabled={tipo === 'servicios' && (!opcionesCargadas || cargando)}
+              disabled={tipo === 'servicios' && cargando}
               onClick={() => setModalRegistroAbierto(true)}
             >
               <Icon name="plus" size={17} /> Registro
@@ -1089,6 +1087,11 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
             </header>
             <form onSubmit={guardarEdicionRegistro}>
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
+              {esServicio ? <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
+                <label className="inventario-campo-completo"><span>Nombre del servicio</span><input required maxLength={150} value={edicionRegistro.nombre} onChange={e => setEdicionRegistro(actual => actual ? {...actual, nombre:e.target.value} : actual)} /></label>
+                <label className="inventario-campo-completo"><span>Descripción</span><textarea required rows={3} maxLength={1000} value={edicionRegistro.descripcion} onChange={e => setEdicionRegistro(actual => actual ? {...actual, descripcion:e.target.value} : actual)} /></label>
+                <label><span>Precio de venta (Bs)</span><input required type="number" min="0" step="0.01" value={String(edicionRegistro.precioVenta)} onChange={e => setEdicionRegistro(actual => actual ? {...actual, precioVenta:Number(e.target.value)} : actual)} /></label>
+              </div> : (
               <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label>
                   <span>Codigo</span>
@@ -1234,6 +1237,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
                 <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={edicionRegistro.clasificacion || ''} onChange={e => setEdicionRegistro(actual => actual ? { ...actual, clasificacion: e.target.value } : actual)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
                 <CapturaCodigo codigo={edicionRegistro.numeroSerie || ''} onCodigo={valor => setEdicionRegistro(actual => actual ? { ...actual, numeroSerie: valor, usarNumeroSerie: Boolean(valor) } : actual)} />
               </div>
+              )}
               <footer>
                 <button
                   className="inventario-secundario"
@@ -1287,8 +1291,12 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
             </header>
             <form onSubmit={guardarRegistroInventario}>
               {errorOpciones && <p role="alert">{errorOpciones}</p>}
-              {esServicio && opcionesCargadas && (!unidadesRegistro.length || !Object.keys(categoriasRegistro).some(nombre => categoriasRegistro[nombre].subcategorias.length) || !Object.keys(opcionesRegistro.tipos).length) && <p role="status">Antes de registrar, configura un tipo Servicio activo, una unidad de medida y una categoría con subcategoría en Configuración admin.</p>}
               {mensajeGuardado && <p role="alert">{mensajeGuardado}</p>}
+              {esServicio ? <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
+                <label className="inventario-campo-completo"><span>Nombre del servicio</span><input required maxLength={150} value={formularioRegistro.nombre} onChange={e => actualizarCampoRegistro('nombre', e.target.value)} placeholder="Ej. Consulta médica general" /></label>
+                <label className="inventario-campo-completo"><span>Descripción</span><textarea required rows={3} maxLength={1000} value={formularioRegistro.descripcion} onChange={e => actualizarCampoRegistro('descripcion', e.target.value)} placeholder="Describe el servicio" /></label>
+                <label><span>Precio de venta (Bs)</span><input required min="0" step="0.01" type="number" value={formularioRegistro.precioVenta} onChange={e => actualizarCampoRegistro('precioVenta', e.target.value)} placeholder="0.00" /></label>
+              </div> : (
               <div className="inventario-modal-cuerpo inventario-modal-registro-grid">
                 <label>
                   <span>Codigo</span>
@@ -1425,6 +1433,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
                 <label className="inventario-campo-completo"><span>Clasificacion / familia</span><select value={formularioRegistro.clasificacion} onChange={e => actualizarCampoRegistro('clasificacion', e.target.value)}><option value="">Sin clasificación</option>{clasificacionesRegistro.map(valor => <option key={valor}>{valor}</option>)}</select></label>
                 <CapturaCodigo codigo={formularioRegistro.numeroSerie} onCodigo={valor => { actualizarCampoRegistro('numeroSerie', valor); setSerieHabilitada(Boolean(valor)); }} />
               </div>
+              )}
               <footer>
                 <button
                   className="inventario-secundario"
