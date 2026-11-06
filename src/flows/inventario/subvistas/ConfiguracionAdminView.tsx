@@ -29,7 +29,7 @@ export function ConfiguracionAdminView({ puedeGestionar = true }: { puedeGestion
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [recarga, setRecarga] = useState(0);
-  const [seccionAbierta, setSeccionAbierta] = useState<string | null>(null);
+  const [seccionesAbiertas, setSeccionesAbiertas] = useState<string[]>(() => secciones.map(seccion => seccion.titulo));
   useEffect(() => {
     const controller = new AbortController();
     setCargando(true); setError('');
@@ -42,7 +42,7 @@ export function ConfiguracionAdminView({ puedeGestionar = true }: { puedeGestion
   return <section className="inventario-admin" aria-label="Configuración admin">
     {error && <div className="inventario-admin-error" role="alert">{error} <button type="button" onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></div>}
     <div className="inventario-admin-recuadros">
-      {secciones.map(seccion => <RecuadroConfiguracion key={seccion.titulo} {...seccion} abierto={seccionAbierta === seccion.titulo} onAlternar={() => setSeccionAbierta(actual => actual === seccion.titulo ? null : seccion.titulo)} registros={seccion.catalogo === 'tipos' ? datos.tipos.filter(registro => seccion.soloServicios ? registro.tipo_base === 'SERVICIO' : registro.tipo_base !== 'SERVICIO') : datos[seccion.catalogo]} categorias={datos.categorias.filter(categoria => categoria.activo)} cargando={cargando} puedeGestionar={puedeGestionar && !error} onGuardado={() => setRecarga(valor => valor + 1)} />)}
+      {secciones.map(seccion => <RecuadroConfiguracion key={seccion.titulo} {...seccion} abierto={seccionesAbiertas.includes(seccion.titulo)} onAlternar={() => setSeccionesAbiertas(actual => actual.includes(seccion.titulo) ? actual.filter(titulo => titulo !== seccion.titulo) : [...actual, seccion.titulo])} registros={seccion.catalogo === 'tipos' ? datos.tipos.filter(registro => seccion.soloServicios ? registro.tipo_base === 'SERVICIO' : registro.tipo_base !== 'SERVICIO') : datos[seccion.catalogo]} categorias={datos.categorias.filter(categoria => categoria.activo)} cargando={cargando} puedeGestionar={puedeGestionar && !error} onGuardado={() => setRecarga(valor => valor + 1)} />)}
     </div>
   </section>;
 }
@@ -107,7 +107,7 @@ function RecuadroConfiguracion({ titulo, catalogo, soloServicios = false, abiert
   const panelId = 'configuracion-panel-' + (soloServicios ? 'tipos-servicio' : catalogo);
   const botonId = 'configuracion-boton-' + (soloServicios ? 'tipos-servicio' : catalogo);
   return <section className={'inventario-admin-recuadro' + (abierto ? ' esta-abierto' : '')}>
-    <h2 className="inventario-admin-acordeon-titulo"><button id={botonId} type="button" className="inventario-admin-acordeon-boton" aria-expanded={abierto} aria-controls={panelId} onClick={onAlternar}><span className="inventario-admin-acordeon-nombre">{titulo}<small>{cargando ? 'Cargando…' : registros.length + (registros.length === 1 ? ' registro' : ' registros')}</small></span><span className="inventario-admin-acordeon-flecha" aria-hidden="true">{abierto ? '−' : '+'}</span></button></h2>
+    <h2 className="inventario-admin-acordeon-titulo"><button id={botonId} type="button" className="inventario-admin-acordeon-boton" aria-expanded={abierto} aria-controls={panelId} onClick={onAlternar}><span className="inventario-admin-acordeon-grupo"><span className="inventario-admin-acordeon-icono" aria-hidden="true"><Icon name={soloServicios ? 'asset' : catalogo === 'unidades' ? 'settings' : catalogo === 'tipos' ? 'package' : 'fileText'} size={19} /></span><span className="inventario-admin-acordeon-nombre">{titulo}<small>{cargando ? 'Cargando…' : registros.length + (registros.length === 1 ? ' registro' : ' registros')}</small></span></span><span className="inventario-admin-acordeon-flecha" aria-hidden="true">{abierto ? '−' : '+'}</span></button></h2>
     <div id={panelId} role="region" aria-labelledby={botonId} className="inventario-admin-acordeon-contenido" hidden={!abierto}>
     <div className="inventario-admin-controles">
       <div className="inventario-admin-busqueda"><Icon name="search" size={17} /><input type="search" aria-label={'Buscar ' + titulo.toLocaleLowerCase()} value={busqueda} onChange={event => setBusqueda(event.target.value)} placeholder={'Buscar ' + titulo.toLocaleLowerCase()} /></div>

@@ -15,6 +15,50 @@ html body .sistema-contable .sistema-cuerpo > .sistema-topbar{background-color:#
 
 /* Navegación contable: cabecera institucional y menú claro de alto contraste. */
 @layer contable-diseno-clinico {
+  .sistema-contable.sistema-app .inventario-admin {
+    padding: 16px !important;
+    border: 1px solid #d2e4ee !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+  }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-recuadros { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-recuadro {
+    min-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid #cfe1ed !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    box-shadow: 0 2px 7px #164e700a !important;
+  }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-recuadro.esta-abierto { border-color: #91c6e3 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-titulo { margin: 0 !important; padding: 0 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-boton {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 68px !important;
+    padding: 12px 16px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #17445f !important;
+    background: #fff !important;
+    text-align: left !important;
+  }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-boton:hover,
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-boton[aria-expanded='true'] { background: #f0f8fd !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-grupo { display: flex !important; align-items: center !important; gap: 12px !important; min-width: 0 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-icono { display: grid !important; place-items: center !important; width: 38px !important; height: 38px !important; flex: 0 0 38px !important; border: 1px solid #c9e4f2 !important; border-radius: 10px !important; color: #0066ad !important; background: #eaf5fc !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-nombre { display: grid !important; gap: 4px !important; color: #17445f !important; font-size: 14px !important; font-weight: 700 !important; line-height: 1.25 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-nombre small { color: #698599 !important; font-size: 11px !important; font-weight: 500 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-flecha { display: grid !important; place-items: center !important; width: 30px !important; height: 30px !important; flex: 0 0 30px !important; border-radius: 8px !important; color: #0066ad !important; background: #e8f4fb !important; font-size: 20px !important; line-height: 1 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-contenido:not([hidden]) { padding: 0 16px 16px !important; border-top: 1px solid #dcebf3 !important; }
+  @media (max-width: 600px) {
+    .sistema-contable.sistema-app .inventario-admin { padding: 10px !important; }
+    .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-boton { padding: 10px 12px !important; }
+    .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-nombre { font-size: 13px !important; }
+  }
   @media (min-width: 1101px) {
     .sistema-contable .punto-pos-layout { grid-template-columns: minmax(0, 1fr) 368px !important; }
   }

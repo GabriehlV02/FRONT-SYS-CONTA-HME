@@ -237,7 +237,14 @@ export function SystemApp({ config }: { config: SystemConfig }) {
       setLoggingOut(false);
     }
   }
-  if (checkingSession) return <main className="login-page"><p role="status">Verificando sesión…</p></main>;
+  if (checkingSession) return <main className="contable-cargando">
+    <div className="contable-cargando-tarjeta" role="status" aria-live="polite">
+      <img className="contable-cargando-logo" src="/logo-hospital-contable-corporativo.png" alt="Hospital María Esperanza" />
+      <span className="contable-cargando-rueda" aria-hidden="true" />
+      <strong>Preparando tu espacio</strong>
+      <p>Verificando sesión de forma segura…</p>
+    </div>
+  </main>;
   if (!session) return <Login config={config} onLogin={login} notice={sessionError}/>;
 
   const moduleId = selected?.id ?? active;

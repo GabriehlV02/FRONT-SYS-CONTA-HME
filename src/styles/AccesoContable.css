@@ -1,4 +1,31 @@
 @layer contable-diseno-clinico {
+  .contable-cargando {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: radial-gradient(circle at 15% 10%, #d8ebf8, transparent 38%), #edf4f8;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .contable-cargando-tarjeta {
+    box-sizing: border-box;
+    width: min(100%, 370px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 38px 28px;
+    border: 1px solid #d0e2ed;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 16px 45px #183e5c18;
+    text-align: center;
+  }
+  .contable-cargando-logo { display: block; width: 175px; height: 64px; object-fit: contain; }
+  .contable-cargando-rueda { width: 32px; height: 32px; margin: 25px 0 20px; border: 3px solid #dcebf4; border-top-color: #0066ad; border-radius: 50%; animation: contable-girar 0.8s linear infinite; }
+  .contable-cargando-tarjeta strong { color: #153854; font-size: 17px; }
+  .contable-cargando-tarjeta p { margin: 8px 0 0; color: #627b8d; font-size: 13px; line-height: 1.5; }
+  @keyframes contable-girar { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .contable-cargando-rueda { animation: none; border-right-color: #0066ad; } }
   .acceso-contable {
     min-height: 100dvh;
     padding: 32px;
