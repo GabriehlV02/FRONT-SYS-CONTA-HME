@@ -122,7 +122,7 @@ function RecuadroConfiguracion({ titulo, catalogo, soloServicios = false, abiert
           {cargando ? <tr><td colSpan={esTipo ? 5 : esSubcategoria ? 4 : 3} role="status">Cargando registros…</td></tr> : filtrados.map(registro => <tr key={registro.id}>
             <td>{registro.nombre}{catalogo === 'categorias' && <small className="inventario-admin-prefijo">Prefijo: {registro.prefijo}</small>}</td>
             {esTipo && <td>{registro.descripcion || '—'}</td>}{esSubcategoria && <td>{registro.categoria?.nombre || '—'}</td>}<td>{registro.activo ? 'Activo' : 'Inactivo'}</td>{esTipo && <td>{registro.cantidad ?? 0}</td>}
-            <td><button type="button" className={'inventario-admin-switch ' + (registro.activo ? 'activo' : '')} role="switch" aria-checked={registro.activo} aria-label={'Cambiar ' + registro.nombre + ' a ' + (registro.activo ? 'inactivo' : 'activo')} disabled={!puedeGestionar || guardando} onClick={event => abrir('estado', event.currentTarget, registro)}><span /></button></td>
+            <td><button type="button" className={'inventario-admin-estado-accion ' + (registro.activo ? 'desactivar' : 'activar')} aria-label={(registro.activo ? 'Desactivar ' : 'Activar ') + registro.nombre} disabled={!puedeGestionar || guardando} onClick={event => abrir('estado', event.currentTarget, registro)}><Icon name={registro.activo ? 'close' : 'check'} size={15} />{registro.activo ? 'Desactivar' : 'Activar'}</button></td>
           </tr>)}
           {!cargando && !filtrados.length && <tr><td colSpan={esTipo ? 5 : esSubcategoria ? 4 : 3}>{busqueda ? 'No hay resultados para esta búsqueda.' : 'No hay registros.'}</td></tr>}
         </tbody>

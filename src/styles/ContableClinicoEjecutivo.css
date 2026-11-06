@@ -54,6 +54,36 @@ html body .sistema-contable .sistema-cuerpo > .sistema-topbar{background-color:#
   .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-nombre small { color: #698599 !important; font-size: 11px !important; font-weight: 500 !important; }
   .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-flecha { display: grid !important; place-items: center !important; width: 30px !important; height: 30px !important; flex: 0 0 30px !important; border-radius: 8px !important; color: #0066ad !important; background: #e8f4fb !important; font-size: 20px !important; line-height: 1 !important; }
   .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-contenido:not([hidden]) { padding: 0 16px 16px !important; border-top: 1px solid #dcebf3 !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-tabla-configuracion { width: 100% !important; table-layout: auto !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-tabla-configuracion :is(th:last-child, td:last-child:not([colspan])) {
+    box-sizing: border-box !important;
+    width: 150px !important;
+    min-width: 150px !important;
+    max-width: 150px !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-estado-accion {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    width: auto !important;
+    min-width: 112px !important;
+    min-height: 36px !important;
+    padding: 7px 12px !important;
+    border: 1px solid #bdd3e0 !important;
+    border-radius: 8px !important;
+    color: #345a70 !important;
+    background: #fff !important;
+    box-shadow: 0 2px 5px #163d590d !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+  }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-estado-accion.activar { border-color: #0066ad !important; color: #fff !important; background: #0066ad !important; }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-estado-accion:hover:not(:disabled) { filter: brightness(.95); }
+  .sistema-contable.sistema-app .inventario-admin .inventario-admin-estado-accion:disabled { opacity: .5 !important; cursor: not-allowed !important; box-shadow: none !important; }
   @media (max-width: 600px) {
     .sistema-contable.sistema-app .inventario-admin { padding: 10px !important; }
     .sistema-contable.sistema-app .inventario-admin .inventario-admin-acordeon-boton { padding: 10px 12px !important; }
