@@ -1,0 +1,62 @@
+/* Geometría del clínico con la paleta plomo y turquesa del contable. */
+@layer contable-diseno-clinico {
+  .sistema-contable {
+    --conta-plomo: #22343d;
+    --conta-turquesa: #087fb5;
+    --conta-linea: #d4e2e7;
+    --conta-fondo: #f2f6f7;
+    --conta-texto: #18303c;
+    --conta-secundario: #61727a;
+  }
+  .sistema-contable .sistema-sidebar {
+    background: var(--conta-plomo) !important;
+    border-right: 1px solid #344951 !important;
+    box-shadow: 4px 0 16px #18303c12 !important;
+  }
+  .sistema-contable .sidebar-scroll .sistema-nav { overflow-y: auto !important; scrollbar-width: thin; scrollbar-color: #6d949c transparent; }
+  .sistema-contable .sistema-nav section { padding-block: 10px !important; }
+  .sistema-contable .sistema-nav section > p { margin: 0 8px 8px !important; font-size: 10px !important; letter-spacing: .06em !important; color: #a9c2c6 !important; }
+  .sistema-contable .sistema-nav .nav-modulo { min-height: 44px !important; margin: 3px 0 !important; padding: 0 11px !important; border-radius: 9px !important; }
+  .sistema-contable .sistema-nav .nav-modulo.activo { background: var(--conta-turquesa) !important; color: #fff !important; box-shadow: 0 4px 12px #001d2e20 !important; }
+  .sistema-contable .sistema-nav .nav-modulo:hover:not(.activo) { background: #34515b !important; }
+  .sistema-contable .sistema-topbar { min-height: 64px !important; gap: 12px !important; border-bottom: 1px solid var(--conta-linea) !important; background: #fff !important; box-shadow: 0 3px 12px #18303c0a !important; }
+  .sistema-contable .topbar-icono, .sistema-contable .perfil-avatar { display: grid; place-items: center; border-radius: 10px !important; background: #e4f3f3 !important; color: #087f91 !important; }
+  .sistema-contable .topbar-titulo h1 { font-size: 18px !important; font-weight: 750 !important; letter-spacing: 0 !important; }
+  .sistema-contable .topbar-titulo small { font-size: 11px !important; }
+  .sistema-contable .busqueda-global { min-height: 42px !important; border: 1px solid var(--conta-linea) !important; border-radius: 9px !important; background: #f8fbfb !important; }
+  .sistema-contable .area-trabajo { background: var(--conta-fondo) !important; background-image: none !important; padding: clamp(16px, 2vw, 26px) !important; }
+  .sistema-contable .content-limit { max-width: 1640px !important; min-width: 0; margin-inline: auto !important; }
+
+  /* Subvistas: barra compacta y desplazable como en recepción del clínico. */
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) {
+    display: flex !important; align-items: center !important; width: fit-content !important; max-width: 100% !important;
+    height: auto !important; gap: 5px !important; margin: 0 0 18px !important; padding: 4px !important;
+    overflow-x: auto !important; overflow-y: hidden !important; border: 1px solid #c9dfe2 !important; border-radius: 11px !important;
+    background: #fff !important; box-shadow: 0 4px 12px #18303c0b !important;
+  }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button {
+    display: inline-flex !important; align-items: center !important; justify-content: flex-start !important;
+    flex: 0 0 auto !important; width: auto !important; min-width: 0 !important; min-height: 44px !important; height: 44px !important;
+    gap: 9px !important; padding: 0 12px !important; border: 1px solid transparent !important; border-radius: 7px !important;
+    color: #315b69 !important; background: transparent !important; box-shadow: none !important; white-space: nowrap !important;
+  }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button:hover:not(.activo) { background: #eaf6f6 !important; color: #086b78 !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button.activo { border-color: #087b9e !important; background: #087fb5 !important; color: #fff !important; box-shadow: 0 4px 10px #087fb530 !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button > :is(i, span):has(svg) { display: grid !important; place-items: center !important; width: 26px !important; height: 26px !important; flex: 0 0 26px !important; border: 1px solid #cde6e8 !important; border-radius: 7px !important; background: #edf8f8 !important; color: #087c91 !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button.activo > :is(i, span):has(svg) { border-color: #ffffff55 !important; background: #ffffff26 !important; color: #fff !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button::after { display: none !important; }
+
+  .sistema-contable :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .dashboard-panel) { border: 1px solid var(--conta-linea) !important; border-radius: 12px !important; background: #fff !important; box-shadow: 0 3px 12px #18303c08 !important; }
+  .sistema-contable :is(.ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera) { gap: 12px; margin-bottom: 18px; }
+  .sistema-contable :is(.ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera) :is(h1, h2) { color: var(--conta-texto) !important; letter-spacing: -.025em; }
+  .sistema-contable :is(.ventas-filtros, .inventario-filtros, .movimientos-filtros, .usuarios-filtros) { gap: 10px !important; }
+  .sistema-contable :is(input, select, textarea):focus-visible, .sistema-contable button:focus-visible { outline: 2px solid #087fb5 !important; outline-offset: 2px !important; }
+
+  @media (max-width: 760px) {
+    .sistema-contable .sistema-topbar { height: auto !important; min-height: 58px !important; }
+    .sistema-contable .area-trabajo { padding: 16px 12px !important; }
+    .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) { width: 100% !important; box-sizing: border-box !important; }
+    .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button { min-height: 42px !important; height: 42px !important; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sistema-contable *, .sistema-contable *::before, .sistema-contable *::after { scroll-behavior: auto !important; } }
+}

@@ -1,3 +1,4 @@
+import './styles/DisenoClinicoContable.css';
 import './styles/ControlesContables.css';
 import './styles/LoginCentrado.css';
 import './styles/PopupsContables.css';
