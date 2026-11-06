@@ -181,6 +181,11 @@ export function Login({
       <div className="acceso-contable-layout">
         <section className="acceso-contable-institucional" aria-label="Sistema contable Hospital María Esperanza">
           <div className="acceso-contable-marca">
+            <svg aria-hidden="true" width="0" height="0" className="acceso-contable-filtro">
+              <filter id="acceso-logo-corporativo" colorInterpolationFilters="sRGB">
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0.07 0.93 0 0 0  -0.384 0 1.384 0 0  0 0 0 1 0" />
+              </filter>
+            </svg>
             <img src="/logo-hospital-contable-corporativo.png" alt="Hospital María Esperanza" />
           </div>
           <div className="acceso-contable-presentacion">
