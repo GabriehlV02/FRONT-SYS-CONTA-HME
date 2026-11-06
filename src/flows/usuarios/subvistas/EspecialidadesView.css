@@ -1,12 +1,12 @@
-﻿.especialidades-barra { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
+.especialidades-barra { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
 .especialidades-barra label { display:flex; align-items:center; gap:10px; border:1px solid #c9dce8; border-radius:8px; padding:0 12px; min-height:42px; flex:1 1 250px; color:#42697c; }
 .especialidades-barra input { width:100%; border:0; outline:0; background:transparent; }
-.especialidades-barra label:focus-within { outline:2px solid #0084bd; outline-offset:2px; }
+.especialidades-barra label:focus-within { outline:2px solid #0066AD; outline-offset:2px; }
 .especialidades-tabla { max-height:600px; overflow:auto; border:1px solid #d1e1e9; border-radius:8px; }
 .especialidades-tabla table { width:100%; border-collapse:collapse; text-align:left; }
 .especialidades-tabla th { position:sticky; top:0; background:#edf4f7; color:#31586e; font-size:12px; }
 .especialidades-tabla th,.especialidades-tabla td { padding:12px 16px; border-bottom:1px solid #e4edf1; }
-.especialidades-tabla td button { border:1px solid #c5dbe7; background:white; color:#075b82; border-radius:6px; padding:7px 10px; }
+.especialidades-tabla td button { border:1px solid #c5dbe7; background:white; color:#0066AD; border-radius:6px; padding:7px 10px; }
 .especialidad-activa,.especialidad-inactiva { display:inline-flex; padding:5px 9px; border-radius:6px; font-size:12px; background:#e7f5ef; color:#28654d; }
 .especialidad-inactiva { background:#f0f2f4; color:#5b6770; }
 .especialidades-tabla > p { text-align:center; padding:20px; }

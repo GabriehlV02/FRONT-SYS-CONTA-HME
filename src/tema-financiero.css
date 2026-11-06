@@ -8,7 +8,7 @@
   --fin-plomo-200: #dce5e8;
   --fin-plomo-100: #edf2f3;
   --fin-fondo: #f2f6f7;
-  --fin-turquesa-700: #0284c7;
+  --fin-turquesa-700: #0066AD;
   --fin-turquesa-600: #0b999d;
   --fin-turquesa-500: #19aeb0;
   --fin-turquesa-100: #dcf5f3;
@@ -126,7 +126,7 @@
 }
 .sistema-contable .sistema-nav .nav-modulo.activo {
   color: #fff !important;
-  border-color: #3173a1 !important;
+  border-color: #0066AD !important;
   background: #234e6b !important;
   box-shadow: inset 3px 0 #38bdf8 !important;
 }

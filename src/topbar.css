@@ -1,4 +1,4 @@
-﻿/* Cargar despues del tema para mantener la altura comun en todos los modulos. */
+/* Cargar despues del tema para mantener la altura comun en todos los modulos. */
 .sistema-contable .sistema-topbar {
   height: 66px;
   min-height: 66px;
@@ -165,7 +165,7 @@
   box-shadow: 0 0 0 4px rgba(13, 156, 97, 0.13);
 }
 .sistema-contable .notificacion-info .notificacion-punto {
-  background: #168ec4;
+  background: #0066AD;
   box-shadow: 0 0 0 4px rgba(22, 142, 196, 0.13);
 }
 .sistema-contable .perfil-avatar {

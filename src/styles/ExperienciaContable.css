@@ -1,6 +1,6 @@
-﻿/* Sistema visual contable: jerarquia, lectura financiera y controles compartidos. */
+/* Sistema visual contable: jerarquia, lectura financiera y controles compartidos. */
 @layer contable-experiencia {
-.sistema-contable{--ui-accent:#0086c4;--ui-line:#dce5ef;--ui-soft:#f5f8fc;--ui-muted:#62758a;--ui-text:#17324d;font-family:'Segoe UI',Arial,sans-serif!important;color:#17324d!important;background:#f3f6fa!important;font-variant-numeric:tabular-nums}
+.sistema-contable{--ui-accent:#0066AD;--ui-line:#dce5ef;--ui-soft:#f5f8fc;--ui-muted:#62758a;--ui-text:#17324d;font-family:'Segoe UI',Arial,sans-serif!important;color:#17324d!important;background:#f3f6fa!important;font-variant-numeric:tabular-nums}
 .sistema-contable .area-trabajo{background:#f3f6fa!important;padding:28px 32px!important}
 .sistema-contable .content-limit{max-width:1640px!important;margin-inline:auto!important}
 .sistema-contable .sistema-sidebar{background:#16344b!important;border-right:1px solid #24465e!important}
@@ -8,11 +8,11 @@
 .sistema-contable .sistema-nav section>p{color:#9cb6ca!important;font-size:11px!important;font-weight:600!important;letter-spacing:.06em!important}
 .sistema-contable .nav-modulo{min-height:44px!important;border-radius:8px!important;color:#dce8f1!important;font-size:13px!important;margin-block:3px!important}
 .sistema-contable .nav-modulo:hover{background:#244c68!important}
-.sistema-contable .nav-modulo.activo{background:#087fb5!important;border-color:transparent!important;box-shadow:none!important;color:#fff!important}
+.sistema-contable .nav-modulo.activo{background:#0066AD!important;border-color:transparent!important;box-shadow:none!important;color:#fff!important}
 .sistema-contable .sistema-topbar{background:#fff!important;border-bottom:1px solid #dce5ef!important;box-shadow:0 2px 8px #19364d05!important;color:#17324d!important}
 .sistema-contable .topbar-titulo h1,.sistema-contable .perfil strong{color:#17324d!important}
 .sistema-contable .topbar-titulo small,.sistema-contable .perfil small{color:#62758a!important}
-.sistema-contable .topbar-icono,.sistema-contable .perfil-avatar{background:#eaf5fc!important;color:#0086c4!important;border-color:#dcebf5!important}
+.sistema-contable .topbar-icono,.sistema-contable .perfil-avatar{background:#eaf5fc!important;color:#0066AD!important;border-color:#dcebf5!important}
 .sistema-contable .busqueda-global{background:#f5f8fc!important;border:1px solid #dce5ef!important;border-radius:8px!important}
 .sistema-contable .dashboard-contable{display:grid!important;gap:24px!important}
 .sistema-contable .dashboard-hero{padding:6px 0 0!important;background:transparent!important;border:0!important;box-shadow:none!important}
@@ -25,7 +25,7 @@
 .sistema-contable .dashboard-metricas small{font-size:12px!important;color:#62758a!important}
 .sistema-contable .dashboard-accesos{gap:10px!important}
 .sistema-contable .dashboard-accesos button{min-height:48px!important;background:#fff!important;border:1px solid #dce5ef!important;border-radius:8px!important;color:#244760!important}
-.sistema-contable .dashboard-accesos button:hover{border-color:#0086c4!important;background:#edf7fe!important}
+.sistema-contable .dashboard-accesos button:hover{border-color:#0066AD!important;background:#edf7fe!important}
 .sistema-contable .dashboard-panel{border:1px solid #dce5ef!important;border-radius:10px!important;padding:24px!important;background:#fff!important;box-shadow:none!important}
 .sistema-contable .dashboard-panel h3{font-size:17px!important;font-weight:650!important;color:#17324d!important}
 .sistema-contable .dashboard-panel p,.sistema-contable .dashboard-ranking small{font-size:12px!important;color:#62758a!important}
@@ -36,10 +36,10 @@
 .sistema-contable :is(td){padding:13px 14px!important;border-bottom:1px solid #e8eef5!important;line-height:1.45!important}
 .sistema-contable tbody tr:hover>td{background:#edf7fd!important}
 .sistema-contable :is(input:not([type=checkbox]):not([type=radio]),select,textarea){font-family:inherit!important;font-size:13px!important;color:#17324d!important;border-color:#ccd9e5!important;border-radius:7px!important;box-shadow:none!important}
-.sistema-contable :is(input,select,textarea):focus-visible{outline:2px solid #0086c4!important;outline-offset:2px!important}
+.sistema-contable :is(input,select,textarea):focus-visible{outline:2px solid #0066AD!important;outline-offset:2px!important}
 .sistema-contable label:has(input[type=search]):focus-within input{outline:none!important}
 .sistema-contable button{font-family:inherit!important;letter-spacing:normal!important}
-.sistema-contable button:focus-visible{outline:2px solid #0086c4!important;outline-offset:3px!important}
+.sistema-contable button:focus-visible{outline:2px solid #0066AD!important;outline-offset:3px!important}
 .sistema-contable button:disabled{opacity:.5!important;cursor:not-allowed!important}
 .sistema-contable [role=dialog]{border-radius:12px!important;border:1px solid #dce5ef!important;box-shadow:0 24px 80px #17324d30!important}
 .sistema-contable [role=dialog] header{background:#f8fbfe!important;border-bottom-color:#dce5ef!important}

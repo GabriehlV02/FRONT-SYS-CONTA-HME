@@ -1,4 +1,4 @@
-﻿/* Ajustes de semejanza con la referencia principal. */
+/* Ajustes de semejanza con la referencia principal. */
 .sistema-contable .sistema-sidebar {
   width: 310px;
 }
@@ -89,7 +89,7 @@
   width: 54px;
   height: 54px;
   border-radius: 14px;
-  color: #0677c8;
+  color: #0066AD;
   background: #eaf9fd;
 }
 .sistema-contable .topbar-titulo h1 {
@@ -206,7 +206,7 @@
   place-items: center;
   border: 1px solid #b9e5ef;
   border-radius: 14px;
-  color: #0784c9;
+  color: #0066AD;
   background: #e9f9fe;
   font-style: normal;
 }
@@ -354,7 +354,7 @@
 .sistema-contable .sistema-sidebar {
   background-color: #073763 !important;
   background-image: none !important;
-  border-right-color: #1d5b8d !important;
+  border-right-color: #0066AD !important;
   box-shadow: none !important;
 }
 .sistema-contable .sistema-sidebar::before,
@@ -429,7 +429,7 @@
   height: 30px;
   border: 1px solid #b9ddea;
   border-radius: 6px;
-  color: #076499;
+  color: #0066AD;
   background: #f5fcff;
   box-shadow: none;
 }
@@ -443,9 +443,9 @@
   .movimientos-subvista-icono,
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-tabs button.activo i {
-  border-color: #0879af;
+  border-color: #0066AD;
   color: #fff;
-  background: #0879af;
+  background: #0066AD;
 }
 .sistema-contable .ventas-tabs i svg {
   width: 16px;

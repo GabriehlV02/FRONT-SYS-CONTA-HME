@@ -14,7 +14,6 @@ export function DashboardContable({ onSelect }: Props) {
     ['ventas', 'cart', 'Nueva venta'], ['inventario', 'plus', 'Crear producto'], ['inventario', 'package', 'Inventario'], ['ventas', 'fileText', 'Gestión ventas'], ['usuarios', 'users', 'Usuarios'],
   ] as const;
   return <section className="dashboard-contable">
-    <header className="dashboard-hero"><div><p>PANEL PRINCIPAL</p><h2>Resumen del negocio</h2><span>Control rápido de inventario, ventas, productos con bajo stock e ingresos.</span></div><button type="button" onClick={() => onSelect('ventas')}><Icon name="cart" size={18}/> Ir a Ventas</button></header>
     <section className="dashboard-metricas">{metricas.map(item => <article key={item.label}><div><span>{item.label}</span><Icon name={item.icon} size={25}/></div><strong>{item.value}</strong><small>{item.note}</small></article>)}</section>
     <nav className="dashboard-accesos" aria-label="Accesos rápidos">{accesos.map(([id, icon, label]) => <button key={label} type="button" onClick={() => onSelect(id)}><Icon name={icon} size={19}/><strong>{label}</strong></button>)}</nav>
     <div className="dashboard-detalle">

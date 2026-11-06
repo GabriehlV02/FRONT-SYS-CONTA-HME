@@ -1,4 +1,4 @@
-﻿/* Tema contable azul: hibrida el layout actual con la paleta de referencia. */
+/* Tema contable azul: hibrida el layout actual con la paleta de referencia. */
 .sistema-contable {
   --surface: #ffffff;
   --border: #b9e5ef;
@@ -18,7 +18,7 @@
       transparent 30%
     ),
     linear-gradient(180deg, var(--navy), var(--navy-2) 58%, var(--navy-3));
-  border-color: #0a4a7d;
+  border-color: #0066AD;
   box-shadow: 10px 0 30px rgba(3, 31, 63, 0.24);
 }
 .sistema-contable .sistema-sidebar:after {
@@ -42,7 +42,7 @@
 .sistema-contable .marca-icono {
   border-color: rgba(151, 225, 239, 0.38);
   color: #fff;
-  background: linear-gradient(145deg, #0f4e81, #082f5c);
+  background: linear-gradient(145deg, #0066AD, #082f5c);
   box-shadow:
     0 8px 20px rgba(2, 24, 50, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
@@ -157,7 +157,7 @@
 .sistema-contable .ventas-primary:hover,
 .sistema-contable .inventario-nuevo:hover,
 .sistema-contable .inventario-primario:hover {
-  background: linear-gradient(105deg, #083c68, #21a9ca);
+  background: linear-gradient(105deg, #083c68, #0066AD);
 }
 .sistema-contable .boton-secundario,
 .sistema-contable .secundario,
@@ -233,7 +233,7 @@
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-kpi > span {
   color: #fff;
-  border-color: #18a8ca;
+  border-color: #0066AD;
   background: linear-gradient(145deg, #0b4b7b, #37bdd7);
 }
 .sistema-contable .ventas-panel,

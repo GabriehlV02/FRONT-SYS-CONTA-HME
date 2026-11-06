@@ -329,6 +329,7 @@ export function PuntoVentaView() {
                   <button
                     type="button"
                     className={tipo === opcion ? 'activo' : ''}
+                    aria-pressed={tipo === opcion}
                     key={opcion}
                     onClick={() => { setTipo(opcion); setPaginaCatalogo(1); }}
                   >

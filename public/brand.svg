@@ -1,13 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Sistema contable hospitalario">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Sistema contable y financiero">
   <defs>
-    <linearGradient id="hospital-turquesa" x1="122" x2="518" y1="86" y2="586" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#087f87" />
-      <stop offset="1" stop-color="#203640" />
+    <linearGradient id="financiero" x1="118" x2="526" y1="90" y2="564" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0066ad" />
+      <stop offset="1" stop-color="#0066ad" />
+    </linearGradient>
+    <linearGradient id="moneda" x1="260" x2="423" y1="196" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#c9eff5" />
     </linearGradient>
   </defs>
-  <rect width="640" height="640" rx="148" fill="url(#hospital-turquesa)" />
-  <path
-    d="M264 144h112v120h120v112H376v120H264V376H144V264h120Z"
-    fill="#fff"
-  />
+  <rect width="640" height="640" rx="148" fill="url(#financiero)" />
+  <path d="M169 449V333a24 24 0 0 1 24-24h45v140h-69Zm106 0V261a24 24 0 0 1 24-24h45v212h-69Zm106 0V191a24 24 0 0 1 24-24h45v282h-69Z" fill="#fff" opacity=".96" />
+  <path d="m165 292 106-91 82 56 126-123" fill="none" stroke="#c5f1f7" stroke-linecap="round" stroke-linejoin="round" stroke-width="28" />
+  <path d="M445 134h34v34" fill="none" stroke="#c5f1f7" stroke-linecap="round" stroke-linejoin="round" stroke-width="28" />
+  <circle cx="353" cy="286" r="74" fill="url(#moneda)" />
+  <path d="M365 239c-9-8-21-12-34-9-14 4-22 14-20 25 3 23 60 13 63 42 2 13-9 25-25 29-14 4-28 0-38-10m38-77v91" fill="none" stroke="#0066ad" stroke-linecap="round" stroke-linejoin="round" stroke-width="15" />
 </svg>

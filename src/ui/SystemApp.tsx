@@ -106,7 +106,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   const [active, setActive] = useState(() => modules[0]?.id ?? 'resumen');
   const [open, setOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(config.id === 'contable');
   const [query, setQuery] = useState('');
   const menuButton = useRef<HTMLButtonElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);

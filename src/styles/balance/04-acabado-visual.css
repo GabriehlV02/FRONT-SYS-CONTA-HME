@@ -1,4 +1,4 @@
-﻿/* Pulido final Balance: acercamiento literal a la referencia entregada. */
+/* Pulido final Balance: acercamiento literal a la referencia entregada. */
 .sistema-contable {
   background: #f9fdff;
   color: #071b35;
@@ -12,7 +12,7 @@
     #062f58 68%,
     #05294d 100%
   );
-  border-right: 1px solid #1c5d90;
+  border-right: 1px solid #0066AD;
   box-shadow:
     inset -1px 0 0 rgba(255, 255, 255, 0.07),
     8px 0 24px rgba(2, 28, 55, 0.18);
@@ -40,7 +40,7 @@
   padding: 8px;
   border-radius: 15px;
   border: 1px solid rgba(134, 212, 234, 0.42);
-  background: linear-gradient(145deg, #0d4b80, #08345f);
+  background: linear-gradient(145deg, #0066AD, #08345f);
   box-shadow:
     0 14px 28px rgba(0, 20, 45, 0.27),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -144,7 +144,7 @@
   border-radius: 14px;
   border-color: #b9e5ef;
   background: #eaf8fd;
-  color: #0575c6;
+  color: #0066AD;
 }
 .sistema-contable .topbar-titulo h1 {
   font-size: 31px;
@@ -241,7 +241,7 @@
   height: 52px;
   border-radius: 14px;
   border-color: #b5e3ef;
-  color: #007fd0;
+  color: #0066AD;
   background: #e6f8fd;
 }
 .sistema-contable .ventas-tabs span {

@@ -276,7 +276,7 @@
   width: 16px;
   height: 16px;
   padding: 0;
-  accent-color: #0069bd;
+  accent-color: #0066AD;
 }
 .inventario-serie-toggle span {
   color: #415569;
@@ -369,7 +369,7 @@
   height: 38px;
   padding: 0 19px;
   border: 0;
-  color: #0069bd;
+  color: #0066AD;
   background: #e8f6fb;
   font-size: 12px;
 }
@@ -504,7 +504,7 @@
   border: 1px solid #cfe3ee;
   border-radius: 9px;
   background: #fff;
-  color: #0069aa;
+  color: #0066AD;
   font-size: 16px;
   font-weight: 900;
 }
@@ -574,7 +574,7 @@
   padding: 6px 9px;
   border-radius: 7px;
   background: #dff2fa;
-  color: #0069bd;
+  color: #0066AD;
   font-size: 10px;
   font-weight: 900;
 }
@@ -587,7 +587,7 @@
   font-weight: 900;
 }
 .inventario-serie {
-  color: #49687d;
+  color: #0066AD;
 }
 .inventario-disponible {
   width: max-content;
@@ -625,7 +625,7 @@
   border: 1px solid #add7eb;
   border-radius: 8px;
   background: #f5fcff;
-  color: #0069aa;
+  color: #0066AD;
   font-size: 11px;
   font-weight: 900;
 }
@@ -676,7 +676,7 @@
   right: 40px;
   bottom: 42px;
   height: 13px;
-  background: #2d9fdb;
+  background: #0066AD;
   border-radius: 2px;
   box-shadow: 0 18px 0 #e8f6fb;
 }
@@ -719,7 +719,7 @@
 }
 .inventario-card-cuerpo small {
   display: block;
-  color: #0069bd;
+  color: #0066AD;
   font-size: 10px;
   font-weight: 900;
   text-transform: uppercase;
@@ -733,7 +733,7 @@
 }
 .inventario-card-cuerpo p {
   margin: 0 0 16px;
-  color: #42667d;
+  color: #0066AD;
   font-size: 12px;
 }
 .inventario-card-cuerpo footer {
@@ -1335,8 +1335,8 @@
 }
 
 .sistema-contable .inventario-nuevo {
-  border-color: #0d78bd;
-  background: linear-gradient(135deg, #0b73b9, #27bdd4);
+  border-color: #0066AD;
+  background: linear-gradient(135deg, #0066AD, #27bdd4);
   box-shadow: 0 10px 22px rgba(10, 114, 185, 0.18);
 }
 
@@ -1558,7 +1558,7 @@
   padding: 0 14px;
   border: 1px solid #bddbec;
   border-radius: 10px;
-  color: #42667d;
+  color: #0066AD;
   background: #fff;
   font-size: 11px;
   font-weight: 900;
@@ -1598,7 +1598,7 @@
   padding: 11px 14px;
   border: 1px solid #c8dfeb;
   border-radius: 10px;
-  color: #42667d;
+  color: #0066AD;
   background: #f7fcff;
   font-size: 10px;
   font-weight: 900;
@@ -1796,7 +1796,7 @@
 .reporte-inventario { display: grid; gap: 16px; }
 .reporte-inventario-cabecera { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:20px 22px; border:1px solid #c7dadd; border-radius:12px; background:linear-gradient(135deg,#fff,#eef7f7); }
 .reporte-inventario-cabecera > div > button { display:inline-flex; align-items:center; gap:4px; margin:0 0 12px; padding:5px 8px; border:0; border-radius:6px; color:#47646d; background:#e7f0f1; font-size:11px; font-weight:700; }
-.reporte-inventario-cabecera span,.reporte-vista-previa header span { color:#0284c7; font-size:10px; font-weight:850; letter-spacing:.12em; }
+.reporte-inventario-cabecera span,.reporte-vista-previa header span { color:#0066AD; font-size:10px; font-weight:850; letter-spacing:.12em; }
 .reporte-inventario-cabecera h2 { margin:5px 0 4px; color:#193740; font-size:24px; }
 .reporte-inventario-cabecera p { margin:0; color:#607880; font-size:12px; }
 .reporte-inventario-cabecera > b { padding:7px 11px; border-radius:999px; color:#08727a; background:#dff2f2; font-size:11px; }
@@ -1809,20 +1809,20 @@
 .reporte-filtros { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .reporte-seccion-titulo { display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .reporte-seccion-titulo h3 { margin:0; }
-.reporte-seccion-titulo button { padding:4px 6px; border:0; color:#0284c7; background:transparent; font-size:9px; font-weight:750; }
+.reporte-seccion-titulo button { padding:4px 6px; border:0; color:#0066AD; background:transparent; font-size:9px; font-weight:750; }
 .reporte-columnas { display:grid; grid-template-columns:1fr 1fr; gap:4px 8px; margin-top:10px; }
 .reporte-columnas label,.reporte-check { display:flex; align-items:center; gap:7px; min-height:28px; margin:0; cursor:pointer; }
-.reporte-columnas input,.reporte-check input { width:15px; height:15px; margin:0; accent-color:#0284c7; }
+.reporte-columnas input,.reporte-check input { width:15px; height:15px; margin:0; accent-color:#0066AD; }
 .reporte-orientacion { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
 .reporte-orientacion button { height:32px; border:1px solid #bfd1d5; border-radius:7px; color:#526d76; background:#f7fafa; font-size:10px; font-weight:700; }
-.reporte-orientacion button.activo { border-color:#0284c7; color:#fff; background:#0284c7; }
+.reporte-orientacion button.activo { border-color:#0066AD; color:#fff; background:#0066AD; }
 .reporte-vista-previa { min-width:0; padding:0; overflow:hidden; }
 .reporte-vista-previa > header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:15px 16px; border-bottom:1px solid #d4e1e4; background:#f5f9f9; }
 .reporte-vista-previa > header h3 { margin:3px 0; }
 .reporte-vista-previa > header small { color:#72878e; font-size:10px; }
 .reporte-exportaciones { display:flex; gap:7px; }
 .reporte-exportaciones button { display:grid; grid-template-columns:auto 1fr; column-gap:7px; align-items:center; min-width:94px; height:42px; padding:0 10px; border:1px solid #b9d0d4; border-radius:8px; color:#31535d; background:#fff; text-align:left; }
-.reporte-exportaciones button b { grid-row:1/span 2; display:grid; place-items:center; min-width:31px; height:25px; border-radius:6px; color:#fff; background:#0284c7; font-size:9px; }
+.reporte-exportaciones button b { grid-row:1/span 2; display:grid; place-items:center; min-width:31px; height:25px; border-radius:6px; color:#fff; background:#0066AD; font-size:9px; }
 .reporte-exportaciones button span { color:#6c8289; font-size:8px; font-weight:600; letter-spacing:0; }
 .reporte-exportaciones button:hover { border-color:#65adb1; background:#eaf6f6; }
 .reporte-hoja { max-height:560px; overflow:auto; margin:16px; border:1px solid #c8d8dc; background:#fff; }
@@ -2042,7 +2042,7 @@
 .captura-codigo-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .captura-codigo-acciones label { min-width: 0; flex: 1; }
 .captura-codigo-acciones input[type=file] { width: 100%; height: auto; padding: 6px; }
-.captura-codigo button { padding: 7px 10px; border: 1px solid #c8dcdf; border-radius: 6px; background: #f4fafb; color: #075985; cursor: pointer; }
+.captura-codigo button { padding: 7px 10px; border: 1px solid #c8dcdf; border-radius: 6px; background: #f4fafb; color: #0066AD; cursor: pointer; }
 .inventario-admin { padding: 18px; border: 1px solid #c8dcdf; border-radius: 10px; background: #fff; color: #213f48; }
 .inventario-admin-recuadros { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
 .inventario-admin-recuadro { min-width: 0; min-height: 260px; border: 1px solid #c8dcdf; border-radius: 8px; background: #fff; overflow: hidden; box-sizing: border-box; }
@@ -2050,8 +2050,8 @@
 .inventario-admin-controles { display: flex; align-items: end; gap: 12px; padding: 14px 15px; border-bottom: 1px solid #e0eaec; }
 .inventario-admin-controles label { display: grid; gap: 5px; flex: 1; color: #47616a; font-size: 12px; }
 .inventario-admin-controles input { width: 100%; box-sizing: border-box; height: 36px; padding: 7px 10px; border: 1px solid #bed7dc; border-radius: 6px; color: #213f48; background: #fff; }
-.inventario-admin-registrar { height: 36px; padding: 0 14px; border: 1px solid #0369a1 !important; border-radius: 6px; background: #0284c7 !important; color: #fff !important; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease; }
-.inventario-admin-registrar:hover { background: #0369a1 !important; border-color: #075985 !important; }
+.inventario-admin-registrar { height: 36px; padding: 0 14px; border: 1px solid #0066AD !important; border-radius: 6px; background: #0066AD !important; color: #fff !important; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .15s ease, border-color .15s ease; }
+.inventario-admin-registrar:hover { background: #0066AD !important; border-color: #0066AD !important; }
 .inventario-admin-registrar:focus-visible { outline: 3px solid rgba(2, 132, 199, .25); outline-offset: 2px; }
 .inventario-admin-tabla-contenedor { overflow-x: auto; padding: 0 15px 15px; }
 .inventario-admin-tabla-configuracion { width: 100%; border-collapse: collapse; color: #213f48; font-size: 13px; }
@@ -2060,7 +2060,7 @@
 .inventario-admin-tabla-configuracion td[colspan] { padding: 22px 10px; color: #698087; text-align: center; }
 .inventario-admin-switch { position: relative; display: inline-flex; width: 48px; height: 26px; margin: 4px 8px; padding: 3px; box-sizing: border-box; border: 2px solid #5c7479; border-radius: 999px; background: #5c7479; cursor: pointer; align-items: center; opacity: 1; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12), 0 1px 2px rgba(20,55,62,.2); }
 .inventario-admin-switch span { display: block; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.35); transition: transform .15s ease; }
-.inventario-admin-switch.activo { border-color: #075985; background: #0284c7; }
+.inventario-admin-switch.activo { border-color: #0066AD; background: #0066AD; }
 .inventario-admin-switch.activo span { transform: translateX(20px); }
 .inventario-admin-switch:focus-visible { outline: 3px solid rgba(2,132,199,.3); outline-offset: 2px; }
 .inventario-admin-switch.activo span { transform: translateX(16px); }
@@ -2069,20 +2069,20 @@
 .inventario-admin-modal h3 { margin: 0 0 10px; color: #173944; font-size: 20px; letter-spacing: -.02em; }
 .inventario-admin-modal p { margin: 0; line-height: 1.5; }
 .inventario-admin-modal-acciones { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-.inventario-admin-modal-acciones button { min-width: 78px; padding: 10px 14px; border: 1px solid #0284c7 !important; border-radius: 8px; background: #0284c7 !important; color: #fff !important; cursor: pointer; font-weight: 700; transition: transform .15s ease, background .15s ease; }
-.inventario-admin-modal-acciones button:hover { background: #0369a1 !important; transform: translateY(-1px); }
-.inventario-admin-modal-acciones button:last-child { background: #fff !important; color: #0284c7 !important; }
+.inventario-admin-modal-acciones button { min-width: 78px; padding: 10px 14px; border: 1px solid #0066AD !important; border-radius: 8px; background: #0066AD !important; color: #fff !important; cursor: pointer; font-weight: 700; transition: transform .15s ease, background .15s ease; }
+.inventario-admin-modal-acciones button:hover { background: #0066AD !important; transform: translateY(-1px); }
+.inventario-admin-modal-acciones button:last-child { background: #fff !important; color: #0066AD !important; }
 @keyframes inventario-modal-entrada { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .inventario-admin h2 { margin: 0; font-size: 18px; }
 .inventario-admin header p { margin: 5px 0 14px; font-size: 12px; }
 .inventario-admin-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.inventario-admin button:not(.inventario-admin-registrar) { padding: 8px 12px; border: 1px solid #bed7dc; border-radius: 6px; background: #f4fafb; color: #075985; cursor: pointer; }
-.inventario-admin button[aria-pressed=true], .inventario-admin button[type=submit] { background: #0284c7; color: #fff; }
+.inventario-admin button:not(.inventario-admin-registrar) { padding: 8px 12px; border: 1px solid #bed7dc; border-radius: 6px; background: #f4fafb; color: #0066AD; cursor: pointer; }
+.inventario-admin button[aria-pressed=true], .inventario-admin button[type=submit] { background: #0066AD; color: #fff; }
 .inventario-admin form { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin-bottom: 16px; }
 .inventario-admin label { display: grid; gap: 5px; font-size: 12px; min-width: 180px; flex: 1; }
 .inventario-admin input, .inventario-admin select { width: 100%; box-sizing: border-box; height: 36px; border: 1px solid #bed7dc; border-radius: 6px; padding: 6px 9px; background: #fff; }
 .inventario-admin-tabla { overflow: auto; }
-.inventario-admin-paneles { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; align-items: start; }.inventario-admin-paneles .inventario-admin-tabla { border: 1px solid #c8dcdf; border-radius: 8px; background: #fff; }.inventario-admin-paneles h3 { margin: 0; padding: 9px 10px; color: #075985; font-size: 13px; background: #edf8f9; border-bottom: 1px solid #c8dcdf; }.inventario-admin-paneles table { min-width: 100%; }.inventario-admin-paneles th,.inventario-admin-paneles td { white-space: nowrap; }.inventario-admin-paneles p { margin: 0; padding: 12px; color: #698087; font-size: 12px; }
+.inventario-admin-paneles { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; align-items: start; }.inventario-admin-paneles .inventario-admin-tabla { border: 1px solid #c8dcdf; border-radius: 8px; background: #fff; }.inventario-admin-paneles h3 { margin: 0; padding: 9px 10px; color: #0066AD; font-size: 13px; background: #edf8f9; border-bottom: 1px solid #c8dcdf; }.inventario-admin-paneles table { min-width: 100%; }.inventario-admin-paneles th,.inventario-admin-paneles td { white-space: nowrap; }.inventario-admin-paneles p { margin: 0; padding: 12px; color: #698087; font-size: 12px; }
 .inventario-admin table { width: 100%; border-collapse: collapse; }
 .sistema-contable .inventario-admin table :is(th, td) { border: 1px solid #c8dcdf; padding: 7px 10px; font-size: 12px; text-align: left; }
 .inventario-admin th { background: #eaf3f4; }
@@ -2098,7 +2098,7 @@
 .captura-imagen-vacio span { font-size: 20px; }
 .captura-imagen-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
 .sistema-contable .captura-imagen-acciones button { display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 8px; border-radius: 12px; font-size: 15px; font-weight: 700; }
-.sistema-contable .captura-imagen-acciones .captura-imagen-camara { color: #fff !important; background: linear-gradient(110deg, #2463ec, #549cf4) !important; border: 1px solid #2463ec !important; }
+.sistema-contable .captura-imagen-acciones .captura-imagen-camara { color: #fff !important; background: linear-gradient(110deg, #0066AD, #549cf4) !important; border: 1px solid #0066AD !important; }
 .sistema-contable .captura-imagen-acciones .captura-imagen-subir { color: #16354e !important; background: #e2e8ef !important; border: 1px solid #e2e8ef !important; }
 .sistema-contable .captura-imagen-preview .captura-imagen-eliminar { position: absolute; z-index: 1; top: 10px; right: 10px; display: grid; place-items: center; width: 32px; height: 32px; min-height: 0; padding: 0; border-radius: 50%; border: 1px solid #ccd6df !important; color: #29475e !important; background: #fff !important; box-shadow: 0 2px 8px #14324d26; }
 .captura-imagen-panel button:disabled { opacity: .55; cursor: wait; }
@@ -2120,7 +2120,7 @@
 }
 .reporte-descargas .reporte-exportaciones { display: grid; gap: 8px; width: 100%; overflow: visible; }
 .sistema-contable .reporte-descargas .reporte-exportaciones button { --export-color: #b42332; display: flex; gap: 12px; width: 100%; height: 46px; padding: 0 12px; color: #fff !important; background: var(--export-color) !important; border: 1px solid var(--export-color) !important; border-radius: 9px; cursor: pointer; transition: box-shadow .15s, filter .15s, transform .15s; }
-.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-word { --export-color: #185abd; }
+.sistema-contable .reporte-descargas .reporte-exportaciones .exportar-word { --export-color: #0066AD; }
 .sistema-contable .reporte-descargas .reporte-exportaciones .exportar-excel { --export-color: #187447; }
 .sistema-contable .reporte-descargas .reporte-exportaciones button b { min-width: 46px; height: 29px; color: #fff !important; background: rgb(255 255 255 / 18%) !important; border: 1px solid rgb(255 255 255 / 28%); font-size: 11px !important; }
 .sistema-contable .reporte-descargas .reporte-exportaciones button span { color: #fff !important; font-size: 12px !important; font-weight: 700 !important; }
@@ -2131,7 +2131,7 @@
 .inventario-admin-form-campos { display: grid; gap: 14px; margin-top: 16px; }
 .inventario-admin-form-campos label { display: grid; gap: 6px; font-size: 13px; }
 .inventario-admin-form-campos input, .inventario-admin-form-campos select, .inventario-admin-form-campos textarea { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid #c3d5da; border-radius: 7px; color: #173944; background: #fff; font: inherit; }
-.inventario-admin-modal :focus-visible { outline: 2px solid #0284c7; outline-offset: 2px; }
+.inventario-admin-modal :focus-visible { outline: 2px solid #0066AD; outline-offset: 2px; }
 .inventario-admin-error { margin: 12px 0 !important; padding: 10px 12px; border-radius: 7px; color: #b42318; background: #fff1f2; font-size: 13px; }
 .inventario-admin-ayuda, .inventario-admin-exito { margin: 0 16px 12px; font-size: 12px; color: #31535d; }
 .inventario-admin-exito { color: #16634d; }
@@ -2140,7 +2140,7 @@
 .productos-base-encabezado { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
 .productos-base-encabezado h2 { margin: 0 0 6px; font-size: 21px; }
 .productos-base-encabezado p, .productos-base-modal > p { margin: 0; color: #526c7a; font-size: 13px; line-height: 1.6; }
-.productos-base .inventario-nuevo { background: #0088bd; color: white; flex-shrink: 0; }
+.productos-base .inventario-nuevo { background: #0066AD; color: white; flex-shrink: 0; }
 .productos-base button:disabled { opacity: .55; cursor: default; transform: none; }
 .productos-base .inventario-filtros label { flex: 1; min-width: 220px; }
 .productos-base .inventario-filtros select { width: auto; min-width: 130px; font-weight: 400; }
@@ -2153,7 +2153,7 @@
 .productos-base-tabla th, .productos-base-tabla td { padding: 13px 12px; text-align: left; border-bottom: 1px solid #cad9df; }
 .productos-base-tabla th { background: #e4eef1; font-weight: 500; color: #163d53; white-space: nowrap; }
 .productos-base-tabla tbody tr:nth-child(even) { background: #f5f9fa; }
-.productos-base-tabla td:first-child { color: #006b91; white-space: nowrap; }
+.productos-base-tabla td:first-child { color: #0066AD; white-space: nowrap; }
 .productos-base-tabla small { display: block; margin-top: 5px; max-width: 320px; color: #526c7a; overflow-wrap: anywhere; }
 .productos-base-acciones { display: flex; gap: 6px; }
 .productos-base-tabla .productos-base-vacio { padding: 85px 15px; text-align: center; color: #526c7a; }
@@ -2171,7 +2171,7 @@
 .productos-base-campos textarea { resize: vertical; }
 .productos-base-ancho { grid-column: 1 / -1; }
 .productos-base-modal footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.productos-base :focus-visible { outline: 2px solid #0084b5; outline-offset: 3px; }
+.productos-base :focus-visible { outline: 2px solid #0066AD; outline-offset: 3px; }
 @media (max-width: 700px) { .productos-base-encabezado { align-items: flex-start; flex-direction: column; } .productos-base-campos { grid-template-columns: 1fr; } .productos-base-paginacion { justify-content: center; } }
 .productos-base-modal > p { padding: 0 20px; }
 .productos-base-modal > form { padding: 0 20px 20px; }
@@ -2180,12 +2180,12 @@
 .items-general .productos-base-tabla td { vertical-align: middle; }
 .items-general .productos-base-tabla td:nth-child(7), .items-general .productos-base-tabla td:nth-child(8), .items-general .productos-base-tabla td:nth-child(9) { white-space: nowrap; }
 .items-general .productos-base-resumen button, .items-general-lotes button { padding: 8px 12px; border: 1px solid #bad0da; border-radius: 5px; color: #16445a; background: white; }
-.items-general .productos-base-resumen button[aria-pressed="true"] { color: white; background: #0088bd; border-color: #0088bd; }
+.items-general .productos-base-resumen button[aria-pressed="true"] { color: white; background: #0066AD; border-color: #0066AD; }
 .items-general-vacio { text-align: center; padding: 30px 12px; color: #526c7a; }
 .items-general-ayuda { color: #526c7a; font-size: 13px; line-height: 1.5; }
 .items-general-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 16px; }
 .items-general-galeria article { padding: 20px; border: 1px solid #c3d6de; border-radius: 8px; background: #f8fbfc; }
-.items-general-galeria small { color: #00799d; }
+.items-general-galeria small { color: #0066AD; }
 .items-general-galeria h3 { margin: 12px 0 8px; }
 .items-general-galeria p { font-size: 13px; color: #526c7a; }
 .items-general-galeria dl { display: flex; justify-content: space-between; gap: 8px; }
@@ -2195,12 +2195,12 @@
 .items-general-modal .items-general-lotes { padding: 20px; }
 .items-general-lotes .productos-base-tabla { margin: 16px 0; min-height: 180px; }
 .items-general-lotes .productos-base-tabla table { min-width: 690px; }
-.items-general-modal .items-general-lotes .inventario-nuevo { background: #0088bd; color: white; }
-.items-general-modal button:focus-visible { outline: 2px solid #0088bd; outline-offset: 3px; }
+.items-general-modal .items-general-lotes .inventario-nuevo { background: #0066AD; color: white; }
+.items-general-modal button:focus-visible { outline: 2px solid #0066AD; outline-offset: 3px; }
 @media (max-width: 700px) { .items-general .productos-base-resumen { flex-wrap: wrap; } .items-general .inventario-filtros select { max-width: 100%; } .items-general .productos-base-encabezado > .productos-base-acciones { flex-wrap: wrap; } }
 .sistema-contable .items-general-modal-fondo { z-index: 1200; }
 .stock-general-real .stock-lotes-filtros { grid-template-columns: minmax(220px, 2fr) minmax(160px, 1fr) minmax(180px, 1fr) auto; }
-.stock-general-real .stock-actualizar { border: 1px solid #b7d3df; border-radius: 7px; color: #006e97; padding: 10px 15px; background: white; min-height: 42px; }
+.stock-general-real .stock-actualizar { border: 1px solid #b7d3df; border-radius: 7px; color: #0066AD; padding: 10px 15px; background: white; min-height: 42px; }
 .stock-general-real .stock-general-aviso { padding: 12px 15px; border: 1px solid #d0e5ea; border-radius: 7px; background: #f0f8fa; color: #476876; font-size: 13px; }
 .stock-general-real .stock-lotes-tabla { overflow-x: auto; }
 .stock-general-real .stock-lotes-tabla table { width: 100%; min-width: 1580px; table-layout: auto; }

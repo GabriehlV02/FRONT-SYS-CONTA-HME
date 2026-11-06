@@ -1,14 +1,14 @@
-﻿.sistema-contable {
+.sistema-contable {
   --surface: #fff;
   --border: #b9ddea;
   --muted: #52758b;
-  --accent: #0879af;
+  --accent: #0066AD;
   color: #12384d;
   background: #f2f9fc;
 }
 
 .sistema-contable .sistema-sidebar {
-  background: linear-gradient(180deg, #0879af, #075985 58%, #073763);
+  background: linear-gradient(180deg, #0066AD, #0066AD 58%, #073763);
   border-color: #064866;
   box-shadow: 10px 0 30px rgba(7, 55, 99, 0.24);
 }
@@ -25,7 +25,7 @@
 .sistema-contable .marca-icono {
   border-color: #71c6e5;
   color: #fff;
-  background: linear-gradient(145deg, #23a6d5, #0879af);
+  background: linear-gradient(145deg, #0066AD, #0066AD);
   box-shadow: 0 8px 18px rgba(7, 55, 99, 0.34);
 }
 .sistema-contable .sistema-nav section + section {
@@ -46,7 +46,7 @@
   box-shadow: 0 7px 18px rgba(7, 55, 99, 0.2);
 }
 .sistema-contable .nav-modulo.activo:before {
-  background: #0879af;
+  background: #0066AD;
 }
 .sistema-contable .nav-icono {
   border-color: rgba(232, 248, 255, 0.3);
@@ -57,8 +57,8 @@
 .sistema-contable .boton-salir:hover .nav-icono,
 .sistema-contable .welcome-visual > span {
   color: #fff;
-  border-color: #0879af;
-  background: linear-gradient(145deg, #23a6d5, #0879af);
+  border-color: #0066AD;
+  background: linear-gradient(145deg, #0066AD, #0066AD);
   box-shadow: 0 5px 14px rgba(7, 55, 99, 0.28);
 }
 .sistema-contable .boton-salir {

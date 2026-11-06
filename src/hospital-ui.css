@@ -12,8 +12,8 @@ body, button, input, select, textarea {
   --hospital-ink: #12344f;
   --hospital-muted: #577187;
   --hospital-line: #cadde8;
-  --hospital-blue: #0877b7;
-  --hospital-teal: #0284c7;
+  --hospital-blue: #0066AD;
+  --hospital-teal: #0066AD;
   --hospital-tint: #edf7fa;
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230b6083' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   color: var(--hospital-ink);
@@ -99,7 +99,7 @@ body, button, input, select, textarea {
 .sistema-contable .nav-modulo.activo .nav-icono {
   border-color: #b5dfeb !important;
   background: #e9f7fa !important;
-  color: #08788b !important;
+  color: #0066AD !important;
   box-shadow: none;
 }
 
@@ -177,7 +177,7 @@ body, button, input, select, textarea {
 .sistema-contable .subvistas-carrusel > nav > button:hover {
   border-color: #c1dfeb;
   background: #f8fcfd;
-  color: #075b82;
+  color: #0066AD;
 }
 
 .sistema-contable .subvistas-carrusel > nav > button.activo {
@@ -197,21 +197,21 @@ body, button, input, select, textarea {
   border: 1px solid #c4e1ea;
   border-radius: 8px;
   background: #f4fafc;
-  color: #08778d;
+  color: #0066AD;
   box-shadow: none;
   font-style: normal;
 }
 
 .sistema-contable .subvistas-carrusel > nav > button.activo > :is(i, span:first-child) {
-  border-color: #0284c7;
-  background: #0284c7;
+  border-color: #0066AD;
+  background: #0066AD;
   color: #fff;
 }
 
 .sistema-contable .subvistas-flecha {
   top: 11px;
   border-color: #a9d6e2;
-  color: #086888;
+  color: #0066AD;
   box-shadow: 0 3px 10px #12344f1e;
 }
 
@@ -249,7 +249,7 @@ body, button, input, select, textarea {
   padding-right: 36px !important;
 }
 .sistema-contable :is(button, input, select, textarea):focus-visible {
-  outline: 2px solid #0794a5;
+  outline: 2px solid #0066AD;
   outline-offset: 2px;
 }
 
@@ -311,13 +311,13 @@ body, button, input, select, textarea {
 
 
 .sistema-contable :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario) {
-  background: #0877aa;
+  background: #0066AD;
   color: #fff;
-  box-shadow: 0 5px 14px #0877aa30;
+  box-shadow: 0 5px 14px #0066AD30;
 }
 
 .sistema-contable :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario):hover {
-  background: #075d89;
+  background: #0066AD;
 }
 
 .vista-pendiente {
@@ -342,10 +342,10 @@ body, button, input, select, textarea {
   border: 1px solid #bce2e7;
   border-radius: 16px;
   background: #e9f8f8;
-  color: #0284c7;
+  color: #0066AD;
 }
 
-.vista-pendiente p { margin: 0 0 8px; color: #0284c7; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; }
+.vista-pendiente p { margin: 0 0 8px; color: #0066AD; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; }
 .vista-pendiente h2 { margin: 0 0 8px; color: #12344f; font-size: 24px; }
 .vista-pendiente > span:not(.vista-pendiente-icono) { color: #577187; font-size: 14px; }
 .vista-pendiente small { margin-top: 18px; color: #6e8799; font-size: 12px; }

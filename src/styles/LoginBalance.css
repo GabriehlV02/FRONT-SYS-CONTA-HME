@@ -392,7 +392,7 @@
   border: 0;
   display: grid;
   place-items: center;
-  color: #4269a2;
+  color: #0066AD;
   background: transparent;
 }
 
@@ -861,13 +861,13 @@
 
 .login-page-contable .login-balance-copy h2:after,
 .login-page-contable .login-balance-right .login-opciones:after {
-  color: #338da0;
+  color: #0066AD;
 }
 
 .login-page-contable .login-balance-copy p,
 .login-page-contable .login-balance-right .login-subtitulo,
 .login-page-contable .login-balance-right .login-opciones {
-  color: #4f7180;
+  color: #0066AD;
 }
 
 .login-page-contable .login-balance-layout:before {
@@ -884,7 +884,7 @@
 .login-page-contable .login-balance-left .login-balance-panel:after {
   background:
     linear-gradient(90deg, transparent 0%, rgba(204, 235, 241, 0) 35%, #d8f1f5 45%, #ffffff 50%, #8dcbd6 56%, rgba(96, 168, 184, 0) 67%, transparent 100%),
-    linear-gradient(90deg, #7dbdcc, #6fb7c5 52%, #4e9caf);
+    linear-gradient(90deg, #7dbdcc, #6fb7c5 52%, #0066AD);
   box-shadow: 0 0 6px rgba(106, 178, 193, 0.22);
 }
 
@@ -899,12 +899,12 @@
 
 .login-page-contable .login-balance-right .login-card:before {
   height: 6px;
-  background: linear-gradient(90deg, #bde8ee, #78c3ce 48%, #4fa7b8);
+  background: linear-gradient(90deg, #bde8ee, #78c3ce 48%, #0066AD);
 }
 
 .login-page-contable .login-balance-right .login-input {
   border-color: #bfdde4;
-  color: #338da0;
+  color: #0066AD;
 }
 
 .login-page-contable .login-balance-right .login-input:focus-within {
@@ -917,12 +917,12 @@
 }
 
 .login-page-contable .login-balance-right .login-opciones input {
-  accent-color: #4fa7b8;
+  accent-color: #0066AD;
 }
 
 .login-page-contable .login-balance-right .login-submit {
   color: #ffffff;
-  background: linear-gradient(105deg, #2f8495, #55aebe);
+  background: linear-gradient(105deg, #0066AD, #55aebe);
   box-shadow: 0 12px 24px rgba(66, 147, 164, 0.2);
 }
 
@@ -950,8 +950,8 @@
 
 /* Paleta final tomada del logo Hospital Maria Esperanza. */
 .login-page-contable {
-  --hme-azul-profundo: #006fba;
-  --hme-azul: #008bd2;
+  --hme-azul-profundo: #0066AD;
+  --hme-azul: #0066AD;
   --hme-celeste: #00aee0;
   --hme-celeste-suave: #dff5fb;
   --hme-tinta: #073b5f;

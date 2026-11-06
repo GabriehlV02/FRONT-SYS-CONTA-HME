@@ -1,4 +1,5 @@
 import { AvisoTemporal } from '@ui/components/AvisoTemporal';
+import Icon from '@ui/components/Icon';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { apiFetch } from '@ui/auth';
@@ -15,8 +16,23 @@ type Modal = 'crear' | 'editar' | 'detalle' | 'lotes' | 'lote';
 const inicial = { producto_base_id: '', nombre_comercial: '', marca: '', presentacion: '', descripcion: '', unidad_id: '', codigo_barras: '', precio_1: '', precio_2: '', precio_3: '', estado: 'ACTIVO' };
 const loteInicial = { numero: '', vencimiento: '', precio_1: '', precio_2: '', precio_3: '' };
 const dinero = (valor: string) => 'Bs ' + Number(valor).toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const unidadEjemplo: Opcion = { id: 'demo-unidad', nombre: 'Unidad', activo: true };
+const itemsEjemplo: Item[] = [
+  ['Paracetamol', 'Paracetamol 500 mg', 'Laboratorio Ejemplo', 'Caja de 20 tabletas', '12.50'],
+  ['Ibuprofeno', 'Ibuprofeno 400 mg', 'Farmacéutica Ejemplo', 'Caja de 10 tabletas', '15.00'],
+  ['Guantes de examen', 'Guantes de nitrilo', 'Marca Ejemplo', 'Caja de 100 unidades', '65.00'],
+  ['Jeringas', 'Jeringa descartable 5 ml', 'Marca Ejemplo', 'Unidad estéril', '3.50'],
+  ['Alcohol antiséptico', 'Alcohol al 70 %', 'Laboratorio Ejemplo', 'Frasco de 500 ml', '18.00'],
+  ['Gasas', 'Gasa estéril', 'Marca Ejemplo', 'Paquete de 10 unidades', '8.00'],
+  ['Solución fisiológica', 'Cloruro de sodio 0,9 %', 'Laboratorio Ejemplo', 'Bolsa de 500 ml', '14.00'],
+  ['Mascarillas', 'Mascarilla quirúrgica', 'Marca Ejemplo', 'Caja de 50 unidades', '35.00'],
+].map(([generico, nombre, marca, presentacion, precio], indice) => {
+  const id = -(indice + 1);
+  const producto_base: Grupo = { id, codigo: `DEMO-G${indice + 1}`, nombre: generico, estado: 'ACTIVO', tipo: { id: 'demo', nombre: 'Producto', activo: true }, categoria: null, subcategoria: null };
+  return { id, codigo: `DEMO-${String(indice + 1).padStart(3, '0')}`, producto_base_id: id, producto_base, nombre_comercial: nombre, marca, presentacion, descripcion: 'Datos ficticios para demostración.', unidad_id: unidadEjemplo.id, unidad: unidadEjemplo, codigo_barras: null, precio_1: precio, precio_2: precio, precio_3: precio, estado: 'ACTIVO', lotes: [] };
+});
 
-export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puedeGestionar?: boolean; onReportes: () => void }) {
+export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: boolean }) {
   const [opciones, setOpciones] = useState<Opciones>({ productos: [], unidades: [] });
   const [pagina, setPagina] = useState<Pagina>({ data: [], total: 0, current_page: 1, last_page: 1, from: null, to: null });
   const [buscar, setBuscar] = useState('');
@@ -24,10 +40,11 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
   const [estado, setEstado] = useState('');
   const [orden, setOrden] = useState('nombre_comercial');
   const [direccion, setDireccion] = useState('asc');
-  const [vista, setVista] = useState<'galeria' | 'lista'>('galeria');
+  const [vista, setVista] = useState<'galeria' | 'lista'>('lista');
   const [filas, setFilas] = useState(20);
   const [numero, setNumero] = useState(1);
   const [recarga, setRecarga] = useState(0);
+  const [mostrarEjemplos, setMostrarEjemplos] = useState(false);
   const [cargando, setCargando] = useState(true);
   const [opcionesListas, setOpcionesListas] = useState(false);
   const [errorOpciones, setErrorOpciones] = useState('');
@@ -54,14 +71,29 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
   useEffect(() => {
     const controller = new AbortController();
     setCargando(true); setError('');
+    if (mostrarEjemplos) {
+      const texto = buscar.trim().toLocaleLowerCase('es');
+      const resultados = itemsEjemplo.filter(item => (!grupo || String(item.producto_base_id) === grupo) && (!estado || item.estado === estado) && [item.codigo, item.nombre_comercial, item.producto_base.nombre, item.marca].some(valor => valor.toLocaleLowerCase('es').includes(texto)));
+      resultados.sort((a, b) => {
+        const comparacion = orden === 'id' ? a.codigo.localeCompare(b.codigo) : orden.startsWith('precio_') ? Number(a[orden as 'precio_1' | 'precio_2' | 'precio_3']) - Number(b[orden as 'precio_1' | 'precio_2' | 'precio_3']) : a[orden as 'nombre_comercial' | 'marca'].localeCompare(b[orden as 'nombre_comercial' | 'marca'], 'es');
+        return direccion === 'asc' ? comparacion : -comparacion;
+      });
+      const inicio = (numero - 1) * filas;
+      setPagina({ data: resultados.slice(inicio, inicio + filas), total: resultados.length, current_page: numero, last_page: Math.max(1, Math.ceil(resultados.length / filas)), from: resultados.length ? inicio + 1 : null, to: resultados.length ? Math.min(inicio + filas, resultados.length) : null });
+      setCargando(false);
+      return () => controller.abort();
+    }
     const timer = window.setTimeout(() => {
       const parametros = new URLSearchParams({ buscar, producto_base_id: grupo, estado, orden, direccion, page: String(numero), por_pagina: String(filas) });
-      apiFetch('/api/v1/inventario/items?' + parametros, { signal: controller.signal }).then(leerRespuesta<Pagina>).then(setPagina)
+      apiFetch('/api/v1/inventario/items?' + parametros, { signal: controller.signal }).then(leerRespuesta<Pagina>).then(respuesta => {
+        if (import.meta.env.DEV && !buscar && !grupo && !estado && respuesta.total === 0) setMostrarEjemplos(true);
+        else setPagina(respuesta);
+      })
         .catch(error => { if (!controller.signal.aborted) setError(error.message); })
         .finally(() => { if (!controller.signal.aborted) setCargando(false); });
     }, 250);
     return () => { window.clearTimeout(timer); controller.abort(); };
-  }, [buscar, grupo, estado, orden, direccion, numero, filas, recarga]);
+  }, [buscar, grupo, estado, orden, direccion, numero, filas, recarga, mostrarEjemplos]);
   useEffect(() => {
     if (modal) (dialogo.current?.querySelector<HTMLElement>('input:enabled, select:enabled') || dialogo.current?.querySelector<HTMLElement>('button:enabled'))?.focus();
   }, [modal]);
@@ -78,7 +110,7 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
 
   function abrir(modo: Modal, boton: HTMLElement, item: Item | null = null) {
     origen.current = boton; setSeleccionado(item); setErrorFormulario(''); setMensaje('');
-    setFormulario(item ? { producto_base_id: String(item.producto_base_id), nombre_comercial: item.nombre_comercial, marca: item.marca, presentacion: item.presentacion, descripcion: item.descripcion || '', unidad_id: item.unidad_id, codigo_barras: item.codigo_barras || '', precio_1: item.precio_1, precio_2: item.precio_2, precio_3: item.precio_3, estado: item.estado } : { ...inicial, producto_base_id: grupo, unidad_id: opciones.unidades[0]?.id || '' });
+    setFormulario(item ? { producto_base_id: String(item.producto_base_id), nombre_comercial: item.nombre_comercial, marca: item.marca, presentacion: item.presentacion, descripcion: item.descripcion || '', unidad_id: item.unidad_id, codigo_barras: item.codigo_barras || '', precio_1: item.precio_1, precio_2: item.precio_2, precio_3: item.precio_3, estado: item.estado } : { ...inicial, producto_base_id: mostrarEjemplos ? '' : grupo, unidad_id: opciones.unidades[0]?.id || '' });
     setModal(modo);
   }
   function cerrar() {
@@ -107,7 +139,7 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
           method: modal === 'editar' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formulario, producto_base_id: Number(formulario.producto_base_id), codigo_barras: formulario.codigo_barras || null }),
         }));
         setMensaje(modal === 'editar' ? 'Ítem actualizado correctamente.' : 'Ítem comercial registrado correctamente. Puedes agregar sus lotes desde Lotes.');
-        setModal(null); setNumero(1); setBuscar(''); setGrupo(''); setEstado('');
+        setModal(null); setMostrarEjemplos(false); setNumero(1); setBuscar(''); setGrupo(''); setEstado('');
         requestAnimationFrame(() => origen.current?.focus());
       }
       setRecarga(valor => valor + 1);
@@ -115,7 +147,7 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
     finally { setGuardando(false); }
   }
 
-  const grupos = [...opciones.productos];
+  const grupos = mostrarEjemplos && modal !== 'crear' ? itemsEjemplo.map(item => item.producto_base) : [...opciones.productos];
   if (seleccionado && !grupos.some(grupo => grupo.id === seleccionado.producto_base_id)) grupos.push(seleccionado.producto_base);
   const unidades = [...opciones.unidades];
   if (seleccionado && !unidades.some(unidad => unidad.id === seleccionado.unidad_id)) unidades.push(seleccionado.unidad);
@@ -123,27 +155,25 @@ export function ItemsGeneralView({ puedeGestionar = false, onReportes }: { puede
   const detalle = modal === 'detalle';
   const esFormularioItem = modal === 'crear' || modal === 'editar' || detalle;
   const titulo = modal === 'crear' ? 'Registrar ítem comercial' : modal === 'editar' ? 'Editar ítem comercial' : detalle ? 'Detalle del ítem' : modal === 'lote' ? (loteSeleccionado ? 'Editar lote' : 'Registrar lote') : 'Lotes del ítem';
-  const botones = (item: Item) => <div className="productos-base-acciones"><button onClick={event => abrir('detalle', event.currentTarget, item)} aria-label={'Ver ' + item.nombre_comercial}>Ver</button><button onClick={event => abrir('lotes', event.currentTarget, item)} aria-label={'Lotes de ' + item.nombre_comercial}>Lotes ({item.lotes.length})</button>{puedeGestionar && <button disabled={!opcionesListas} onClick={event => abrir('editar', event.currentTarget, item)} aria-label={'Editar ' + item.nombre_comercial}>Editar</button>}</div>;
+  const botones = (item: Item) => <div className="productos-base-acciones"><button onClick={event => abrir('detalle', event.currentTarget, item)} aria-label={'Ver ' + item.nombre_comercial}>Ver</button>{item.id > 0 && <><button onClick={event => abrir('lotes', event.currentTarget, item)} aria-label={'Lotes de ' + item.nombre_comercial}>Lotes ({item.lotes.length})</button>{puedeGestionar && <button disabled={!opcionesListas} onClick={event => abrir('editar', event.currentTarget, item)} aria-label={'Editar ' + item.nombre_comercial}>Editar</button>}</>}</div>;
   const paginacion = <nav className="productos-base-paginacion" aria-label="Paginación de ítems"><button disabled={cargando || numero <= 1} onClick={() => setNumero(1)}>Primera</button><button disabled={cargando || numero <= 1} onClick={() => setNumero(valor => valor - 1)}>Anterior</button><span>Página {pagina.current_page} de {pagina.last_page}</span><button disabled={cargando || numero >= pagina.last_page} onClick={() => setNumero(valor => valor + 1)}>Siguiente</button><button disabled={cargando || numero >= pagina.last_page} onClick={() => setNumero(pagina.last_page)}>Última</button></nav>;
 
   return <div className="inventario-contenido productos-base items-general">
-    <header className="productos-base-encabezado"><div><h2>Ítems general</h2></div><div className="productos-base-acciones"><button onClick={onReportes}>Reportes</button>{puedeGestionar && <button className="inventario-nuevo items-general-registrar" disabled={!opcionesListas} onClick={event => abrir('crear', event.currentTarget)}>+ Registro de ítem</button>}</div></header>
-    <div className="inventario-filtros"><label><input type="search" aria-label="Buscar ítem, genérico, marca o lote" placeholder="Buscar ítem, código, genérico, marca o lote" value={buscar} onChange={event => { setBuscar(event.target.value); setNumero(1); }} /></label>
+    <div className="inventario-filtros"><label className="items-general-busqueda"><Icon name="search" size={17} /><input type="search" aria-label="Buscar ítem, genérico, marca o lote" placeholder="Buscar ítem, código, genérico, marca o lote" value={buscar} onChange={event => { setBuscar(event.target.value); setNumero(1); }} /></label>
       <select aria-label="Filtrar por agrupador" value={grupo} onChange={event => { setGrupo(event.target.value); setNumero(1); }}><option value="">Todos los agrupadores</option>{grupos.map(grupo => <option key={grupo.id} value={grupo.id}>{grupo.codigo} · {grupo.nombre}</option>)}</select>
       <select aria-label="Filtrar estado" value={estado} onChange={event => { setEstado(event.target.value); setNumero(1); }}><option value="">Todos los estados</option><option value="ACTIVO">Activo</option><option value="INACTIVO">Inactivo</option></select>
       <select aria-label="Ordenar ítems" value={orden} onChange={event => { setOrden(event.target.value); setNumero(1); }}><option value="nombre_comercial">Nombre comercial</option><option value="id">Código</option><option value="marca">Marca</option><option value="precio_1">Precio 1</option><option value="precio_2">Precio 2</option><option value="precio_3">Precio 3</option></select>
       <select aria-label="Dirección del orden" value={direccion} onChange={event => { setDireccion(event.target.value); setNumero(1); }}><option value="asc">Ascendente</option><option value="desc">Descendente</option></select>
+      {puedeGestionar && <button type="button" className="inventario-nuevo items-general-registrar" disabled={!opcionesListas} onClick={event => abrir('crear', event.currentTarget)}>+ Registro de ítem</button>}
     </div>
     {(error || errorOpciones) && <p role="alert" className="productos-base-error">{error || errorOpciones} <button onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
-    {opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
+    {!mostrarEjemplos && opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
     <AvisoTemporal mensaje={mensaje} />
-    <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><div className="items-general-vistas" role="group" aria-label="Vista de ítems"><button type="button" aria-pressed={vista === 'galeria'} onClick={() => setVista('galeria')}>Galería</button><button type="button" aria-pressed={vista === 'lista'} onClick={() => setVista('lista')}>Lista</button></div><label>Por página <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
+    <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><div className="items-general-vistas" role="group" aria-label="Vista de ítems"><button type="button" aria-pressed={vista === 'lista'} onClick={() => setVista('lista')}>Lista</button><button type="button" aria-pressed={vista === 'galeria'} onClick={() => setVista('galeria')}>Galería</button></div><label>Por página <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
     {!cargando && !error && pagina.data.length === 0 && <p className="items-general-vacio">{buscar || grupo || estado ? 'No hay ítems que coincidan con los filtros.' : 'Todavía no hay ítems comerciales. Registra el primero y vincúlalo a su agrupador.'}</p>}
     {vista === 'galeria' ? <div className="items-general-galeria" aria-busy={cargando}>{pagina.data.map(item => <article key={item.id} className="item-comercial-card">
       <header className="item-card-cabecera"><span className="item-card-codigo">{item.codigo}</span><span className={'item-card-estado ' + (item.estado === 'ACTIVO' ? 'activo' : 'inactivo')}>{item.estado === 'ACTIVO' ? 'Activo' : 'Inactivo'}</span></header>
-      <div className="item-card-identidad"><h3>{item.nombre_comercial}</h3><div className="item-card-grupo"><span>Agrupador genérico</span><strong>{item.producto_base.nombre}</strong><small>{item.producto_base.codigo}</small></div></div>
-      <dl className="item-card-datos"><div><dt>Marca / laboratorio</dt><dd>{item.marca || 'Sin registrar'}</dd></div><div><dt>Presentación</dt><dd>{item.presentacion || 'Sin registrar'}</dd></div><div><dt>Unidad</dt><dd>{item.unidad.nombre}</dd></div>{item.codigo_barras && <div><dt>Código de barras</dt><dd>{item.codigo_barras}</dd></div>}</dl>
-      <dl className="item-card-precios">{(['precio_1', 'precio_2', 'precio_3'] as const).map((campo, indice) => <div key={campo}><dt>Precio {indice + 1}</dt><dd>{dinero(item[campo])}</dd></div>)}</dl>
+      <div className="item-card-identidad"><h3>{item.nombre_comercial}</h3></div>
       <footer className="item-card-acciones">{botones(item)}</footer>
     </article>)}</div> : pagina.data.length > 0 && <div className="productos-base-tabla items-general-lista" aria-busy={cargando} tabIndex={0} aria-label="Lista de ítems comerciales; desplázate horizontalmente para ver todas las columnas"><table><thead><tr><th scope="col">Código</th><th scope="col">Ítem comercial</th><th scope="col">Agrupador</th><th scope="col">Marca / laboratorio</th><th scope="col">Presentación</th><th scope="col">Unidad</th><th scope="col">Precio 1</th><th scope="col">Precio 2</th><th scope="col">Precio 3</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead><tbody>{pagina.data.map(item => <tr key={item.id}><td>{item.codigo}</td><td><strong>{item.nombre_comercial}</strong>{item.codigo_barras && <small>Código de barras: {item.codigo_barras}</small>}</td><td>{item.producto_base.nombre}<small>{item.producto_base.codigo}</small></td><td>{item.marca || 'Sin registrar'}</td><td>{item.presentacion || 'Sin registrar'}</td><td>{item.unidad.nombre}</td><td>{dinero(item.precio_1)}</td><td>{dinero(item.precio_2)}</td><td>{dinero(item.precio_3)}</td><td><span className={'item-card-estado ' + (item.estado === 'ACTIVO' ? 'activo' : 'inactivo')}>{item.estado === 'ACTIVO' ? 'Activo' : 'Inactivo'}</span></td><td>{botones(item)}</td></tr>)}</tbody></table></div>}
     {paginacion}

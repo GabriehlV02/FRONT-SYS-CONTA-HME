@@ -1,7 +1,7 @@
 /* Sidebar inspirado en el flujo del sistema de productos: lectura rápida, control flotante y navegación compacta. */
 .sistema-contable .sistema-sidebar {
   width: 270px !important;
-  background: linear-gradient(180deg, #075985 0%, #087ea7 58%, #0b9bc1 100%);
+  background: linear-gradient(180deg, #0066AD 0%, #0066AD 58%, #0066AD 100%);
   border-right: 1px solid #55c9df;
   box-shadow: 8px 0 24px rgba(2, 52, 81, .16);
 }
@@ -10,10 +10,10 @@
 .sistema-contable .sistema-marca { height: 108px !important; padding: 15px 18px !important; }
 .sistema-contable .replegar-menu {
   top: 30px !important; right: -22px !important; width: 44px !important; height: 44px !important;
-  border: 2px solid #fff !important; color: #075985 !important;
+  border: 2px solid #fff !important; color: #0066AD !important;
   background: #fff !important; box-shadow: 0 7px 18px rgba(1, 45, 73, .25) !important;
 }
-.sistema-contable .replegar-menu:hover { transform: scale(1.05); color: #087ea7 !important; }
+.sistema-contable .replegar-menu:hover { transform: scale(1.05); color: #0066AD !important; }
 .sistema-contable .sidebar-scroll { display: flex; flex: 1; min-height: 0; flex-direction: column; }
 .sistema-contable .sistema-nav { padding: 20px 12px 12px; }
 .sistema-contable .sistema-nav section { padding: 0 0 14px; }
@@ -23,10 +23,10 @@
   height: 48px; margin: 3px 0; padding: 0 11px; gap: 12px; border-radius: 12px; border-color: transparent;
   font-size: 13px; font-weight: 700;
 }
-.sistema-contable .sistema-nav .nav-modulo.activo { border-color: #bdf2fb; background: #fff; color: #075985; box-shadow: 0 5px 14px rgba(3, 75, 105, .16); }
+.sistema-contable .sistema-nav .nav-modulo.activo { border-color: #bdf2fb; background: #fff; color: #0066AD; box-shadow: 0 5px 14px rgba(3, 75, 105, .16); }
 .sistema-contable .nav-modulo.activo:before { display: block; left: 0; width: 4px; border-radius: 0 5px 5px 0; background: #12b8df; }
 .sistema-contable .nav-icono { width: 30px; height: 30px; flex-basis: 30px; border-radius: 9px; }
-.sistema-contable .nav-modulo.activo .nav-icono { color: #087ea7; border-color: #b7ebf5; background: #e9fbff; }
+.sistema-contable .nav-modulo.activo .nav-icono { color: #0066AD; border-color: #b7ebf5; background: #e9fbff; }
 .sistema-contable .nav-texto { font-size: 13px; font-weight: 750; }
 .sistema-contable .nav-indicador { margin-left: auto; opacity: .75; }
 .sistema-contable .sidebar-sesion {

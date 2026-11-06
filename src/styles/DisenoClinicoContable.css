@@ -2,7 +2,7 @@
 @layer contable-diseno-clinico {
   .sistema-contable {
     --conta-plomo: #22343d;
-    --conta-turquesa: #087fb5;
+    --conta-turquesa: #0066AD;
     --conta-linea: #d4e2e7;
     --conta-fondo: #f2f6f7;
     --conta-texto: #18303c;
@@ -20,7 +20,7 @@
   .sistema-contable .sistema-nav .nav-modulo.activo { background: var(--conta-turquesa) !important; color: #fff !important; box-shadow: 0 4px 12px #001d2e20 !important; }
   .sistema-contable .sistema-nav .nav-modulo:hover:not(.activo) { background: #34515b !important; }
   .sistema-contable .sistema-topbar { min-height: 64px !important; gap: 12px !important; border-bottom: 1px solid var(--conta-linea) !important; background: #fff !important; box-shadow: 0 3px 12px #18303c0a !important; }
-  .sistema-contable .topbar-icono, .sistema-contable .perfil-avatar { display: grid; place-items: center; border-radius: 10px !important; background: #e4f3f3 !important; color: #087f91 !important; }
+  .sistema-contable .topbar-icono, .sistema-contable .perfil-avatar { display: grid; place-items: center; border-radius: 10px !important; background: #e4f3f3 !important; color: #0066AD !important; }
   .sistema-contable .topbar-titulo h1 { font-size: 18px !important; font-weight: 750 !important; letter-spacing: 0 !important; }
   .sistema-contable .topbar-titulo small { font-size: 11px !important; }
   .sistema-contable .busqueda-global { min-height: 42px !important; border: 1px solid var(--conta-linea) !important; border-radius: 9px !important; background: #f8fbfb !important; }
@@ -41,8 +41,8 @@
     color: #315b69 !important; background: transparent !important; box-shadow: none !important; white-space: nowrap !important;
   }
   .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button:hover:not(.activo) { background: #eaf6f6 !important; color: #086b78 !important; }
-  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button.activo { border-color: #087b9e !important; background: #087fb5 !important; color: #fff !important; box-shadow: 0 4px 10px #087fb530 !important; }
-  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button > :is(i, span):has(svg) { display: grid !important; place-items: center !important; width: 26px !important; height: 26px !important; flex: 0 0 26px !important; border: 1px solid #cde6e8 !important; border-radius: 7px !important; background: #edf8f8 !important; color: #087c91 !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button.activo { border-color: #0066AD !important; background: #0066AD !important; color: #fff !important; box-shadow: 0 4px 10px #0066AD30 !important; }
+  .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button > :is(i, span):has(svg) { display: grid !important; place-items: center !important; width: 26px !important; height: 26px !important; flex: 0 0 26px !important; border: 1px solid #cde6e8 !important; border-radius: 7px !important; background: #edf8f8 !important; color: #0066AD !important; }
   .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button.activo > :is(i, span):has(svg) { border-color: #ffffff55 !important; background: #ffffff26 !important; color: #fff !important; }
   .sistema-contable :is(.inventario-subvistas, .ventas-tabs, .usuarios-subvistas, .movimientos-subvistas, .configuracion-subvistas) > button::after { display: none !important; }
 
@@ -50,7 +50,7 @@
   .sistema-contable :is(.ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera) { gap: 12px; margin-bottom: 18px; }
   .sistema-contable :is(.ventas-cabecera, .inventario-cabecera, .movimientos-cabecera, .usuarios-cabecera) :is(h1, h2) { color: var(--conta-texto) !important; letter-spacing: -.025em; }
   .sistema-contable :is(.ventas-filtros, .inventario-filtros, .movimientos-filtros, .usuarios-filtros) { gap: 10px !important; }
-  .sistema-contable :is(input, select, textarea):focus-visible, .sistema-contable button:focus-visible { outline: 2px solid #087fb5 !important; outline-offset: 2px !important; }
+  .sistema-contable :is(input, select, textarea):focus-visible, .sistema-contable button:focus-visible { outline: 2px solid #0066AD !important; outline-offset: 2px !important; }
 
   @media (max-width: 760px) {
     .sistema-contable .sistema-topbar { height: auto !important; min-height: 58px !important; }

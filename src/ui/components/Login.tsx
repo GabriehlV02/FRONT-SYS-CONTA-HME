@@ -66,7 +66,7 @@ export function Login({
   }
 
   const loginForm = (
-    <form className="login-card" onSubmit={enter}>
+    <form className={esContable ? 'acceso-contable-form' : 'login-card'} onSubmit={enter}>
       {!esContable && <Brand name={config.name} subtitle={config.subtitle} />}
       <p className="login-kicker">{esContable ? 'Acceso al sistema contable' : config.loginTitle}</p>
       <h1>Iniciar sesión</h1>
@@ -174,6 +174,36 @@ export function Login({
         </div>
       )}
     </form>
+  );
+
+  if (esContable) return (
+    <main className="acceso-contable">
+      <div className="acceso-contable-layout">
+        <section className="acceso-contable-institucional" aria-label="Sistema contable Hospital María Esperanza">
+          <div className="acceso-contable-marca">
+            <img src="/logo-hospital-contable-corporativo.png" alt="Hospital María Esperanza" />
+          </div>
+          <div className="acceso-contable-presentacion">
+            <span className="acceso-contable-etiqueta"><Icon name="chart" size={16} /> SISTEMA CONTABLE</span>
+            <h2>Una gestión clara para avanzar con confianza.</h2>
+            <p>Tu espacio para organizar la operación administrativa y financiera del hospital.</p>
+            <div className="acceso-contable-areas" aria-label="Áreas del sistema">
+              <span><Icon name="cart" size={19} /> Ventas y caja</span>
+              <span><Icon name="package" size={19} /> Inventario</span>
+              <span><Icon name="chart" size={19} /> Reportes</span>
+            </div>
+          </div>
+          <p className="acceso-contable-pie">Hospital María Esperanza <span aria-hidden="true">·</span> Administración</p>
+        </section>
+        <section className="acceso-contable-entrada" aria-label="Acceso al sistema">
+          <div className="acceso-contable-tarjeta">
+            <span className="acceso-contable-simbolo" aria-hidden="true"><Icon name="asset" size={25} /></span>
+            {loginForm}
+          </div>
+          <p className="acceso-contable-ayuda">Acceso para personal autorizado</p>
+        </section>
+      </div>
+    </main>
   );
 
   return (

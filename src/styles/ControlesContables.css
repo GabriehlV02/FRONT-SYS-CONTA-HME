@@ -23,8 +23,8 @@
     margin:0!important; padding:0!important; border:0!important; border-radius:0!important; outline:none!important; box-shadow:none!important; background:transparent!important;
   }
   .sistema-contable :is(label,div):has(> input) > svg { flex-shrink:0!important; position:static!important; transform:none!important; }
-  .sistema-contable :is(label,div):has(> svg):has(> input):focus-within { border-color:#0086c4!important; box-shadow:0 0 0 2px #0086c41a!important; outline:none!important; }
-  .sistema-contable select:focus-visible { outline:2px solid #0086c433!important; outline-offset:0!important; border-color:#0086c4!important; }
+  .sistema-contable :is(label,div):has(> svg):has(> input):focus-within { border-color:#0066AD!important; box-shadow:0 0 0 2px #0066AD1a!important; outline:none!important; }
+  .sistema-contable select:focus-visible { outline:2px solid #0066AD33!important; outline-offset:0!important; border-color:#0066AD!important; }
   .sistema-contable .inventario-orden:not(.select-menu) { display:flex!important; align-items:center!important; gap:8px!important; padding:0!important; height:44px!important; border:0!important; background:transparent!important; box-shadow:none!important; }
   .sistema-contable .inventario-orden:not(.select-menu) > span { position:static!important; white-space:nowrap!important; font-size:12px!important; flex-shrink:0!important; }
   .sistema-contable .inventario-orden:not(.select-menu) > select { flex:1!important; width:100%!important; }

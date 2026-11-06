@@ -8,8 +8,8 @@
     --ui-line: #d2e0e5 !important;
     --ui-canvas: #f0f5f6 !important;
     --ui-soft: #eef5f7 !important;
-    --ui-accent: #0284c7 !important;
-    --ui-accent-hover: #0369a1 !important;
+    --ui-accent: #0066AD !important;
+    --ui-accent-hover: #0066AD !important;
     --ui-accent-soft: #e5f4f3 !important;
     --ui-shadow: 0 2px 5px rgb(27 60 73 / 3%) !important;
   }
@@ -42,13 +42,13 @@
   .sistema-contable .sistema-nav section + section { margin-top: 11px !important; padding-top: 11px !important; }
   .sistema-contable .sistema-nav section p { margin: 0 12px 7px !important; font-size: 11px !important; font-weight: 500 !important; letter-spacing: .03em !important; text-transform: capitalize !important; color: #a8bfc8 !important; }
   .sistema-contable .sistema-nav .nav-modulo { min-height: 44px !important; padding: 10px 12px !important; border-radius: 7px !important; margin-block: 2px !important; border: 1px solid transparent !important; box-shadow: none !important; }
-  .sistema-contable .sistema-nav .nav-modulo.activo { background: #254f65 !important; border-color: #3b7088 !important; color: white !important; box-shadow: inset 3px 0 0 #22b9d3 !important; }
+  .sistema-contable .sistema-nav .nav-modulo.activo { background: #254f65 !important; border-color: #0066AD !important; color: white !important; box-shadow: inset 3px 0 0 #22b9d3 !important; }
   .sistema-contable .sistema-nav .nav-modulo:hover:not(.activo) { background: #2d424c !important; }
   .sistema-contable .boton-salir { margin-bottom: 14px !important; border-radius: 7px !important; background: transparent !important; }
 
-  .sistema-contable .saltar-contenido { position: fixed; inset: 10px auto auto 50%; transform: translate(-50%, -150%); z-index: 5000; padding: 12px 20px; border-radius: 7px; color: #fff; background: #0369a1; text-decoration: none; }
+  .sistema-contable .saltar-contenido { position: fixed; inset: 10px auto auto 50%; transform: translate(-50%, -150%); z-index: 5000; padding: 12px 20px; border-radius: 7px; color: #fff; background: #0066AD; text-decoration: none; }
   .sistema-contable .saltar-contenido:focus { transform: translate(-50%, 0); }
-  .sistema-contable :is(button, a, input, select, textarea, [tabindex]):focus-visible, .login-page-contable :is(button, input, a):focus-visible { outline: 3px solid #0284c7 !important; outline-offset: 3px !important; box-shadow: none !important; }
+  .sistema-contable :is(button, a, input, select, textarea, [tabindex]):focus-visible, .login-page-contable :is(button, input, a):focus-visible { outline: 3px solid #0066AD !important; outline-offset: 3px !important; box-shadow: none !important; }
   .sistema-contable .sistema-sidebar button:focus-visible, .sistema-contable .sistema-topbar button:focus-visible { outline-color: #7ee0e8 !important; }
   /* El buscador compuesto recibe un solo foco en su contenedor. */
   .sistema-contable :is(label, div):has(> input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i])) {
@@ -59,7 +59,7 @@
     background: #fff !important;
   }
   .sistema-contable :is(label, div):has(> input:is([type="search"], [placeholder*="buscar" i], [aria-label*="buscar" i])):focus-within {
-    border-color: #0284c7 !important;
+    border-color: #0066AD !important;
     box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important;
     outline: none !important;
   }
@@ -79,7 +79,7 @@
   .sistema-contable :is(select, .select-menu-trigger):is(:focus, :focus-visible, [aria-expanded="true"]) {
     outline: none !important;
     outline-offset: 0 !important;
-    border-color: #0284c7 !important;
+    border-color: #0066AD !important;
     box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important;
   }
   .sistema-contable :is(label, .select-menu, [class*="buscador"], [class*="busqueda"], [class*="filtro"]):has(:is(select:focus, .select-menu-trigger:focus, .select-menu-trigger[aria-expanded="true"])) {
@@ -100,16 +100,16 @@
   .sistema-contable .sistema-cuerpo input[type="number"] { font-variant-numeric: tabular-nums; }
   .sistema-contable :is(.inventario-filtros, .usuarios-filtros, .profesionales-barra, .configuracion-barra, .stock-herramientas, .control-herramientas) :is(input, select) { min-height: 42px !important; }
   .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .adquisiciones-nuevo, .traspasos-nuevo, .primario, .inventario-primario) { min-height: 42px !important; border-radius: 7px !important; padding-inline: 17px !important; font-size: 13px !important; font-weight: 600 !important; box-shadow: none !important; }
-  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario) { background: #007dac !important; color: white !important; }
-  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario):hover:not(:disabled) { background: #0369a1 !important; }
+  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario) { background: #0066AD !important; color: white !important; }
+  .sistema-contable :is(.inventario-nuevo, .usuarios-accion, .profesionales-nuevo, .traspasos-nuevo, .primario, .inventario-primario):hover:not(:disabled) { background: #0066AD !important; }
 
   .sistema-contable .subvistas-carrusel { margin-bottom: 20px !important; }
   .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) { background: transparent !important; border: 0 !important; border-bottom: 1px solid #cbdce2 !important; border-radius: 0 !important; padding: 0 0 8px !important; gap: 7px !important; box-shadow: none !important; width: auto !important; max-width: 100%; }
   .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button { min-height: 40px !important; border: 1px solid transparent !important; border-radius: 7px !important; padding: 10px 15px !important; font-size: 13px !important; background: transparent !important; color: #526e79 !important; font-weight: 500 !important; box-shadow: none !important; }
-  .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button:is(.activo, [aria-current="page"]) { color: #006e9b !important; background: #fff !important; border-color: #add1df !important; box-shadow: 0 2px 0 #0284c7 !important; }
+  .sistema-contable :is(.inventario-subvistas, .usuarios-subvistas, .configuracion-subvistas, .movimientos-subvistas, .traspasos-subvistas, .ventas-tabs) > button:is(.activo, [aria-current="page"]) { color: #0066AD !important; background: #fff !important; border-color: #add1df !important; box-shadow: 0 2px 0 #0066AD !important; }
   .sistema-contable .subvistas-flecha { top: 3px !important; width: 34px !important; height: 34px !important; border-color: #bed4df !important; box-shadow: 0 2px 7px rgb(27 60 73 / 10%) !important; }
   .sistema-contable .vista-encabezado { display: flex; align-items: center; gap: 14px; margin: 0 0 22px; padding: 4px 2px; }
-  .sistema-contable .vista-encabezado-icono { display: grid; place-items: center; flex: 0 0 46px; width: 46px; height: 46px; border-radius: 12px; background: #e0f0f4 !important; color: #087c9f !important; }
+  .sistema-contable .vista-encabezado-icono { display: grid; place-items: center; flex: 0 0 46px; width: 46px; height: 46px; border-radius: 12px; background: #e0f0f4 !important; color: #0066AD !important; }
   .sistema-contable .vista-encabezado h2 { margin: 0 0 5px !important; }
   .sistema-contable .vista-encabezado p { margin: 0 !important; max-width: 75ch; font-size: 13px !important; }
   .sistema-contable :is(.inventario-contenido, .usuarios-contenido, .movimientos-contenido, .configuracion-operativa, .stock-lotes, .profesionales-vista, .controles-vencimiento, .avisos-precio) { border: 1px solid #d2e0e5 !important; border-radius: 12px !important; padding: 24px !important; box-shadow: 0 2px 5px rgb(27 60 73 / 3%) !important; min-width: 0; }
@@ -134,7 +134,7 @@
   .sistema-contable :is(.usuarios-tabla-head, .inventario-tabla-head, .configuracion-tabla-head, .profesionales-head, .adquisiciones-head, .traspasos-head, .control-tabla-head, .inventario-tabla-productos-cabecera) { background: #edf4f6 !important; color: #3a5966 !important; min-height: 44px !important; font-size: 12px !important; font-weight: 500 !important; }
   .sistema-contable :is(.usuarios-tabla-fila, .configuracion-tabla-fila, .profesionales-fila, .adquisiciones-fila, .traspasos-fila) { min-height: 56px; font-size: 13px !important; }
   .sistema-contable :is(.usuarios-tabla-fila, .inventario-tabla-productos .inventario-fila):hover { background-color: #eef8fa !important; }
-  .sistema-contable :is(.inventario-contador, .usuarios-contador, .profesionales-contador, .movimientos-contador) { border: 1px solid #c6e4e6 !important; background: #eaf6f5 !important; color: #006e85 !important; border-radius: 6px !important; padding: 5px 10px !important; font-size: 12px !important; font-weight: 500 !important; }
+  .sistema-contable :is(.inventario-contador, .usuarios-contador, .profesionales-contador, .movimientos-contador) { border: 1px solid #c6e4e6 !important; background: #eaf6f5 !important; color: #0066AD !important; border-radius: 6px !important; padding: 5px 10px !important; font-size: 12px !important; font-weight: 500 !important; }
   .sistema-contable :is(.productos-base-paginacion, .inventario-paginas, .paginacion-tabla) { margin-top: 16px; gap: 8px !important; }
   .sistema-contable :is(.productos-base-paginacion, .inventario-paginas) button { min-height: 34px !important; border-radius: 6px !important; box-shadow: none !important; }
   .sistema-contable .productos-base-paginacion span { padding-inline: 6px; font-size: 12px !important; color: #526e79 !important; }
@@ -162,7 +162,7 @@
   .sistema-contable .dashboard-metricas article::before { display: none !important; }
   .sistema-contable .dashboard-metricas article > div { color: #526e79 !important; font-size: 13px !important; }
   .sistema-contable .dashboard-metricas article > strong { display: block; margin: 12px 0 5px !important; font-size: clamp(26px, 2.3vw, 34px) !important; letter-spacing: -.04em !important; line-height: 1.2 !important; font-weight: 600 !important; }
-  .sistema-contable .dashboard-metricas article svg { width: 20px !important; color: #0284c7 !important; }
+  .sistema-contable .dashboard-metricas article svg { width: 20px !important; color: #0066AD !important; }
   .sistema-contable .dashboard-accesos { gap: 10px !important; margin-block: 18px 24px !important; }
   .sistema-contable .dashboard-accesos button { border: 1px solid #d2e0e5 !important; border-radius: 8px !important; background: transparent !important; min-height: 50px !important; box-shadow: none !important; padding: 12px 16px !important; }
   .sistema-contable .dashboard-accesos button:hover { border-color: #8abccc !important; background: #fff !important; }
@@ -172,7 +172,7 @@
   .sistema-contable .dashboard-panel p { margin-top: 4px !important; font-size: 13px !important; }
   .sistema-contable .dashboard-ranking article { border: 0 !important; border-bottom: 1px solid #e3ecef !important; border-radius: 0 !important; padding: 15px 0 !important; box-shadow: none !important; }
   .sistema-contable .dashboard-ranking article:last-child { border-bottom: 0 !important; }
-  .sistema-contable .dashboard-ranking article > b { width: 30px !important; height: 30px !important; border-radius: 7px !important; background: #eaf5f7 !important; color: #007899 !important; }
+  .sistema-contable .dashboard-ranking article > b { width: 30px !important; height: 30px !important; border-radius: 7px !important; background: #eaf5f7 !important; color: #0066AD !important; }
   .sistema-contable .dashboard-barras { border-bottom: 1px solid #dce8eb; padding-top: 24px; background: repeating-linear-gradient(to top, transparent 0, transparent 49px, #edf3f5 49px, #edf3f5 50px); }
   .sistema-contable .dashboard-barras > div > i { background: transparent !important; border: 0 !important; border-radius: 0 !important; }
   .sistema-contable .dashboard-barras b { border-radius: 3px !important; }
@@ -216,7 +216,7 @@
   .sistema-contable .notificaciones-herramientas { border-radius: 10px !important; padding: 16px !important; gap: 12px !important; }
   .sistema-contable .notificacion-tarjeta { border-radius: 9px !important; padding: 20px !important; box-shadow: none !important; margin-bottom: 10px; }
   .sistema-contable .notificacion-tarjeta:hover { transform: none !important; }
-  .sistema-contable .notificacion-tarjeta.nueva { border-left: 3px solid #0284c7 !important; }
+  .sistema-contable .notificacion-tarjeta.nueva { border-left: 3px solid #0066AD !important; }
   .sistema-contable .notificacion-tarjeta .notificacion-contenido strong { font-size: 15px !important; }
   .sistema-contable .notificaciones-ayuda { border-radius: 10px !important; padding: 24px !important; align-self: start; }
 
@@ -238,9 +238,9 @@
   .login-page-contable .login-card > p { line-height: 1.65; color: #58717b; }
   .login-page-contable .login-label { font-size: 13px !important; font-weight: 500 !important; margin-bottom: 8px !important; }
   .login-page-contable .login-input { min-height: 48px !important; border-radius: 8px !important; border-color: #c9dce3 !important; background: #fff !important; box-shadow: none !important; }
-  .login-page-contable .login-input:focus-within { outline: 2px solid #0284c7 !important; outline-offset: 2px; }
-  .login-page-contable .login-submit { min-height: 48px !important; border-radius: 8px !important; background: #007dac !important; font-weight: 600 !important; box-shadow: none !important; }
-  .login-page-contable .login-submit:hover { background: #0369a1 !important; }
+  .login-page-contable .login-input:focus-within { outline: 2px solid #0066AD !important; outline-offset: 2px; }
+  .login-page-contable .login-submit { min-height: 48px !important; border-radius: 8px !important; background: #0066AD !important; font-weight: 600 !important; box-shadow: none !important; }
+  .login-page-contable .login-submit:hover { background: #0066AD !important; }
   .login-page-contable :is(.login-circulos, .mini-triangulo, .triangulo-orbita) { display: none !important; }
 
   @media (min-width: 1101px) {
@@ -339,9 +339,9 @@
   .sistema-contable .adquisiciones-recepcion-real .adquisiciones-linea-form > label:nth-child(-n+2) { grid-column: span 2; }
   .sistema-contable .adquisiciones-recepcion-real label { color: var(--ui-ink); font-size: 12px; font-weight: 500; }
   .sistema-contable .adquisiciones-recepcion-real :is(input, select) { font-weight: 400 !important; font-size: 13px !important; color: var(--ui-ink) !important; border-color: var(--ui-line) !important; background: #fff !important; }
-  .sistema-contable .adquisiciones-recepcion-real :is(input:not([placeholder*="buscar" i]), select):focus { border-color: #0284c7 !important; outline: none !important; box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important; }
+  .sistema-contable .adquisiciones-recepcion-real :is(input:not([placeholder*="buscar" i]), select):focus { border-color: #0066AD !important; outline: none !important; box-shadow: 0 0 0 2px rgb(2 132 199 / 12%) !important; }
   .sistema-contable .adquisiciones-recepcion-real button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--ui-line); border-radius: 7px; background: #fff; color: var(--ui-ink); cursor: pointer; box-shadow: none !important; }
-  .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-agregar-linea, .adquisiciones-cargar) { color: #fff !important; background: #007dac !important; border-color: #007dac !important; }
+  .sistema-contable .adquisiciones-recepcion-real :is(.adquisiciones-agregar-linea, .adquisiciones-cargar) { color: #fff !important; background: #0066AD !important; border-color: #0066AD !important; }
   .sistema-contable .adquisiciones-recepcion-real button:disabled { opacity: .55 !important; cursor: default; }
   .sistema-contable .adquisiciones-recepcion-real h3.adquisiciones-carga-seccion { border: 0 !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
   .sistema-contable .adquisiciones-recepcion-real input[readonly] { color: var(--ui-muted) !important; background: var(--ui-soft) !important; }
@@ -377,7 +377,7 @@
   .sistema-contable .recepcion-selector-producto .recepcion-buscar-producto input { padding-inline: 0; }
   .sistema-contable .recepcion-producto-ficha { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); gap: 16px; align-items: center; padding-top: 14px; border-top: 1px solid var(--ui-line); }
   .sistema-contable .recepcion-producto-ficha > div { display: flex; gap: 12px; align-items: center; }
-  .sistema-contable .recepcion-producto-ficha > div > svg { color: #007dac; flex-shrink: 0; }
+  .sistema-contable .recepcion-producto-ficha > div > svg { color: #0066AD; flex-shrink: 0; }
   .sistema-contable .recepcion-producto-ficha strong { display: block; font-size: 15px; overflow-wrap: anywhere; }
   .sistema-contable .recepcion-producto-ficha span { display: block; margin-top: 3px; font-size: 12px; color: var(--ui-muted); }
   .sistema-contable .recepcion-producto-ficha dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; gap: 14px; }
@@ -388,7 +388,7 @@
   .sistema-contable .recepcion-precios { padding-left: 24px !important; border-left: 1px solid var(--ui-line) !important; }
   .sistema-contable .recepcion-modo-lote { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
   .sistema-contable .recepcion-modo-lote label { flex-direction: row; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
-  .sistema-contable .recepcion-modo-lote input[type="radio"] { width: 16px; height: 16px; padding: 0; margin: 0; accent-color: #007dac; flex-shrink: 0; }
+  .sistema-contable .recepcion-modo-lote input[type="radio"] { width: 16px; height: 16px; padding: 0; margin: 0; accent-color: #0066AD; flex-shrink: 0; }
   .sistema-contable .recepcion-campos-lote { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: end; }
   .sistema-contable .recepcion-campos-lote small { display: inline; color: var(--ui-muted); font-size: 11px; }
   .sistema-contable .recepcion-campos-precios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }

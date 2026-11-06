@@ -16,11 +16,11 @@ export function UsuariosView({ permisos }: { permisos: string[] }) {
   return (
     <section className="usuarios-vista">
       <UsuariosNavegacion activa={subvista} onSeleccionar={setSubvista} />
-      <EncabezadoVista
-        titulo={subvista === 'usuarios' ? 'Usuarios del sistema' : subvista === 'pacientes-usuarios' ? 'Registro de pacientes' : subvista === 'especialidades' ? 'Especialidades' : 'Roles y permisos'}
-        descripcion={subvista === 'usuarios' ? 'Administra las cuentas del equipo y su acceso a sucursales, cajas y almacenes.' : subvista === 'pacientes-usuarios' ? 'Registra y consulta los pacientes compartidos con el sistema clínico.' : subvista === 'especialidades' ? 'Consulta y administra las especialidades del personal de salud.' : 'Define qué puede consultar y gestionar cada usuario del sistema.'}
+      {subvista !== 'usuarios' && <EncabezadoVista
+        titulo={subvista === 'pacientes-usuarios' ? 'Registro de pacientes' : subvista === 'especialidades' ? 'Especialidades' : 'Roles y permisos'}
+        descripcion={subvista === 'pacientes-usuarios' ? 'Registra y consulta los pacientes compartidos con el sistema clínico.' : subvista === 'especialidades' ? 'Consulta y administra las especialidades del personal de salud.' : 'Define qué puede consultar y gestionar cada usuario del sistema.'}
         icono={subvista === 'roles-permisos' ? 'userCheck' : 'users'}
-      />
+      />}
       {subvista === 'usuarios' && (permisos.includes('USUARIOS_VER') ? <ListadoUsuariosView puedeCrear={permisos.includes('USUARIOS_CREAR')} /> : <p role="status">No tienes permiso para consultar usuarios.</p>)}
       {subvista === 'pacientes-usuarios' && (permisos.includes('USUARIOS_VER') ? <PacientesUsuariosView puedeCrear={permisos.includes('USUARIOS_CREAR')} /> : <p role="status">No tienes permiso para consultar pacientes.</p>)}
       {subvista === 'roles-permisos' && (permisos.includes('ROLES_GESTIONAR') ? <RolesPermisosView /> : <p role="status">No tienes permiso para gestionar roles y permisos.</p>)}

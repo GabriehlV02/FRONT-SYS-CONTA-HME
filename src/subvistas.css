@@ -76,7 +76,7 @@
     .movimientos-subvistas
   )
   button:focus-visible {
-  outline: 2px solid #008bc2;
+  outline: 2px solid #0066AD;
   outline-offset: 1px;
 }
 .sistema-contable
@@ -94,7 +94,7 @@
   border: 1px solid #b9ddea;
   border-radius: 6px;
   background: #f5fcff;
-  color: #076499;
+  color: #0066AD;
   box-shadow: none;
 }
 .sistema-contable
@@ -105,8 +105,8 @@
     .usuarios-subvista-icono,
     i
   ) {
-  border-color: #0879af;
-  background: #0879af;
+  border-color: #0066AD;
+  background: #0066AD;
   color: #fff;
 }
 .sistema-contable .ventas-tabs i svg {
@@ -166,12 +166,12 @@
 }
 .sistema-contable :is(.inventario-subvistas,.ventas-tabs,.usuarios-subvistas,.movimientos-subvistas) button:hover{
   border-color:#c5def1;
-  color:#086bd5;
+  color:#0066AD;
   background:#f8fcff;
 }
 .sistema-contable :is(.inventario-subvistas,.ventas-tabs,.usuarios-subvistas,.movimientos-subvistas) button.activo{
   border-color:#c7e0f5;
-  color:#075fc0;
+  color:#0066AD;
   background:#fff;
   box-shadow:0 3px 9px rgba(24,91,153,.12);
 }
@@ -238,7 +238,7 @@
   )
   button:hover {
   border-color: transparent;
-  color: #0879af;
+  color: #0066AD;
   background: #f5fcff;
 }
 .sistema-contable
@@ -249,8 +249,8 @@
     .movimientos-subvistas
   )
   button.activo {
-  border-color: #0879af;
-  color: #006eaa;
+  border-color: #0066AD;
+  color: #0066AD;
   background: transparent;
   box-shadow: none;
 }
@@ -398,7 +398,7 @@
     .movimientos-subvistas
   )
   button:hover {
-  color: #075da8;
+  color: #0066AD;
   background: #f8fcff;
 }
 
@@ -424,7 +424,7 @@
     .movimientos-subvistas
   )
   button.activo::after {
-  background: #087bd7;
+  background: #0066AD;
 }
 
 .sistema-contable
@@ -441,7 +441,7 @@
   height: 29px;
   border: 1px solid #b9dced;
   border-radius: 8px;
-  color: #0875c6;
+  color: #0066AD;
   background: #f8fcff;
   box-shadow: none;
 }
@@ -460,9 +460,9 @@
     .usuarios-subvista-icono,
     i
   ) {
-  border-color: #087bd7;
+  border-color: #0066AD;
   color: #fff;
-  background: #087bd7;
+  background: #0066AD;
 }
 
 .sistema-contable
@@ -473,7 +473,7 @@
     .movimientos-subvistas
   )
   button:focus-visible {
-  outline: 2px solid #087bd7;
+  outline: 2px solid #0066AD;
   outline-offset: -2px;
 }
 

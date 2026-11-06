@@ -1,0 +1,92 @@
+@layer contable-diseno-clinico {
+  .acceso-contable {
+    min-height: 100dvh;
+    padding: 32px;
+    display: grid;
+    place-items: center;
+    color: #183a54;
+    background: radial-gradient(circle at 12% 8%, #d8ebf8, transparent 36%), #edf4f8;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .acceso-contable * { box-sizing: border-box; }
+  .acceso-contable-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    width: min(1080px, 100%);
+    min-height: 620px;
+    overflow: hidden;
+    border: 1px solid #d0e2ed;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 22px 65px #183e5c1c;
+  }
+  .acceso-contable-institucional {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 44px 48px 32px;
+    color: #fff;
+    background: linear-gradient(145deg, #075084, #0066ad 65%, #087db7);
+  }
+  .acceso-contable-institucional::after {
+    content: '';
+    position: absolute;
+    right: -130px;
+    bottom: -200px;
+    width: 400px;
+    height: 400px;
+    border: 55px solid #ffffff0d;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .acceso-contable-marca img { display: block; width: 194px; max-width: 100%; height: 70px; padding: 9px 12px; border-radius: 12px; background: #fff; object-fit: contain; object-position: center; }
+  .acceso-contable-presentacion { position: relative; z-index: 1; margin: auto 0; padding: 28px 0; }
+  .acceso-contable-etiqueta { display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid #ffffff45; border-radius: 8px; color: #e3f5ff; background: #ffffff17; font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+  .acceso-contable-presentacion h2 { max-width: 440px; margin: 24px 0 14px; color: #fff; font-size: clamp(30px, 3vw, 42px); line-height: 1.12; letter-spacing: -.035em; }
+  .acceso-contable-presentacion p { max-width: 390px; margin: 0; color: #d7ecf8; font-size: 15px; line-height: 1.7; }
+  .acceso-contable-areas { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 32px; }
+  .acceso-contable-areas span { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border: 1px solid #ffffff30; border-radius: 9px; color: #fff; background: #ffffff12; font-size: 12px; font-weight: 600; }
+  .acceso-contable-pie { position: relative; z-index: 1; margin: 0; color: #d4eafa; font-size: 11px; }
+  .acceso-contable-entrada { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 48px; background: #fff; }
+  .acceso-contable-tarjeta { width: min(100%, 350px); }
+  .acceso-contable-simbolo { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 25px; border: 1px solid #b9dcec; border-radius: 14px; color: #0066ad; background: #eaf5fb; }
+  .acceso-contable .acceso-contable-form { width: 100%; margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+  .acceso-contable .login-kicker { margin: 0 0 10px !important; color: #0066ad !important; font-size: 10px !important; font-weight: 800 !important; letter-spacing: .1em; text-align: left !important; text-transform: uppercase; }
+  .acceso-contable h1 { margin: 0; color: #153854; font-size: 30px; letter-spacing: -.035em; text-align: left; }
+  .acceso-contable .login-subtitulo { margin: 10px 0 28px !important; color: #627b8d !important; font-size: 13px !important; line-height: 1.5; text-align: left !important; }
+  .acceso-contable .login-label { display: block; margin: 0 0 7px; color: #274b62; font-size: 12px; font-weight: 700; }
+  .acceso-contable .login-input { display: flex; align-items: center; gap: 10px; width: 100%; height: 48px; margin: 0 0 18px !important; padding: 0 12px !important; border: 1px solid #c4d9e5 !important; border-radius: 9px !important; color: #0066ad !important; background: #f9fcfe !important; }
+  .acceso-contable .login-input:focus-within { border-color: #0066ad !important; outline: 3px solid #0066ad20; outline-offset: 0; background: #fff !important; }
+  .acceso-contable .login-input input { min-width: 0; width: 100%; height: 100%; padding: 0; border: 0; outline: 0; color: #183a54; background: transparent; font: inherit; font-size: 13px; }
+  .acceso-contable .login-input input::placeholder { color: #91a4b1; }
+  .acceso-contable .login-input button { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 6px; color: #34617d; background: transparent; }
+  .acceso-contable .login-opciones { margin: 1px 0 22px; color: #526c7e; font-size: 12px; }
+  .acceso-contable .login-opciones label { display: inline-flex; align-items: center; gap: 8px; }
+  .acceso-contable .login-opciones input { width: 16px; height: 16px; accent-color: #0066ad; }
+  .acceso-contable .login-submit { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 48px; padding: 12px; border: 0 !important; border-radius: 9px !important; color: #fff !important; background: #0066ad !important; box-shadow: 0 6px 15px #0066ad30 !important; font-size: 13px; font-weight: 700; }
+  .acceso-contable .login-submit:hover:not(:disabled) { background: #00558f !important; }
+  .acceso-contable .login-submit:disabled { opacity: .6; }
+  .acceso-contable .login-seguro { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 19px; padding: 0 !important; border: 0 !important; color: #688193 !important; font-size: 11px; }
+  .acceso-contable .login-error { margin: 0 0 15px; padding: 10px 12px; border: 1px solid #efc6c6; border-radius: 8px; color: #9c3030; background: #fff4f4; font-size: 12px; }
+  .acceso-contable-ayuda { margin: 28px 0 0; color: #8095a4; font-size: 11px; }
+  .acceso-contable :is(button, input):focus-visible { outline: 2px solid #0066ad; outline-offset: 3px; }
+  .acceso-contable .login-input input:focus-visible { outline: 0 !important; box-shadow: none !important; }
+  @media (max-width: 760px) {
+    .acceso-contable { padding: 18px; }
+    .acceso-contable-layout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+    .acceso-contable-institucional { padding: 24px 26px; }
+    .acceso-contable-marca img { width: 160px; height: 52px; }
+    .acceso-contable-presentacion { padding: 18px 0 0; }
+    .acceso-contable-presentacion h2 { margin: 12px 0 8px; font-size: 25px; }
+    .acceso-contable-presentacion p { font-size: 13px; }
+    .acceso-contable-areas, .acceso-contable-pie { display: none; }
+    .acceso-contable-entrada { padding: 32px 26px; }
+    .acceso-contable-simbolo { margin-bottom: 18px; }
+  }
+  @media (max-height: 700px) and (min-width: 761px) {
+    .acceso-contable { padding: 18px; }
+    .acceso-contable-layout { min-height: 550px; }
+    .acceso-contable-institucional, .acceso-contable-entrada { padding-block: 28px; }
+  }
+}

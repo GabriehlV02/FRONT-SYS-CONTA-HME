@@ -1,4 +1,4 @@
-﻿@import './ui/styles.css';
+@import './ui/styles.css';
 @import './styles/LoginBalance.css';
 
 .sistema-contable {
@@ -295,7 +295,7 @@
       transparent 30%
     ),
     linear-gradient(180deg, var(--navy), var(--navy-2) 58%, var(--navy-3));
-  border-color: #0a4a7d;
+  border-color: #0066AD;
   box-shadow: 10px 0 30px rgba(3, 31, 63, 0.24);
 }
 .sistema-contable .sistema-sidebar:after {
@@ -319,7 +319,7 @@
 .sistema-contable .marca-icono {
   border-color: rgba(151, 225, 239, 0.38);
   color: #fff;
-  background: linear-gradient(145deg, #0f4e81, #082f5c);
+  background: linear-gradient(145deg, #0066AD, #082f5c);
   box-shadow:
     0 8px 20px rgba(2, 24, 50, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
@@ -429,7 +429,7 @@
 .sistema-contable .ventas-primary:hover,
 .sistema-contable .inventario-nuevo:hover,
 .sistema-contable .inventario-primario:hover {
-  background: linear-gradient(105deg, #083c68, #21a9ca);
+  background: linear-gradient(105deg, #083c68, #0066AD);
 }
 .sistema-contable .boton-secundario,
 .sistema-contable .secundario,
@@ -505,7 +505,7 @@
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-kpi > span {
   color: #fff;
-  border-color: #18a8ca;
+  border-color: #0066AD;
   background: linear-gradient(145deg, #0b4b7b, #37bdd7);
 }
 .sistema-contable .ventas-panel,
@@ -760,7 +760,7 @@
   width: 54px;
   height: 54px;
   border-radius: 14px;
-  color: #0677c8;
+  color: #0066AD;
   background: #eaf9fd;
 }
 .sistema-contable .topbar-titulo h1 {
@@ -877,7 +877,7 @@
   place-items: center;
   border: 1px solid #b9e5ef;
   border-radius: 14px;
-  color: #0784c9;
+  color: #0066AD;
   background: #e9f9fe;
   font-style: normal;
 }
@@ -990,7 +990,7 @@
     --surface: #ffffff;
     --border: #d6e7f5;
     --muted: #647f9b;
-    --accent: #087bed;
+    --accent: #0066AD;
     color: #12345c;
     background: #f7fbff;
   }
@@ -1027,7 +1027,7 @@
     border: 1px solid #b9d9f2;
     border-radius: 11px;
     color: #fff;
-    background: linear-gradient(145deg, #2298f7, #086bd5);
+    background: linear-gradient(145deg, #0066AD, #0066AD);
     box-shadow: 0 5px 12px rgba(8, 107, 213, 0.2);
   }
   .sistema-contable .sistema-nav {
@@ -1058,9 +1058,9 @@
     background: #f1f8fe;
   }
   .sistema-contable .sistema-nav .nav-modulo.activo {
-    border-color: #198cf0;
+    border-color: #0066AD;
     color: #fff;
-    background: linear-gradient(105deg, #2298f7, #086bd5);
+    background: linear-gradient(105deg, #0066AD, #0066AD);
     box-shadow: 0 7px 16px rgba(8, 107, 213, 0.22);
   }
   .sistema-contable .nav-icono {
@@ -1069,7 +1069,7 @@
     flex-basis: 32px;
     border: 1px solid #c8e0f2;
     border-radius: 9px;
-    color: #087bed;
+    color: #0066AD;
     background: #f5fbff;
   }
   .sistema-contable .nav-modulo.activo .nav-icono {
@@ -1097,12 +1097,12 @@
     color: #173b65;
   }
   .sistema-contable .boton-salir:hover {
-    color: #086bd5;
+    color: #0066AD;
     background: #f1f8fe;
   }
   .sistema-contable .boton-salir:hover .nav-icono {
     color: #fff;
-    background: #087bed;
+    background: #0066AD;
   }
   .sistema-contable .sistema-topbar {
     height: 66px;
@@ -1113,7 +1113,7 @@
   .sistema-contable .topbar-icono,
   .sistema-contable .busqueda-global {
     border-color: #cfe2f2;
-    color: #087bed;
+    color: #0066AD;
     background: #f7fbff;
   }
   .sistema-contable .topbar-titulo h1,
@@ -1130,7 +1130,7 @@
     border-color: #d9e9f7;
   }
   .sistema-contable .perfil-avatar {
-    color: #087bed;
+    color: #0066AD;
   }
   .sistema-contable .area-trabajo {
     min-height: calc(100dvh - 66px);
@@ -1199,13 +1199,13 @@
 }
 
 .sistema-contable select:hover {
-  border-color: #087bd7;
+  border-color: #0066AD;
   background-color: #f8fcff;
 }
 
 .sistema-contable select:focus,
 .sistema-contable select:focus-visible {
-  border-color: #087bd7;
+  border-color: #0066AD;
   outline: 2px solid rgba(8, 123, 215, 0.18);
   outline-offset: 1px;
   background-color: #fff;
@@ -1219,7 +1219,7 @@
 
 .sistema-contable select option:checked {
   color: #fff;
-  background: #087bd7;
+  background: #0066AD;
 }
 
 /* Ajuste final del sidebar contable: logo con mas presencia y repliegue estable. */
@@ -1282,15 +1282,15 @@
   height: 34px !important;
   border: 1px solid #b8dff2 !important;
   border-radius: 50% !important;
-  color: #0875bd !important;
+  color: #0066AD !important;
   background: #fff !important;
   box-shadow: 0 7px 18px rgba(7, 55, 99, 0.16) !important;
 }
 
 .sistema-contable .replegar-menu:hover {
   color: #fff !important;
-  border-color: #0c8fd7 !important;
-  background: #0c8fd7 !important;
+  border-color: #0066AD !important;
+  background: #0066AD !important;
 }
 
 .sistema-contable .sidebar-scroll {
@@ -1456,7 +1456,7 @@
 .sistema-contable .sistema-sidebar {
   background-color: #073763 !important;
   background-image: none !important;
-  border-right-color: #1d5b8d !important;
+  border-right-color: #0066AD !important;
   box-shadow: none !important;
 }
 .sistema-contable .sistema-sidebar::before,
@@ -1531,7 +1531,7 @@
   height: 30px;
   border: 1px solid #b9ddea;
   border-radius: 6px;
-  color: #076499;
+  color: #0066AD;
   background: #f5fcff;
   box-shadow: none;
 }
@@ -1545,9 +1545,9 @@
   .movimientos-subvista-icono,
 .sistema-contable .usuarios-subvistas button.activo .usuarios-subvista-icono,
 .sistema-contable .ventas-tabs button.activo i {
-  border-color: #0879af;
+  border-color: #0066AD;
   color: #fff;
-  background: #0879af;
+  background: #0066AD;
 }
 .sistema-contable .ventas-tabs i svg {
   width: 16px;
@@ -1705,11 +1705,11 @@
 }
 .sistema-contable .sistema-nav .nav-modulo.activo {
   color: #fff;
-  background: linear-gradient(105deg, #2298f7, #086bd5);
+  background: linear-gradient(105deg, #0066AD, #0066AD);
   box-shadow: 0 7px 16px rgba(8, 107, 213, 0.22);
 }
 .sistema-contable .nav-icono {
-  color: #087bed;
+  color: #0066AD;
   background: #f5fbff;
   border-color: #c8e0f2;
 }
@@ -1771,7 +1771,7 @@
     .movimientos-subvistas
   )
   button.activo {
-  color: #075fc0;
+  color: #0066AD;
   border-color: #c7e0f5;
   background: #fff;
   box-shadow: 0 3px 9px rgba(24, 91, 153, 0.12);
@@ -1829,7 +1829,7 @@
   flex-basis: 44px !important;
   padding: 5px !important;
   border-radius: 11px !important;
-  background: linear-gradient(145deg, #126cb4, #073f78) !important;
+  background: linear-gradient(145deg, #0066AD, #073f78) !important;
   box-shadow: 0 6px 14px rgba(7, 63, 120, 0.2) !important;
 }
 .sistema-contable .replegar-menu {
@@ -1837,7 +1837,7 @@
   right: -15px !important;
   width: 30px !important;
   height: 30px !important;
-  color: #075da8 !important;
+  color: #0066AD !important;
   background: #fff !important;
   border: 1px solid #c9e2f1 !important;
 }
@@ -1851,7 +1851,7 @@
 }
 .sistema-contable .sistema-nav section p {
   margin: 0 10px 8px !important;
-  color: #238fc0 !important;
+  color: #0066AD !important;
   font-size: 10px !important;
   line-height: 1.2 !important;
   font-weight: 900 !important;
@@ -1872,14 +1872,14 @@
   font-weight: 800 !important;
 }
 .sistema-contable .sistema-nav .nav-modulo:hover {
-  color: #075da8 !important;
+  color: #0066AD !important;
   border-color: #cde4f2 !important;
   background: #f2f9fd !important;
 }
 .sistema-contable .sistema-nav .nav-modulo.activo {
   color: #fff !important;
-  border-color: #16a9dc !important;
-  background: linear-gradient(105deg, #20b7df, #0798ce) !important;
+  border-color: #0066AD !important;
+  background: linear-gradient(105deg, #20b7df, #0066AD) !important;
   box-shadow: 0 6px 13px rgba(8, 137, 190, 0.2) !important;
 }
 .sistema-contable .nav-icono {
@@ -1890,7 +1890,7 @@
   flex: 0 0 36px !important;
   border: 1px solid #c9e3f2 !important;
   border-radius: 9px !important;
-  color: #0875bd !important;
+  color: #0066AD !important;
   background: #f3faff !important;
   box-shadow: none !important;
 }
@@ -1932,7 +1932,7 @@
   width: 36px !important;
   height: 36px !important;
   flex-basis: 36px !important;
-  color: #0875bd !important;
+  color: #0066AD !important;
   border-color: #c9e3f2 !important;
   background: #fff !important;
 }
@@ -1941,7 +1941,7 @@
   font-weight: 800 !important;
 }
 .sistema-contable .boton-salir:hover {
-  color: #075da8 !important;
+  color: #0066AD !important;
   border-color: #aad4ea !important;
   background: #eaf6fd !important;
 }
@@ -2242,7 +2242,7 @@
     #062f58 68%,
     #05294d 100%
   );
-  border-right: 1px solid #1c5d90;
+  border-right: 1px solid #0066AD;
   box-shadow:
     inset -1px 0 0 rgba(255, 255, 255, 0.07),
     8px 0 24px rgba(2, 28, 55, 0.18);
@@ -2270,7 +2270,7 @@
   padding: 8px;
   border-radius: 15px;
   border: 1px solid rgba(134, 212, 234, 0.42);
-  background: linear-gradient(145deg, #0d4b80, #08345f);
+  background: linear-gradient(145deg, #0066AD, #08345f);
   box-shadow:
     0 14px 28px rgba(0, 20, 45, 0.27),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -2374,7 +2374,7 @@
   border-radius: 14px;
   border-color: #b9e5ef;
   background: #eaf8fd;
-  color: #0575c6;
+  color: #0066AD;
 }
 .sistema-contable .topbar-titulo h1 {
   font-size: 31px;
@@ -2476,7 +2476,7 @@
   height: 52px;
   border-radius: 14px;
   border-color: #b5e3ef;
-  color: #007fd0;
+  color: #0066AD;
   background: #e6f8fd;
 }
 .sistema-contable .ventas-tabs span {
@@ -2590,7 +2590,7 @@
 .sistema-contable .sistema-sidebar {
   width: 310px;
   background: var(--balance-sidebar);
-  border-right: 1px solid #1d5b8d;
+  border-right: 1px solid #0066AD;
   box-shadow: none;
 }
 .sistema-contable .sistema-sidebar::before,
@@ -2616,7 +2616,7 @@
   padding: 7px;
   border-radius: 15px;
   border: 1px solid rgba(132, 210, 236, 0.42);
-  background: linear-gradient(145deg, #0e4a80, #08345f);
+  background: linear-gradient(145deg, #0066AD, #08345f);
   box-shadow:
     0 10px 24px rgba(0, 23, 48, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
@@ -2734,7 +2734,7 @@
   height: 54px;
   border: 1px solid #b9e5ef;
   border-radius: 14px;
-  color: #0477c8;
+  color: #0066AD;
   background: #eaf8fd;
 }
 .sistema-contable .topbar-titulo h1 {
@@ -2866,7 +2866,7 @@
   place-items: center;
   border: 1px solid #b5e3ef;
   border-radius: 14px;
-  color: #007fd0;
+  color: #0066AD;
   background: #e6f8fd;
   font-style: normal;
 }
@@ -3012,7 +3012,7 @@
   place-items: center !important;
   border: 1px solid #98d8ec !important;
   border-radius: 999px !important;
-  color: #007fc8 !important;
+  color: #0066AD !important;
   background: #ffffff !important;
   box-shadow: 0 8px 22px rgba(7, 55, 99, 0.16) !important;
 }
@@ -3054,7 +3054,7 @@
   padding: 9px !important;
   border: 1px solid #92d8ea !important;
   border-radius: 17px !important;
-  background: linear-gradient(135deg, #0f93e8, #21bfd5) !important;
+  background: linear-gradient(135deg, #0066AD, #21bfd5) !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.36),
     0 10px 24px rgba(7, 97, 165, 0.18) !important;
@@ -3141,7 +3141,7 @@
 
 /* Identidad contable: el celeste luminoso es el color dominante. */
 .sistema-contable {
-  --balance-sidebar: #075985;
+  --balance-sidebar: #0066AD;
   --balance-sidebar-dark: #064e70;
   --balance-cyan: #12b8df;
   --balance-cyan-2: #6cdbef;
@@ -3153,7 +3153,7 @@
 }
 
 .sistema-contable .sistema-sidebar {
-  background: linear-gradient(180deg, #075985, #087ea7 58%, #0b9bc1);
+  background: linear-gradient(180deg, #0066AD, #0066AD 58%, #0066AD);
   border-color: #55c9df;
 }
 
@@ -3174,7 +3174,7 @@
 .sistema-contable .ventas-primary,
 .sistema-contable .inventario-nuevo,
 .sistema-contable .inventario-primario {
-  background: linear-gradient(105deg, #079bc7, #18c4e5);
+  background: linear-gradient(105deg, #0066AD, #18c4e5);
   box-shadow: 0 7px 18px rgba(18, 184, 223, .25);
 }
 
@@ -3183,7 +3183,7 @@
 .sistema-contable .ventas-secondary,
 .sistema-contable .inventario-secundario {
   border-color: #b8e4ef;
-  color: #087a9e;
+  color: #0066AD;
   background: #f5fdff;
 }
 
@@ -3199,7 +3199,7 @@
 .sistema-contable .inventario-subvistas button.activo,
 .sistema-contable .movimientos-subvistas button.activo,
 .sistema-contable .usuarios-subvistas button.activo {
-  color: #075985;
+  color: #0066AD;
   border-color: #fff;
   background: #fff;
 }
