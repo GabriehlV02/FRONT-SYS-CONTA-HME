@@ -151,6 +151,10 @@
 .facturas-fila { display: grid; grid-template-columns: 105px minmax(170px, 1fr) 105px 135px 115px 115px 105px 95px 42px; align-items: center; gap: 12px; min-width: 1080px; padding: 12px 14px; border-top: 1px solid #e1eaec; color: #31535d; font-size: 12px; }
 .facturas-encabezado { border-top: 0; color: #71848b; background: #f5f9f9; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
 .facturas-fila strong { color: #193f4b; }.facturas-fila i { display: inline-block; padding: 4px 8px; border-radius: 99px; font-size: 10px; font-style: normal; font-weight: 800; }.facturas-fila i.emitida { color: #17633d; background: #e8f5ec; }.facturas-fila i.pendiente { color: #8a5a11; background: #fff4da; }.facturas-fila button { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #c8dadd; border-radius: 7px; color: #0066AD; background: #fff; }
+@media (hover: none) and (pointer: coarse) {
+  .facturas-fila button, .caja-dia-fila button { min-width: 44px; min-height: 44px; }
+  .facturas-tabla, .caja-dia-tabla { -webkit-overflow-scrolling: touch; overscroll-behavior-inline: contain; }
+}
 .ventas-kpi {
   display: flex;
   align-items: center;
