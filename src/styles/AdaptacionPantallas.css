@@ -1,0 +1,27 @@
+.sistema-contable :is(.sistema-cuerpo, .area-trabajo, .content-limit, .subvistas-carrusel) { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.sistema-contable .subvistas-carrusel { width: 100%; }
+@media (max-width: 760px) {
+  .sistema-app.sistema-contable .sistema-cuerpo,
+  .sistema-app.sistema-contable.sidebar-replegado .sistema-cuerpo {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+  .sistema-app.sistema-contable .sistema-cuerpo > .sistema-topbar {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px !important;
+  }
+  .sistema-app.sistema-contable .topbar-titulo { flex: 1 1 0; width: auto; min-width: 0 !important; max-width: none; }
+  .sistema-app.sistema-contable .topbar-titulo h1 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 16px; }
+  .sistema-app.sistema-contable .search-container { order: 10; flex: 1 0 100%; min-width: 0; width: 100%; }
+  .sistema-app.sistema-contable :is(.notificaciones, .salir-icono, .menu-toggle) { flex-shrink: 0; }
+  .sistema-app.sistema-contable :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { font-size: 16px; }
+}
+@media (pointer: coarse) {
+  .sistema-contable :is(.subvistas-flecha, .table-pagination button) { min-width: 44px; min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sistema-contable *, .sistema-contable *::before, .sistema-contable *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

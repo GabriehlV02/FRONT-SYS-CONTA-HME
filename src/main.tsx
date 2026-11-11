@@ -24,6 +24,7 @@ import './styles/ResponsiveContable.css';
 import './login-contable-rrhh-layout.css';
 import './styles/ContableClinicoEjecutivo.css';
 import './styles/AccesoContable.css';
+import './styles/AdaptacionPantallas.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );
