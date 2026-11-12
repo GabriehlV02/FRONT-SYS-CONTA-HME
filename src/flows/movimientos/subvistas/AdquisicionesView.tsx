@@ -1,4 +1,5 @@
 import { AvisoTemporal } from '@ui/components/AvisoTemporal';
+import { fechaISOEnBolivia } from '../../../utils/fechaBolivia';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { apiFetch } from '@ui/auth';
@@ -16,7 +17,7 @@ type Ingreso = { id: string; fecha: string; proveedor: string; comprobante: stri
 const lineaInicial = { itemId: '', lote: '', cantidad: '', costoUnitario: '', vence: '', observacion: '', precio1: '', precio2: '', precio3: '' };
 const moneda = (valor: string | number, decimales = 2) => new Intl.NumberFormat('es-BO', { style: 'currency', currency: 'BOB', minimumFractionDigits: 2, maximumFractionDigits: decimales }).format(Number(valor));
 const normalizar = (valor: string) => valor.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es').trim();
-const hoy = () => { const fecha = new Date(); return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`; };
+const hoy = fechaISOEnBolivia;
 
 export function AdquisicionesView({ activeId, administraCatalogo = false }: { activeId?: string; administraCatalogo?: boolean }) {
   const resolver = (id?: string): SubvistaAdquisiciones => id === 'adquisiciones-comprobante' ? 'comprobante' : 'cargado';

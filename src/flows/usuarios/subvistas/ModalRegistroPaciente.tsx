@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, type FormEvent } from "react";
+import { fechaISOEnBolivia } from '../../../utils/fechaBolivia';
 import { createPortal } from 'react-dom';
 import { apiFetch } from "@ui/auth";
 import Icon from "@ui/components/Icon";
@@ -130,7 +131,7 @@ export default function ModalRegistroPaciente({
             {campoTexto("Complemento", "complemento_ci")}
             <label>Expedido en<select value={form.expedido_en} onChange={(e) => cambiar("expedido_en", e.target.value)}><option value="">Ninguno</option>{["CBBA - COCHABAMBA", "LPZ - LA PAZ", "OR - ORURO", "POT - POTOSÍ", "TJA - TARIJA", "CHU - CHUQUISACA", "SCZ - SANTA CRUZ", "BEN - BENI", "PND - PANDO", "EXTRANJERO"].map((v) => <option key={v}>{v}</option>)}</select></label>
             {campoTexto("NIT", "nit")}{campoTexto("Razón social", "razon_social")}
-            <label>Fecha de nacimiento *<input type="date" required max={new Date().toISOString().slice(0, 10)} value={form.fecha_nacimiento} onChange={(e) => cambiar("fecha_nacimiento", e.target.value)} /></label>
+            <label>Fecha de nacimiento *<input type="date" required max={fechaISOEnBolivia()} value={form.fecha_nacimiento} onChange={(e) => cambiar("fecha_nacimiento", e.target.value)} /></label>
             {campoTexto("Teléfono", "telefono", "+591", false, "tel")}
             <label>Género *<select required value={form.genero} onChange={(e) => cambiar("genero", e.target.value)}><option value="" disabled>Seleccionar</option><option>Femenino</option><option>Masculino</option><option>Otro</option></select></label>
           </div></fieldset>
