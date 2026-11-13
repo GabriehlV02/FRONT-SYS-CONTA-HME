@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 280" role="img" aria-labelledby="title desc">
+  <title id="title">Hospital María Esperanza</title>
+  <desc id="desc">Logo institucional del Hospital María Esperanza en colores institucionales.</desc>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0d2d4f" stop-opacity="1"/>
+      <stop offset="1" stop-color="#5fa9d9" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0d2d4f" stop-opacity="1"/>
+      <stop offset="0.6" stop-color="#163f69" stop-opacity="1"/>
+      <stop offset="1" stop-color="#5fa9d9" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(0 10)" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110 170 C 78 136, 68 90, 95 60 C 120 30, 175 28, 203 67 C 228 100, 236 129, 214 164 C 200 189, 175 210, 142 215 C 122 218, 103 209, 90 194"/>
+    <path d="M116 150 C 145 106, 165 80, 210 83 C 240 85, 265 105, 271 130 C 277 156, 260 176, 228 186"/>
+    <path d="M214 76 C 185 39, 165 28, 127 41"/>
+    <path d="M118 167 C 224 128, 241 147, 273 172"/>
+    <path d="M93 165 C 45 170, 22 205, 30 232"/>
+    <path d="M100 170 C 131 184, 150 192, 176 224"/>
+    <path d="M222 180 C 266 207, 316 212, 354 187"/>
+  </g>
+
+  <g transform="translate(360 20)">
+    <text x="0" y="104" fill="url(#g2)" font-size="86" font-weight="800" font-family="Segoe UI, Arial, sans-serif" letter-spacing="-3">HOSPITAL</text>
+    <text x="2" y="188" fill="#0d2d4f" font-size="78" font-weight="700" font-family="Segoe UI, Arial, sans-serif" letter-spacing="-3">MARIA ESPERANZA</text>
+  </g>
+</svg>

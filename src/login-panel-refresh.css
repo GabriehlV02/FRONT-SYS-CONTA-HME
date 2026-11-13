@@ -48,7 +48,7 @@
 }
 
 .login-page-contable .login-balance-left .login-brand img {
-  content: url('/logo-hospital-contable-corporativo.png') !important;
+  content: url('/logo-hospital-contable-final.svg?v=login-corporativo-20261113') !important;
   object-fit: contain;
   object-position: left center;
 }

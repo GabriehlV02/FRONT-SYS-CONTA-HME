@@ -239,7 +239,7 @@ export function SystemApp({ config }: { config: SystemConfig }) {
   }
   if (checkingSession) return <main className="contable-cargando">
     <div className="contable-cargando-tarjeta" role="status" aria-live="polite">
-      <img className="contable-cargando-logo" src="/logo-hospital-contable-corporativo.png" alt="Hospital María Esperanza" />
+      <img className="contable-cargando-logo" src="/logo-hospital-contable-final.svg?v=login-corporativo-20261113" alt="Hospital María Esperanza" />
       <span className="contable-cargando-rueda" aria-hidden="true" />
       <strong>Preparando tu espacio</strong>
       <p>Verificando sesión de forma segura…</p>
