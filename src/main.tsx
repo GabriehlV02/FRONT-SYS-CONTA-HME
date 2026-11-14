@@ -26,6 +26,7 @@ import './styles/ContableClinicoEjecutivo.css';
 import './styles/AccesoContable.css';
 import './styles/AdaptacionPantallas.css';
 import './styles/PaletaLoginContable.css';
+import './styles/ExperienciaVisualContable.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );

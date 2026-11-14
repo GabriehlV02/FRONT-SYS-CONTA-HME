@@ -1,0 +1,223 @@
+/* Pulido visual del shell y los componentes compartidos del sistema contable. */
+.sistema-contable.sistema-app {
+  --contable-radio-panel: 16px;
+  --contable-radio-control: 10px;
+  --contable-sombra-panel: 0 10px 28px rgb(16 44 59 / 6%);
+  --contable-sombra-flotante: 0 16px 38px rgb(16 44 59 / 14%);
+  background:
+    radial-gradient(ellipse at 92% 0%, rgb(38 180 171 / 7%), transparent 34rem),
+    var(--login-fondo) !important;
+}
+
+/* El encabezado y la navegación lateral comparten el mismo azul petróleo. */
+.sistema-contable.sistema-app .sistema-topbar {
+  color: #f4fbfb !important;
+  border-color: rgb(255 255 255 / 12%) !important;
+  background: linear-gradient(105deg, #102c3b, #17495b) !important;
+  box-shadow: 0 5px 18px rgb(16 44 59 / 14%) !important;
+}
+.sistema-contable.sistema-app .sistema-topbar :is(.topbar-titulo h1, .topbar-titulo small, .perfil strong, .perfil small) {
+  color: #f4fbfb !important;
+}
+.sistema-contable.sistema-app .sistema-topbar .topbar-icono {
+  color: #fff !important;
+  border-color: rgb(255 255 255 / 20%) !important;
+  background: rgb(255 255 255 / 12%) !important;
+}
+.sistema-contable.sistema-app .sistema-topbar :is(.abrir-menu, .notificaciones-boton, .salir-rapido) {
+  color: #17495b !important;
+  border-color: rgb(255 255 255 / 70%) !important;
+  background: #fff !important;
+}
+.sistema-contable.sistema-app .sistema-topbar .perfil {
+  border-left-color: rgb(255 255 255 / 22%) !important;
+}
+.sistema-contable.sistema-app .sistema-topbar .busqueda-global {
+  border-color: rgb(255 255 255 / 24%) !important;
+  background: rgb(255 255 255 / 96%) !important;
+}
+.sistema-contable.sistema-app .sistema-topbar .busqueda-global:focus-within {
+  border-color: #26b4ab !important;
+  box-shadow: 0 0 0 3px rgb(38 180 171 / 24%) !important;
+}
+
+.sistema-contable.sistema-app .area-trabajo {
+  background: transparent !important;
+}
+.sistema-contable.sistema-app .pagina-cabecera {
+  margin-bottom: 26px !important;
+}
+.sistema-contable.sistema-app .pagina-cabecera > div > p {
+  display: inline-flex;
+  align-items: center;
+  min-height: 25px;
+  margin: 0 0 9px !important;
+  padding: 4px 10px;
+  border: 1px solid #b9ded9;
+  border-radius: 999px;
+  color: #167b79 !important;
+  background: #e1f3f0;
+  font-size: 10px !important;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+.sistema-contable.sistema-app .pagina-cabecera h2 {
+  margin: 0 0 5px !important;
+  font-size: clamp(24px, 2vw, 31px) !important;
+  letter-spacing: -.04em !important;
+}
+.sistema-contable.sistema-app .pagina-cabecera small {
+  color: var(--login-muted) !important;
+  font-size: 13px;
+}
+
+/* Paneles: una superficie, un borde fino y profundidad ligera. */
+.sistema-contable.sistema-app :is(
+  .panel, .ventas-panel, .inventario-contenido, .movimientos-contenido,
+  .usuarios-contenido, .dashboard-panel, .dashboard-metricas article,
+  .dashboard-accesos button, .modulo-vacio, .ventas-contexto,
+  .inventario-modal, .caja-col, .caja-cobro-bar, .inventario-tabla,
+  .movimientos-tabla, .usuarios-tabla, .ventas-tabla
+) {
+  border-radius: var(--contable-radio-panel) !important;
+  box-shadow: var(--contable-sombra-panel) !important;
+}
+.sistema-contable.sistema-app :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .dashboard-panel) {
+  padding: clamp(18px, 2vw, 26px) !important;
+}
+.sistema-contable.sistema-app :is(.dashboard-panel, .ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido) > header {
+  gap: 14px;
+}
+.sistema-contable.sistema-app :is(.dashboard-panel, .ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido) :is(h2, h3) {
+  letter-spacing: -.025em !important;
+}
+
+/* Navegación por módulo más clara y con un estado activo evidente. */
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas, .traspasos-subvistas, .horizontal-subvista-nav) {
+  gap: 5px !important;
+  padding: 5px !important;
+  border: 1px solid #d6e0df !important;
+  border-radius: 13px !important;
+  background: #e7eeee !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas, .traspasos-subvistas, .horizontal-subvista-nav) button {
+  min-height: 42px !important;
+  border: 1px solid transparent !important;
+  border-radius: 9px !important;
+  font-weight: 650 !important;
+  transition: color .16s ease, background-color .16s ease, border-color .16s ease, box-shadow .16s ease !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas, .traspasos-subvistas, .horizontal-subvista-nav) button:hover:not(.activo):not([aria-current="page"]) {
+  color: #12384a !important;
+  background: rgb(255 255 255 / 68%) !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas, .traspasos-subvistas, .horizontal-subvista-nav) button.activo,
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas, .configuracion-subvistas, .traspasos-subvistas, .horizontal-subvista-nav) button[aria-current="page"] {
+  color: #086da8 !important;
+  border-color: #fff !important;
+  background: #fff !important;
+  box-shadow: 0 2px 8px rgb(16 44 59 / 9%) !important;
+}
+
+/* Acciones y campos comparten radios, alturas y feedback de interacción. */
+.sistema-contable.sistema-app .area-trabajo :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario, .usuarios-accion, .punto-cobrar) {
+  min-height: 42px;
+  padding-inline: 16px;
+  font-weight: 650 !important;
+  box-shadow: 0 4px 10px rgb(8 109 168 / 16%) !important;
+  transition: filter .16s ease, box-shadow .16s ease, transform .16s ease !important;
+}
+.sistema-contable.sistema-app .area-trabajo :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario, .usuarios-accion, .punto-cobrar):hover:not(:disabled) {
+  filter: brightness(1.04);
+  box-shadow: 0 7px 15px rgb(8 109 168 / 22%) !important;
+  transform: translateY(-1px) !important;
+}
+.sistema-contable.sistema-app .area-trabajo :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  border-radius: var(--contable-radio-control) !important;
+}
+.sistema-contable.sistema-app .area-trabajo :is(input, select, textarea):focus {
+  border-color: #168c88 !important;
+  box-shadow: 0 0 0 3px rgb(38 180 171 / 16%) !important;
+}
+
+/* Tablas más legibles, con cabeceras suaves y filas menos pesadas. */
+.sistema-contable.sistema-app .area-trabajo table {
+  overflow: hidden;
+  border: 1px solid #d6e0df !important;
+  border-radius: 12px !important;
+}
+.sistema-contable.sistema-app .area-trabajo table :is(th, td) {
+  padding: 13px 15px !important;
+  border-color: #e4ebea !important;
+  line-height: 1.45;
+}
+.sistema-contable.sistema-app .area-trabajo table thead th {
+  color: #35545e !important;
+  background: #edf4f3 !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  letter-spacing: .035em;
+}
+.sistema-contable.sistema-app .area-trabajo table tbody tr:nth-child(even) {
+  background: #f8fbfa !important;
+}
+.sistema-contable.sistema-app .area-trabajo table tbody tr:hover {
+  background: #edf7f5 !important;
+}
+
+/* Resumen con mayor jerarquía para las métricas principales. */
+.sistema-contable.sistema-app .metricas article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d6e0df !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: var(--contable-sombra-panel) !important;
+}
+.sistema-contable.sistema-app .metricas article::after {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #086da8, #26b4ab);
+  content: "";
+}
+.sistema-contable.sistema-app .metricas strong {
+  color: #12384a !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.035em;
+}
+.sistema-contable.sistema-app .welcome-panel {
+  border: 1px solid #c9dfdc !important;
+  border-radius: 18px !important;
+  background: linear-gradient(115deg, #fff 35%, #e8f5f2) !important;
+  box-shadow: var(--contable-sombra-panel) !important;
+}
+.sistema-contable.sistema-app .welcome-visual {
+  color: #168c88 !important;
+  background: radial-gradient(circle, #d7eeea, transparent 70%) !important;
+}
+.sistema-contable.sistema-app .quick-grid > button {
+  border: 1px solid #d6e0df !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 14px rgb(16 44 59 / 4%) !important;
+  transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease !important;
+}
+.sistema-contable.sistema-app .quick-grid > button:hover {
+  border-color: #8fc9c2 !important;
+  box-shadow: 0 10px 22px rgb(16 44 59 / 9%) !important;
+  transform: translateY(-2px) !important;
+}
+
+@media (max-width: 760px) {
+  .sistema-contable.sistema-app .sistema-topbar { box-shadow: 0 3px 12px rgb(16 44 59 / 12%) !important; }
+  .sistema-contable.sistema-app .pagina-cabecera { margin-bottom: 20px !important; }
+  .sistema-contable.sistema-app :is(.ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .dashboard-panel) { padding: 17px !important; }
+  .sistema-contable.sistema-app .welcome-panel { padding: 22px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sistema-contable.sistema-app *,
+  .sistema-contable.sistema-app *::before,
+  .sistema-contable.sistema-app *::after { transition-duration: .01ms !important; }
+}
