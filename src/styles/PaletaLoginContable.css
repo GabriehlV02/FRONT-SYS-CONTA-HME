@@ -1,0 +1,225 @@
+/* Paleta global del sistema contable derivada de su pantalla de acceso. */
+.sistema-contable.sistema-app {
+  --login-azul-petroleo-950: #102c3b;
+  --login-azul-petroleo-900: #12384a;
+  --login-azul-petroleo-800: #17495b;
+  --login-azul-700: #086da8;
+  --login-azul-600: #1686b2;
+  --login-turquesa-600: #168c88;
+  --login-turquesa-500: #26b4ab;
+  --login-turquesa-100: #e1f3f0;
+  --login-fondo: #eef3f3;
+  --login-superficie: #ffffff;
+  --login-superficie-suave: #f6f9f8;
+  --login-linea: #d6e0df;
+  --login-texto: #172d3b;
+  --login-muted: #637b83;
+  --login-exito: #2f8a67;
+  --login-exito-suave: #e5f4ed;
+  --login-alerta: #a96a19;
+  --login-alerta-suave: #fff3df;
+  --login-error: #bd5155;
+  --login-error-suave: #fbe9e8;
+  color: var(--login-texto) !important;
+  background: var(--login-fondo) !important;
+  accent-color: var(--login-turquesa-600);
+}
+
+.sistema-contable.sistema-app .sistema-cuerpo,
+.sistema-contable.sistema-app .area-trabajo {
+  color: var(--login-texto) !important;
+  background-color: var(--login-fondo) !important;
+  background-image: none !important;
+}
+.sistema-contable.sistema-app .sistema-sidebar {
+  color: #e9f1f1 !important;
+  border-color: #29434d !important;
+  background: linear-gradient(160deg, #102c3b 0%, #153844 55%, #12384a 100%) !important;
+  box-shadow: 5px 0 20px rgb(16 44 59 / 12%) !important;
+}
+.sistema-contable.sistema-app .sistema-sidebar::before,
+.sistema-contable.sistema-app .sistema-sidebar::after {
+  background-image: none !important;
+  opacity: 0 !important;
+}
+.sistema-contable.sistema-app .sistema-marca {
+  border-color: rgb(255 255 255 / 14%) !important;
+  background: transparent !important;
+}
+.sistema-contable.sistema-app .sistema-marca .marca-logo-completo,
+.sistema-contable.sistema-app .sistema-marca .marca-logo-compacto {
+  border-color: rgb(255 255 255 / 18%) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.sistema-contable.sistema-app .sistema-nav section + section {
+  border-color: rgb(221 241 239 / 12%) !important;
+}
+.sistema-contable.sistema-app .sistema-nav section > p {
+  color: #a9c5ca !important;
+}
+.sistema-contable.sistema-app .sistema-nav .nav-modulo {
+  color: #e0ebed !important;
+  border-color: transparent !important;
+  background: transparent !important;
+}
+.sistema-contable.sistema-app .sistema-nav .nav-modulo:hover:not(.activo) {
+  color: #fff !important;
+  background: rgb(255 255 255 / 8%) !important;
+}
+.sistema-contable.sistema-app .sistema-nav .nav-modulo.activo {
+  color: #fff !important;
+  border-color: #1686b2 !important;
+  background: #086da8 !important;
+  box-shadow: inset 3px 0 #26b4ab, 0 5px 14px rgb(5 33 48 / 18%) !important;
+}
+.sistema-contable.sistema-app .sistema-nav .nav-icono {
+  color: #b8d5d9 !important;
+  border-color: transparent !important;
+  background: rgb(220 241 240 / 12%) !important;
+}
+.sistema-contable.sistema-app .sistema-nav .nav-modulo.activo .nav-icono {
+  color: #fff !important;
+  border-color: rgb(255 255 255 / 20%) !important;
+  background: rgb(255 255 255 / 14%) !important;
+}
+.sistema-contable.sistema-app .boton-salir {
+  color: #e7f0f1 !important;
+  border-color: rgb(221 241 239 / 24%) !important;
+  background: rgb(255 255 255 / 5%) !important;
+}
+.sistema-contable.sistema-app .boton-salir:hover {
+  color: #fff !important;
+  border-color: rgb(221 241 239 / 42%) !important;
+  background: rgb(255 255 255 / 10%) !important;
+}
+.sistema-contable.sistema-app .replegar-menu,
+.sistema-contable.sistema-app .cerrar-menu {
+  color: var(--login-azul-petroleo-900) !important;
+  border-color: var(--login-linea) !important;
+  background: #fff !important;
+}
+
+.sistema-contable.sistema-app .sistema-topbar {
+  color: var(--login-texto) !important;
+  border-color: var(--login-linea) !important;
+  background: rgb(255 255 255 / 96%) !important;
+  box-shadow: 0 3px 14px rgb(16 44 59 / 7%) !important;
+}
+.sistema-contable.sistema-app :is(.topbar-titulo h1, .pagina-cabecera h1, .pagina-cabecera h2, h2, h3, h4) {
+  color: var(--login-texto) !important;
+}
+.sistema-contable.sistema-app :is(.topbar-titulo small, .pagina-cabecera p, .section-kicker, .muted, .ayuda) {
+  color: var(--login-muted) !important;
+}
+.sistema-contable.sistema-app :is(.busqueda-global, .perfil, .notificaciones-boton, .topbar-icono, .abrir-menu, .salir-rapido) {
+  color: var(--login-azul-petroleo-900) !important;
+  border-color: var(--login-linea) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.sistema-contable.sistema-app .busqueda-global:focus-within {
+  border-color: var(--login-turquesa-600) !important;
+  box-shadow: 0 0 0 3px rgb(38 180 171 / 16%) !important;
+}
+.sistema-contable.sistema-app .perfil-avatar,
+.sistema-contable.sistema-app .metric-icon,
+.sistema-contable.sistema-app .quick-icon,
+.sistema-contable.sistema-app .empty-icon {
+  color: var(--login-turquesa-600) !important;
+  border-color: var(--login-linea) !important;
+  background: var(--login-turquesa-100) !important;
+}
+
+.sistema-contable.sistema-app :is(.area-trabajo, .content-limit, .dashboard-contable) {
+  color: var(--login-texto) !important;
+}
+.sistema-contable.sistema-app :is(.panel, .ventas-panel, .inventario-contenido, .movimientos-contenido, .usuarios-contenido, .dashboard-panel, .dashboard-metricas article, .dashboard-accesos button, .modulo-vacio, .ventas-contexto, .inventario-modal, .caja-col, .caja-cobro-bar, .inventario-tabla, .movimientos-tabla, .usuarios-tabla, .ventas-tabla) {
+  color: var(--login-texto) !important;
+  border-color: var(--login-linea) !important;
+  background-color: var(--login-superficie) !important;
+  box-shadow: 0 4px 16px rgb(16 44 59 / 5%) !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas) {
+  border-color: var(--login-linea) !important;
+  background: #e7eeee !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas) button {
+  color: #45616a !important;
+}
+.sistema-contable.sistema-app :is(.ventas-tabs, .inventario-subvistas, .movimientos-subvistas, .usuarios-subvistas) button.activo {
+  color: var(--login-azul-700) !important;
+  border-color: var(--login-linea) !important;
+  background: #fff !important;
+  box-shadow: inset 0 -3px var(--login-turquesa-500) !important;
+}
+
+.sistema-contable.sistema-app :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea, .ventas-input, .ventas-select) {
+  color: var(--login-texto) !important;
+  border-color: #cbd9d9 !important;
+  background: #fff !important;
+}
+.sistema-contable.sistema-app :is(input, textarea)::placeholder { color: #82969a !important; opacity: 1; }
+.sistema-contable.sistema-app :is(input, select, textarea, button):focus-visible,
+.sistema-contable.sistema-app :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus {
+  outline-color: rgb(38 180 171 / 55%) !important;
+  box-shadow: 0 0 0 3px rgb(38 180 171 / 15%) !important;
+}
+.sistema-contable.sistema-app :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario, .punto-cobrar, .dashboard-hero button) {
+  color: #fff !important;
+  border-color: var(--login-azul-700) !important;
+  background: linear-gradient(110deg, var(--login-azul-700), var(--login-turquesa-600)) !important;
+  box-shadow: 0 6px 15px rgb(16 89 112 / 18%) !important;
+}
+.sistema-contable.sistema-app :is(.boton-principal, .primario, .ventas-primary, .inventario-nuevo, .inventario-primario, .punto-cobrar, .dashboard-hero button):hover:not(:disabled) {
+  filter: brightness(.94);
+}
+.sistema-contable.sistema-app :is(.boton-secundario, .secundario, .ventas-secondary, .inventario-secundario, .mini-action, .ventas-row-actions button) {
+  color: var(--login-azul-700) !important;
+  border-color: #b8d8d8 !important;
+  background: #f4faf9 !important;
+}
+.sistema-contable.sistema-app :is(.danger, .peligro, .eliminar, .ventas-danger) {
+  color: var(--login-error) !important;
+  border-color: #e7c2c1 !important;
+  background: var(--login-error-suave) !important;
+}
+
+.sistema-contable.sistema-app :is(table thead, .inventario-tabla-head, .movimientos-tabla-head, .usuarios-tabla-head, .ventas-tabla-head, .venta-lineas-head) {
+  color: #35545e !important;
+  border-color: #cbd9d9 !important;
+  background: #eaf1f1 !important;
+}
+.sistema-contable.sistema-app :is(table tbody tr, .inventario-row, .movimientos-tabla-fila, .usuarios-tabla-fila, .ventas-tabla-fila) {
+  color: #29434d !important;
+  border-color: #e0e8e7 !important;
+  background-color: #fff !important;
+}
+.sistema-contable.sistema-app :is(table tbody tr, .inventario-row, .movimientos-tabla-fila, .usuarios-tabla-fila, .ventas-tabla-fila):nth-child(even) {
+  background-color: #f7faf9 !important;
+}
+.sistema-contable.sistema-app :is(table tbody tr, .inventario-row, .movimientos-tabla-fila, .usuarios-tabla-fila, .ventas-tabla-fila):hover {
+  background-color: #edf7f5 !important;
+}
+.sistema-contable.sistema-app :is(.badge, .ventas-badge, .inventario-contador, .movimientos-contador, .usuarios-contador, .paciente-chip, .caja-status-mini) {
+  color: var(--login-turquesa-600) !important;
+  border-color: #b9ded9 !important;
+  background: var(--login-turquesa-100) !important;
+}
+.sistema-contable.sistema-app :is(.success, .exito, .estado-ok) { color: var(--login-exito) !important; background: var(--login-exito-suave) !important; }
+.sistema-contable.sistema-app :is(.warning, .advertencia, .estado-pendiente) { color: var(--login-alerta) !important; background: var(--login-alerta-suave) !important; }
+.sistema-contable.sistema-app :is(.error, .estado-error) { color: var(--login-error) !important; background: var(--login-error-suave) !important; }
+.sistema-contable.sistema-app :is(dialog, .modal, .inventario-modal, .usuarios-modal, .select-menu, .search-results) {
+  color: var(--login-texto) !important;
+  border-color: var(--login-linea) !important;
+  background-color: var(--login-superficie) !important;
+}
+.sistema-contable.sistema-app ::selection { color: #fff; background: var(--login-azul-700); }
+.sistema-contable.sistema-app *::-webkit-scrollbar-thumb { border-color: var(--login-fondo) !important; background: #91aeb1 !important; }
+.sistema-contable.sistema-app *::-webkit-scrollbar-thumb:hover { background: #64878e !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sistema-contable.sistema-app *,
+  .sistema-contable.sistema-app *::before,
+  .sistema-contable.sistema-app *::after { transition-duration: .01ms !important; }
+}
