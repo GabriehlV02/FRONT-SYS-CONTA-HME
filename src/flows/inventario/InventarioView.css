@@ -440,17 +440,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 11px;
-  border: 2px solid #a78bfa;
+  border: 2px solid #8fc9c2;
   border-radius: 11px;
-  color: #4c1d95;
-  background: #faf8ff;
+  color: #12384a;
+  background: #f4faf9;
   font-size: 13px;
   font-weight: 900;
-  box-shadow: 0 0 0 1px rgba(109, 40, 217, .06);
+  box-shadow: 0 0 0 1px rgba(38, 140, 136, .06);
 }
 .inventario-cantidad-select .select-menu-trigger[aria-expanded='true'] {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, .16);
+  border-color: #168c88;
+  box-shadow: 0 0 0 3px rgba(38, 180, 171, .16);
 }
 .inventario-cantidad-select .select-menu-trigger svg { transition: transform .18s ease; }
 .inventario-cantidad-select .select-menu-trigger[aria-expanded='true'] svg { transform: rotate(180deg); }
@@ -463,10 +463,10 @@
   display: grid;
   gap: 4px;
   padding: 6px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #b9ded9;
   border-radius: 11px;
   background: #fff;
-  box-shadow: 0 12px 28px rgba(76, 29, 149, .2);
+  box-shadow: 0 12px 28px rgba(16, 44, 59, .2);
 }
 .inventario-cantidad-select .select-menu-options button {
   width: 100%;
@@ -477,18 +477,18 @@
   padding: 0 9px;
   border: 0;
   border-radius: 7px;
-  color: #54249b;
+  color: #17495b;
   background: transparent;
   font-size: 12px;
   font-weight: 800;
 }
 .inventario-cantidad-select .select-menu-options button:hover {
-  color: #5b21b6;
-  background: #eee7ff;
+  color: #086da8;
+  background: #e1f3f0;
 }
 .inventario-cantidad-select .select-menu-options button.activo {
   color: #fff;
-  background: linear-gradient(110deg, #6d28d9, #8b5cf6);
+  background: linear-gradient(110deg, #1686b2, #168c88);
 }
 .inventario-paginas {
   margin-left: auto;

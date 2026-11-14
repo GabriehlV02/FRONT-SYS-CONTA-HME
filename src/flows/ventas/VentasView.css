@@ -1327,7 +1327,7 @@
 }
 .punto-cliente > header strong {
   font-size: 14px;
-  color: #24114e;
+  color: #172d3b;
 }
 .cliente-acciones {
   display: grid;
@@ -1338,9 +1338,9 @@
 .cliente-busqueda > button,
 .cliente-formulario button {
   min-height: 36px;
-  border: 1px solid #a78bfa;
+  border: 1px solid #8fc9c2;
   border-radius: 9px;
-  background: #7c3aed;
+  background: #168c88;
   color: #fff;
   font:
     700 12px Inter,
@@ -1357,8 +1357,8 @@
 .cliente-acciones button:first-child,
 .cliente-secundario {
   background: #fff !important;
-  color: #5b21b6 !important;
-  border-color: #c4b5fd !important;
+  color: #086da8 !important;
+  border-color: #b9ded9 !important;
 }
 .cliente-busqueda,
 .cliente-formulario {
@@ -1369,22 +1369,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #b9ded9;
   border-radius: 9px;
   padding: 0 10px;
   background: #fff;
-  color: #6d28d9;
+  color: #1686b2;
 }
 .cliente-busqueda input,
 .cliente-formulario input {
   width: 100%;
   min-width: 0;
   height: 36px;
-  border: 1px solid #d8ccf5;
+  border: 1px solid #b9ded9;
   border-radius: 8px;
   background: #fff;
   padding: 0 10px;
-  color: #28144f;
+  color: #172d3b;
   font:
     500 12px Inter,
     ui-sans-serif,
@@ -1405,7 +1405,7 @@
 .cliente-cambiar {
   border: 0;
   background: transparent;
-  color: #6d28d9;
+  color: #1686b2;
   font:
     700 11px Inter,
     ui-sans-serif,
@@ -1419,10 +1419,10 @@
   gap: 8px;
   width: 100%;
   padding: 10px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #b9ded9;
   border-radius: 10px;
-  background: #faf8ff;
-  color: #28144f;
+  background: #f4faf9;
+  color: #172d3b;
   text-align: left;
   cursor: pointer;
 }
@@ -1433,7 +1433,7 @@
 }
 .cliente-resumen small {
   font-size: 9px;
-  color: #715f91;
+  color: #45616a;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -1444,7 +1444,7 @@
   font-size: 12px;
 }
 .cliente-resumen svg {
-  color: #6d28d9;
+  color: #1686b2;
   transition: transform 0.2s ease;
 }
 .cliente-resumen[aria-expanded='true'] svg {
@@ -1453,39 +1453,39 @@
 .cliente-detalle {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed #d8ccf5;
+  border-top: 1px dashed #b9ded9;
 }
 .cliente-detalle small {
-  color: #715f91;
+  color: #45616a;
   font-size: 10px;
 }
 
 /* Controles del detalle del carrito: contraste visible con la paleta lila. */
 .punto-carrito-lineas article > div > button {
-  border: 2px solid #8b5cf6 !important;
-  color: #6d28d9 !important;
-  background: #faf5ff !important;
+  border: 2px solid #168c88 !important;
+  color: #1686b2 !important;
+  background: #f4faf9 !important;
   font-weight: 800;
 }
 .punto-carrito-lineas article > div > button:hover {
-  background: #ede9fe !important;
+  background: #e1f3f0 !important;
 }
 .punto-carrito-lineas article > div > .punto-quitar {
-  border-color: #8b5cf6 !important;
-  color: #7c3aed !important;
-  background: #f5f3ff !important;
+  border-color: #168c88 !important;
+  color: #168c88 !important;
+  background: #f4faf9 !important;
 }
 .punto-carrito-lineas article {
-  border: 2px solid #8b5cf6 !important;
+  border: 2px solid #168c88 !important;
   background: #fff !important;
 }
 
 .punto-cliente {
-  border: 2px solid #a78bfa !important;
-  background: linear-gradient(135deg, #f5f0ff, #eeeaff) !important;
+  border: 2px solid #8fc9c2 !important;
+  background: linear-gradient(135deg, #edf7f5, #eaf1f1) !important;
 }
 .punto-cliente > header strong {
-  color: #4c1d95 !important;
+  color: #12384a !important;
 }
 .punto-cliente .cliente-acciones button:first-child {
   background: #fff !important;
@@ -1502,32 +1502,32 @@
   gap: 12px;
 }
 .punto-pos-contexto .punto-contexto label {
-  color: #4c1d95;
+  color: #12384a;
   font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.08em;
 }
 .punto-pos-contexto .punto-contexto select {
   height: 42px;
-  border: 2px solid #c4b5fd;
+  border: 2px solid #b9ded9;
   border-radius: 10px;
-  color: #35156b;
+  color: #12384a;
   background: #fff;
   font-size: 14px;
   font-weight: 650;
-  box-shadow: 0 3px 10px rgba(109, 40, 217, 0.06);
+  box-shadow: 0 3px 10px rgba(38, 140, 136, 0.06);
 }
 .punto-pos-contexto .punto-contexto select:hover {
-  border-color: #8b5cf6;
+  border-color: #168c88;
 }
 .punto-pos-contexto .punto-contexto select:focus {
   outline: 0;
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.16);
+  border-color: #168c88;
+  box-shadow: 0 0 0 3px rgba(38, 180, 171, 0.16);
 }
 .punto-pos-contexto .punto-contexto option {
-  color: #35156b;
-  background: #faf7ff;
+  color: #12384a;
+  background: #f4faf9;
   font-weight: 600;
 }
 @media (max-width: 620px) {
@@ -1541,8 +1541,8 @@
 }
 
 .sistema-contable .punto-carrito .punto-cliente {
-  background: linear-gradient(135deg, #f1ebff 0%, #e9e1ff 100%) !important;
-  border-color: #bca4fa !important;
+  background: linear-gradient(135deg, #e1f3f0 0%, #e1f3f0 100%) !important;
+  border-color: #8fc9c2 !important;
 }
 
 /* Desplegables propios: el menú abierto conserva bordes y paleta del sistema. */
@@ -1558,24 +1558,24 @@
   width: 100% !important;
   height: 42px !important;
   padding: 0 12px !important;
-  border: 2px solid #c4b5fd !important;
+  border: 2px solid #b9ded9 !important;
   border-radius: 10px !important;
-  color: #35156b !important;
+  color: #12384a !important;
   background: #fff !important;
   font:
     650 14px Inter,
     ui-sans-serif,
     system-ui !important;
   text-align: left !important;
-  box-shadow: 0 3px 10px rgba(109, 40, 217, 0.06) !important;
+  box-shadow: 0 3px 10px rgba(38, 140, 136, 0.06) !important;
 }
 .select-menu-trigger:hover,
 .select-menu-trigger[aria-expanded='true'] {
-  border-color: #7c3aed !important;
-  background: #faf7ff !important;
+  border-color: #168c88 !important;
+  background: #f4faf9 !important;
 }
 .select-menu-trigger svg {
-  color: #6d28d9;
+  color: #1686b2;
   transition: transform 0.18s ease;
 }
 .select-menu-trigger[aria-expanded='true'] svg {
@@ -1592,10 +1592,10 @@
   min-width: 0;
   overflow: hidden;
   padding: 5px;
-  border: 2px solid #a78bfa;
+  border: 2px solid #8fc9c2;
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 14px 30px rgba(76, 29, 149, 0.2);
+  box-shadow: 0 14px 30px rgba(16, 44, 59, 0.2);
 }
 .select-menu-options button {
   display: flex;
@@ -1606,7 +1606,7 @@
   padding: 8px 10px;
   border: 0;
   border-radius: 8px;
-  color: #3c246d;
+  color: #29434d;
   background: transparent;
   font:
     650 13px Inter,
@@ -1616,12 +1616,12 @@
   white-space: normal;
 }
 .select-menu-options button:hover {
-  background: #f1ebff;
-  color: #5b21b6;
+  background: #e1f3f0;
+  color: #086da8;
 }
 .select-menu-options button.activo {
   color: #fff;
-  background: linear-gradient(105deg, #6d28d9, #8b5cf6);
+  background: linear-gradient(105deg, #1686b2, #168c88);
 }
 .select-menu-options button svg {
   flex-shrink: 0;
@@ -1730,9 +1730,9 @@
   background: #fff;
 }
 .punto-pos .punto-categorias button.activo {
-  border-color: #7836ef;
+  border-color: #168c88;
   color: #fff;
-  background: #7836ef;
+  background: #168c88;
 }
 .punto-aviso {
   margin: 8px 4px 15px;
@@ -1820,7 +1820,7 @@
   border: 0;
   border-radius: 7px;
   color: #fff;
-  background: #7836ef;
+  background: #168c88;
   font-weight: 700;
 }
 .punto-carrito {
@@ -1932,7 +1932,7 @@
   border-top: 1px solid #dbe3ec;
 }
 .punto-total b {
-  color: #7836ef;
+  color: #168c88;
   font-size: 20px;
 }
 .punto-pago-mixto header small {
@@ -1956,10 +1956,10 @@
 .punto-generar-qr {
   width: 100%;
   padding: 9px 10px;
-  border: 1px solid #c7a7e8;
+  border: 1px solid #8fc9c2;
   border-radius: 999px;
-  color: #70439a;
-  background: #f0e3fc;
+  color: #17495b;
+  background: #f4faf9;
   font-size: 12px;
   font-weight: 800;
   cursor: not-allowed;
@@ -1984,7 +1984,7 @@
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: #7836ef;
+  background: #168c88;
   font-size: 14px;
   font-weight: 750;
 }
@@ -1992,7 +1992,7 @@
   cursor: not-allowed;
   opacity: 0.48;
 }
-.punto-facturacion { padding: 11px 12px; border: 1px solid #ded1f7; border-radius: 9px; background: #faf8ff; }.punto-facturacion label { display: grid; gap: 5px; color: #39236b; font-size: 12px; font-weight: 800; }.punto-facturacion label small { color: #766a91; font-size: 10px; font-weight: 500; }.punto-facturacion input { height: 38px; padding: 0 10px; border: 1px solid #cfc0f2; border-radius: 7px; color: #2c1d58; background: #fff; }.punto-acciones-venta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }.punto-acciones-venta button { height: 45px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 8px; font-size: 13px; font-weight: 800; }.punto-facturar { border: 1px solid #8b5cf6; color: #6d28d9; background: #f7f2ff; }.punto-facturar:disabled { cursor: not-allowed; opacity: .45; }.punto-facturar:not(:disabled):hover { color: #fff; background: #7c3aed; }
+.punto-facturacion { padding: 11px 12px; border: 1px solid #e1f3f0; border-radius: 9px; background: #f4faf9; }.punto-facturacion label { display: grid; gap: 5px; color: #29434d; font-size: 12px; font-weight: 800; }.punto-facturacion label small { color: #637b83; font-size: 10px; font-weight: 500; }.punto-facturacion input { height: 38px; padding: 0 10px; border: 1px solid #b9ded9; border-radius: 7px; color: #12384a; background: #fff; }.punto-acciones-venta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }.punto-acciones-venta button { height: 45px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 8px; font-size: 13px; font-weight: 800; }.punto-facturar { border: 1px solid #168c88; color: #1686b2; background: #f4faf9; }.punto-facturar:disabled { cursor: not-allowed; opacity: .45; }.punto-facturar:not(:disabled):hover { color: #fff; background: #168c88; }
 @media (max-width: 1040px) {
   .punto-pos-layout {
     grid-template-columns: 1fr;
@@ -2304,7 +2304,7 @@
 
 .punto-modo-vista button.activo {
   color: #fff;
-  background: #7836ef;
+  background: #168c88;
 }
 
 .punto-listado {
@@ -2354,7 +2354,7 @@
 }
 
 .punto-listado > article > b {
-  color: #4c1d95;
+  color: #12384a;
   white-space: nowrap;
   font-size: 13px;
 }
@@ -2367,7 +2367,7 @@
   border: 0;
   border-radius: 7px;
   color: #fff;
-  background: #7836ef;
+  background: #168c88;
   font-weight: 700;
 }
 
@@ -2440,26 +2440,26 @@
 
 /* Pago mixto: mismo recuadro lila y contraste que el bloque de cliente. */
 .sistema-contable .punto-carrito .punto-pago-mixto {
-  border: 2px solid #a78bfa !important;
-  background: linear-gradient(135deg, #f5f0ff 0%, #eeeaff 100%) !important;
+  border: 2px solid #8fc9c2 !important;
+  background: linear-gradient(135deg, #edf7f5 0%, #eaf1f1 100%) !important;
 }
 
 .sistema-contable .punto-pago-mixto header strong {
-  color: #4c1d95;
+  color: #12384a;
 }
 
 .sistema-contable .punto-pago-mixto header svg {
-  color: #6d28d9;
+  color: #1686b2;
 }
 
 .sistema-contable .punto-pago-mixto .punto-pago-fila select,
 .sistema-contable .punto-pago-mixto .punto-pago-fila input {
-  border: 2px solid #c4b5fd;
-  color: #35156b;
+  border: 2px solid #b9ded9;
+  color: #12384a;
 }
 
 .sistema-contable .punto-pago-mixto .punto-pago-totales {
-  border-top: 2px solid #a78bfa;
+  border-top: 2px solid #8fc9c2;
 }
 
 /* En escritorio cada columna se desplaza de forma independiente. */

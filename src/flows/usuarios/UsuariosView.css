@@ -218,13 +218,13 @@
   width: 440px;
   min-width: 340px;
   flex: 0 1 440px;
-  border: 3px solid #8b5cf6;
+  border: 3px solid #168c88;
   border-radius: 11px;
-  box-shadow: 0 0 0 1px rgba(109, 40, 217, .08);
+  box-shadow: 0 0 0 1px rgba(38, 140, 136, .08);
 }
 .sistema-contable .usuarios-filtros > label:focus-within {
-  border-color: #6d28d9;
-  box-shadow: 0 0 0 4px rgba(124, 58, 237, .16);
+  border-color: #1686b2;
+  box-shadow: 0 0 0 4px rgba(38, 180, 171, .16);
 }
 .roles-estado-select {
   position: relative;
@@ -238,15 +238,15 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 13px;
-  border: 2px solid #c4b5fd;
+  border: 2px solid #b9ded9;
   border-radius: 10px;
-  color: #5b21b6;
-  background: #faf8ff;
+  color: #086da8;
+  background: #f4faf9;
   box-shadow: none;
 }
 .roles-estado-select .select-menu-trigger[aria-expanded='true'] {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, .14);
+  border-color: #168c88;
+  box-shadow: 0 0 0 3px rgba(38, 180, 171, .14);
 }
 .roles-estado-select .select-menu-trigger svg {
   transition: transform .18s ease;
@@ -263,10 +263,10 @@
   display: grid;
   gap: 4px;
   padding: 6px;
-  border: 1px solid #c4b5fd;
+  border: 1px solid #b9ded9;
   border-radius: 11px;
   background: #fff;
-  box-shadow: 0 12px 28px rgba(76, 29, 149, .18);
+  box-shadow: 0 12px 28px rgba(16, 44, 59, .18);
 }
 .roles-estado-select .select-menu-options button {
   width: 100%;
@@ -277,50 +277,50 @@
   padding: 0 10px;
   border: 0;
   border-radius: 7px;
-  color: #54249b;
+  color: #17495b;
   background: transparent;
   text-align: left;
 }
 .roles-estado-select .select-menu-options button:hover {
-  color: #5b21b6;
-  background: #eee7ff;
+  color: #086da8;
+  background: #e1f3f0;
 }
 .roles-estado-select .select-menu-options button.activo {
   color: #fff;
-  background: linear-gradient(110deg, #6d28d9, #8b5cf6);
+  background: linear-gradient(110deg, #1686b2, #168c88);
 }
 .sistema-contable .usuarios-filtros label {
-  border: 2px solid #a78bfa;
-  color: #6d28d9;
-  background: #faf8ff;
+  border: 2px solid #8fc9c2;
+  color: #1686b2;
+  background: #f4faf9;
 }
 .sistema-contable .usuarios-filtros label:focus-within {
   outline: 3px solid rgba(167, 139, 250, .25);
-  border-color: #7c3aed;
+  border-color: #168c88;
   background: #fff;
 }
 .sistema-contable .usuarios-filtros input,
 .sistema-contable .usuarios-filtros input::placeholder {
-  color: #5b3c8a;
+  color: #17495b;
   font-weight: 650;
 }
 .sistema-contable .usuarios-filtros select {
-  border: 2px solid #c4b5fd;
-  color: #5b21b6;
-  background: #faf8ff;
+  border: 2px solid #b9ded9;
+  color: #086da8;
+  background: #f4faf9;
 }
 .sistema-contable .usuarios-contador {
-  border-color: #c4b5fd;
-  color: #6d28d9;
-  background: #f5f0ff;
+  border-color: #b9ded9;
+  color: #1686b2;
+  background: #edf7f5;
 }
 .sistema-contable .usuarios-accion {
-  border: 2px solid #6d28d9;
+  border: 2px solid #1686b2;
   color: #fff;
-  background: linear-gradient(105deg, #6d28d9, #8b5cf6);
-  box-shadow: 0 7px 16px rgba(109, 40, 217, .24);
+  background: linear-gradient(105deg, #1686b2, #168c88);
+  box-shadow: 0 7px 16px rgba(38, 140, 136, .24);
 }
-.sistema-contable .usuarios-accion:hover { background: #5b21b6; }
+.sistema-contable .usuarios-accion:hover { background: #086da8; }
 .usuarios-modal-fondo{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:24px;background:rgba(20,48,59,.48);backdrop-filter:blur(3px)}
 .usuarios-modal{width:min(760px,100%);max-height:90vh;overflow:auto;padding:0;border:1px solid #c8d9dd;border-radius:14px;background:#fff;box-shadow:0 24px 55px rgba(18,56,77,.28)}
 .usuarios-modal header,.usuarios-modal footer{display:flex;align-items:center;justify-content:space-between;gap:12px}.usuarios-modal header{margin:0;padding:20px 24px 18px;border-bottom:1px solid #d7e4e7;background:#edf5f6}.usuarios-modal header p{margin:0;color:#0066AD;font-size:10px;font-weight:850;letter-spacing:.1em}.usuarios-modal h3{margin:4px 0 0;color:#173944;font-size:20px}.usuarios-modal header button{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid #d3e1e4;border-radius:8px;background:#fff;color:#31535d;transition:background .15s,color .15s}.usuarios-modal header button:hover{color:#fff;background:#0066AD}.usuarios-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:22px 24px 24px;background:#fff}.usuarios-modal label{display:grid;gap:7px;color:#294751;font-size:12px;font-weight:750}.usuarios-modal input{box-sizing:border-box;width:100%;height:43px;padding:0 12px;border:1px solid #c3d5da;border-radius:8px;background:#fff;color:#173944;outline:none;transition:border-color .15s,box-shadow .15s}.usuarios-modal input:hover{border-color:#89b7bd}.usuarios-modal input:focus{border-color:#0066AD;box-shadow:0 0 0 3px rgba(2,132,199,.13)}.usuarios-modal footer{margin:0;padding:16px 24px;border-top:1px solid #d7e4e7;background:#edf5f6;justify-content:flex-end}.usuarios-modal footer button{min-height:42px;padding:0 16px;border:1px solid #b9d0d4;border-radius:8px;color:#294751;background:#fff;font-weight:800;transition:background .15s,border-color .15s}.usuarios-modal footer button:hover{border-color:#87adb3;background:#f7fbfb}.usuarios-modal footer button[type='submit']{display:inline-flex;align-items:center;gap:7px;color:#fff;background:#0066AD;border-color:#0066AD}.usuarios-modal footer button[type='submit']:hover{background:#066d74;border-color:#066d74}.usuarios-modal-error{margin:0 24px 18px;padding:10px 12px;border:1px solid #e8b8be;border-radius:8px;color:#b42318;background:#fff1f2;font-size:12px;font-weight:700}@media(max-width:560px){.usuarios-modal-fondo{padding:10px}.usuarios-modal header,.usuarios-modal-grid,.usuarios-modal footer{padding-left:16px;padding-right:16px}.usuarios-modal-grid{grid-template-columns:1fr;padding-top:16px;padding-bottom:18px}.usuarios-modal footer{flex-wrap:wrap}.usuarios-modal footer button{flex:1}.usuarios-modal-error{margin-left:16px;margin-right:16px}}
@@ -338,8 +338,8 @@
   border-bottom: 0;
 }
 .usuarios-acciones { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.usuarios-acciones button { width: 38px; height: 34px; display: grid; place-items: center; border: 1px solid #c4b5fd; border-radius: 8px; color: #6d28d9; background: #faf7ff; }
-.usuarios-acciones button:hover { color: #fff; border-color: #7c3aed; background: #7c3aed; }
+.usuarios-acciones button { width: 38px; height: 34px; display: grid; place-items: center; border: 1px solid #b9ded9; border-radius: 8px; color: #1686b2; background: #f4faf9; }
+.usuarios-acciones button:hover { color: #fff; border-color: #168c88; background: #168c88; }
 .usuarios-tabla-fila strong {
   color: #12384d;
   font-size: 12px;
@@ -386,14 +386,14 @@
   padding: 10px 16px;
 }
 .usuarios-tabla .roles-fila > div { display: grid; gap: 5px; }
-.usuarios-tabla .roles-fila strong { color: #24114e; font-size: 13px; }
-.usuarios-tabla .roles-fila small { color: #6b5b88; font-size: 11px; line-height: 1.35; }
-.usuarios-tabla .roles-fila .permisos-contador { width: max-content; padding: 6px 10px; border-radius: 999px; color: #6d28d9; background: #f1ebff; }
+.usuarios-tabla .roles-fila strong { color: #172d3b; font-size: 13px; }
+.usuarios-tabla .roles-fila small { color: #637b83; font-size: 11px; line-height: 1.35; }
+.usuarios-tabla .roles-fila .permisos-contador { width: max-content; padding: 6px 10px; border-radius: 999px; color: #1686b2; background: #e1f3f0; }
 .usuarios-tabla .roles-fila .permisos-contador { justify-self: center; text-align: center; }
 .permisos-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 1080px) { .permisos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .usuarios-tabla .roles-fila .estado-activo { color: #0066AD; background: #e5f8fb; }
-.usuarios-tabla .roles-fila > button { justify-self: start; width: 36px; height: 34px; border-color: #c4b5fd; color: #6d28d9; background: #faf7ff; }
+.usuarios-tabla .roles-fila > button { justify-self: start; width: 36px; height: 34px; border-color: #b9ded9; color: #1686b2; background: #f4faf9; }
 .usuarios-tabla-fila > span:first-child,
 .usuarios-tabla-fila > span:nth-child(4),
 .usuarios-tabla-fila > span:nth-child(6),
@@ -444,8 +444,8 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
-.sistemas-rol-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 24px}.sistema-rol{display:flex;align-items:flex-start;gap:11px;padding:14px;border:1px solid #c4b5fd;border-radius:10px;background:#faf8ff;color:#3d246b;cursor:pointer}.sistema-rol:hover{border-color:#8b5cf6;background:#f5f0ff}.sistema-rol input{width:17px;height:17px;margin:2px 0 0;accent-color:#6d28d9}.sistema-rol span{display:grid;gap:4px}.sistema-rol strong{font-size:12px}.sistema-rol small{color:#725d96;font-size:10px;line-height:1.35}.roles-sin-sistema{grid-column:1/-1;padding:20px;border:1px dashed #c4b5fd;border-radius:10px;color:#6d28d9;background:#faf8ff;text-align:center;font-size:12px}
-.sistemas-permisos{display:grid;gap:12px}.sistema-permisos{border:1px solid #c4b5fd;border-radius:10px;overflow:hidden;background:#fff}.sistema-permisos-titulo{min-height:48px;display:flex;align-items:center;gap:10px;padding:0 15px;color:#3d246b;background:#f4efff;font-size:13px;cursor:pointer}.sistema-permisos-titulo input,.seleccionar-todo input,.sistema-permisos-lista input{width:16px;height:16px;accent-color:#6d28d9}.seleccionar-todo{display:flex;align-items:center;gap:8px;margin:12px 15px;padding-bottom:10px;border-bottom:1px solid #eee7ff;color:#6d28d9;font-size:11px;font-weight:800;cursor:pointer}.sistema-permisos-lista{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 16px;padding:4px 15px 15px}.sistema-permisos-lista label{display:flex;align-items:center;gap:7px;color:#49376b;font-size:11px;cursor:pointer}@media(max-width:760px){.sistema-permisos-lista{grid-template-columns:1fr}}
+.sistemas-rol-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 24px}.sistema-rol{display:flex;align-items:flex-start;gap:11px;padding:14px;border:1px solid #b9ded9;border-radius:10px;background:#f4faf9;color:#29434d;cursor:pointer}.sistema-rol:hover{border-color:#168c88;background:#edf7f5}.sistema-rol input{width:17px;height:17px;margin:2px 0 0;accent-color:#1686b2}.sistema-rol span{display:grid;gap:4px}.sistema-rol strong{font-size:12px}.sistema-rol small{color:#637b83;font-size:10px;line-height:1.35}.roles-sin-sistema{grid-column:1/-1;padding:20px;border:1px dashed #b9ded9;border-radius:10px;color:#1686b2;background:#f4faf9;text-align:center;font-size:12px}
+.sistemas-permisos{display:grid;gap:12px}.sistema-permisos{border:1px solid #b9ded9;border-radius:10px;overflow:hidden;background:#fff}.sistema-permisos-titulo{min-height:48px;display:flex;align-items:center;gap:10px;padding:0 15px;color:#29434d;background:#eaf1f1;font-size:13px;cursor:pointer}.sistema-permisos-titulo input,.seleccionar-todo input,.sistema-permisos-lista input{width:16px;height:16px;accent-color:#1686b2}.seleccionar-todo{display:flex;align-items:center;gap:8px;margin:12px 15px;padding-bottom:10px;border-bottom:1px solid #e1f3f0;color:#1686b2;font-size:11px;font-weight:800;cursor:pointer}.sistema-permisos-lista{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px 16px;padding:4px 15px 15px}.sistema-permisos-lista label{display:flex;align-items:center;gap:7px;color:#35545e;font-size:11px;cursor:pointer}@media(max-width:760px){.sistema-permisos-lista{grid-template-columns:1fr}}
 .permiso-grupo {
   padding: 16px;
   border: 1px solid #d8eaf3;
