@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import Icon from '@ui/components/Icon';
+import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { OperacionCuenta, leerMovimientos, type Movimientos } from './OperacionCuenta';
 
 type EstadoCuenta = 'Pendiente' | 'Parcial' | 'Vencida' | 'Cerrada';
@@ -10,6 +11,7 @@ const cuentasIniciales: Cuenta[] = [];
 const moneda = (monto: number) => `Bs ${monto.toFixed(2)}`;
 
 export function CuentasAbiertasView() {
+  const [mensajeAccion, setMensajeAccion] = useState('');
   const [movimientos, setMovimientos] = useState<Record<string, Movimientos>>(() => Object.fromEntries(cuentasIniciales.map(cuenta => [cuenta.id, leerMovimientos(cuenta.id)])));
   const cuentas = cuentasIniciales.map(cuenta => { const datos = movimientos[cuenta.id]; const total = cuenta.total + datos.cargos.reduce((suma, cargo) => suma + cargo.monto, 0); const saldo = Math.round((cuenta.saldo + total - cuenta.total - datos.pagos.reduce((suma, pago) => suma + pago.monto, 0)) * 100) / 100; return { ...cuenta, total, saldo, estado: (saldo <= 0 ? 'Cerrada' : saldo < total ? 'Parcial' : cuenta.estado === 'Cerrada' ? 'Pendiente' : cuenta.estado) as EstadoCuenta }; });
   const [busqueda, setBusqueda] = useState('');
@@ -34,8 +36,8 @@ export function CuentasAbiertasView() {
     </div>
   </section>;
 
-  return <section className="cuentas-abiertas-vista"><section className="cuentas-abiertas-panel">
+  return <section className="cuentas-abiertas-vista"><section className="cuentas-abiertas-panel" onClick={evento => { if ((evento.target as HTMLElement).closest('.cuentas-nueva')) setMensajeAccion('La creación de cuentas aún no está conectada al servidor. No se guardó ningún dato.'); }}>
     <div className="cuentas-abiertas-herramientas"><label><Icon name="search" size={17} /><input value={busqueda} onChange={(event) => setBusqueda(event.target.value)} placeholder="Buscar por paciente, CI o número de cuenta" /></label><button type="button" className="cuentas-nueva"><Icon name="plus" size={16} /> Nueva cuenta</button></div>
     <div className="cuentas-listado" role="table" aria-label="Listado de cuentas abiertas"><div className="cuentas-listado-control"><div className="cuentas-filtros" role="group" aria-label="Filtrar cuentas">{(['Todas', 'Internaciones', 'Deudas', 'Cerradas'] as const).map((item) => <button key={item} type="button" className={estado === item ? 'activo' : ''} onClick={() => setEstado(item)}>{item}</button>)}</div><div className="cuentas-paginacion"><span>{visibles.length} de {cuentas.length} cuentas</span><button type="button" disabled aria-label="Página anterior"><Icon name="chevronLeft" size={15} /></button><b>1</b><button type="button" disabled aria-label="Página siguiente"><Icon name="chevronRight" size={15} /></button></div></div><div className="cuentas-listado-cabecera" role="row"><span>Cuenta</span><span>Paciente</span><span>CI / NIT</span><span>Origen</span><span>Fecha</span><span>Saldo pendiente</span><span>Estado</span><span>Total</span><span>Acciones</span></div>{visibles.map((cuenta) => <article key={cuenta.id} className="cuentas-listado-fila" role="row"><strong>{cuenta.id}</strong><strong>{cuenta.paciente}</strong><span>{cuenta.documento}</span><span>{cuenta.origen}</span><span>{cuenta.fecha}</span><strong className="cuenta-saldo">{moneda(cuenta.saldo)}</strong><span><i className={`cuenta-estado ${cuenta.estado.toLocaleLowerCase()}`}>{cuenta.estado}</i></span><span>{moneda(cuenta.total)}</span><span className="cuenta-acciones"><button type="button" onClick={() => setCuentaActiva(cuenta)}><Icon name="eye" size={15} /> Ver</button></span></article>)}{!visibles.length && <p className="cuentas-vacio">No se encontraron cuentas con esos criterios.</p>}</div>
-  </section></section>;
+  </section>{mensajeAccion && <AvisoTemporal tipo="info" mensaje={mensajeAccion} />}</section>;
 }

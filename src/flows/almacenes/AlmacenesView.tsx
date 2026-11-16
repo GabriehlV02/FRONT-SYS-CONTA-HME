@@ -7,9 +7,8 @@ import { AlmacenesView as AlmacenesListadoView } from '../inventario/subvistas/A
 import { ReportesInventarioView } from '../inventario/subvistas/ReportesInventarioView';
 import { StockView } from '../inventario/subvistas/StockView';
 import { ControlesVencimientoView } from './ControlesVencimientoView';
-import { EncabezadoVista } from '@ui/components/EncabezadoVista';
 
-export function AlmacenesView({ activeId }: { activeId?: string }) {
+export function AlmacenesView({ activeId, puedeGestionarUbicaciones = false }: { activeId?: string; puedeGestionarUbicaciones?: boolean }) {
   const resolveSubvista = (id?: string): SubvistaAlmacenes =>
     id === 'almacenes-almacenes'
       ? 'almacenes'
@@ -26,8 +25,7 @@ export function AlmacenesView({ activeId }: { activeId?: string }) {
   return (
     <section className="inventario-vista">
       <AlmacenesNavegacion activa={subvista} onSeleccionar={setSubvista} />
-      {subvista === 'almacenes' && <EncabezadoVista titulo="Almacenes" descripcion="Consulta la organización y el estado de los almacenes del hospital." icono="building" />}
-      {subvista === 'stock' && <StockView />}
+      {subvista === 'stock' && <StockView puedeEditarUbicacion={puedeGestionarUbicaciones} />}
       {subvista === 'almacenes' && <AlmacenesListadoView />}
       {subvista === 'controles' && <ControlesVencimientoView />}
       {subvista === 'reportes' && <ReportesInventarioView />}

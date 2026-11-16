@@ -1,4 +1,4 @@
-import { AvisoTemporal } from '@ui/components/AvisoTemporal';
+﻿import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import Icon from '@ui/components/Icon';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { createPortal } from 'react-dom';
@@ -16,22 +16,6 @@ type Modal = 'crear' | 'editar' | 'detalle' | 'lotes' | 'lote';
 const inicial = { producto_base_id: '', nombre_comercial: '', marca: '', presentacion: '', descripcion: '', unidad_id: '', codigo_barras: '', precio_1: '', precio_2: '', precio_3: '', estado: 'ACTIVO' };
 const loteInicial = { numero: '', vencimiento: '', precio_1: '', precio_2: '', precio_3: '' };
 const dinero = (valor: string) => 'Bs ' + Number(valor).toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const unidadEjemplo: Opcion = { id: 'demo-unidad', nombre: 'Unidad', activo: true };
-const itemsEjemplo: Item[] = [
-  ['Paracetamol', 'Paracetamol 500 mg', 'Laboratorio Ejemplo', 'Caja de 20 tabletas', '12.50'],
-  ['Ibuprofeno', 'Ibuprofeno 400 mg', 'Farmacéutica Ejemplo', 'Caja de 10 tabletas', '15.00'],
-  ['Guantes de examen', 'Guantes de nitrilo', 'Marca Ejemplo', 'Caja de 100 unidades', '65.00'],
-  ['Jeringas', 'Jeringa descartable 5 ml', 'Marca Ejemplo', 'Unidad estéril', '3.50'],
-  ['Alcohol antiséptico', 'Alcohol al 70 %', 'Laboratorio Ejemplo', 'Frasco de 500 ml', '18.00'],
-  ['Gasas', 'Gasa estéril', 'Marca Ejemplo', 'Paquete de 10 unidades', '8.00'],
-  ['Solución fisiológica', 'Cloruro de sodio 0,9 %', 'Laboratorio Ejemplo', 'Bolsa de 500 ml', '14.00'],
-  ['Mascarillas', 'Mascarilla quirúrgica', 'Marca Ejemplo', 'Caja de 50 unidades', '35.00'],
-].map(([generico, nombre, marca, presentacion, precio], indice) => {
-  const id = -(indice + 1);
-  const producto_base: Grupo = { id, codigo: `DEMO-G${indice + 1}`, nombre: generico, estado: 'ACTIVO', tipo: { id: 'demo', nombre: 'Producto', activo: true }, categoria: null, subcategoria: null };
-  return { id, codigo: `DEMO-${String(indice + 1).padStart(3, '0')}`, producto_base_id: id, producto_base, nombre_comercial: nombre, marca, presentacion, descripcion: 'Datos ficticios para demostración.', unidad_id: unidadEjemplo.id, unidad: unidadEjemplo, codigo_barras: null, precio_1: precio, precio_2: precio, precio_3: precio, estado: 'ACTIVO', lotes: [] };
-});
-
 export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: boolean }) {
   const [opciones, setOpciones] = useState<Opciones>({ productos: [], unidades: [] });
   const [pagina, setPagina] = useState<Pagina>({ data: [], total: 0, current_page: 1, last_page: 1, from: null, to: null });
@@ -44,7 +28,6 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
   const [filas, setFilas] = useState(20);
   const [numero, setNumero] = useState(1);
   const [recarga, setRecarga] = useState(0);
-  const [mostrarEjemplos, setMostrarEjemplos] = useState(false);
   const [cargando, setCargando] = useState(true);
   const [opcionesListas, setOpcionesListas] = useState(false);
   const [errorOpciones, setErrorOpciones] = useState('');
@@ -71,29 +54,15 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
   useEffect(() => {
     const controller = new AbortController();
     setCargando(true); setError('');
-    if (mostrarEjemplos) {
-      const texto = buscar.trim().toLocaleLowerCase('es');
-      const resultados = itemsEjemplo.filter(item => (!grupo || String(item.producto_base_id) === grupo) && (!estado || item.estado === estado) && [item.codigo, item.nombre_comercial, item.producto_base.nombre, item.marca].some(valor => valor.toLocaleLowerCase('es').includes(texto)));
-      resultados.sort((a, b) => {
-        const comparacion = orden === 'id' ? a.codigo.localeCompare(b.codigo) : orden.startsWith('precio_') ? Number(a[orden as 'precio_1' | 'precio_2' | 'precio_3']) - Number(b[orden as 'precio_1' | 'precio_2' | 'precio_3']) : a[orden as 'nombre_comercial' | 'marca'].localeCompare(b[orden as 'nombre_comercial' | 'marca'], 'es');
-        return direccion === 'asc' ? comparacion : -comparacion;
-      });
-      const inicio = (numero - 1) * filas;
-      setPagina({ data: resultados.slice(inicio, inicio + filas), total: resultados.length, current_page: numero, last_page: Math.max(1, Math.ceil(resultados.length / filas)), from: resultados.length ? inicio + 1 : null, to: resultados.length ? Math.min(inicio + filas, resultados.length) : null });
-      setCargando(false);
-      return () => controller.abort();
-    }
     const timer = window.setTimeout(() => {
       const parametros = new URLSearchParams({ buscar, producto_base_id: grupo, estado, orden, direccion, page: String(numero), por_pagina: String(filas) });
-      apiFetch('/api/v1/inventario/items?' + parametros, { signal: controller.signal }).then(leerRespuesta<Pagina>).then(respuesta => {
-        if (import.meta.env.DEV && !buscar && !grupo && !estado && respuesta.total === 0) setMostrarEjemplos(true);
-        else setPagina(respuesta);
+      apiFetch('/api/v1/inventario/items?' + parametros, { signal: controller.signal }).then(leerRespuesta<Pagina>).then(respuesta => { setPagina(respuesta);
       })
         .catch(error => { if (!controller.signal.aborted) setError(error.message); })
         .finally(() => { if (!controller.signal.aborted) setCargando(false); });
     }, 250);
     return () => { window.clearTimeout(timer); controller.abort(); };
-  }, [buscar, grupo, estado, orden, direccion, numero, filas, recarga, mostrarEjemplos]);
+  }, [buscar, grupo, estado, orden, direccion, numero, filas, recarga]);
   useEffect(() => {
     if (modal) (dialogo.current?.querySelector<HTMLElement>('input:enabled, select:enabled') || dialogo.current?.querySelector<HTMLElement>('button:enabled'))?.focus();
   }, [modal]);
@@ -110,7 +79,7 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
 
   function abrir(modo: Modal, boton: HTMLElement, item: Item | null = null) {
     origen.current = boton; setSeleccionado(item); setErrorFormulario(''); setMensaje('');
-    setFormulario(item ? { producto_base_id: String(item.producto_base_id), nombre_comercial: item.nombre_comercial, marca: item.marca, presentacion: item.presentacion, descripcion: item.descripcion || '', unidad_id: item.unidad_id, codigo_barras: item.codigo_barras || '', precio_1: item.precio_1, precio_2: item.precio_2, precio_3: item.precio_3, estado: item.estado } : { ...inicial, producto_base_id: mostrarEjemplos ? '' : grupo, unidad_id: opciones.unidades[0]?.id || '' });
+    setFormulario(item ? { producto_base_id: String(item.producto_base_id), nombre_comercial: item.nombre_comercial, marca: item.marca, presentacion: item.presentacion, descripcion: item.descripcion || '', unidad_id: item.unidad_id, codigo_barras: item.codigo_barras || '', precio_1: item.precio_1, precio_2: item.precio_2, precio_3: item.precio_3, estado: item.estado } : { ...inicial, producto_base_id: grupo, unidad_id: opciones.unidades[0]?.id || '' });
     setModal(modo);
   }
   function cerrar() {
@@ -135,11 +104,13 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
         setSeleccionado({ ...seleccionado, lotes: loteSeleccionado ? seleccionado.lotes.map(lote => lote.id === loteSeleccionado.id ? respuesta.data : lote) : [...seleccionado.lotes, respuesta.data] });
         setModal('lotes');
       } else {
-        await leerRespuesta(await apiFetch('/api/v1/inventario/items' + (modal === 'editar' ? '/' + seleccionado!.id : ''), {
+        const creando = modal === 'crear';
+        await leerRespuesta(await apiFetch('/api/v1/inventario/items' + (creando ? '' : '/' + seleccionado!.id), {
           method: modal === 'editar' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...formulario, producto_base_id: Number(formulario.producto_base_id), codigo_barras: formulario.codigo_barras || null }),
         }));
         setMensaje(modal === 'editar' ? 'Ítem actualizado correctamente.' : 'Ítem comercial registrado correctamente. Puedes agregar sus lotes desde Lotes.');
-        setModal(null); setMostrarEjemplos(false); setNumero(1); setBuscar(''); setGrupo(''); setEstado('');
+        setModal(null); setNumero(1); setBuscar(''); setGrupo(''); setEstado('');
+        if (creando) { setOrden('id'); setDireccion('desc'); }
         requestAnimationFrame(() => origen.current?.focus());
       }
       setRecarga(valor => valor + 1);
@@ -147,7 +118,7 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
     finally { setGuardando(false); }
   }
 
-  const grupos = mostrarEjemplos && modal !== 'crear' ? itemsEjemplo.map(item => item.producto_base) : [...opciones.productos];
+  const grupos = [...opciones.productos];
   if (seleccionado && !grupos.some(grupo => grupo.id === seleccionado.producto_base_id)) grupos.push(seleccionado.producto_base);
   const unidades = [...opciones.unidades];
   if (seleccionado && !unidades.some(unidad => unidad.id === seleccionado.unidad_id)) unidades.push(seleccionado.unidad);
@@ -167,7 +138,7 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
       {puedeGestionar && <button type="button" className="inventario-nuevo items-general-registrar" disabled={!opcionesListas} onClick={event => abrir('crear', event.currentTarget)}>+ Registro de ítem</button>}
     </div>
     {(error || errorOpciones) && <p role="alert" className="productos-base-error">{error || errorOpciones} <button onClick={() => setRecarga(valor => valor + 1)}>Reintentar</button></p>}
-    {!mostrarEjemplos && opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
+    {opcionesListas && puedeGestionar && (!opciones.productos.length || !opciones.unidades.length) && <p className="items-general-ayuda">Primero registra un agrupador activo en Productos e insumos y una unidad de medida en Configuración admin.</p>}
     <AvisoTemporal mensaje={mensaje} />
     <div className="productos-base-resumen"><span className="inventario-contador">{pagina.total} ítems comerciales</span><span>{cargando ? 'Cargando…' : `${pagina.from || 0}–${pagina.to || 0} de ${pagina.total}`}</span><div className="items-general-vistas" role="group" aria-label="Vista de ítems"><button type="button" aria-pressed={vista === 'lista'} onClick={() => setVista('lista')}>Lista</button><button type="button" aria-pressed={vista === 'galeria'} onClick={() => setVista('galeria')}>Galería</button></div><label>Por página <select value={filas} onChange={event => { setFilas(Number(event.target.value)); setNumero(1); }}><option>20</option><option>50</option><option>100</option></select></label></div>
     {!cargando && !error && pagina.data.length === 0 && <p className="items-general-vacio">{buscar || grupo || estado ? 'No hay ítems que coincidan con los filtros.' : 'Todavía no hay ítems comerciales. Registra el primero y vincúlalo a su agrupador.'}</p>}
@@ -204,3 +175,6 @@ export function ItemsGeneralView({ puedeGestionar = false }: { puedeGestionar?: 
     </div></div>, document.querySelector('.sistema-contable') || document.body)}
   </div>;
 }
+
+
+

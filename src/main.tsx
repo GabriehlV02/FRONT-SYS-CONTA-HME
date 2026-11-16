@@ -27,6 +27,7 @@ import './styles/AccesoContable.css';
 import './styles/AdaptacionPantallas.css';
 import './styles/PaletaLoginContable.css';
 import './styles/ExperienciaVisualContable.css';
+import './styles/IdentidadLoginSistema.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );

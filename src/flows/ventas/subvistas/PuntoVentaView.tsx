@@ -1,4 +1,4 @@
-import ModalRegistroPaciente from '../../usuarios/subvistas/ModalRegistroPaciente';
+﻿import ModalRegistroPaciente from '../../usuarios/subvistas/ModalRegistroPaciente';
 import { apiFetch } from '@ui/auth';
 import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useMemo, useState } from 'react';
@@ -27,28 +27,6 @@ type Cliente = {
 };
 const money = (value: number) => `Bs ${value.toFixed(2)}`;
 const nuevoPago = (id: number): Pago => ({ id, metodo: 'Efectivo', monto: '' });
-const serviciosLaboratorio: ServicioLaboratorio[] = [
-  { id: 'lab-hemograma', codigo: 'LAB-001', nombre: 'Hemograma completo', tipo: 'Servicio', precio: 50, categoria: 'Hematología' },
-  { id: 'lab-grupo', codigo: 'LAB-002', nombre: 'Grupo sanguíneo y factor RH', tipo: 'Servicio', precio: 35, categoria: 'Hematología' },
-  { id: 'lab-coombs', codigo: 'LAB-003', nombre: 'Prueba de Coombs indirecto', tipo: 'Servicio', precio: 90, categoria: 'Hematología' },
-  { id: 'lab-ferritina', codigo: 'LAB-011', nombre: 'Ferritina', tipo: 'Servicio', precio: 120, categoria: 'Perfil de hierro' },
-  { id: 'lab-hierro', codigo: 'LAB-012', nombre: 'Hierro sérico', tipo: 'Servicio', precio: 50, categoria: 'Perfil de hierro' },
-  { id: 'lab-glucemia', codigo: 'LAB-021', nombre: 'Glicemia en ayunas', tipo: 'Servicio', precio: 35, categoria: 'Química metabólica' },
-  { id: 'lab-creatinina', codigo: 'LAB-022', nombre: 'Creatinina', tipo: 'Servicio', precio: 35, categoria: 'Química metabólica' },
-  { id: 'lab-calcio', codigo: 'LAB-031', nombre: 'Calcio iónico', tipo: 'Servicio', precio: 40, categoria: 'Electrolitos' },
-  { id: 'lab-sodio', codigo: 'LAB-032', nombre: 'Electrolitos Na · K · Cl', tipo: 'Servicio', precio: 130, categoria: 'Electrolitos' },
-  { id: 'lab-gaso', codigo: 'LAB-041', nombre: 'Gasometría arterial', tipo: 'Servicio', precio: 360, categoria: 'Gasometría' },
-  { id: 'lab-ana', codigo: 'LAB-051', nombre: 'ANA', tipo: 'Servicio', precio: 150, categoria: 'Serología' },
-  { id: 'lab-perfil', codigo: 'LAB-052', nombre: 'Perfil reumático', tipo: 'Servicio', precio: 680, categoria: 'Serología' },
-  { id: 'lab-iga', codigo: 'LAB-061', nombre: 'Inmunoglobulina IgA', tipo: 'Servicio', precio: 130, categoria: 'Inmunoglobulinas' },
-  { id: 'lab-ige', codigo: 'LAB-062', nombre: 'Inmunoglobulina IgE', tipo: 'Servicio', precio: 130, categoria: 'Inmunoglobulinas' },
-  { id: 'lab-tsh', codigo: 'LAB-071', nombre: 'TSH', tipo: 'Servicio', precio: 130, categoria: 'Endocrinología' },
-  { id: 'lab-vitd', codigo: 'LAB-072', nombre: 'Vitamina D', tipo: 'Servicio', precio: 160, categoria: 'Endocrinología' },
-  { id: 'lab-orina', codigo: 'LAB-081', nombre: 'Examen completo de orina', tipo: 'Servicio', precio: 30, categoria: 'Uroanálisis' },
-  { id: 'lab-micro', codigo: 'LAB-082', nombre: 'Microalbuminuria en orina', tipo: 'Servicio', precio: 130, categoria: 'Uroanálisis' },
-  { id: 'lab-heces', codigo: 'LAB-091', nombre: 'Coproparasitológico directo', tipo: 'Servicio', precio: 30, categoria: 'Parasitología y examen de heces' },
-  { id: 'lab-cultivo', codigo: 'LAB-101', nombre: 'Cultivo y antibiograma', tipo: 'Servicio', precio: 250, categoria: 'Microbiología' },
-];
 
 export function PuntoVentaView() {
   const [catalogoVentas, setCatalogo] = useState<ItemVenta[]>([]);
@@ -56,6 +34,7 @@ export function PuntoVentaView() {
   const [cajas, setCajas] = useState<CajaVenta[]>([]);
   const [cajaId, setCajaId] = useState('');
   const [almacen, setAlmacen] = useState('');
+  const [cargandoCatalogo, setCargandoCatalogo] = useState(true);
   const [cobrando, setCobrando] = useState(false);
   const [ventaId, setVentaId] = useState(() => crypto.randomUUID());
   async function cargarCatalogo() {
@@ -68,9 +47,10 @@ export function PuntoVentaView() {
     setAlmacenes(resultado.almacenes);
     setAlmacen(actual => almacenesDeCaja.some(a => String(a.id) === actual) ? actual : String(almacenesDeCaja[0]?.id ?? ''));
   }
-  useEffect(() => { cargarCatalogo().catch(e => { setCatalogo([]); setAlmacenes([]); setCajas([]); setMensaje(e.message); }); }, []);
+  useEffect(() => { cargarCatalogo().catch(e => { setCatalogo([]); setAlmacenes([]); setCajas([]); setMensaje(e.message); }).finally(() => setCargandoCatalogo(false)); }, []);
   const cajaActual = cajas.find(item => String(item.id) === cajaId);
   const cambiarCaja = (id: string) => {
+    if (lineas.length && !window.confirm('Cambiar la caja vaciará los productos actuales del carrito. ¿Deseas continuar?')) return;
     const seleccionada = cajas.find(item => String(item.id) === id);
     setCajaId(id);
     const almacenesFiltrados = almacenes.filter(a => seleccionada?.almacenIds.includes(a.id));
@@ -134,6 +114,7 @@ export function PuntoVentaView() {
     return ()=>{controller.abort();window.clearTimeout(timer);};
   },[buscarPaciente,clienteModo]);
   const codigoCuentaNueva = tipoCuentaNueva === 'Internación' ? 'INT-1050' : 'DEU-1050';
+  const serviciosLaboratorio: ServicioLaboratorio[] = catalogoVentas.filter((item) => item.tipo === 'Servicio').map((item) => ({ ...item, categoria: 'Servicios disponibles' }));
   const totalLaboratorios = serviciosLaboratorio.filter((servicio) => laboratoriosSeleccionados.includes(servicio.id)).reduce((total, servicio) => total + servicio.precio, 0);
   const resultados = useMemo(
     () =>
@@ -185,6 +166,8 @@ export function PuntoVentaView() {
   const pendiente = Math.max(total - pagado, 0);
   const cambio = Math.max(pagado - total, 0);
   const agregar = (item: ItemVenta) => {
+    if (!cajaId) { setMensaje('Selecciona una caja habilitada antes de agregar productos.'); return; }
+    if (item.tipo !== 'Servicio' && !almacen) { setMensaje('Selecciona un almacén de salida antes de agregar productos.'); return; }
     setLineas((actual) =>
       actual.some((linea) => linea.id === item.id)
         ? actual.map((linea) =>
@@ -282,8 +265,8 @@ export function PuntoVentaView() {
   const emitirFactura = () => {
     if (!ventaCobrada) { setMensaje('Primero registra el cobro para poder emitir la factura.'); return; }
     if (!nitFactura.trim()) { setMensaje('Ingresa el NIT para emitir la factura.'); return; }
-    setMensaje(`Factura emitida correctamente para el NIT ${nitFactura.trim()}.`);
-    setVentaCobrada(false); setNitFactura('');
+    setMensaje('La emisión de facturas todavía no está conectada al servicio SIAT. No se generó ninguna factura.');
+
   };
 
   return (
@@ -299,13 +282,14 @@ export function PuntoVentaView() {
         </div>, document.body,
       )}
       {contextoDestino && createPortal(<header className="punto-pos-cabecera punto-pos-contexto">
-        <div className="punto-contexto"><label>Almacén de salida<select value={almacen} onChange={e => { setAlmacen(e.target.value); setLineas([]); }}><option value="">Seleccionar almacén</option>{almacenes.filter(a => cajaActual?.almacenIds.includes(a.id)).map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
-          <label>Sucursal<input aria-label="Sucursal de la caja" value={cajaActual?.sucursal || ''} readOnly placeholder="Selecciona una caja" /></label>
-          <label>Caja<select aria-label="Seleccionar caja" value={cajaId} onChange={event => cambiarCaja(event.target.value)}><option value="">Seleccionar caja</option>{cajas.map(item => <option key={item.id} value={item.id}>{item.nombre} · {item.codigo}</option>)}</select></label>
+        <div className="punto-contexto"><label><select aria-label="Almacén de salida" value={almacen} onChange={e => { setAlmacen(e.target.value); setLineas([]); }}><option value="">Seleccionar almacén</option>{almacenes.filter(a => cajaActual?.almacenIds.includes(a.id)).map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}</select></label>
+          <label><input aria-label="Sucursal de la caja" value={cajaActual?.sucursal || ''} readOnly placeholder="Selecciona una caja" /></label>
+          <label><select aria-label="Seleccionar caja" value={cajaId} onChange={event => cambiarCaja(event.target.value)}><option value="">Seleccionar caja</option>{cajas.map(item => <option key={item.id} value={item.id}>{item.nombre} · {item.codigo}</option>)}</select></label>
         </div>
       </header>, contextoDestino)}
       <div className="punto-pos-layout">
         <section className="punto-catalogo">
+          {!cargandoCatalogo && !cajas.length && <AvisoTemporal tipo="advertencia" mensaje="No hay cajas habilitadas. Solicita que asignen una caja a tu usuario para iniciar ventas." />}
           <div className="punto-busquedas">
             <label>
               <Icon name="search" size={17} />
@@ -380,12 +364,13 @@ export function PuntoVentaView() {
                     <b>{money(item.precio)}</b>
                     <small>{item.tipo}</small>
                   </div>
-                  <button type="button" onClick={() => agregar(item)}>
+                  <button type="button" disabled={!cajaId || (item.tipo !== 'Servicio' && !almacen)} onClick={() => agregar(item)}>
                     <Icon name="plus" size={16} /> Agregar
                   </button>
                 </footer>
               </article>
               ))}
+              {!resultadosPagina.length && <div className="punto-catalogo-vacio" role="status"><Icon name="search" size={22} /><strong>{busqueda ? 'No encontramos coincidencias' : 'No hay artículos para mostrar'}</strong><span>{busqueda ? 'Prueba con otro nombre o código.' : 'Cambia el tipo de artículo o revisa el almacén seleccionado.'}</span></div>}
             </div>
 
           <footer className="punto-paginacion-inferior" aria-label="Paginación del catálogo">
@@ -724,9 +709,16 @@ export function PuntoVentaView() {
             <div className="cuenta-codigo"><span>Código asignado automáticamente</span><strong>{codigoCuentaNueva}</strong></div>
             <fieldset><legend>Datos del cliente / paciente</legend><div className="cuenta-modal-campos"><label>Nombre completo<input aria-label="Buscar paciente para cuenta" value={buscarCuentaPaciente} onChange={e=>setBuscarCuentaPaciente(e.target.value)} placeholder="Buscar por nombre o CI"/><select aria-label="Paciente de la cuenta" value={cuentaPaciente.paciente_id} onChange={e=>{const p=pacientesCuenta.find(p=>p.id===e.target.value);setCuentaPaciente(p?{paciente_id:p.id,nombre:[p.nombres,p.apellido_paterno,p.apellido_materno].join(' '),documento:p.ci,celular:p.telefono || ''}:{paciente_id:'',nombre:'',documento:'',celular:''});}}><option value="">Seleccionar paciente registrado</option>{pacientesCuenta.map(p=><option key={p.id} value={p.id}>{[p.nombres,p.apellido_paterno,p.apellido_materno].join(' ')} · {p.ci}</option>)}</select></label><label>CI / NIT<input value={cuentaPaciente.documento} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, documento: event.target.value }))} placeholder="Documento de identidad" /></label><label>Celular<input value={cuentaPaciente.celular} onChange={(event) => setCuentaPaciente((actual) => ({ ...actual, celular: event.target.value }))} placeholder="Número de contacto" /></label></div></fieldset>
           </div>
-          <footer><button type="button" className="cuenta-cancelar" onClick={() => setCuentaModalAbierta(false)}>Cancelar</button><button type="button" className="cuenta-crear" onClick={() => { if (!cuentaPaciente.nombre.trim() || !cuentaPaciente.documento.trim()) { setMensaje('Completa el nombre y CI/NIT para crear la cuenta.'); return; } setMensaje(`Cuenta ${codigoCuentaNueva} creada para ${cuentaPaciente.nombre}.`); setCuentaModalAbierta(false); setCuentaPaciente({ paciente_id:'', nombre: '', documento: '', celular: '' }); }}><Icon name="plus" size={16} /> Crear cuenta</button></footer>
+          <footer><button type="button" className="cuenta-cancelar" onClick={() => setCuentaModalAbierta(false)}>Cancelar</button><button type="button" className="cuenta-crear" onClick={() => { if (!cuentaPaciente.nombre.trim() || !cuentaPaciente.documento.trim()) { setMensaje('Completa el nombre y CI/NIT para crear la cuenta.'); return; } setMensaje('La creación de cuentas aún no está conectada al servidor. No se guardó ningún dato.'); setCuentaModalAbierta(false); setCuentaPaciente({ paciente_id:'', nombre: '', documento: '', celular: '' }); }}><Icon name="plus" size={16} /> Crear cuenta</button></footer>
         </section>
       </div>}
     </section>
   );
 }
+
+
+
+
+
+
+

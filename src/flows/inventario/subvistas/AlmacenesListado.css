@@ -1,0 +1,40 @@
+.sistema-contable .almacenes-listado { display:grid; gap:16px; min-width:0; color:#17334d; }
+.sistema-contable .almacenes-listado-resumen { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.sistema-contable .almacenes-listado-resumen article { display:flex; align-items:center; gap:12px; min-height:72px; padding:13px 15px; border:1px solid #d4e2eb; border-radius:12px; background:#fff; box-shadow:0 5px 16px rgb(15 48 75 / 4%); }
+.sistema-contable .almacenes-listado-resumen article>span { display:grid; place-items:center; width:40px; height:40px; flex:0 0 40px; border-radius:10px; color:#0b6eae; background:#e9f4fb; }
+.sistema-contable .almacenes-listado-resumen article>span.estado-activo { color:#23704f; background:#eaf6ef; }
+.sistema-contable .almacenes-listado-resumen article>span.estado-inactivo { color:#65798a; background:#eef2f5; }
+.sistema-contable .almacenes-listado-resumen article div { display:grid; gap:4px; min-width:0; }
+.sistema-contable .almacenes-listado-resumen small { color:#60788a; font-size:11px; }
+.sistema-contable .almacenes-listado-resumen strong { color:#153e6d; font-size:21px; font-variant-numeric:tabular-nums; }
+.sistema-contable .almacenes-listado-filtros { display:grid; grid-template-columns:minmax(240px,1.6fr) minmax(150px,1fr) minmax(140px,.85fr) minmax(175px,1fr) auto auto; align-items:center; gap:9px; padding:12px; border:1px solid #c9deea; border-radius:12px; background:#f2f8fb; }
+.sistema-contable .almacenes-listado-filtros select,.sistema-contable .almacenes-listado-filtros button { min-width:0; height:42px; padding:0 12px; border:1px solid #c7dbe8; border-radius:8px; color:#17334d; background:#fff; font-size:12px; }
+.sistema-contable .almacenes-listado-filtros .almacenes-busqueda { display:flex; align-items:center; gap:9px; min-width:0; height:42px; padding:0 12px; border:1px solid #c7dbe8; border-radius:8px; color:#0066ad; background:#fff; }
+.sistema-contable .almacenes-busqueda input { width:100%; min-width:0; border:0; outline:0; color:#17334d; background:transparent; font:inherit; }
+.sistema-contable .almacenes-busqueda input::placeholder { color:#71899b; }
+.sistema-contable .almacenes-listado-filtros .almacenes-direccion { display:flex; align-items:center; justify-content:center; gap:5px; font-weight:700; }
+.sistema-contable .almacenes-listado-filtros .almacenes-actualizar { border-color:#1d396e; color:#fff; background:#1d396e; font-weight:750; }
+.sistema-contable .almacenes-listado-filtros button:disabled { opacity:.6; cursor:wait; }
+.sistema-contable .almacenes-listado-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; color:#60788a; font-size:11px; }
+.sistema-contable .almacenes-listado-meta strong { color:#17334d; font-size:12px; }
+.sistema-contable .almacenes-tabla-scroll { overflow:auto; min-height:180px; border:1px solid #cbdde8; border-radius:12px; background:#fff; }
+.sistema-contable .almacenes-tabla-scroll table { width:100%; min-width:760px; border-collapse:separate; border-spacing:0; font-size:12px; }
+.sistema-contable .almacenes-tabla-scroll th { position:sticky; top:0; z-index:1; padding:12px 14px; color:#fff; background:#0d4f81; font-size:10px; font-weight:800; letter-spacing:.04em; text-align:left; text-transform:uppercase; white-space:nowrap; }
+.sistema-contable .almacenes-tabla-scroll td { padding:13px 14px; border-bottom:1px solid #e1ebf1; color:#36576f; vertical-align:middle; }
+.sistema-contable .almacenes-tabla-scroll tbody tr:nth-child(even) { background:#f5f9fc; }
+.sistema-contable .almacenes-tabla-scroll tbody tr:hover { background:#edf6fb; }
+.sistema-contable .almacenes-tabla-scroll td strong { color:#193e5a; }
+.sistema-contable .almacenes-tabla-scroll .almacen-codigo { color:#0066ad; font-variant-numeric:tabular-nums; }
+.sistema-contable .almacen-tipos { display:flex; flex-wrap:wrap; gap:5px; }
+.sistema-contable .almacen-tipos span { padding:4px 7px; border:1px solid #d2e5ef; border-radius:999px; color:#245371; background:#edf6fb; font-size:10px; white-space:nowrap; }
+.sistema-contable .almacen-estado { display:inline-flex; align-items:center; padding:5px 9px; border-radius:999px; font-size:10px; font-weight:750; }
+.sistema-contable .almacen-estado.activo { color:#23704f; background:#eaf6ef; }
+.sistema-contable .almacen-estado.inactivo { color:#627386; background:#edf1f4; }
+.sistema-contable .almacenes-vacio { display:grid; justify-items:center; gap:9px; margin:0; padding:42px 18px; color:#60788a; text-align:center; }
+.sistema-contable .almacenes-vacio strong { color:#17334d; font-size:14px; }
+.sistema-contable .almacenes-vacio span { font-size:12px; }
+.sistema-contable .almacenes-error { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid #f1c7c7; border-radius:9px; color:#9e3434; background:#fff4f4; font-size:12px; }
+.sistema-contable .almacenes-error button { padding:7px 11px; border:1px solid #e2b2b2; border-radius:7px; color:#8c2e2e; background:#fff; font-weight:700; }
+@media(max-width:1100px) { .sistema-contable .almacenes-listado-filtros { grid-template-columns:repeat(3,minmax(0,1fr)); } .sistema-contable .almacenes-listado-filtros .almacenes-busqueda { grid-column:span 2; } }
+@media(max-width:700px) { .sistema-contable .almacenes-listado-resumen { grid-template-columns:repeat(2,minmax(0,1fr)); } .sistema-contable .almacenes-listado-filtros { grid-template-columns:1fr 1fr; } .sistema-contable .almacenes-listado-filtros .almacenes-busqueda { grid-column:1/-1; } .sistema-contable .almacenes-listado-filtros .almacenes-actualizar { grid-column:1/-1; } .sistema-contable .almacenes-listado-meta { align-items:flex-start; flex-direction:column; } }
+@media(max-width:420px) { .sistema-contable .almacenes-listado-resumen { grid-template-columns:1fr 1fr; gap:7px; } .sistema-contable .almacenes-listado-resumen article { gap:8px; padding:9px; } .sistema-contable .almacenes-listado-resumen article>span { width:34px; height:34px; flex-basis:34px; } }

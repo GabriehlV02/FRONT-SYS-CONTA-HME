@@ -4,3 +4,10 @@
 .aviso-temporal button { flex: 0 0 26px; width: 26px; height: 26px; padding: 0; border: 0; background: transparent; color: #5d7771; font-size: 20px; cursor: pointer; }
 .aviso-temporal button:focus-visible { outline: 2px solid #0066AD; outline-offset: 2px; }
 @media (max-width: 600px) { .aviso-temporal { top: 68px; right: 12px; } }
+.aviso-temporal-advertencia { border-color: #f0d59b; border-left-color: #d18a16; color: #694b17; }
+.aviso-temporal-advertencia > span { color: #8a5b0b; background: #fff0ca; }
+.aviso-temporal-advertencia button { color: #80683e; }
+.aviso-temporal-error { border-color: #efc8c8; border-left-color: #c34d56; color: #6f272d; }
+.aviso-temporal-error > span { color: #a43740; background: #fde8e9; }
+.aviso-temporal-info { border-color: #c8ddeb; border-left-color: #2a6f9b; color: #173c55; }
+.aviso-temporal-info > span { color: #1d5c85; background: #e4f1f8; }

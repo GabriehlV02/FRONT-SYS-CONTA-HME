@@ -137,7 +137,7 @@ const config: SystemConfig = {
     ) : id === 'inventario' ? (
       <VistaDiferida><InventarioView activeId={activeId} permisos={session?.permissions ?? []} administraCatalogo={session?.administraCatalogo} /></VistaDiferida>
     ) : id === 'almacenes' ? (
-      <VistaDiferida><AlmacenesView activeId={activeId} /></VistaDiferida>
+      <VistaDiferida><AlmacenesView activeId={activeId} puedeGestionarUbicaciones={session?.permissions.includes('INVENTARIO_GESTIONAR') === true && session?.administraCatalogo === true} /></VistaDiferida>
     ) : id === 'adquisiciones' ? (
       <VistaDiferida><MovimientosView activeId={activeId} administraCatalogo={session?.administraCatalogo} tipo="adquisiciones" /></VistaDiferida>
     ) : id === 'traspasos' ? (

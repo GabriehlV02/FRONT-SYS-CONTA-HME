@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
+﻿import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import Icon from '@ui/components/Icon';
 import type { IconName } from '@ui/components/Icon';
 import { BotonSubvista } from '@ui/components/BotonSubvista';
@@ -14,6 +14,7 @@ type Caja = { id: number; nombre: string; codigo: string; sucursalId: number; al
 type Dispositivo = { id: number; nombre: string; codigo: string; tipo: string; sucursalId: number; area: string; uso: 'Institucional' | 'Personal'; vinculadoA: string; estado: 'Activo' | 'Inactivo' };
 type UsuarioSistema = { id: number; nombre: string; usuario: string };
 type Vendedor = { id: number; codigo: string; usuarioId: number; sucursalId: number; cajaIds: number[]; estado: 'Activo' | 'Inactivo' };
+const usuariosSistema: UsuarioSistema[] = [];
 const tiposItem: TipoItem[] = ['Productos', 'Insumos', 'Servicios'];
 
 const subvistas: { id: SubvistaConfiguracion; nombre: string; icono: IconName; descripcion: string }[] = [
@@ -22,13 +23,7 @@ const subvistas: { id: SubvistaConfiguracion; nombre: string; icono: IconName; d
   { id: 'usuario', nombre: 'Configuración usuario', icono: 'users', descripcion: 'Usuarios habilitados y permisos operativos.' },
 ];
 
-const usuariosSistema: UsuarioSistema[] = [
-  { id: 1, nombre: 'Administrador', usuario: 'admin' },
-  { id: 2, nombre: 'Operador contable', usuario: 'operador' },
-];
-const vendedoresIniciales: Vendedor[] = [
-  { id: 1, codigo: 'VEN-001', usuarioId: 2, sucursalId: 1, cajaIds: [1, 2], estado: 'Activo' },
-];
+
 
 function detectarDispositivoActual() {
   if (typeof navigator === 'undefined') return { nombre: 'Equipo actual', tipo: 'Equipo de escritorio' };
@@ -53,7 +48,7 @@ export function ConfiguracionView({ inicial = 'contable', usuarioSesion = 'Usuar
   const [almacenes, setAlmacenes] = useState<Almacen[]>([]);
   const [cajas, setCajas] = useState<Caja[]>([]);
   const [dispositivos, setDispositivos] = useState<Dispositivo[]>([]);
-  const [vendedores, setVendedores] = useState(vendedoresIniciales);
+  const [vendedores, setVendedores] = useState<Vendedor[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   const [revision, setRevision] = useState(0);
@@ -182,8 +177,8 @@ function Vendedores({ sucursales, almacenes, cajas, vendedores, onCrear }: { suc
   const guardar = (event: FormEvent) => { event.preventDefault(); if (!form.codigo.trim() || !form.usuarioId || !form.sucursalId || !form.cajaIds.length) return; onCrear({ id: Date.now(), codigo: form.codigo.trim().toUpperCase(), usuarioId: Number(form.usuarioId), sucursalId: Number(form.sucursalId), cajaIds: form.cajaIds, estado: 'Activo' }); setForm({ codigo: '', usuarioId: '', sucursalId: String(sucursales.find(s => s.estado === 'Activa')?.id || ''), cajaIds: [] }); setAbierto(false); };
 
   return <div className="configuracion-operativa">
-    <div className="configuracion-barra configuracion-barra-vendedores"><label><Icon name="search" size={17} /><input value={buscar} onChange={(event) => setBuscar(event.target.value)} placeholder="Buscar vendedor, usuario o código" /></label><select className="configuracion-filtro" value={sucursalFiltro} onChange={(event) => setSucursalFiltro(event.target.value)} aria-label="Filtrar por sucursal"><option>Todas</option>{sucursales.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select><select className="configuracion-filtro" value={almacenFiltro} onChange={(event) => setAlmacenFiltro(event.target.value)} aria-label="Filtrar por almacén"><option>Todos</option>{almacenes.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select><span>{visibles.length} vendedores</span><button type="button" onClick={() => setAbierto(true)}><Icon name="plus" size={16} /> Registrar vendedor</button></div>
-    <section className="configuracion-bloque"><header><div><h2>Vendedores</h2><small>Usuarios habilitados para operar en sucursales y cajas específicas.</small></div><b>{visibles.length}</b></header><div className="configuracion-tabla configuracion-vendedores-tabla"><div className="configuracion-tabla-head"><span>N°</span><span>Código vendedor</span><span>Nombre</span><span>Usuario</span><span>Sucursal</span><span>Cajas autorizadas</span><span>Estado</span></div>{visibles.map((item, indice) => { const usuario = usuariosSistema.find((actual) => actual.id === item.usuarioId); return <article key={item.id}><span>{indice + 1}</span><strong>{item.codigo}</strong><span>{usuario?.nombre}</span><span>{usuario?.usuario}</span><span>{sucursales.find((sucursal) => sucursal.id === item.sucursalId)?.nombre}</span><span className="configuracion-etiquetas">{item.cajaIds.map((id) => <i key={id}>{cajas.find((caja) => caja.id === id)?.nombre}</i>)}</span><span><i>{item.estado}</i></span></article>; })}</div></section>
+    <div className="configuracion-barra configuracion-barra-vendedores"><label><Icon name="search" size={17} /><input value={buscar} onChange={(event) => setBuscar(event.target.value)} placeholder="Buscar vendedor, usuario o código" /></label><select className="configuracion-filtro" value={sucursalFiltro} onChange={(event) => setSucursalFiltro(event.target.value)} aria-label="Filtrar por sucursal"><option>Todas</option>{sucursales.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select><select className="configuracion-filtro" value={almacenFiltro} onChange={(event) => setAlmacenFiltro(event.target.value)} aria-label="Filtrar por almacén"><option>Todos</option>{almacenes.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select><span>{visibles.length} vendedores configurados</span><button type="button" disabled title="La asignación de vendedores aún no está conectada al servidor"><Icon name="plus" size={16} /> Registrar vendedor</button></div>
+    <section className="configuracion-bloque"><header><div><h2>Vendedores</h2><small>La asignación de usuarios a cajas aún no está disponible en el servidor.</small></div><b>{visibles.length}</b></header><div className="configuracion-tabla configuracion-vendedores-tabla"><div className="configuracion-tabla-head"><span>N°</span><span>Código vendedor</span><span>Nombre</span><span>Usuario</span><span>Sucursal</span><span>Cajas autorizadas</span><span>Estado</span></div>{visibles.map((item, indice) => { const usuario = usuariosSistema.find((actual) => actual.id === item.usuarioId); return <article key={item.id}><span>{indice + 1}</span><strong>{item.codigo}</strong><span>{usuario?.nombre}</span><span>{usuario?.usuario}</span><span>{sucursales.find((sucursal) => sucursal.id === item.sucursalId)?.nombre}</span><span className="configuracion-etiquetas">{item.cajaIds.map((id) => <i key={id}>{cajas.find((caja) => caja.id === id)?.nombre}</i>)}</span><span><i>{item.estado}</i></span></article>; })}</div></section>
     {abierto && <Modal titulo="Registrar vendedor" onCerrar={() => setAbierto(false)}><form onSubmit={guardar}><div className="configuracion-modal-campos"><label>Código de vendedor<input required value={form.codigo} onChange={(event) => setForm({ ...form, codigo: event.target.value })} placeholder="Ej. VEN-002" /></label><UsuarioCombobox usuarios={usuariosDisponibles} value={form.usuarioId} onChange={(usuarioId) => setForm({ ...form, usuarioId })} /><label className="campo-completo">Sucursal<select required value={form.sucursalId} onChange={(event) => cambiarSucursal(event.target.value)}>{sucursales.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}</select></label><fieldset className="campo-completo"><legend>Cajas autorizadas</legend>{cajasDisponibles.map((item) => <label key={item.id}><input type="checkbox" checked={form.cajaIds.includes(item.id)} onChange={() => setForm({ ...form, cajaIds: form.cajaIds.includes(item.id) ? form.cajaIds.filter((id) => id !== item.id) : [...form.cajaIds, item.id] })} /> {item.nombre}</label>)}{!cajasDisponibles.length && <small>No hay cajas registradas en esta sucursal.</small>}</fieldset></div><footer><button type="button" onClick={() => setAbierto(false)}>Cancelar</button><button type="submit">Guardar vendedor</button></footer></form></Modal>}
   </div>;
 }
@@ -223,3 +218,6 @@ function UsuarioCombobox({ usuarios, value, onChange }: { usuarios: UsuarioSiste
 function Modal({ titulo, onCerrar, children }: { titulo: string; onCerrar: () => void; children: ReactNode }) {
   return <div className="configuracion-modal-fondo" onMouseDown={onCerrar}><section className="configuracion-modal" onMouseDown={(event) => event.stopPropagation()}><header><div><p>REGISTRO OPERATIVO</p><h3>{titulo}</h3></div><button type="button" aria-label="Cerrar" onClick={onCerrar}><Icon name="close" size={18} /></button></header>{children}</section></div>;
 }
+
+
+
