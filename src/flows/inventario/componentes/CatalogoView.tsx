@@ -5,7 +5,6 @@ import { categoriasRegistro as categoriasIniciales, unidadesRegistro as unidades
 ﻿import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Icon from '@ui/components/Icon';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
-import { useRef } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
 import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
@@ -175,8 +174,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   const [anchosColumnas, setAnchosColumnas] = useState<number[]>(() => [...anchosInicialesCatalogo]);
   const [columnasRedimensionadas, setColumnasRedimensionadas] = useState(false);
   const [tablaCompacta, setTablaCompacta] = useState(() => window.matchMedia('(max-width: 860px)').matches);
-  const [columnasGaleria, setColumnasGaleria] = useState(1);
-  const galeriaRef = useRef<HTMLDivElement>(null);
 
   // Elimina una preferencia de versiones previas: el ancho no debe persistir entre recargas.
   useEffect(() => {
@@ -253,19 +250,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
     const actualizar = () => setTablaCompacta(consulta.matches);
     consulta.addEventListener('change', actualizar);
     return () => consulta.removeEventListener('change', actualizar);
-  }, []);
-
-  useEffect(() => {
-    if (!galeriaRef.current) return;
-    const galeria = galeriaRef.current;
-    const medir = () => {
-      const columnas = getComputedStyle(galeria).gridTemplateColumns.split(' ').filter(Boolean).length;
-      setColumnasGaleria(Math.max(1, columnas));
-    };
-    medir();
-    const observador = new ResizeObserver(medir);
-    observador.observe(galeria);
-    return () => observador.disconnect();
   }, []);
 
   const titulo =
@@ -430,6 +414,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         (producto) =>
           !termino ||
           [
+            producto.codigo || '',
             producto.nombre,
             producto.categoria,
             producto.marca,
@@ -472,7 +457,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   }, [busqueda, campoOrden, categoria, direccion, elementosDemo]);
   const cantidadPorPagina = porPagina === 'Todos'
     ? Math.max(productosFiltrados.length, 1)
-    : porPagina * columnasGaleria;
+    : porPagina;
   const totalPaginas = Math.max(
     1,
     Math.ceil(productosFiltrados.length / cantidadPorPagina),
@@ -717,7 +702,6 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         {productosFiltrados.length === 0 ? 0 : desde + 1}-
         {Math.min(desde + cantidadPorPagina, productosFiltrados.length)} de{' '}
         {productosFiltrados.length}
-        <span> · {porPagina} filas × {columnasGaleria} por fila</span>
       </span>
       <div className="inventario-paginas">
         <label className="inventario-cantidad-vista">
@@ -896,20 +880,20 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         {tipo === 'servicios' && !cargando && !errorCarga && registrosGuardados.length === 0 && <p role="status">No hay servicios registrados. Usa Registro para crear el primero.</p>}
         {tipo === 'servicios' && cargando && <p role="status">Cargando servicios…</p>}
         {controlesSuperiores}
-          <div className="inventario-galeria" aria-label={titulo} ref={galeriaRef}>
+          <div className="catalogo-tabla-contenedor" role="region" aria-label={`Tabla de ${titulo.toLocaleLowerCase('es')}`} tabIndex={0}>
+          <table className="catalogo-tabla">
+            <thead><tr><th scope="col">Código</th><th scope="col">Nombre</th><th scope="col">Tipo</th><th scope="col">Categoría</th><th scope="col">Unidad</th>{!esServicio && <th scope="col">Stock</th>}<th scope="col">Precio de venta</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
+            <tbody>
             {productosPagina.map((producto) => {
               const datos = obtenerDatosTabla(producto);
-              return <article className={`inventario-card inventario-card-compacta${producto.revisionPrecio ? ' requiere-revision' : ''}`} key={producto.nombre}>
-                <div className="inventario-card-cuerpo">
-                  <small>{datos.codigo}</small>
-                  <h3>{producto.nombre}</h3>
-                  <p>{producto.categoria} · {datos.estado}</p>
-                  <p>{datos.tipoProducto}{!esServicio && <> · Stock {datos.stock}</>}</p>
-                  {producto.revisionPrecio && <em>Precio pendiente de revisión</em>}
-                </div>
-                <footer className="inventario-card-pie">
-                  <div><b>{datos.precio}</b><small>{datos.unidad}</small></div>
-                  <div className="inventario-card-actions">
+              return <tr key={producto.codigo || producto.nombre}>
+                <td>{datos.codigo}</td>
+                <td><strong>{producto.nombre}</strong>{producto.revisionPrecio && <small className="catalogo-tabla-aviso">Precio pendiente de revisión</small>}</td>
+                <td>{datos.tipoProducto}</td><td>{producto.categoria || '—'}</td><td>{datos.unidad}</td>
+                {!esServicio && <td>{datos.stock}</td>}
+                <td className="catalogo-tabla-precio">{datos.precio}</td>
+                <td><span className={`catalogo-tabla-estado ${datos.estado === 'Activo' ? 'activo' : 'inactivo'}`}>{datos.estado}</span></td>
+                <td><div className="catalogo-tabla-acciones">
                     <button type="button" onClick={() => {
                         const registroBase =
                           registrosGuardados.find(
@@ -966,10 +950,12 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
                           estado: normalizarEstadoFormulario(registroBase.estado),
                         });
                       }}>Editar</button>}
-                  </div>
-                </footer>
-              </article>;
+                  </div></td>
+              </tr>;
             })}
+            {!productosPagina.length && !cargando && <tr><td colSpan={esServicio ? 8 : 9} className="catalogo-tabla-vacia">No se encontraron {nombreElementos} con estos filtros.</td></tr>}
+            </tbody>
+          </table>
           </div>
         {controles}
       </div>
