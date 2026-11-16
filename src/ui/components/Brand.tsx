@@ -27,7 +27,14 @@
           onError={(event) => {
             event.currentTarget.parentElement?.classList.add('logo-no-disponible');
           }}
-          style={{ width: '100%', height: '100%', display: 'block' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            filter: sidebar
+              ? 'brightness(0) saturate(100%) invert(18%) sepia(28%) saturate(1464%) hue-rotate(163deg) brightness(93%) contrast(95%)'
+              : undefined,
+          }}
         />
       </span>
       {sidebar && (
