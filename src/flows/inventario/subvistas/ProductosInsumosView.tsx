@@ -1,4 +1,4 @@
-import { AvisoTemporal } from '@ui/components/AvisoTemporal';
+﻿import { AvisoTemporal } from '@ui/components/AvisoTemporal';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { apiFetch } from '@ui/auth';
 import { leerRespuesta } from '../../usuarios/accesos';
@@ -86,9 +86,6 @@ export function ProductosInsumosView({ puedeGestionar = false }: { puedeGestiona
   const opciones = (registros: Opcion[], actual: string, condicion: (registro: Opcion) => boolean = () => true) => registros.filter(registro => (registro.activo && condicion(registro)) || registro.id === actual).map(registro => <option key={registro.id} value={registro.id} disabled={!registro.activo}>{registro.nombre}{!registro.activo ? ' (inactivo)' : ''}</option>);
 
   return <div className="inventario-contenido productos-base">
-    <header className="productos-base-encabezado"><div><h2>Productos base e insumos</h2><p>Registra el grupo general, por ejemplo Paracetamol. Sus presentaciones, precios y lotes se agregarán en la vista de ítems.</p></div>
-      {puedeGestionar && <button className="inventario-nuevo" disabled={!catalogosListos} onClick={event => abrir('crear', event.currentTarget)}>+ Registrar producto base</button>}
-    </header>
     <div className="inventario-filtros">
       <label><input type="search" aria-label="Buscar producto base por nombre o código" placeholder="Buscar producto base por nombre o código" value={buscar} onChange={event => { setBuscar(event.target.value); setNumeroPagina(1); }} /></label>
       <select aria-label="Filtrar por categoría" value={categoria} onChange={event => { setCategoria(event.target.value); setNumeroPagina(1); }}><option value="">Todas las categorías</option>{catalogos.categorias.map(opcion => <option key={opcion.id} value={opcion.id}>{opcion.nombre}</option>)}</select>
@@ -129,3 +126,4 @@ export function ProductosInsumosView({ puedeGestionar = false }: { puedeGestiona
     </div></div>}
   </div>;
 }
+

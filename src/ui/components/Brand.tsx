@@ -9,8 +9,8 @@
   name: string;
   logoSrc?: string;
 }) {
-  const logoCompleto = '/logo-hospital-contable-celeste.png';
-  const logoLoginContable = '/logo-hospital-contable-final.svg?v=login-corporativo-20261113';
+  const logoLoginContable = '/logo-hospital-yo-te-cuido-transparente.png?v=transparente-20261115';
+  const logoCompleto = logoLoginContable;
   const logoCompacto = '/brand.svg?v=corporativo-0066ad';
 
   return (

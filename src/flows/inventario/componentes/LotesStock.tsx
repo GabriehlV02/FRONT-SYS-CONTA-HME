@@ -29,7 +29,7 @@ const cantidad = (valor: number) => valor.toLocaleString('es-BO', { maximumFract
 const sumar = (lotes: Lote[]) => Number(lotes.reduce((total, lote) => total + lote.disponible, 0).toFixed(3));
 const dinero = (valor: string | null, decimales = 2) => valor === null ? 'Sin costo registrado' : 'Bs ' + Number(valor).toLocaleString('es-BO', { minimumFractionDigits: decimales, maximumFractionDigits: decimales });
 
-export function LotesStock() {
+export function LotesStock({ puedeEditarUbicacion = false }: { puedeEditarUbicacion?: boolean }) {
   const [lotes, setLotes] = useState<Lote[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
@@ -43,7 +43,7 @@ export function LotesStock() {
   const [direccion, setDireccion] = useState<'asc' | 'desc'>('asc');
   const [detalle, setDetalle] = useState<Lote | null>(null);
   const [almacenDetalle, setAlmacenDetalle] = useState('todos');
-  const [ubicacion, setUbicacion] = useState('');
+  const [ubicaciones, setUbicaciones] = useState<Record<string, string>>({});
   const [guardandoUbicacion, setGuardandoUbicacion] = useState(false);
   const [errorUbicacion, setErrorUbicacion] = useState('');
   const dialogo = useRef<HTMLElement>(null);
@@ -62,12 +62,19 @@ export function LotesStock() {
   useEffect(() => {
     if (!detalle) return;
     dialogo.current?.querySelector<HTMLElement>('button')?.focus();
+    const cerrarConEscape = (evento: KeyboardEvent) => {
+      if (evento.key !== 'Escape') return;
+      evento.preventDefault();
+      setDetalle(null);
+      requestAnimationFrame(() => origen.current?.focus());
+    };
+    window.addEventListener('keydown', cerrarConEscape);
     const contenedor = document.querySelector('.sistema-contable') || document.body;
     const hermanos = Array.from(contenedor.children).filter((elemento): elemento is HTMLElement => elemento instanceof HTMLElement && !elemento.contains(dialogo.current));
     const estados = hermanos.map(elemento => elemento.inert);
     hermanos.forEach(elemento => { elemento.inert = true; });
     const scroll = document.body.style.overflow; document.body.style.overflow = 'hidden';
-    return () => { hermanos.forEach((elemento, indice) => { elemento.inert = estados[indice]; }); document.body.style.overflow = scroll; };
+    return () => { window.removeEventListener('keydown', cerrarConEscape); hermanos.forEach((elemento, indice) => { elemento.inert = estados[indice]; }); document.body.style.overflow = scroll; };
   }, [!!detalle]);
 
   const sucursales = useMemo(() => Array.from(new Map(lotes.map(lote => [clave(lote.sucursalId), lote.sucursal])).entries()).sort((a, b) => a[1].localeCompare(b[1], 'es')), [lotes]);
@@ -90,13 +97,15 @@ export function LotesStock() {
   const gruposDetalle = Array.from(new Map(detalleFiltrado.map(lote => [clave(lote.sucursalId), lote.sucursal])).entries()).map(([id, nombre]) => ({ id, nombre, lotes: detalleFiltrado.filter(lote => clave(lote.sucursalId) === id) }));
   const sinIngresos = lotes.filter(lote => lote.almacenId === null).length;
   const cerrar = () => { setDetalle(null); requestAnimationFrame(() => origen.current?.focus()); };
-  const guardarUbicacion = async () => {
-    if (!detalle?.almacenId || !ubicacion.trim()) return;
+  const guardarUbicacion = async (almacenId: number, valor: string) => {
+    const ubicacion = valor.trim();
+    if (!detalle || !ubicacion) return;
     setGuardandoUbicacion(true); setErrorUbicacion('');
     try {
-      const respuesta = await apiFetch(`/api/v1/inventario/items/${detalle.itemId}/ubicacion`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ almacen_id: detalle.almacenId, ubicacion: ubicacion.trim() }) });
+      const respuesta = await apiFetch(`/api/v1/inventario/items/${detalle.itemId}/ubicacion`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ almacen_id: almacenId, ubicacion }) });
       await leerRespuesta(respuesta);
-      setLotes(actuales => actuales.map(lote => lote.itemId === detalle.itemId && lote.almacenId === detalle.almacenId ? { ...lote, ubicacion: ubicacion.trim() } : lote));
+      setLotes(actuales => actuales.map(lote => lote.itemId === detalle.itemId && lote.almacenId === almacenId ? { ...lote, ubicacion } : lote));
+      setUbicaciones(actuales => ({ ...actuales, [String(almacenId)]: ubicacion }));
     } catch (error) { setErrorUbicacion(error instanceof Error ? error.message : 'No se pudo guardar la ubicación.'); }
     finally { setGuardandoUbicacion(false); }
   };
@@ -117,7 +126,7 @@ export function LotesStock() {
       {!cargando && !error && !visibles.length && <div className="stock-lotes-vacio" role="status"><Icon name="package" size={24}/><div><strong>{lotes.length ? 'No hay coincidencias' : 'No hay lotes registrados'}</strong><p>{lotes.length ? 'Cambia la búsqueda o los filtros para consultar otras existencias.' : 'Registra los lotes en Ítems general. Las cantidades aparecerán al registrar los ingresos de compra.'}</p></div></div>}
     </div>
     {detalle && createPortal(<div className="stock-lote-detalle-fondo stock-general-detalle-fondo"><section ref={dialogo} className="stock-lote-detalle-modal stock-general-detalle" role="dialog" aria-modal="true" aria-labelledby="stock-lote-detalle-titulo" onKeyDown={evento => {
-      if (evento.key === 'Escape') { evento.preventDefault(); cerrar(); }
+      if (evento.key === 'Escape') { evento.preventDefault(); evento.stopPropagation(); cerrar(); }
       if (evento.key === 'Tab') {
         const elementos = dialogo.current?.querySelectorAll<HTMLElement>('button:enabled, select:enabled, summary');
         if (!elementos?.length) return;
@@ -129,7 +138,17 @@ export function LotesStock() {
       <div className="stock-general-detalle-cuerpo"><dl className="stock-general-datos"><div><dt>Lote seleccionado</dt><dd>{detalle.lote}</dd></div><div><dt>Vencimiento</dt><dd>{detalle.vence || 'Sin vencimiento'}</dd></div><div><dt>Presentación</dt><dd>{detalle.presentacion}</dd></div><div><dt>Unidad de medida</dt><dd>{detalle.unidad}</dd></div><div><dt>Almacén del lote</dt><dd>{detalle.almacen}</dd></div><div><dt>Sucursal del lote</dt><dd>{detalle.sucursal}</dd></div><div><dt>Stock de este lote en el almacén</dt><dd>{cantidad(detalle.disponible)}</dd></div><div><dt>Costo unitario registrado</dt><dd>{dinero(detalle.costoUnitario, 4)}</dd></div><div><dt>Fecha de ingreso</dt><dd>{detalle.fecha || 'Sin ingreso registrado'}</dd></div><div><dt>Categoría</dt><dd>{detalle.categoria} / {detalle.subcategoria}</dd></div></dl>
       <div className="stock-general-precios">{[detalle.precio1, detalle.precio2, detalle.precio3].map((precio, indice) => <div key={indice}><small>Precio {indice + 1} del lote</small><strong>{dinero(precio)}</strong></div>)}</div>
       <section className="stock-general-distribucion"><h4>Existencias del ítem en todos sus lotes</h4><label>Consultar almacén<select aria-label="Consultar almacén en el detalle" value={almacenDetalle} onChange={evento => setAlmacenDetalle(evento.target.value)}><option value="todos">Todos los almacenes</option>{almacenesDetalle.map(([id, lote]) => <option key={id} value={id}>{lote.almacen}{lote.sucursalId !== null ? ' · ' + lote.sucursal : ''}</option>)}</select></label><p className="stock-general-total">Stock total del ítem: <strong>{cantidad(sumar(detalleFiltrado))}</strong></p>
-        {Array.from(new Map(detalleFiltrado.filter(lote => lote.almacenId !== null).map(lote => [lote.almacenId, lote])).values()).map(lote => <div className="stock-general-total" key={'ubicacion-' + lote.almacenId}><label>Ubicación en {lote.almacen}{lote.sucursal ? ' · ' + lote.sucursal : ''}<input aria-label={'Ubicación en ' + lote.almacen} value={ubicacion || lote.ubicacion || ''} placeholder="Ej.: Estante 2" onChange={evento => setUbicacion(evento.target.value)} onFocus={() => setUbicacion(lote.ubicacion || '')}/></label><button type="button" disabled={guardandoUbicacion || !ubicacion.trim()} onClick={guardarUbicacion}>{guardandoUbicacion ? 'Guardando…' : 'Guardar ubicación'}</button>{errorUbicacion && <p role="alert">{errorUbicacion}</p>}</div>)}
+        {Array.from(new Map(detalleFiltrado.filter(lote => lote.almacenId !== null).map(lote => [lote.almacenId, lote])).values()).map(lote => {
+          const idAlmacen = lote.almacenId!;
+          const textoUbicacion = ubicaciones[String(idAlmacen)] ?? lote.ubicacion ?? '';
+          return <div className="stock-general-total" key={'ubicacion-' + idAlmacen}>
+            {puedeEditarUbicacion ? <>
+              <label>Ubicación en {lote.almacen}{lote.sucursal ? ' · ' + lote.sucursal : ''}<input aria-label={'Ubicación en ' + lote.almacen} value={textoUbicacion} placeholder="Ej.: Estante 2" onChange={evento => setUbicaciones(actuales => ({ ...actuales, [String(idAlmacen)]: evento.target.value }))} /></label>
+              <button type="button" disabled={guardandoUbicacion || !textoUbicacion.trim()} onClick={() => guardarUbicacion(idAlmacen, textoUbicacion)}>{guardandoUbicacion ? 'Guardando…' : 'Guardar ubicación'}</button>
+            </> : <p>Ubicación en {lote.almacen}{lote.sucursal ? ' · ' + lote.sucursal : ''}: <strong>{textoUbicacion || 'Sin ubicación registrada'}</strong></p>}
+            {errorUbicacion && <p role="alert">{errorUbicacion}</p>}
+          </div>;
+        })}
         {gruposDetalle.map(grupo => <details key={grupo.id} open><summary>{grupo.nombre} <strong>{cantidad(sumar(grupo.lotes))}</strong></summary><div className="stock-general-desglose"><table data-interactiva="true"><thead><tr><th>Almacén</th><th>Lote</th><th>Stock</th><th>Vence</th></tr></thead><tbody>{grupo.lotes.map(lote => <tr key={lote.id}><td>{lote.almacen}</td><td>{lote.lote}</td><td>{cantidad(lote.disponible)}</td><td>{lote.vence || 'Sin fecha'}</td></tr>)}</tbody></table></div></details>)}
       </section></div><footer><button type="button" onClick={cerrar}>Cerrar</button></footer></section></div>, document.querySelector('.sistema-contable') || document.body)}
   </section>;

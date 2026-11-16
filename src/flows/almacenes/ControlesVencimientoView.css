@@ -1,1 +1,47 @@
-.controles-vencimiento{padding:24px 0;color:#2c1a50}.controles-vencimiento>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.controles-vencimiento header h2{margin:5px 0 7px;font-size:25px}.controles-vencimiento header p{margin:0;color:#75648e;font-size:13px}.controles-vencimiento header>div>span:first-child{color:#7132d2;font-size:10px;font-weight:900;letter-spacing:.1em}.control-fecha{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid #dfd2f6;border-radius:10px;color:#70558e;background:#fbf9ff;font-size:11px}.control-fecha svg{color:#7836ef}.control-resumen{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 18px}.control-resumen button{padding:17px 19px;border:1px solid #e1d7f5;border-radius:13px;color:#3c2465;background:#fff;text-align:left;box-shadow:0 7px 18px #5128980c;cursor:pointer}.control-resumen button.activo{border-color:#8e5df0;box-shadow:0 0 0 3px #e9ddff}.control-resumen small,.control-resumen strong,.control-resumen span{display:block}.control-resumen small{color:#7a6299;font-size:11px}.control-resumen strong{margin:5px 0;color:#5d21bd;font-size:26px}.control-resumen span{color:#8c779f;font-size:11px}.control-resumen .vencido strong{color:#c53d55}.control-resumen .proximo strong{color:#c07817}.control-herramientas{display:flex;align-items:center;gap:14px;margin-bottom:14px}.control-herramientas label{display:flex;flex:1;align-items:center;gap:9px;height:42px;padding:0 13px;border:1px solid #ded1f7;border-radius:9px;color:#7836ef;background:#fff}.control-herramientas input{width:100%;border:0;outline:0;color:#3c2465;background:transparent}.control-herramientas>span{color:#78658f;font-size:12px}.control-tabla{overflow:hidden;border:1px solid #dfd2f6;border-radius:13px;background:#fff}.control-tabla-head,.control-tabla article{display:grid;grid-template-columns:1.5fr 1fr .9fr 1.15fr .75fr 1fr 1.2fr;gap:12px;align-items:center;padding:0 17px}.control-tabla-head{min-height:43px;color:#725a91;background:#f7f3ff;font-size:10px;font-weight:900;letter-spacing:.05em;text-transform:uppercase}.control-tabla article{min-height:64px;border-top:1px solid #eee8f8;color:#4a3568;font-size:12px}.control-tabla article:hover{background:#fcfaff}.control-tabla article strong,.control-tabla article small{display:block}.control-tabla article strong{color:#34204f}.control-tabla article small{margin-top:4px;color:#927da9;font-size:10px}.control-lote{width:max-content;padding:5px 8px;border-radius:6px;color:#6632ad;background:#f1eaff;font-weight:800}.control-tabla i{width:max-content;padding:5px 8px;border-radius:999px;color:#99721d;background:#fff6dc;font-size:10px;font-style:normal;font-weight:800}.control-tabla i.urgente{color:#bf7021;background:#fff0dd}.control-tabla i.vencido{color:#bd3852;background:#fff0f2}.control-vacio{margin:0;padding:64px 20px;color:#826d9b;text-align:center}.control-vacio.error{color:#bd3852}@media(max-width:850px){.control-tabla{overflow:auto}.control-tabla-head,.control-tabla article{min-width:820px}.control-resumen{grid-template-columns:1fr}.controles-vencimiento>header{display:block}.control-fecha{width:max-content;margin-top:15px}}@media(max-width:600px){.control-herramientas{align-items:stretch;flex-direction:column}.control-herramientas label{min-height:42px;flex:none}.control-resumen{gap:9px}}
+.sistema-contable .controles-vencimiento { display:grid; gap:16px; min-width:0; padding:0; color:#17334d; }
+.sistema-contable .control-cabecera { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:2px 0 4px; }
+.sistema-contable .control-cabecera>div:first-child>span { color:#0b6eae; font-size:10px; font-weight:850; letter-spacing:.1em; }
+.sistema-contable .control-cabecera h2 { margin:5px 0 6px; color:#153e6d; font-size:22px; line-height:1.2; }
+.sistema-contable .control-cabecera p { margin:0; color:#60788a; font-size:12px; }
+.sistema-contable .control-cabecera-acciones { display:flex; align-items:center; gap:9px; }
+.sistema-contable .control-fecha { display:flex; align-items:center; gap:8px; min-height:40px; padding:0 12px; border:1px solid #d4e2eb; border-radius:9px; color:#48677e; background:#f5f9fc; font-size:11px; white-space:nowrap; }
+.sistema-contable .control-fecha svg { color:#0b6eae; }
+.sistema-contable .control-fecha b { color:#173e60; }
+.sistema-contable .control-actualizar { min-height:40px; padding:0 14px; border:1px solid #1d396e; border-radius:8px; color:#fff; background:#1d396e; font-size:11px; font-weight:750; white-space:nowrap; }
+.sistema-contable .control-actualizar:disabled { opacity:.65; cursor:wait; }
+.sistema-contable .control-resumen { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.sistema-contable .control-resumen button { display:grid; align-content:center; justify-items:start; gap:5px; min-width:0; min-height:94px; padding:14px 17px; border:1px solid #d4e2eb; border-radius:12px; color:#294b61; background:#fff; text-align:left; box-shadow:0 5px 15px rgb(15 48 75 / 4%); transition:border-color .16s ease,box-shadow .16s ease; }
+.sistema-contable .control-resumen button:hover { border-color:#8bb8d1; }
+.sistema-contable .control-resumen button.activo { border-color:#0b6eae; background:#eff7fc; box-shadow:0 0 0 2px #d8ebf7; }
+.sistema-contable .control-resumen small { color:#60788a; font-size:11px; font-weight:700; }
+.sistema-contable .control-resumen strong { color:#153e6d; font-size:25px; font-variant-numeric:tabular-nums; }
+.sistema-contable .control-resumen span { color:#71889a; font-size:10px; }
+.sistema-contable .control-resumen .vencido strong { color:#b43c4e; }
+.sistema-contable .control-resumen .proximo strong { color:#a16b16; }
+.sistema-contable .control-herramientas { display:flex; align-items:center; gap:12px; }
+.sistema-contable .control-herramientas label { display:flex; flex:1; align-items:center; gap:9px; min-width:0; height:42px; padding:0 12px; border:1px solid #cbdde8; border-radius:9px; color:#0b6eae; background:#fff; }
+.sistema-contable .control-herramientas input { width:100%; min-width:0; border:0; outline:0; color:#17334d; background:transparent; font:inherit; font-size:12px; }
+.sistema-contable .control-herramientas>span { color:#60788a; font-size:11px; white-space:nowrap; }
+.sistema-contable .control-tabla-scroll { overflow:auto; max-width:100%; border:1px solid #cbdde8; border-radius:12px; background:#fff; }
+.sistema-contable .control-tabla { width:100%; min-width:900px; border-collapse:separate; border-spacing:0; font-size:12px; }
+.sistema-contable .control-tabla th { position:sticky; top:0; z-index:1; padding:12px 13px; color:#fff; background:#0d4f81; font-size:10px; font-weight:800; letter-spacing:.04em; text-align:left; text-transform:uppercase; white-space:nowrap; }
+.sistema-contable .control-tabla td { padding:12px 13px; border-bottom:1px solid #e2ebf1; color:#36576f; vertical-align:middle; }
+.sistema-contable .control-tabla tbody tr:nth-child(even) { background:#f5f9fc; }
+.sistema-contable .control-tabla tbody tr:hover { background:#edf6fb; }
+.sistema-contable .control-tabla td strong,.sistema-contable .control-tabla td small { display:block; }
+.sistema-contable .control-tabla td strong { color:#173e5a; }
+.sistema-contable .control-tabla td small { margin-top:3px; color:#71889a; font-size:10px; }
+.sistema-contable .control-tabla .control-cantidad { color:#173e5a; font-variant-numeric:tabular-nums; font-weight:700; }
+.sistema-contable .control-estado { display:inline-flex; padding:5px 8px; border-radius:999px; font-size:10px; font-style:normal; font-weight:750; white-space:nowrap; }
+.sistema-contable .control-estado.vigente { color:#245e83; background:#e9f4fb; }
+.sistema-contable .control-estado.urgente { color:#9a6418; background:#fff3da; }
+.sistema-contable .control-estado.vencido { color:#a63143; background:#ffedf0; }
+.sistema-contable .control-vacio { display:grid; justify-items:center; gap:8px; margin:0; padding:40px 20px; color:#71889a; text-align:center; }
+.sistema-contable .control-vacio strong { color:#17334d; font-size:14px; }
+.sistema-contable .control-vacio span { font-size:11px; }
+.sistema-contable .control-error { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:0; padding:11px 13px; border:1px solid #efc7c7; border-radius:9px; color:#9e3434; background:#fff5f5; font-size:12px; }
+.sistema-contable .control-error button { padding:7px 10px; border:1px solid #e2b2b2; border-radius:7px; color:#8c2e2e; background:#fff; font-weight:700; }
+@media(max-width:950px) { .sistema-contable .control-cabecera { align-items:flex-start; flex-direction:column; } .sistema-contable .control-cabecera-acciones { width:100%; justify-content:space-between; } }
+@media(max-width:700px) { .sistema-contable .control-resumen { grid-template-columns:1fr; } .sistema-contable .control-resumen button { min-height:78px; } .sistema-contable .control-herramientas { align-items:stretch; flex-direction:column; } .sistema-contable .control-herramientas>span { align-self:flex-end; } }
+@media(max-width:430px) { .sistema-contable .control-cabecera-acciones { align-items:stretch; flex-direction:column; } .sistema-contable .control-fecha { white-space:normal; } }
+#root .sistema-contable .control-tabla th { color:#fff !important; background:#0d4f81 !important; }

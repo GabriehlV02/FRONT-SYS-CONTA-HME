@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import {
   InventarioNavegacion,
   type SubvistaInventario,
@@ -29,7 +29,6 @@ export function InventarioView({ activeId, permisos = [], administraCatalogo = f
   return (
     <section className="inventario-vista">
       <InventarioNavegacion activa={subvista} onSeleccionar={setSubvista} />
-      {subvista === 'servicios' && <EncabezadoVista titulo="Servicios" descripcion="Administra las prestaciones del hospital, sus tarifas y clasificación." icono="asset" />}
       {subvista === 'medicos' && <EncabezadoVista titulo="Médicos y profesionales" descripcion="Consulta los profesionales, sus especialidades y datos de contacto." icono="users" />}
       {subvista === 'admin' && <EncabezadoVista titulo="Configuración de inventario" descripcion="Organiza los tipos, unidades de medida, categorías y familias del catálogo." icono="settings" />}
       {subvista === 'productos' && <ProductosInsumosView puedeGestionar={administraCatalogo && permisos.includes('INVENTARIO_GESTIONAR')} />}
@@ -41,3 +40,5 @@ export function InventarioView({ activeId, permisos = [], administraCatalogo = f
     </section>
   );
 }
+
+

@@ -154,9 +154,6 @@ export function Login({
         {loading ? 'Conectando...' : 'Iniciar sesión'}{' '}
         {!loading && <Icon name="arrowRight" size={18} />}
       </button>
-      <div className="login-seguro">
-        <Icon name="check" size={16} /> Sesión protegida{!esContable && ' · Expira tras 6 horas'}
-      </div>
       {config.id !== 'contable' && (
         <div className="demo-access">
           <button
@@ -181,7 +178,7 @@ export function Login({
       <div className="acceso-contable-layout">
         <section className="acceso-contable-institucional" aria-label="Sistema contable Hospital María Esperanza">
           <div className="acceso-contable-marca">
-            <img src="/logo-hospital-yo-te-cuido.png" alt="Hospital María Esperanza. Yo te cuido." />
+            <img src="/logo-hospital-yo-te-cuido-transparente.png?v=transparente-20261115" alt="Hospital María Esperanza. Yo te cuido." />
           </div>
           <div className="acceso-contable-presentacion">
             <span className="acceso-contable-etiqueta"><Icon name="chart" size={16} /> SISTEMA CONTABLE</span>
@@ -200,7 +197,6 @@ export function Login({
             <span className="acceso-contable-simbolo" aria-hidden="true"><Icon name="asset" size={25} /></span>
             {loginForm}
           </div>
-          <p className="acceso-contable-ayuda">Acceso para personal autorizado</p>
         </section>
       </div>
     </main>
