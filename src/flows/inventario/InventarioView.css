@@ -2238,3 +2238,25 @@
 .stock-general-detalle footer { padding: 16px 24px; border-top: 1px solid #d2e0e5; }
 @media(max-width: 900px) { .stock-general-real .stock-lotes-filtros { grid-template-columns: 1fr 1fr; } .stock-general-real .stock-lotes-busqueda { grid-column: 1 / -1; } }
 @media(max-width: 600px) { .stock-general-real .stock-lotes-filtros { grid-template-columns: 1fr; } .stock-general-detalle-cuerpo { padding: 18px; } .stock-general-datos { grid-template-columns: 1fr; } .stock-general-precios { grid-template-columns: 1fr; } }
+.catalogo-tabla-contenedor { width: 100%; overflow-x: auto; border: 1px solid #c8dce7; border-radius: 9px; }
+.sistema-contable .inventario-catalogo .catalogo-tabla { width: 100%; min-width: 920px; border-collapse: collapse; color: #173d53; font-size: 12px; }
+.sistema-contable .inventario-catalogo .catalogo-tabla th { padding: 14px 12px !important; border-right: 1px solid rgba(255, 255, 255, .2); background: #0066ad !important; color: #fff !important; text-align: center; font-size: 11px !important; font-weight: 700 !important; text-transform: none; white-space: nowrap; }
+.sistema-contable .inventario-catalogo .catalogo-tabla td { padding: 14px 12px !important; border-top: 1px solid #d3e3eb; border-right: 1px solid #d3e3eb; vertical-align: middle; }
+.sistema-contable .inventario-catalogo .catalogo-tabla th:last-child, .sistema-contable .inventario-catalogo .catalogo-tabla td:last-child { border-right: 0; }
+.sistema-contable .inventario-catalogo .catalogo-tabla tbody tr { background: #f5f8f9; }
+.sistema-contable .inventario-catalogo .catalogo-tabla tbody tr:nth-child(even) { background: #eff6f9; }
+.sistema-contable .inventario-catalogo .catalogo-tabla tbody tr:hover { background: #e4f2f9; }
+.catalogo-tabla td:first-child { color: #0066ad; white-space: nowrap; }
+.catalogo-tabla td:nth-child(2) { min-width: 190px; }
+.catalogo-tabla-precio { white-space: nowrap; font-weight: 700; }
+.catalogo-tabla-estado { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.catalogo-tabla-estado::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.catalogo-tabla-estado.activo { color: #173d53; }
+.catalogo-tabla-estado.inactivo { color: #758793; }
+.catalogo-tabla-aviso { display: block; margin-top: 4px; color: #9b6411; }
+.catalogo-tabla-acciones { display: flex; align-items: center; flex-wrap: nowrap; gap: 6px; }
+.sistema-contable .inventario-catalogo .catalogo-tabla-acciones button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 38px; padding: 8px 11px; border: 1px solid #c8dce7; border-radius: 5px; background: #fff; color: #173d53; white-space: nowrap; cursor: pointer; }
+.sistema-contable .inventario-catalogo .catalogo-tabla-acciones button:first-child { border-color: #0066ad; background: #0066ad; color: #fff; }
+.sistema-contable .inventario-catalogo .catalogo-tabla-acciones button:hover { filter: brightness(.94); }
+.catalogo-tabla-contenedor:focus-visible, .catalogo-tabla-acciones button:focus-visible { outline: 2px solid #168cce; outline-offset: 2px; }
+.catalogo-tabla-vacia { padding: 30px 14px !important; text-align: center; color: #718a9c; }
