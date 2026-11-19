@@ -1,0 +1,200 @@
+/* Sidebar contable con jerarquía, contraste y espaciado del sistema clínico. */
+#root .sistema-contable #system-sidebar {
+  padding: 76px 10px 12px !important;
+  color: #17334d !important;
+  background: #e8f1f7 !important;
+  border-right: 1px solid #cbdde9 !important;
+  box-shadow: 5px 0 20px rgb(10 44 79 / 8%) !important;
+}
+
+#root .sistema-contable #system-sidebar .marca-container {
+  min-height: 116px !important;
+  flex: 0 0 116px !important;
+  margin: 0 6px 8px !important;
+  border-bottom: 1px solid #c5d9e7 !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-marca {
+  height: 108px !important;
+  min-height: 108px !important;
+  justify-content: center !important;
+  padding: 10px 8px !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+#root .sistema-contable #system-sidebar .marca-logo-completo {
+  width: 190px !important;
+  height: 78px !important;
+  max-width: 100% !important;
+  flex: 0 1 190px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#root .sistema-contable #system-sidebar .marca-logo-completo img {
+  object-fit: contain !important;
+}
+
+#root .sistema-contable #system-sidebar .marca-logo-compacto,
+#root .sistema-contable #system-sidebar .marca-texto { display: none !important; }
+
+#root .sistema-contable #system-sidebar .sidebar-scroll {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  padding: 12px 4px 18px !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-color: #9bbbd0 transparent;
+  scrollbar-width: thin;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav section {
+  padding: 0 0 12px !important;
+  border: 0 !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav section + section {
+  margin-top: 4px !important;
+  padding-top: 7px !important;
+  border-top: 1px dashed #c7dbe8 !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav section > p {
+  margin: 9px 11px 8px !important;
+  color: #327da5 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo {
+  min-height: 48px !important;
+  height: auto !important;
+  margin: 3px 0 !important;
+  padding: 6px 10px !important;
+  gap: 10px !important;
+  border: 1px solid transparent !important;
+  border-radius: 11px !important;
+  color: #173d5c !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo:hover {
+  border-color: #c8dce9 !important;
+  color: #0b5f91 !important;
+  background: #f4f9fc !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo.activo {
+  border-color: #174b78 !important;
+  color: #fff !important;
+  background: linear-gradient(120deg, #173d68, #20598b) !important;
+  box-shadow: 0 7px 16px rgb(23 61 104 / 24%) !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo.activo::before {
+  left: 0 !important;
+  top: 8px !important;
+  width: 4px !important;
+  height: calc(100% - 16px) !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: #22a6d2 !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-icono,
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo.activo .nav-icono {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  flex: 0 0 28px !important;
+  color: #1e5d86 !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#root .sistema-contable #system-sidebar .sistema-nav .nav-modulo.activo .nav-icono {
+  color: #fff !important;
+}
+
+#root .sistema-contable #system-sidebar .nav-texto {
+  color: inherit !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+}
+
+#root .sistema-contable #system-sidebar .nav-indicador {
+  color: #7597af !important;
+}
+
+#root .sistema-contable #system-sidebar .boton-salir {
+  min-height: 48px !important;
+  flex: 0 0 48px !important;
+  margin: 8px 8px 4px !important;
+  padding: 6px 10px !important;
+  width: calc(100% - 16px) !important;
+  border: 1px solid #8eb0c8 !important;
+  border-radius: 11px !important;
+  color: #173d5c !important;
+  background: #f0f6fa !important;
+}
+
+#root .sistema-contable #system-sidebar .boton-salir:hover {
+  color: #0b5f91 !important;
+  border-color: #4f91b8 !important;
+  background: #fff !important;
+}
+
+#root .sistema-contable #system-sidebar .boton-salir .nav-icono {
+  color: inherit !important;
+}
+
+@media (min-width: 761px) {
+  #root .sistema-contable.sidebar-replegado #system-sidebar .marca-texto,
+  #root .sistema-contable.sidebar-replegado #system-sidebar .sistema-nav section > p,
+  #root .sistema-contable.sidebar-replegado #system-sidebar .nav-texto,
+  #root .sistema-contable.sidebar-replegado #system-sidebar .nav-indicador,
+  #root .sistema-contable.sidebar-replegado #system-sidebar .boton-salir .nav-texto {
+    display: none !important;
+  }
+
+  #root .sistema-contable.sidebar-replegado #system-sidebar .sistema-nav .nav-modulo,
+  #root .sistema-contable.sidebar-replegado #system-sidebar .boton-salir {
+    justify-content: center !important;
+    padding-inline: 4px !important;
+  }
+
+  #root .sistema-contable.sidebar-replegado #system-sidebar .marca-logo-completo {
+    display: none !important;
+  }
+
+  #root .sistema-contable.sidebar-replegado #system-sidebar .marca-logo-compacto {
+    display: grid !important;
+    width: 46px !important;
+    height: 46px !important;
+    flex-basis: 46px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  #root .sistema-contable #system-sidebar { padding-top: 68px !important; }
+  #root .sistema-contable #system-sidebar .marca-container { min-height: 104px !important; flex-basis: 104px !important; }
+  #root .sistema-contable #system-sidebar .sistema-marca { height: 96px !important; min-height: 96px !important; }
+}

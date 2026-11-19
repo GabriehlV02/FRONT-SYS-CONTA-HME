@@ -28,6 +28,7 @@ import './styles/AdaptacionPantallas.css';
 import './styles/PaletaLoginContable.css';
 import './styles/ExperienciaVisualContable.css';
 import './styles/IdentidadLoginSistema.css';
+import './styles/SidebarClinico.css';
 createRoot(document.getElementById('root')!).render(
   <App />,
 );

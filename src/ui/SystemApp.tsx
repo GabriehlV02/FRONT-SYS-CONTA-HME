@@ -128,34 +128,47 @@ export function SystemApp({ config }: { config: SystemConfig }) {
     clearStoredSession(config.id);
     const controller = new AbortController();
     let vigente = true;
-    async function checkSession() {
-      try {
-        const current = await recuperarSesion(controller.signal);
-        if (vigente) { setSession(current); setSessionError(''); }
-      } catch (error) {
-        if (vigente && !controller.signal.aborted) {
-          setSession(null);
-          setSessionError('No se pudo verificar la sesión. Comprueba la conexión e inicia sesión.');
+    const minimumFocusCheckInterval = 45_000;
+    let lastCheckAt = 0;
+    let checkInFlight: Promise<void> | null = null;
+    function checkSession(force = false): Promise<void> {
+      if (!force && Date.now() - lastCheckAt < minimumFocusCheckInterval) return Promise.resolve();
+      if (checkInFlight) return checkInFlight;
+      lastCheckAt = Date.now();
+      checkInFlight = (async () => {
+        try {
+          const current = await recuperarSesion(controller.signal);
+          if (vigente) { setSession(current); setSessionError(''); }
+        } catch {
+          if (vigente && !controller.signal.aborted) {
+            lastCheckAt = 0;
+            setSession(null);
+            setSessionError('No se pudo verificar la sesión. Comprueba la conexión e inicia sesión.');
+          }
+        } finally {
+          if (vigente) setCheckingSession(false);
+          checkInFlight = null;
         }
-      } finally {
-        if (vigente) setCheckingSession(false);
-      }
+      })();
+      return checkInFlight;
     }
     function expired() {
       clearStoredSession(config.id);
       setSession(null);
       setSessionError('Tu sesión expiró o el acceso fue deshabilitado. Inicia sesión nuevamente.');
     }
-    void checkSession();
-    window.addEventListener('focus', checkSession);
+    void checkSession(true);
+    const handleFocus = () => { void checkSession(); };
+    const handleSessionUpdate = () => { void checkSession(true); };
+    window.addEventListener('focus', handleFocus);
     window.addEventListener('contable:sesion-expirada', expired);
-    window.addEventListener('contable:actualizar-sesion', checkSession);
+    window.addEventListener('contable:actualizar-sesion', handleSessionUpdate);
     return () => {
       vigente = false;
       controller.abort();
-      window.removeEventListener('focus', checkSession);
+      window.removeEventListener('focus', handleFocus);
       window.removeEventListener('contable:sesion-expirada', expired);
-      window.removeEventListener('contable:actualizar-sesion', checkSession);
+      window.removeEventListener('contable:actualizar-sesion', handleSessionUpdate);
     };
   }, [config.id]);
 
