@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Icon from './components/Icon';
 import { useMemo } from 'react';
 import { Login } from './components/Login';
@@ -291,12 +291,12 @@ export function SystemApp({ config }: { config: SystemConfig }) {
             </div>
           </section>}
         </div>
-        <div className="perfil"><span className="perfil-avatar"><Icon name="user" size={21}/></span><div><strong title={session.user}>{session.user === 'demo' ? 'Usuario de prueba' : session.user}</strong><small>{session.role || config.role}</small></div></div>
+        <div className="perfil"><span className="perfil-avatar"><Icon name="user" size={21}/></span><div><strong title={session.user}>{session.user}</strong><small>{session.role || config.role}</small></div></div>
         <button className="salir-rapido" onClick={logout} disabled={loggingOut} aria-label="Cerrar sesión" title="Cerrar sesión"><Icon name="logout" size={19}/></button>
       </header>
       <main className="area-trabajo" id="contenido-principal" tabIndex={-1}><div className="content-limit">
         {sessionError && <p className="login-error" role="alert">{sessionError}</p>}
-        {!moduleContent && <div className="pagina-cabecera"><div><p>{config.category}</p><h2>{active === 'resumen' ? config.dashboardTitle : selected.name}</h2><small>{selected.description}</small></div>{config.id !== 'clinico' && <span className="demo-badge"><span/> Modo demostración</span>}</div>}
+        {!moduleContent && <div className="pagina-cabecera"><div><p>{config.category}</p><h2>{active === 'resumen' ? config.dashboardTitle : selected.name}</h2><small>{selected.description}</small></div></div>}
         {moduleContent ? <div key={active}>{moduleContent}</div> : (active === 'resumen' ? <>
           <section className="metricas" aria-label="Resumen del sistema">{config.metrics.map(item => <article key={item.title}><div className="metrica-heading"><span>{item.title}</span><span className="metric-icon"><Icon name={item.icon}/></span></div><strong>{item.value}</strong><small>{item.note} · Demo</small></article>)}</section>
           <section className="welcome-panel"><div><span className="section-kicker">TU ESPACIO DE TRABAJO</span><h2>{config.welcomeTitle}</h2><p>{config.welcomeDescription}</p><button className="boton-principal" onClick={() => select(config.actionId)}>{config.actionLabel} <Icon name="arrowRight" size={17}/></button></div><div className="welcome-visual" aria-hidden="true"><Icon name="fileText" size={76}/><span><Icon name="check" size={23}/></span></div></section>

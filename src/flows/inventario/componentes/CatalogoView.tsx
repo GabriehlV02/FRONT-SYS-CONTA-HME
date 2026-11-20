@@ -6,7 +6,6 @@ import { categoriasRegistro as categoriasIniciales, unidadesRegistro as unidades
 import Icon from '@ui/components/Icon';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import { SelectMenu } from '@ui/components/SelectMenu';
-import { productosDemo, serviciosDemo } from '../datos/catalogoDemo';
 
 type CampoOrden = 'codigo' | 'nombre' | 'tipo' | 'categoria' | 'subcategoria' | 'unidad' | 'stock' | 'precio' | 'estado' | 'serie' | 'marca';
 type TipoRegistro = string;
@@ -105,36 +104,7 @@ const crearPrefijoCodigo = (valor: string) =>
     .join('')
     .slice(0, 6);
 
-const registrosDemoIniciales: RegistroInventario[] = [
-  ...productosDemo.map((producto, indice) => ({
-    id: indice + 1,
-    codigo: `ITM-${String(indice + 1).padStart(4, '0')}`,
-    nombre: producto.nombre,
-    categoria: producto.categoria,
-    grupo: 'General',
-    tipo: indice % 2 === 0 ? 'Insumo' : 'Producto',
-    unidadMedida: producto.presentacion,
-    descripcion: producto.descripcion,
-    precioVenta: 15 + (indice % 10) * 12,
-    stock: producto.disponible ? 10 + (indice % 8) * 5 : 0,
-    marcas: [producto.marca],
-    estado: producto.disponible ? ('ACTIVO' as const) : ('INACTIVO' as const),
-  })),
-  ...serviciosDemo.map((servicio, indice) => ({
-    id: productosDemo.length + indice + 1,
-    codigo: `SRV-${String(indice + 1).padStart(4, '0')}`,
-    nombre: servicio.nombre,
-    categoria: servicio.categoria,
-    grupo: 'General',
-    tipo: 'Servicio',
-    unidadMedida: servicio.presentacion,
-    descripcion: servicio.descripcion,
-    precioVenta: 50 + (indice % 12) * 25,
-    stock: 0,
-    marcas: [servicio.marca],
-    estado: 'ACTIVO' as const,
-  })),
-];
+const registrosIniciales: RegistroInventario[] = [];
 
 export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo: TipoCatalogo; onReportes?: () => void; puedeGestionar?: boolean }) {
   const endpoint = tipo === 'servicios' ? '/api/v1/inventario/servicios' : '/api/inventario';
@@ -188,7 +158,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   const [categoriaRegistro, setCategoriaRegistro] = useState('');
   const [subcategoriaRegistro, setSubcategoriaRegistro] = useState('');
   const [serieHabilitada, setSerieHabilitada] = useState(false);
-  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(tipo === 'servicios' ? [] : registrosDemoIniciales);
+  const [registrosGuardados, setRegistrosGuardados] = useState<RegistroInventario[]>(tipo === 'servicios' ? [] : registrosIniciales);
   const [mensajeGuardado, setMensajeGuardado] = useState('');
   const [formularioRegistro, setFormularioRegistro] = useState({
     clasificacion: 'SIN CLASIFICAR',
@@ -215,19 +185,16 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         data?: RegistroInventario[];
       };
       const siguientes = Array.isArray(datos.data) ? datos.data : [];
-      if (siguientes.length > 0 || tipo === 'servicios') {
+      if (Array.isArray(datos.data)) {
         setRegistrosGuardados(siguientes);
         return siguientes;
       }
-      setRegistrosGuardados(registrosDemoIniciales);
-      return registrosDemoIniciales;
+      setRegistrosGuardados(registrosIniciales);
+      return registrosIniciales;
     } catch {
-      if (tipo === 'servicios') {
-        setErrorCarga('No se pudieron cargar los servicios. Intenta nuevamente.');
-        return [];
-      }
-      setRegistrosGuardados(registrosDemoIniciales);
-      return registrosDemoIniciales;
+      setErrorCarga('No se pudo cargar el inventario. Intenta nuevamente.');
+      setRegistrosGuardados([]);
+      return [];
     } finally { setCargando(false); }
   }
 
@@ -260,7 +227,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         : 'Productos e insumos';
   const esServicio = subvista === 'servicios';
   const esVistaGeneral = subvista === 'todo';
-  const elementosDemo = useMemo<ElementoCatalogo[]>(() => {
+  const elementosCatalogo = useMemo<ElementoCatalogo[]>(() => {
     if (registrosGuardados.length > 0) {
       const registrosDeVista = registrosGuardados.filter((registro) => {
         const tipoRegistroGuardado = normalizarTexto(registro.tipo);
@@ -302,8 +269,8 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       : 'productos';
   const categorias = useMemo(
     () =>
-      [...new Set(elementosDemo.map((producto) => producto.categoria))].sort(),
-    [elementosDemo],
+      [...new Set(elementosCatalogo.map((producto) => producto.categoria))].sort(),
+    [elementosCatalogo],
   );
   const subcategoriasDisponibles = useMemo(() => {
     const existentes = categoriaRegistro
@@ -331,7 +298,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       usarNumeroSerie: serieHabilitada,
     }));
   }, [categoriaRegistro, codigoRegistro, serieHabilitada, subcategoriaRegistro, tipoRegistro]);
-  const obtenerDatosTabla = (producto: (typeof elementosDemo)[number]) => {
+  const obtenerDatosTabla = (producto: (typeof elementosCatalogo)[number]) => {
     const categoriaProducto = producto.categoria;
     const subcategorias = subcategoriasPorCategoria[categoriaProducto] ?? [
       'General',
@@ -347,7 +314,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
         ? producto.codigo
         : `${crearPrefijoCodigo(categoriaProducto) || 'CAT'}-${
             crearPrefijoCodigo(subcategoria) || 'GEN'
-          }-${String(elementosDemo.indexOf(producto) + 1).padStart(4, '0')}`;
+          }-${String(elementosCatalogo.indexOf(producto) + 1).padStart(4, '0')}`;
     const esServicioTabla = normalizarTexto(producto.origen) === 'SERVICIO';
     const tipoProducto: TipoRegistro =
       typeof producto.origen === 'string' && producto.origen
@@ -371,8 +338,8 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
       typeof producto.precioVenta === 'number' && Number.isFinite(producto.precioVenta)
         ? producto.precioVenta
         : esServicioTabla
-          ? 80 + (elementosDemo.indexOf(producto) % 8) * 25
-          : 12 + producto.disponible * 7 + (elementosDemo.indexOf(producto) % 5) * 4;
+          ? 80 + (elementosCatalogo.indexOf(producto) % 8) * 25
+          : 12 + producto.disponible * 7 + (elementosCatalogo.indexOf(producto) % 5) * 4;
     const serie =
       typeof producto.numeroSerie === 'string' && producto.numeroSerie.trim()
         ? producto.numeroSerie
@@ -406,7 +373,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
   const productosFiltrados = useMemo(() => {
     const termino = normalizarBusqueda(busqueda.trim());
     const factor = direccion === 'asc' ? 1 : -1;
-    return elementosDemo
+    return elementosCatalogo
       .filter(
         (producto) => categoria === 'todas' || producto.categoria === categoria,
       )
@@ -454,7 +421,7 @@ export function CatalogoView({ tipo, onReportes, puedeGestionar = true }: { tipo
           }) * factor
         );
       });
-  }, [busqueda, campoOrden, categoria, direccion, elementosDemo]);
+  }, [busqueda, campoOrden, categoria, direccion, elementosCatalogo]);
   const cantidadPorPagina = porPagina === 'Todos'
     ? Math.max(productosFiltrados.length, 1)
     : porPagina;

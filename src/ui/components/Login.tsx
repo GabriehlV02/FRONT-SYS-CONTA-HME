@@ -154,22 +154,7 @@ export function Login({
         {loading ? 'Conectando...' : 'Iniciar sesión'}{' '}
         {!loading && <Icon name="arrowRight" size={18} />}
       </button>
-      {config.id !== 'contable' && (
-        <div className="demo-access">
-          <button
-            type="button"
-            onClick={() =>
-              onLogin({ user: 'demo', role: config.role, permissions: [] })
-            }
-          >
-            Explorar interfaz de demostración <Icon name="arrowRight" size={14} />
-          </button>
-          <p>{esContable
-            ? 'Vista de prueba disponible solo en desarrollo. Las operaciones requieren el servidor contable.'
-            : `Puedes usar cualquier usuario y una contraseña de ${minimumPasswordLength} caracteres o más.`}
-          </p>
-        </div>
-      )}
+
     </form>
   );
 
