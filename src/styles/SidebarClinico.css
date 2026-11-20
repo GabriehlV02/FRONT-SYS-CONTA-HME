@@ -8,26 +8,26 @@
 }
 
 #root .sistema-contable #system-sidebar .marca-container {
-  min-height: 116px !important;
-  flex: 0 0 116px !important;
+  min-height: 148px !important;
+  flex: 0 0 148px !important;
   margin: 0 6px 8px !important;
   border-bottom: 1px solid #c5d9e7 !important;
 }
 
 #root .sistema-contable #system-sidebar .sistema-marca {
-  height: 108px !important;
-  min-height: 108px !important;
+  height: 140px !important;
+  min-height: 140px !important;
   justify-content: center !important;
-  padding: 10px 8px !important;
+  padding: 4px 0 !important;
   border: 0 !important;
   background: transparent !important;
 }
 
 #root .sistema-contable #system-sidebar .marca-logo-completo {
-  width: 190px !important;
-  height: 78px !important;
+  width: 220px !important;
+  height: 132px !important;
   max-width: 100% !important;
-  flex: 0 1 190px !important;
+  flex: 0 1 220px !important;
   border: 0 !important;
   border-radius: 0 !important;
   background: transparent !important;
@@ -195,6 +195,6 @@
 
 @media (max-width: 760px) {
   #root .sistema-contable #system-sidebar { padding-top: 68px !important; }
-  #root .sistema-contable #system-sidebar .marca-container { min-height: 104px !important; flex-basis: 104px !important; }
-  #root .sistema-contable #system-sidebar .sistema-marca { height: 96px !important; min-height: 96px !important; }
+  #root .sistema-contable #system-sidebar .marca-container { min-height: 148px !important; flex-basis: 148px !important; }
+  #root .sistema-contable #system-sidebar .sistema-marca { height: 140px !important; min-height: 140px !important; }
 }
